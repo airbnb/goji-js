@@ -1,0 +1,95 @@
+{
+  "name": "@goji/core",
+  "version": "0.7.4",
+  "description": "GojiJS Core",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "private": false,
+  "scripts": {
+    "prebuild": "npm run clean",
+    "clean": "rimraf dist",
+    "start": "tsc -watch",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc --module esnext --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint --ext .js,.ts,.jsx,.tsx .",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airbnb/goji.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/airbnb/goji/issues"
+  },
+  "homepage": "https://github.com/airbnb/goji#readme",
+  "jest": {
+    "testMatch": [
+      "**/src/**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "cacheDirectory": "/tmp/.cache/jest",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "./src/**/*.{js,jsx,ts,tsx}"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.js"
+    ],
+    "transform": {
+      "^.+\\.(j|t)sx?$": "./babel-jest.config.js"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
+    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/enzyme": "^3.10.5",
+    "@types/jest": "^25.2.3",
+    "@types/lodash": "^4.14.151",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-is": "^16.7.1",
+    "@types/react-reconciler": "^0.18.0",
+    "@types/scheduler": "^0.16.1",
+    "@types/weixin-app": "^2.9.1",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
+    "babel-jest": "^26.0.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "eslint": "^7.0.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.13.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.2",
+    "jest": "^26.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.9.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "react-is": "^16.13.1",
+    "react-reconciler": "^0.25.1"
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "6b5e09e727c913f4f62dcba87df0ee2332e65099"
+}

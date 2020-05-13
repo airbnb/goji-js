@@ -1,0 +1,39 @@
+<block wx:if="{{false}}"></block>
+<% for (var component of components) {%>
+  <block wx:elif="{{<% if (component.sid === undefined) {%>type === '<%= component.name %>'<%} else {%>sid === <%= component.sid %><%}%>}}">
+    <<%= useWrappedComponent && component.isWrapped ? 'goji-' : ''%><%= component.name %>
+      <% if (useWrappedComponent && component.isWrapped) { %>
+        goji-id="{{id || -1}}"
+        className="{{props.className}}"
+        the-style="{{props.style || ''}}"
+      <% } else { %>
+        data-goji-id="{{id || -1}}"
+        class="{{props.className}}"
+        style="{{props.style || ''}}"
+      <% } %>
+      <%# FIXME: for performance reason we haven't enable `id` for all components %>
+      <%# only several components which required by `wx.` API are patched %>
+      <% if (component.name === 'map') { %>
+        the-id="{{props.id}}"
+      <% } %>
+      <% for (var attribute of component.attributes) {%>
+        <% if (typeof attribute.fallback !== "undefined") {%>
+          <% if (typeof attribute.fallback == "string") {%>
+            <%= attribute.name %>="{{props.<%= attribute.value %> || '<%= attribute.fallback %>'}}"
+          <% } else { %>
+            <%= attribute.name %>="{{props.<%= attribute.value %> === undefined ? <%= JSON.stringify(attribute.fallback) %> : props.<%= attribute.value %> }}"
+          <% } %>
+        <% } else { %>
+          <%= attribute.name %>="{{props.<%= attribute.value %>}}"
+        <% } %>
+      <% } %>
+      <% if (useWrappedComponent && component.isWrapped) { %>
+        <%# wrapped components will handle event inside themselves %>
+      <% } else { %>
+        <% for (var event of component.events) {%>
+          <%= event %>="e"
+        <% } %>
+      <% } %>
+    />
+  </block>
+<% } %>

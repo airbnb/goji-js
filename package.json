@@ -1,0 +1,30 @@
+{
+  "name": "goji",
+  "description": "Project GojiJS",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "postinstall": "lerna run prepublishOnly",
+    "lint": "lerna run lint",
+    "prettier": "prettier --write \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
+    "build": "lerna run build",
+    "test": "lerna run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airbnb/goji.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/airbnb/goji/issues"
+  },
+  "homepage": "https://github.com/airbnb/goji#readme",
+  "devDependencies": {
+    "lerna": "^3.21.0",
+    "prettier": "^2.0.5"
+  }
+}

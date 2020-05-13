@@ -1,0 +1,15 @@
+<% if (componentsDepth < maxDepth) { %>
+<import src="./components<%= componentsDepth %>.wxml" />
+<block wx:for="{{c}}" wx:key="id">
+  <%# `item.sid: undefined` on Baidu doesn't work %>
+  <%# remember to add all fields which may be undefined %>
+  <%# see: swanide://fragment/30ae9e8c97610d93bac049245254dea51576484421939 %>
+  <% if (fixBaiduTemplateBug) {%>
+    <template is="$$GOJI_COMPONENT<%= componentsDepth %>" data="{{ ...item, sid: item.sid }}" />
+  <% } else {%>
+    <template is="$$GOJI_COMPONENT<%= componentsDepth %>" data="{{ ...item }}" />
+  <% } %>
+</block>
+<% } else { %>
+  <goji-subtree goji-id="{{id}}" nodes="{{c}}" />
+<% } %>

@@ -1,0 +1,6 @@
+**/dist/*
+**/dist-*/*
+**/node_modules/*
+**/.cache-loader/*
+**/coverage/*
+**/CHANGELOG.md

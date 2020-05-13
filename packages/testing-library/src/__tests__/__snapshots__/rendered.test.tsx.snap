@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rendered debug 1`] = `
+"[36m<view[39m
+  [33mtestID[39m=[32m\\"a\\"[39m
+[36m>[39m
+  [36m<button[39m
+    [33monTap[39m=[32m\\"[Function: onTap]\\"[39m
+  [36m>[39m
+    [0mhello[0m
+  [36m</button>[39m
+  [36m<text[39m
+    [33mclassName[39m=[32m\\"a b c\\"[39m
+  [36m>[39m
+    [0mworld[0m
+  [36m</text>[39m
+[36m</view>[39m"
+`;

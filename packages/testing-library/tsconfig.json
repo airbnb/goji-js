@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "declaration": true,
+    "module": "esnext",
+    "sourceMap": true,
+    "outDir": "dist/esm",
+    "strict": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "jsx": "react"
+  },
+  "include": ["./src/**/*"]
+}

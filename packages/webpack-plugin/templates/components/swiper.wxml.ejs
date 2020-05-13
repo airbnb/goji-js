@@ -1,0 +1,50 @@
+<swiper
+  class="{{className}}"
+  style="{{theStyle}}"
+  data-goji-id="{{gojiId}}"
+  indicator-dots="{{indicatorDots}}"
+  indicator-color="{{indicatorColor}}"
+  indicator-active-color="{{indicatorActiveColor || '#000000'}}"
+  autoplay="{{autoplay}}"
+  current="{{internalCurrent}}"
+  interval="{{interval}}"
+  duration="{{duration}}"
+  circular="{{circular}}"
+  vertical="{{vertical}}"
+  previous-margin="{{previousMargin}}"
+  next-margin="{{nextMargin}}"
+  display-multiple-items="{{displayMultipleItems}}"
+  skip-hidden-item-layout="{{skipHiddenItemLayout}}"
+  easing-function="{{easingFunction}}"
+  bindchange="e"
+  bindtransition="e"
+  bindanimationfinish="e"
+  bindtouchstart="e"
+  bindtouchmove="e"
+  bindtouchcancel="e"
+  bindtouchend="e"
+  bindtap="e"
+  bindlongpress="e"
+  bindlongtap="e"
+  bindtransitionend="e"
+  bindanimationstart="e"
+  bindanimationiteration="e"
+  bindanimationend="e"
+  bindtouchforcechange="e"
+>
+  <import src="../components1.wxml" />
+  <%# should manually flat the `swiper-item` here as `swiper` required https://developers.weixin.qq.com/miniprogram/dev/component/swiper.html %>
+  <%# we assume there won't be any other elements except `swiper-item` %>
+  <%# don't use style here because WeChat's bug https://developers.weixin.qq.com/community/develop/doc/00064c6c9a4650420e59218ea5ac00 %>
+  <swiper-item
+    wx:for="{{nodes}}"
+    wx:key="id"
+    class="{{item.props.className}}"
+    item-id="{{item.props.itemId}}"
+    data-goji-id="{{item.id}}"
+  >
+    <block wx:for="{{item.c}}" wx:key="id">
+      <template is="$$GOJI_COMPONENT1" data="{{ ...item }}" />
+    </block>
+  </swiper-item>
+</swiper>

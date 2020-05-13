@@ -1,0 +1,88 @@
+Component({
+  options: {
+    addGlobalClass: true,
+  },
+  data: {
+    internalCurrent: 0,
+  },
+  properties: {
+    nodes: {
+      type: Object,
+    },
+    className: {
+      type: String,
+    },
+    theStyle: {
+      type: String,
+    },
+    gojiId: {
+      type: Number,
+    },
+    indicatorDots: {
+      type: Boolean,
+    },
+    indicatorColor: {
+      type: String,
+    },
+    indicatorActiveColor: {
+      type: String,
+    },
+    autoplay: {
+      type: Boolean,
+    },
+    current: {
+      type: Number,
+      observer() {
+        // if parent component doesn't change the value the re-rendering will be ignored
+        if (this.properties.current !== this.data.internalCurrent) {
+          this.setData({
+            internalCurrent: this.properties.current,
+          });
+        }
+      },
+    },
+    interval: {
+      type: Number,
+    },
+    duration: {
+      type: Number,
+    },
+    circular: {
+      type: Boolean,
+    },
+    vertical: {
+      type: Boolean,
+    },
+    previousMargin: {
+      type: String,
+    },
+    nextMargin: {
+      type: String,
+    },
+    displayMultipleItems: {
+      type: Number,
+    },
+    skipHiddenItemLayout: {
+      type: Boolean,
+    },
+    easingFunction: {
+      type: String,
+    },
+  },
+  lifetimes: {
+    attached() {
+      Object.e.subtreeAttached(this.properties.gojiId, this);
+      this.setData({
+        internalCurrent: this.properties.current,
+      });
+    },
+    detached() {
+      Object.e.subtreeDetached(this.properties.gojiId);
+    },
+  },
+  methods: {
+    e(evt) {
+      Object.e.trigger(evt);
+    },
+  },
+});

@@ -1,0 +1,99 @@
+Component({
+  options: {
+    addGlobalClass: true,
+  },
+  data: {
+    internalScrollTop: '0',
+    internalScrollLeft: '0',
+    internalScrollIntoView: '',
+  },
+  properties: {
+    nodes: {
+      type: Object,
+    },
+    className: {
+      type: String,
+    },
+    theStyle: {
+      type: String,
+    },
+    gojiId: {
+      type: Number,
+    },
+    scrollX: {
+      type: Boolean,
+    },
+    scrollY: {
+      type: Boolean,
+    },
+    upperThreshold: {
+      type: String,
+    },
+    lowerThreshold: {
+      type: String,
+    },
+    scrollTop: {
+      type: String,
+      observer() {
+        // if parent component doesn't change the value the re-rendering will be ignored
+        if (this.properties.scrollTop !== this.data.internalScrollTop) {
+          this.setData({
+            internalScrollTop: this.properties.scrollTop,
+          });
+        }
+      },
+    },
+    scrollLeft: {
+      type: String,
+      observer() {
+        // if parent component doesn't change the value the re-rendering will be ignored
+        if (this.properties.scrollLeft !== this.data.internalScrollLeft) {
+          this.setData({
+            internalScrollLeft: this.properties.scrollLeft,
+          });
+        }
+      },
+    },
+    scrollIntoView: {
+      type: String,
+      observer() {
+        // if parent component doesn't change the value the re-rendering will be ignored
+        if (this.properties.scrollIntoView !== this.data.internalScrollIntoView) {
+          this.setData({
+            internalScrollIntoView: this.properties.scrollIntoView,
+          });
+        }
+      },
+    },
+    scrollWithAnimation: {
+      type: Boolean,
+    },
+    enableBackToTop: {
+      type: Boolean,
+    },
+    enableFlex: {
+      type: Boolean,
+    },
+    scrollAnchoring: {
+      type: Boolean,
+    },
+  },
+  lifetimes: {
+    attached() {
+      Object.e.subtreeAttached(this.properties.gojiId, this);
+      this.setData({
+        internalScrollTop: this.properties.scrollTop,
+        internalScrollLeft: this.properties.internalScrollLeft,
+        internalScrollIntoView: this.properties.scrollIntoView,
+      });
+    },
+    detached() {
+      Object.e.subtreeDetached(this.properties.gojiId);
+    },
+  },
+  methods: {
+    e(evt) {
+      Object.e.trigger(evt);
+    },
+  },
+});

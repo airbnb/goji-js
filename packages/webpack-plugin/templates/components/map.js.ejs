@@ -1,0 +1,149 @@
+Component({
+  options: {
+    addGlobalClass: true,
+  },
+  data: {
+    internalLongitude: 0,
+    internalLatitude: 0,
+    internalScale: 16,
+  },
+  properties: {
+    theId: {
+      type: String,
+    },
+    className: {
+      type: String,
+    },
+    theStyle: {
+      type: String,
+    },
+    gojiId: {
+      type: Number,
+    },
+    longitude: {
+      type: Number,
+      observer() {
+        // if parent component doesn't change the value the re-rendering will be ignored
+        if (this.properties.longitude !== this.data.internalLongitude) {
+          this.setData({
+            internalLongitude: this.properties.longitude,
+          });
+        }
+      },
+    },
+    latitude: {
+      type: Number,
+      observer() {
+        // if parent component doesn't change the value the re-rendering will be ignored
+        if (this.properties.latitude !== this.data.internalLatitude) {
+          this.setData({
+            internalLatitude: this.properties.latitude,
+          });
+        }
+      },
+    },
+    scale: {
+      type: Number,
+      value: 16,
+      observer() {
+        // if parent component doesn't change the value the re-rendering will be ignored
+        if (this.properties.scale !== this.data.internalScale) {
+          this.setData({
+            internalScale: this.properties.scale,
+          });
+        }
+      },
+    },
+    markers: {
+      type: Array,
+    },
+    polyline: {
+      type: Array,
+    },
+    circles: {
+      type: Array,
+    },
+    controls: {
+      type: Array,
+    },
+    includePoints: {
+      type: Array,
+    },
+    showLocation: {
+      type: Boolean,
+    },
+    polygons: {
+      type: Array,
+    },
+    subkey: {
+      type: String,
+    },
+    layerStyle: {
+      type: Number,
+      value: 1,
+    },
+    rotate: {
+      type: Number,
+    },
+    skew: {
+      type: Number,
+    },
+    enable3D: {
+      type: Boolean,
+    },
+    showCompass: {
+      type: Boolean,
+    },
+    showScale: {
+      type: Boolean,
+    },
+    enableOverlooking: {
+      type: Boolean,
+    },
+    enableZoom: {
+      type: Boolean,
+      value: true,
+    },
+    enableScroll: {
+      type: Boolean,
+      value: true,
+    },
+    enableRotate: {
+      type: Boolean,
+    },
+    enableSatellite: {
+      type: Boolean,
+    },
+    enableTraffic: {
+      type: Boolean,
+    },
+    setting: {
+      type: Object,
+      value: {},
+    },
+  },
+  lifetimes: {
+    attached() {
+      Object.e.subtreeAttached(this.properties.gojiId, this);
+      this.setData({
+        internalLongitude: this.properties.longitude,
+        internalLatitude: this.properties.latitude,
+        internalScale: this.properties.scale,
+      });
+    },
+    detached() {
+      Object.e.subtreeDetached(this.properties.gojiId);
+    },
+  },
+  methods: {
+    e(evt) {
+      Object.e.trigger(evt);
+    },
+    onRegionchange(evt) {
+      // reset `evt.type`
+      // users can use `evt.detail.type` instead
+      evt.type = 'regionchange';
+      this.e(evt);
+    },
+  },
+});

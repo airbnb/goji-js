@@ -1,0 +1,62 @@
+{
+  "name": "@goji/testing-library",
+  "version": "0.7.4",
+  "description": "GojiJS Testing Library",
+  "main": "dist/cjs/index.js",
+  "scripts": {
+    "prebuild": "npm run clean",
+    "clean": "rimraf dist",
+    "start": "tsc -watch",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc --module esnext --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint --ext .js,.ts,.jsx,.tsx .",
+    "test": "jest"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "pretty-format": "^26.0.1",
+    "react-test-renderer": "^16.13.1",
+    "wait-for-expect": "^3.0.2"
+  },
+  "jest": {
+    "testMatch": [
+      "**/src/**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "cacheDirectory": "/tmp/.cache/jest",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "./src/**/*.{js,jsx,ts,tsx}"
+    ],
+    "transform": {
+      "^.+\\.(j|t)sx?$": "./babel-jest.config.js"
+    },
+    "transformIgnorePatterns": []
+  },
+  "peerDependencies": {
+    "@goji/core": "*",
+    "react": "*"
+  },
+  "devDependencies": {
+    "@goji/core": "^0.7.4",
+    "@types/lodash": "^4.14.151",
+    "@types/react-test-renderer": "^16.9.2",
+    "react": "^16.13.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airbnb/goji.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/airbnb/goji/issues"
+  },
+  "homepage": "https://github.com/airbnb/goji#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "6b5e09e727c913f4f62dcba87df0ee2332e65099"
+}
