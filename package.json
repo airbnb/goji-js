@@ -3,7 +3,8 @@
   "description": "Project GojiJS",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "packages/goji.js.org/*"
   ],
   "scripts": {
     "postinstall": "lerna run prepublishOnly",

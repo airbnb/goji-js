@@ -1,0 +1,7 @@
+{
+  "docs": {
+    "Get Started": ["introduction", "setup", "preparation"],
+    "Guide": ["app", "page", "hooks", "lifecycle", "css", "cross-platform"],
+    "FAQ": ["faq"]
+  }
+}
