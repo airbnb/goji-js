@@ -2,3 +2,4 @@
 **/node_modules/*
 **/.cache-loader/*
 **/coverage/*
+packages/goji.js.org
