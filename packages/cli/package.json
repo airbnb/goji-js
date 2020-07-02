@@ -1,6 +1,6 @@
 {
   "name": "@goji/cli",
-  "version": "0.7.4",
+  "version": "0.7.6",
   "description": "GojiJS CLI",
   "main": "dist/cjs/index.js",
   "bin": {
@@ -40,7 +40,7 @@
     "@babel/preset-react": "^7.10.1",
     "@babel/preset-typescript": "^7.10.1",
     "@babel/runtime": "^7.10.1",
-    "@goji/webpack-plugin": "^0.7.4",
+    "@goji/webpack-plugin": "^0.7.6",
     "babel-loader": "^8.1.0",
     "cache-loader": "^4.1.0",
     "chalk": "^4.0.0",
@@ -65,7 +65,7 @@
     "yargs": "^15.3.1"
   },
   "devDependencies": {
-    "@goji/core": "^0.7.4",
+    "@goji/core": "^0.7.6",
     "@types/yargs": "^15.0.5"
   },
   "peerDependencies": {

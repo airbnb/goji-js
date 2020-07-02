@@ -10,6 +10,9 @@ module.exports = {
   Function: require('./function'),
   Promise: require('./promise'),
   String: require('./string'),
+  Array: require('./array'),
+  ArrayBuffer: require('./arrayBuffer'),
+  Number: require('./number'),
   getCurrentPages: require('./getCurrentPages'),
   /* eslint-enable global-require */
 
