@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>跨平台开发 · GojiJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## 支持的平台"/><meta name="docsearch:language" content="zh-CN"/><meta property="og:title" content="跨平台开发 · GojiJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://goji.js.org/"/><meta property="og:description" content="## 支持的平台"/><meta property="og:image" content="https://goji.js.org/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://goji.js.org/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/undefined"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-CN"><h2 class="headerTitle">GojiJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/zh-CN/introduction" target="_self">文档</a></li><li class=""><a href="https://git.musta.ch/airbnb/goji" target="_self">GitHub</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>简体中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/cross-platform">English</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>教程</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">入门</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/introduction">介绍</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/setup">安装</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/preparation">准备工作</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">教程</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/app">入口</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/page">页面</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/hooks">钩子</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/lifecycle">生命周期</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/css">样式</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/zh-CN/cross-platform">跨平台</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">常见问题</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/faq">常见问题</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://git.musta.ch/airbnb/goji-tree/tree/master/packages/goji.js.org/docs/cross-platform.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">跨平台开发</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="支持的平台"></a><a href="#支持的平台" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>支持的平台</h2>
+<p>Goji目前支持这些平台， 每个目标都有一个 <code>TARGET</code> 名。</p>
+<table>
+<thead>
+<tr><th>平台</th><th><code>TARGET</code></th></tr>
+</thead>
+<tbody>
+<tr><td><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/">WeChat</a></td><td><code>wechat</code></td></tr>
+<tr><td><a href="https://smartprogram.baidu.com/developer/index.html">Baidu</a></td><td><code>baidu</code></td></tr>
+<tr><td><a href="https://docs.alipay.com/mini/developer">Alipay</a></td><td><code>alipay</code></td></tr>
+<tr><td><a href="https://q.qq.com/wiki/develop/miniprogram/frame/">QQ</a></td><td><code>qq</code></td></tr>
+<tr><td><a href="https://developer.toutiao.com/dev/cn/mini-app/introduction/about-mini-app/general-introduction">Toutiao</a></td><td><code>toutiao</code></td></tr>
+</tbody>
+</table>
+<h2><a class="anchor" aria-hidden="true" id="cli环境变量"></a><a href="#cli环境变量" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI环境变量</h2>
+<p>若要构建不同的目标，您应当在 <code>yarn start</code>或<code>yarn build</code>前的环境变量中添加<code>TARGET</code>。</p>
+<p>例如，运行 <code>TARGET=baidu yarn start</code> 以开发模式构建百度小程序。</p>
+<h2><a class="anchor" aria-hidden="true" id="javascript-代码中的条件判断"></a><a href="#javascript-代码中的条件判断" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JavaScript 代码中的条件判断</h2>
+<p>在 JavaScript 代码中可以可以通过 <code>process.env.TARGET</code> 检查当前的构建目标。 此示例展示了它是如何工作的。</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">switch</span> (process.<span class="hljs-keyword">env</span>.TARGET) {
+  <span class="hljs-keyword">case</span> <span class="hljs-string">'wechat'</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello, WeChat!'</span>;
+  <span class="hljs-keyword">case</span> <span class="hljs-string">'baidu'</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello, Baidu!'</span>;
+  <span class="hljs-comment">// ...</span>
+  <span class="hljs-keyword">default</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Unknown'</span>;
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="配置代码中的条件判断"></a><a href="#配置代码中的条件判断" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>配置代码中的条件判断</h2>
+<p>只有 <code>.config.js</code> 配置文件支持查构建目标。</p>
+<pre><code class="hljs css language-js">modele.exports = <span class="hljs-function">(<span class="hljs-params">{ target }</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (target === <span class="hljs-string">'alipay'</span>) {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">defaultTitle</span>: <span class="hljs-string">'预订详情'</span>,
+    };
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">navigationBarTitleText</span>: <span class="hljs-string">'预订详情'</span>,
+    };
+  }
+};
+</code></pre>
+<blockquote>
+<p><strong><a href="https://app.asana.com/0/1147595010451657/1147595010451665">[Proposal]</a></strong>错误的配置文件可能在某些平台上导致警告。 例如，如果您在微信小程序中使用支付宝小程序的 <code>defaultTitle</code> ，可能会看到这个警告。 <img src="https://user-images.githubusercontent.com/1812118/68004991-9f61b300-fcae-11e9-9892-4797f2a9da7d.png" alt="image"> 为了解决这个问题，我们可以实现一个新的软件包 <code>@goji/config-generator</code> 它可以自动适配不同平台的配置文件。</p>
+</blockquote>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/2/2020</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/zh-CN/css"><span class="arrow-prev">← </span><span>样式</span></a><a class="docs-next button" href="/docs/zh-CN/faq"><span>常见问题</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#支持的平台">支持的平台</a></li><li><a href="#cli环境变量">CLI环境变量</a></li><li><a href="#javascript-代码中的条件判断">JavaScript 代码中的条件判断</a></li><li><a href="#配置代码中的条件判断">配置代码中的条件判断</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/zh-CN/introduction.html">Get Started</a><a href="/docs/zh-CN/app.html">Guide</a><a href="/docs/zh-CN/faq.html">FAQ</a></div><div><h5>Community</h5><a href="https://app.slack.com/client/T02511RD4/CPTRC28D7" target="_blank" rel="noreferrer noopener">Slack #goji-debug-team</a><a href="https://app.asana.com/0/1147595010451657/board" target="_blank" rel="noreferrer noopener">Feature request voting</a></div><div><h5>More</h5><a href="https://git.musta.ch/airbnb/goji">GitHub</a><a href="https://git.musta.ch/airbnb/goji-tree">Doc GitHub</a></div></section><section class="copyright">© 2020 Airbnb, Inc. All rights reserved.</section></footer></div></body></html>

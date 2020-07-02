@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Lifecycle · GojiJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Guidelines"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Lifecycle · GojiJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://goji.js.org/"/><meta property="og:description" content="## Guidelines"/><meta property="og:image" content="https://goji.js.org/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://goji.js.org/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/undefined"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/en"><h2 class="headerTitle">GojiJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/en/introduction" target="_self">Docs</a></li><li class=""><a href="https://git.musta.ch/airbnb/goji" target="_self">GitHub</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>English</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/zh-CN/lifecycle">简体中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Guide</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Get Started</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/en/introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/docs/en/setup">Setup</a></li><li class="navListItem"><a class="navItem" href="/docs/en/preparation">Preparation</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Guide</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/en/app">App</a></li><li class="navListItem"><a class="navItem" href="/docs/en/page">Page</a></li><li class="navListItem"><a class="navItem" href="/docs/en/hooks">Hooks</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/en/lifecycle">Lifecycle</a></li><li class="navListItem"><a class="navItem" href="/docs/en/css">CSS</a></li><li class="navListItem"><a class="navItem" href="/docs/en/cross-platform">Cross-Platform</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">FAQ</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/en/faq">FAQ</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://git.musta.ch/airbnb/goji-tree/tree/master/packages/goji.js.org/docs/lifecycle.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Lifecycle</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="guidelines"></a><a href="#guidelines" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Guidelines</h2>
+<p>Different Mini Program platform provides different lifecycle methods and it made it hard to write
+cross-platform codes. For example, the equivalent of React <code>componentDidMount</code> is <code>attached</code> in
+WeChat while <code>onInit</code> in Alipay.</p>
+<p>So we advise you to use <a href="#universal-hooks">universal hooks</a> in Goji even if Goji mapped all
+lifecycle methods into their hooks,</p>
+<h2><a class="anchor" aria-hidden="true" id="universal-hooks"></a><a href="#universal-hooks" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Universal hooks</h2>
+<p>You can use all available hooks from React like <code>useEffect</code> or <code>useLayoutEffect</code>.</p>
+<ul>
+<li>Check page or component mounted / unmounted</li>
+</ul>
+<p>You can use <code>useEffect</code> with empty deps <code>[]</code>.</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">const</span> MyComp = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'component mounted'</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'component unmounted'</span>);
+    };
+  }, []);
+
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+};
+</code></pre>
+<ul>
+<li>Check props changed</li>
+</ul>
+<p>You can use <code>useEffect</code> with props as deps.</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">const</span> MyComp = <span class="hljs-function">(<span class="hljs-params">{ id }: { id: <span class="hljs-built_in">string</span> }</span>) =&gt;</span> {
+  <span class="hljs-keyword">const</span> [data, setData] = useState&lt;ResponseData | <span class="hljs-literal">undefined</span>&gt;(<span class="hljs-literal">undefined</span>);
+  useEffect(<span class="hljs-keyword">async</span> () =&gt; {
+    <span class="hljs-comment">// every time `id` change, fetchAPI will be called</span>
+    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> fetchAPI(id);
+    setData(data);
+  }, [id]);
+
+  <span class="hljs-keyword">return</span> data ? data : <span class="hljs-string">'loading'</span>;
+};
+</code></pre>
+<blockquote>
+<p>For more detail about how to use effect hooks please see
+<a href="https://reactjs.org/docs/hooks-effect.html">Using the Effect Hook</a>.</p>
+</blockquote>
+<blockquote>
+<p>The callback function in <code>useEffect</code> would always run in the next scheduled time slice, usually in
+the <code>requestAnimationFrame</code>. If you'd like to run callback immediately after component
+mounted/updated please use <code>useLayoutEffect</code>.</p>
+</blockquote>
+<ul>
+<li>Get load options</li>
+</ul>
+<p>You can use <code>useLoadOptions</code>:</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">import</span> { useLoadOptions } <span class="hljs-keyword">from</span> <span class="hljs-string">'@goji/core'</span>;
+<span class="hljs-keyword">const</span> MyComp = () ={
+  <span class="hljs-keyword">const</span> [loadOptions, setLoadOptions] = useState&lt;LoadOptions | <span class="hljs-literal">undefined</span>&gt;();
+  useLoadOptions((options: LoadOptions) ={
+    setLoadOptions(options);
+  });
+};
+</code></pre>
+<blockquote>
+<p>We advice to use <code>useLoadOptions</code> instead of <code>unsafe_useOnLoad</code> because all <code>unsafe_useOnLoad</code>
+callback only runs once when the page's <code>onLoad</code> run. If a component mounted after the firs time
+rendering the <code>unsafe_useOnLoad</code> would never run.</p>
+</blockquote>
+<ul>
+<li>Check page visibility</li>
+</ul>
+<p>You can use <code>useVisibility</code> to detect whether the page is shown.</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">import</span> { useVisibility } <span class="hljs-keyword">from</span> <span class="hljs-string">'@goji/core'</span>;
+<span class="hljs-keyword">const</span> MyComp = () ={
+  useVisibility((shown: <span class="hljs-built_in">boolean</span>) ={
+    <span class="hljs-keyword">if</span> (shown) {
+      <span class="hljs-comment">// onShow codes here</span>
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// onHide codes here</span>
+    }
+  });
+};
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="mapped-lifecycle-hooks"></a><a href="#mapped-lifecycle-hooks" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Mapped lifecycle hooks</h2>
+<p>All lifecycles are mapping to hooks prefixed with <code>unsafe_use</code>. For example, <code>onLoad</code> is mapped to
+<code>unsafe_useOnLoad</code>, <code>onPullDownRefresh</code> is mapped to <code>unsafe_useOnPullDownRefresh</code></p>
+<p>Since Goji use React Context for lifecycle events passing you can use these hooks in any component.
+So there is no need to use
+<a href="https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/lifetimes.html#%E7%BB%84%E4%BB%B6%E6%89%80%E5%9C%A8%E9%A1%B5%E9%9D%A2%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">pageLifetimes</a>
+any more.</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/2/2020</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/en/hooks"><span class="arrow-prev">← </span><span>Hooks</span></a><a class="docs-next button" href="/docs/en/css"><span>CSS</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#guidelines">Guidelines</a></li><li><a href="#universal-hooks">Universal hooks</a></li><li><a href="#mapped-lifecycle-hooks">Mapped lifecycle hooks</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/introduction.html">Get Started</a><a href="/docs/en/app.html">Guide</a><a href="/docs/en/faq.html">FAQ</a></div><div><h5>Community</h5><a href="https://app.slack.com/client/T02511RD4/CPTRC28D7" target="_blank" rel="noreferrer noopener">Slack #goji-debug-team</a><a href="https://app.asana.com/0/1147595010451657/board" target="_blank" rel="noreferrer noopener">Feature request voting</a></div><div><h5>More</h5><a href="https://git.musta.ch/airbnb/goji">GitHub</a><a href="https://git.musta.ch/airbnb/goji-tree">Doc GitHub</a></div></section><section class="copyright">© 2020 Airbnb, Inc. All rights reserved.</section></footer></div></body></html>
