@@ -16,6 +16,10 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: ['10', '12']
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -26,9 +30,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node_version }}
-
-    - name: Install yarn
-      run: npm i -g yarn
 
     - name: Install dependencies
       run: yarn --frozen-lockfile
