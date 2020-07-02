@@ -2,5 +2,5 @@
   "packages": ["packages/*", "packages/goji.js.org/*"],
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "version": "0.7.4"
+  "version": "0.7.6"
 }
