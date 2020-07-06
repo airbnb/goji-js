@@ -3,3 +3,4 @@
 **/.cache-loader/*
 **/coverage/*
 packages/goji.js.org
+packages/create-goji-app/templates

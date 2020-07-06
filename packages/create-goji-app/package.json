@@ -1,0 +1,41 @@
+{
+  "name": "create-goji-app",
+  "version": "0.7.6",
+  "description": "Create GojiJS App",
+  "main": "index.js",
+  "repository": "https://github.com/airbnb/goji-js",
+  "license": "MIT",
+  "bin": {
+    "create-goji-app": "./bin/create-goji-app.js"
+  },
+  "scripts": {
+    "prebuild": "npm run clean",
+    "clean": "rimraf dist",
+    "start": "tsc -watch",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc --module esnext --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint --ext .js,.ts,.jsx,.tsx .",
+    "test": "jest"
+  },
+  "jest": {
+    "testMatch": [
+      "**/src/**/?(*.)+(spec|test).[jt]s?(x)"
+    ],
+    "cacheDirectory": "/tmp/.cache/jest",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "./src/**/*.{js,jsx,ts,tsx}"
+    ],
+    "transform": {
+      "^.+\\.(j|t)sx?$": "./babel-jest.config.js"
+    }
+  },
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "ejs": "^3.1.3",
+    "globby": "^11.0.1",
+    "mkdirp": "^1.0.4"
+  }
+}
