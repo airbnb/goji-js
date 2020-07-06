@@ -1,7 +1,6 @@
 import webpack from 'webpack';
 import resolve from 'resolve';
 import path from 'path';
-import { GojiTarget } from '@goji/core';
 import { getWebpackConfig } from './config/webpack.config';
 import { parseArgv, CliConfig } from './argv';
 
@@ -31,32 +30,6 @@ const requireGojiConfig = (basedir: string): GojiConfig => {
   return require(resolvedPath);
 };
 
-const getInitialWebpackConfig = ({
-  outputPath,
-  integrationMode,
-  componentWhitelist,
-  babelConfig,
-}: {
-  outputPath?: string;
-  integrationMode: boolean;
-  componentWhitelist: Array<string> | undefined;
-  babelConfig: any;
-}) => {
-  const basedir = process.env.PWD!;
-  const target = (process.env.TARGET || 'wechat') as GojiTarget;
-  const nodeEnv = process.env.NODE_ENV || 'development';
-
-  return getWebpackConfig({
-    basedir,
-    outputPath,
-    target,
-    nodeEnv,
-    babelConfig,
-    unsafe_integrationMode: integrationMode,
-    unstable_componentWhitelist: componentWhitelist,
-  });
-};
-
 const main = async () => {
   const basedir = process.env.PWD!;
   let cliConfig: CliConfig;
@@ -66,17 +39,22 @@ const main = async () => {
     console.error(error.message);
     return;
   }
+  // re-patch NODE_ENV for `babel.config.ts`
+  process.env.NODE_ENV = cliConfig.production ? 'production' : 'development';
   const gojiConfig = requireGojiConfig(basedir);
   // eslint-disable-next-line global-require
   const babelConfig = require('./config/babel.config');
   if (gojiConfig.configureBabel) {
     gojiConfig.configureBabel(babelConfig);
   }
-  const webpackConfig = getInitialWebpackConfig({
+  const webpackConfig = getWebpackConfig({
+    basedir,
     outputPath: gojiConfig.outputPath,
+    target: cliConfig.target,
+    nodeEnv: cliConfig.production ? 'production' : 'development',
     babelConfig,
-    integrationMode: gojiConfig.unsafe_integrationMode ?? false,
-    componentWhitelist: gojiConfig.unstable_componentWhitelist,
+    unsafe_integrationMode: gojiConfig.unsafe_integrationMode ?? false,
+    unstable_componentWhitelist: gojiConfig.unstable_componentWhitelist,
   });
 
   // apply goji.config.js configureWebpack
