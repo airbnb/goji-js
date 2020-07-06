@@ -39,6 +39,8 @@ const main = async () => {
     console.error(error.message);
     return;
   }
+  // re-patch NODE_ENV for `babel.config.ts`
+  process.env.NODE_ENV = cliConfig.production ? 'production' : 'development';
   const gojiConfig = requireGojiConfig(basedir);
   // eslint-disable-next-line global-require
   const babelConfig = require('./config/babel.config');
