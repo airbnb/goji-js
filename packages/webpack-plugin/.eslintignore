@@ -1,1 +1,4 @@
-../../.eslintignore
+**/dist/*
+**/node_modules/*
+**/.cache-loader/*
+**/coverage/*
