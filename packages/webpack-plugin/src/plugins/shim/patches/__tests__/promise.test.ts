@@ -61,7 +61,7 @@ describe('patch `Promise`', () => {
     expect(promise.constructor).toBe(PatchedPromise);
   });
 
-  // FIXME: we can't hack native constructor, 
+  // FIXME: we can't hack native constructor,
   // wechat js context may compare it directly to origianl constructor
   it.skip('native constructor', () => {
     const promiseFromAsyncFunction = (async () => {})();

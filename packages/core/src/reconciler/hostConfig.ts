@@ -29,7 +29,7 @@ export const hostConfig: GojiHostConfig<
       const subtreeId = instance.getSubtreeId();
 
       let componentInstance;
-      
+
       if (subtreeId === undefined) {
         componentInstance = undefined;
       } else if (subtreeInstances.has(subtreeId)) {

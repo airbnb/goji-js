@@ -17,7 +17,7 @@
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
     "prepublishOnly": "npm run build",
     "lint": "eslint --ext .js,.ts,.jsx,.tsx .",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "jest": {
     "testMatch": [

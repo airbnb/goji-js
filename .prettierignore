@@ -4,3 +4,7 @@
 **/.cache-loader/*
 **/coverage/*
 **/CHANGELOG.md
+# should not format templates
+**/*.ejs
+# this folder was genrated by Docusaurus
+packages/goji.js.org/website/*

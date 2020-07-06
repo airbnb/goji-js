@@ -63,7 +63,7 @@ describe('patch `String`', () => {
     expect(string.constructor).toBe(PatchedString);
   });
 
-  // FIXME: we can't hack native constructor, 
+  // FIXME: we can't hack native constructor,
   // wechat js context may compare it directly to origianl constructor
   it.skip('native constructor', () => {
     const stringPrimitive = value;
