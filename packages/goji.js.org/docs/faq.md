@@ -8,9 +8,8 @@ sidebar_label: FAQ
 
 Sorry, it hasn't been implemented.
 
-> **[[Proposal]](https://app.asana.com/0/1147595010451657/1147595010451671)** Add option
-> `disableSharing: true` in the second argument of `render` and Goji won't inject
-> `onShareAppMessage` methods when initializing page. But it also means you should not use
+> **[Proposal]** Add option `disableSharing: true` in the second argument of `render` and Goji won't
+> inject `onShareAppMessage` methods when initializing page. But it also means you should not use
 > `useOnShareAppMessage` otherwise a warning will log.
 
 ## How to use WeChat bubble event, component relationship or Baidu `dispatch` ?

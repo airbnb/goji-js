@@ -10,20 +10,20 @@ Goji enables running React code on multi Mini Program platforms.
 
 ## Features
 
-- Fully support React
+### Fully support React
 
 You can use the latest version of React in Goji. Features including class / functional components,
 hooks, portal can work well on Goji.
 
-- Cross platforms ability
+### Cross platforms ability
 
 For now, Goji supports these platforms:
 
-- Wechat
-- Baidu
-- Alipay
-- QQ
-- Toutiao
+- WeChat Mini Program
+- Baidu Smart Program
+- Alipay Mini Program
+- Toutiao Micro App
+- QQ Mini Program
 - Kuai App ( TBD )
 - Web ( TBD )
 
@@ -52,3 +52,5 @@ render(App);
 The main difference between Goji and React DOM is you have to use built-in components from
 `@goji/core`. You can find
 [all components here](https://developers.weixin.qq.com/miniprogram/dev/component/).
+
+Get excited about Goji ? Let's start a new Goji project in few steps.
