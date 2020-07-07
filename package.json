@@ -9,7 +9,8 @@
   "scripts": {
     "postinstall": "lerna run prepublishOnly",
     "lint": "lerna run lint",
-    "prettier": "prettier --write \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
+    "prettier": "prettier --list-different \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
+    "prettier:fix": "prettier --write \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
     "build": "lerna run build",
     "test": "lerna run test"
   },

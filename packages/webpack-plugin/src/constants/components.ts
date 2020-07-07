@@ -602,7 +602,7 @@ export const BUILD_IN_COMPONENTS: ComponentDesc[] = sortComponents(
         },
         // Alipay MiniProgram need this prop to fix position of input box is not correct bug.
         // https://opendocs.alipay.com/mini/component/input
-        'enableNative': {
+        enableNative: {
           type: propTypes.boolean,
           value: false,
         },

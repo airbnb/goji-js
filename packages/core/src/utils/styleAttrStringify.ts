@@ -5,10 +5,7 @@ const msPattern = /^ms-/;
 
 // from https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/shared/hyphenateStyleName.js
 const hyphenateStyleName = (name: string): string => {
-  return name
-    .replace(uppercasePattern, '-$1')
-    .toLowerCase()
-    .replace(msPattern, '-ms-');
+  return name.replace(uppercasePattern, '-$1').toLowerCase().replace(msPattern, '-ms-');
 };
 
 // from https://github.com/facebook/react/blob/858c84206ef79f210e552c0128f01d1ae3a0cbf0/packages/react-dom/src/shared/CSSPropertyOperations.js#L90-L92

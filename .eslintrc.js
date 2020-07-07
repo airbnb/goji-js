@@ -20,8 +20,6 @@ module.exports = {
     Component: 'readonly',
   },
   rules: {
-    // use @typescript-eslint/no-unused-vars instead
-    'no-unused-vars': 'off',
     'max-classes-per-file': 'off',
     'no-underscore-dangle': ['error', { allow: ['__GOJI_CONTAINER'] }],
     'react/jsx-filename-extension': [
@@ -71,6 +69,7 @@ module.exports = {
     '@typescript-eslint/no-useless-constructor': 'error',
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions'] }],
+    // use @typescript-eslint/no-unused-vars instead
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     'import/extensions': [
