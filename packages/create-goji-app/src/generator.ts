@@ -18,8 +18,8 @@ export const generateProject = async (projectName, sourcePath: string, destPath:
   for await (const sourceFileBuf of globby.stream(path.join(sourcePath, '**'))) {
     const sourceFile = sourceFileBuf.toString();
     const relativePath = path.relative(sourcePath, sourceFile);
-    const deskFile = path.join(destPath, relativePath);
-    await renderTemplate(sourceFile, deskFile, {
+    const destFile = path.join(destPath, relativePath);
+    await renderTemplate(sourceFile, destFile, {
       projectName,
     });
   }
