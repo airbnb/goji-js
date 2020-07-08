@@ -8,7 +8,7 @@ sidebar_label: FAQ
 
 抱歉，它尚未实现。
 
-> **[[Proposal]](https://app.asana.com/0/1147595010451657/1147595010451671)**  给 `渲染` 添加参数 `disableSharing: true`，这样Goji就不会在初始化页面的方法注入 `onShareAppMessage` 。 但这也意味着您不应该使用  `使用OnShareAppMessage`， 否则将会告警。
+> **[Proposal]**  给 ` render ` 添加参数 `disableSharing: true`，这样Goji就不会在初始化页面的方法注入 `onShareAppMessage` 。 但这也意味着您不应该使用  `使用OnShareAppMessage`， 否则代码将会告警。
 
 ## 如何使用微信中的事件冒泡、组件间关系或百度中的 `dispatch`？
 

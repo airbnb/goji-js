@@ -43,21 +43,7 @@ class Footer extends React.Component {
           </div>
           <div>
             <h5>Community</h5>
-            {/* <a href={this.pageUrl('users.html', this.props.language)}>User Showcase</a> */}
-            <a
-              href="https://app.slack.com/client/T02511RD4/CPTRC28D7"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Slack #goji-debug-team
-            </a>
-            <a
-              href="https://app.asana.com/0/1147595010451657/board"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Feature request voting
-            </a>
+            <a href="https://github.com/airbnb/goji-js/issues">GitHub Issues</a>
             {/* <a href="https://discordapp.com/">Project Chat</a> */}
             {/* <a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">
               Twitter
