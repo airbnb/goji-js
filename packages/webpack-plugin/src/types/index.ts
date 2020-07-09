@@ -8,8 +8,6 @@ export interface GojiWebpackPluginOptions {
   // we should remove it after GojiJS fully migrated
   // eslint-disable-next-line camelcase
   unsafe_integrationMode?: boolean;
-  // eslint-disable-next-line camelcase
-  unstable_componentWhitelist?: Array<string>;
 }
 
 export interface AppSubpackage {

@@ -13,6 +13,7 @@ import {
 import { GojiShimPlugin } from './plugins/shim';
 import { getPoll } from './utils/polling';
 import { GojiProjectConfigPlugin } from './plugins/projectConfig';
+import { GojiCollectUsedComponentsWebpackPlugin } from './plugins/collectUsedComponents';
 
 export class GojiWebpackPlugin implements webpack.Plugin {
   private options: GojiWebpackPluginOptions;
@@ -29,9 +30,9 @@ export class GojiWebpackPlugin implements webpack.Plugin {
     new webpack.DefinePlugin({
       'process.env.TARGET': JSON.stringify(options.target),
       'process.env.GOJI_TARGET': JSON.stringify(options.target),
-      'process.env.GOJI_COMPONENT_WHITELIST': JSON.stringify(options.unstable_componentWhitelist),
       'process.env.GOJI_MAX_DEPTH': JSON.stringify(options.maxDepth),
     }).apply(compiler);
+    new GojiCollectUsedComponentsWebpackPlugin(options).apply(compiler);
     new GojiBridgeWebpackPlugin(options).apply(compiler);
     new GojiEntryWebpackPlugin(options).apply(compiler);
     new GojiSplitChunksWebpackPlugin(options).apply(compiler);

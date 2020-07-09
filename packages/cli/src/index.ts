@@ -11,8 +11,6 @@ interface GojiConfig {
   configureBabel?: (config: any) => any;
   progress?: boolean;
   // eslint-disable-next-line camelcase
-  unstable_componentWhitelist?: Array<string>;
-  // eslint-disable-next-line camelcase
   unsafe_integrationMode?: boolean;
 }
 
@@ -54,7 +52,6 @@ const main = async () => {
     nodeEnv: cliConfig.production ? 'production' : 'development',
     babelConfig,
     unsafe_integrationMode: gojiConfig.unsafe_integrationMode ?? false,
-    unstable_componentWhitelist: gojiConfig.unstable_componentWhitelist,
   });
 
   // apply goji.config.js configureWebpack

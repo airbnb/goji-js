@@ -506,26 +506,12 @@ interface BuildInComponentsProps {
 
 type BuildInComponents = keyof BuildInComponentsProps;
 
-const warnedWhitelistSet = process.env.NODE_ENV !== 'production' ? new Set<string>() : undefined;
-
 const factoryComponent = <T extends BuildInComponents, P extends BuildInComponentsProps[T]>(
   component: T,
 ) => {
   const displayName = pascalCase(component);
   // FIXME: Not all components have `children`. We should fix the type later.
   const comp = (props: P, ref: React.Ref<PublicInstance>) => {
-    // warning if whitelist doesn't contain this component in dev mode
-    if (process.env.NODE_ENV !== 'production' && process.env.GOJI_COMPONENT_WHITELIST) {
-      if (
-        !process.env.GOJI_COMPONENT_WHITELIST.includes(component) &&
-        !warnedWhitelistSet!.has(component)
-      ) {
-        warnedWhitelistSet!.add(component);
-        console.warn(
-          `Component <${displayName}> was not included in component whitelist.\nPlease add \`${component}\` to \`unstable_componentWhitelist\` in GojiWebpackPlugin options.`,
-        );
-      }
-    }
     return createElement(component, { ...props, ref });
   };
 

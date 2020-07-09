@@ -43,7 +43,6 @@ export const getWebpackConfig = ({
   nodeEnv,
   babelConfig,
   unsafe_integrationMode: integrationMode = false,
-  unstable_componentWhitelist: componentWhitelist,
 }: {
   basedir: string;
   outputPath?: string;
@@ -52,8 +51,6 @@ export const getWebpackConfig = ({
   babelConfig: any;
   // eslint-disable-next-line camelcase
   unsafe_integrationMode?: boolean;
-  // eslint-disable-next-line camelcase
-  unstable_componentWhitelist?: Array<string>;
 }): webpack.Configuration => {
   const cacheLoaders = getCacheLoader(
     nodeEnv === 'production',
@@ -193,7 +190,6 @@ export const getWebpackConfig = ({
         maxDepth: 5,
         minimize: nodeEnv !== 'development',
         unsafe_integrationMode: integrationMode,
-        unstable_componentWhitelist: componentWhitelist,
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(nodeEnv),
