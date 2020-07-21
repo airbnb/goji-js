@@ -1,13 +1,11 @@
 {
   "component": true,
   "usingComponents": {
-    <% if (useWrappedComponent) { %>
-      <% for (const component of components) {%>
-        <% if (component.isWrapped) {%>
-          "goji-<%= component.name %>": "<%= relativePathToBridge %>/components/<%= component.name %>",
-        <% } %>
-      <% }%>
-    <% } %>
+    <% for (const component of components) {%>
+      <% if (component.isWrapped) {%>
+        "goji-<%= component.name %>": "<%= relativePathToBridge %>/components/<%= component.name %>",
+      <% } %>
+    <% }%>
 
     "goji-subtree": "<%= relativePathToBridge %>/subtree"
   }

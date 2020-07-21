@@ -51,6 +51,8 @@ describe('ElementInstance', () => {
   });
 
   describe('getSubtreeId', () => {
+    // @ts-ignore
+    process.env.GOJI_WRAPPED_COMPONENTS = [];
     const view = () =>
       new ElementInstance('view', {}, [], new Container(new TestingAdaptorInstance()));
     const subtree = () =>
