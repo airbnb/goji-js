@@ -8,7 +8,7 @@ import { shallowEqual } from '../utils/shallowEqual';
 import { subtreeMaxDepth } from '../components/subtree';
 import { batchedUpdates } from '.';
 
-// prop types from BUILD_IN_COMPONENTS
+// prop types from ComponentDesc
 export type PuredValue = undefined | null | boolean | number | string | object | Array<any>;
 export type Updates = Record<string, PuredValue | ElementNode | TextNode>;
 export type InstanceProps = Record<string, any>;
@@ -87,8 +87,10 @@ export class ElementInstance extends BaseInstance {
 
   public getSubtreeId(): number | undefined {
     // wrapped component should return its wrapper as subtree id
-    // FIXME: how to find a better way to share config between @goji/core and @goji/webpack-plugin ?
-    if (['input', 'textarea', 'map', 'scroll-view', 'swiper', 'swiper-item'].includes(this.type)) {
+    // `process.env.GOJI_WRAPPED_COMPONENTS` is generated from `@goji/webpack-plugin` to tell which
+    // components are wrapped as custom components
+    const wrappedComponentsFromWebpack: Array<string> = process.env.GOJI_WRAPPED_COMPONENTS as any;
+    if (wrappedComponentsFromWebpack.includes(this.type)) {
       return this.id;
     }
     const ancestors: Array<ElementInstance> = [];
@@ -104,11 +106,7 @@ export class ElementInstance extends BaseInstance {
         return undefined;
       }
       // wrapped component creates a new subtree
-      // FIXME: how to find a better way to share config between @goji/core and @goji/webpack-plugin ?
-      if (
-        cursor.type === TYPE_SUBTREE ||
-        ['scroll-view', 'swiper', 'swiper-item'].includes(cursor.type)
-      ) {
+      if (cursor.type === TYPE_SUBTREE || wrappedComponentsFromWebpack.includes(cursor.type)) {
         topGojiId = cursor.id;
         break;
       }

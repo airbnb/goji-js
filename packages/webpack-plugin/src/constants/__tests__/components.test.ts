@@ -1,13 +1,15 @@
-import { BUILD_IN_COMPONENTS } from '../components';
+import { getBuiltInComponents } from '../components';
+
+const builtInComponents = getBuiltInComponents('wechat');
 
 describe('components', () => {
-  describe('BUILD_IN_COMPONENTS', () => {
+  describe('getBuiltInComponents', () => {
     it('is an array', () => {
-      expect(BUILD_IN_COMPONENTS).toBeInstanceOf(Array);
+      expect(builtInComponents).toBeInstanceOf(Array);
     });
     it('has a definite list of built-in tags', () => {
       expect(
-        BUILD_IN_COMPONENTS.map(({ name }) => name).sort((a, b) => a.localeCompare(b)),
+        builtInComponents.map(({ name }) => name).sort((a, b) => a.localeCompare(b)),
       ).toStrictEqual([
         'ad',
         'audio',
