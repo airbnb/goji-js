@@ -1,5 +1,9 @@
 # GojiJS
 
+![Goji Core](https://img.shields.io/npm/v/@goji/core)
+![Goji CLI](https://img.shields.io/npm/v/@goji/cli)
+![Create Goji App](https://img.shields.io/npm/v/create-goji-app)
+
 React ❤️ Mini Program
 
 ## Visions
@@ -17,7 +21,7 @@ hooks, portal can work well on GojiJS.
 
 For now, GojiJS supports these platforms:
 
-- Wechat
+- WeChat
 - Baidu
 - Alipay
 - QQ
