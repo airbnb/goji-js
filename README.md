@@ -1,8 +1,8 @@
 # GojiJS
 
-![Goji Core](https://img.shields.io/npm/v/@goji/core)
-![Goji CLI](https://img.shields.io/npm/v/@goji/cli)
-![Create Goji App](https://img.shields.io/npm/v/create-goji-app)
+![Goji Core](https://img.shields.io/npm/v/@goji/core?label=Goji%20Core)
+![Goji CLI](https://img.shields.io/npm/v/@goji/cli?label=Goji%20CLI)
+![Create Goji App](https://img.shields.io/npm/v/create-goji-app?label=Create%20Goji%20App)
 
 React ❤️ Mini Program
 
@@ -12,7 +12,7 @@ GojiJS enables running React code on multi Mini Program platforms.
 
 ## Features
 
-- Fully support React
+- Fully supports React
 
 You can use the latest version of React in GojiJS. Features including class / functional components,
 hooks, portal can work well on GojiJS.
