@@ -4,13 +4,14 @@ import {
   getWhitelistedComponents,
   getRenderedComponents,
 } from '../components';
-import { BUILD_IN_COMPONENTS } from '../../constants/components';
+import { getBuiltInComponents } from '../../constants/components';
 
 const COMPONENT_WHITELIST = ['view', 'button', 'text', 'invalid-component'];
+const builtInComponents = getBuiltInComponents('wechat');
 
 describe('getWhitelistedComponents', () => {
   test('getWhitelistedComponents works', () => {
-    const whitelistedComponents = getWhitelistedComponents(COMPONENT_WHITELIST);
+    const whitelistedComponents = getWhitelistedComponents('wechat', COMPONENT_WHITELIST);
     expect(whitelistedComponents).toHaveLength(3);
     expect(whitelistedComponents.map(_ => _.name).sort()).toEqual(['button', 'text', 'view']);
   });
@@ -31,7 +32,7 @@ describe('getSimplifiedComponents', () => {
   ];
 
   test('getSimplifiedComponents works', () => {
-    const simplifiedComponents = getSimplifiedComponents(BUILD_IN_COMPONENTS, simplifyComponents);
+    const simplifiedComponents = getSimplifiedComponents(builtInComponents, simplifyComponents);
     expect(simplifiedComponents).toHaveLength(2);
 
     expect(simplifiedComponents[0].name).toBe('view');

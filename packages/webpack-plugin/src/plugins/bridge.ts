@@ -32,7 +32,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       throw new Error('`usedComponents` not found, This might be an internal error in GojiJS.');
     }
     const usedComponents = usedComponentsMap.get(compilation);
-    return getWhitelistedComponents(usedComponents);
+    return getWhitelistedComponents(this.options.target, usedComponents);
   }
 
   private getRenderedComponents(compilation: webpack.compilation.Compilation) {
@@ -77,11 +77,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     return target === 'wechat' || target === 'qq';
   }
 
-  private useWrappedComponent() {
-    const { target } = this.options;
-    return target === 'wechat' || target === 'qq';
-  }
-
   // Baidu doesn't support `template` inside `text` so we need to flat text manually
   private useFlattenText() {
     const { target } = this.options;
@@ -119,7 +114,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           componentsDepth: depth + 1,
           components: components.filter(c => !c.isLeaf),
           inlineChildrenRender: this.shouldInlineChildrenRender(),
-          useWrappedComponent: this.useWrappedComponent(),
           useFlattenText: this.useFlattenText(),
           useFlattenSwiper: this.useFlattenSwiper(),
         },
@@ -135,7 +129,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       `leaf-components.wxml.ejs`,
       {
         components: components.filter(c => c.isLeaf),
-        useWrappedComponent: this.useWrappedComponent(),
       },
     );
   }
@@ -157,7 +150,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       {
         relativePathToBridge: '.',
         components: this.getWhitelistedComponents(compilation),
-        useWrappedComponent: this.useWrappedComponent(),
       },
     );
     await this.renderTemplateToAsset(
@@ -183,7 +175,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
         componentsDepth: 0,
         components: components.filter(c => !c.isLeaf),
         inlineChildrenRender,
-        useWrappedComponent: this.useWrappedComponent(),
         useFlattenText: this.useFlattenText(),
         useFlattenSwiper: this.useFlattenSwiper(),
       },
@@ -211,9 +202,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     compilation: webpack.compilation.Compilation,
     basedir: string,
   ) {
-    if (!this.useWrappedComponent()) {
-      return;
-    }
     const components = this.getWhitelistedComponents(compilation);
     for (const component of components) {
       if (component.isWrapped) {
@@ -230,7 +218,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           {
             relativePathToBridge: '.',
             components: this.getWhitelistedComponents(compilation),
-            useWrappedComponent: this.useWrappedComponent(),
           },
         );
         await this.renderTemplateToAsset(
@@ -301,7 +288,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
             useSubtree,
             relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
             components: this.getWhitelistedComponents(compilation),
-            useWrappedComponent: this.useWrappedComponent(),
           },
           (newSource, oldSource) =>
             JSON.stringify(deepmerge(JSON.parse(oldSource), JSON.parse(newSource)), null, 2),

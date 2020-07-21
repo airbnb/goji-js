@@ -2,14 +2,17 @@ import { unstable_SimplifyComponent as SimplifyComponent, GojiTarget } from '@go
 import camelCase from 'lodash/camelCase';
 import kebabCase from 'lodash/kebabCase';
 import pick from 'lodash/pick';
-import { BUILD_IN_COMPONENTS, ComponentDesc } from '../constants/components';
+import { getBuiltInComponents, ComponentDesc } from '../constants/components';
 
-export const getWhitelistedComponents = (componentWhitelist?: Array<string>): ComponentDesc[] => {
+export const getWhitelistedComponents = (
+  target: GojiTarget,
+  componentWhitelist?: Array<string>,
+): ComponentDesc[] => {
   if (!componentWhitelist) {
-    return BUILD_IN_COMPONENTS;
+    return getBuiltInComponents(target);
   }
 
-  return BUILD_IN_COMPONENTS.filter(comp => componentWhitelist.includes(comp.name));
+  return getBuiltInComponents(target).filter(comp => componentWhitelist.includes(comp.name));
 };
 
 export interface SimplifiedComponentDesc extends ComponentDesc {
@@ -67,7 +70,7 @@ export const getRenderedComponents = (
   simplifyComponents: Array<SimplifyComponent>,
   componentWhitelist?: Array<string>,
 ): Array<ComponentRenderData> => {
-  const components = getWhitelistedComponents(componentWhitelist);
+  const components = getWhitelistedComponents(target, componentWhitelist);
   const renderedComponents: Array<ComponentDesc | SimplifiedComponentDesc> = [
     ...getSimplifiedComponents(components, simplifyComponents),
     ...components,

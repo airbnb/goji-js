@@ -92,8 +92,8 @@
 
   <% for (var component of components) {%>
     <block wx:elif="{{<% if (component.sid === undefined) {%>type === '<%= component.name %>'<%} else {%>sid === <%= component.sid %><%}%>}}">
-      <<%= useWrappedComponent && component.isWrapped ? 'goji-' : ''%><%= component.name %>
-      <% if (useWrappedComponent && component.isWrapped) { %>
+      <<%= component.isWrapped ? 'goji-' : ''%><%= component.name %>
+      <% if (component.isWrapped) { %>
         nodes="{{c}}"
         goji-id="{{id || -1}}"
         class-name="{{props.className}}"
@@ -114,7 +114,7 @@
             <%= attribute.name %>="{{props.<%= attribute.value %>}}"
           <% } %>
         <% } %>
-        <% if (useWrappedComponent && component.isWrapped) { %>
+        <% if (component.isWrapped) { %>
           <%# wrapped components will handle event inside themselves %>
         <% } else { %>
           <% for (var event of component.events) {%>
@@ -122,7 +122,7 @@
           <% } %>
         <% } %>
       >
-        <% if (useWrappedComponent && component.isWrapped) { %>
+        <% if (component.isWrapped) { %>
           <%# children will be rendered by `nodes` in the same way the `subtree` does %>
         <% } else { %>
           <% if (inlineChildrenRender) {%>
@@ -133,7 +133,7 @@
             <include src="./children<%= depth %>.wxml" />
           <% } %>
         <% } %>
-      </<%= useWrappedComponent && component.isWrapped ? 'goji-' : ''%><%= component.name %>>
+      </<%= component.isWrapped ? 'goji-' : ''%><%= component.name %>>
     </block>
   <% } %>
   <block wx:else>
