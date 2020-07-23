@@ -14,9 +14,59 @@ export interface WebpackEntrypoint {
 let realRuntimeChunkName: (entrypoint: WebpackEntrypoint) => string;
 
 /**
- * this plugin generate `compiler.options.optimization.splitChunks.cacheGroups` from `appConfig`
- * because we cannot access `appConfig` when `webpack.config.js` is initializing we have to use the
- * `cacheGroupsPlaceholder` and then patch the `cacheGroups` in this plugin
+ * Before understanding this plugin, we need to introduce the output folder structure of a simple
+ * GojiJS project.
+ * ├── commons.js
+ * ├── commons.wxss
+ * ├── app.js                 # global JavaScript like `App({})` and `core-js`
+ * ├── app.wxss               # global styles, like `:global { page: { background-color: #fff; } }`
+ * ├── pages                  # the main package contains two pages
+ * │   ├── index.js           # the home page tab
+ * │   ├── index.wxss
+ * │   ├── me.js              # the me tab, because all tab bar pages should be put inside the main package
+ * │   ├── me.wxss
+ * ├── package-a              # this is a sub-package that contains two pages
+ * │   ├── commons.js
+ * │   ├── commons.wxss
+ * │   ├── page-a.js
+ * │   ├── page-a.wxss
+ * │   ├── page-b.js
+ * │   ├── page-b.wxss
+ * ├── package-b              # this is a sub-package that contains two pages
+ * │   ├── commons.js
+ * │   ├── commons.wxss
+ * │   ├── page-a.js
+ * │   ├── page-a.wxss
+ * │   ├── page-b.js
+ * │   ├── page-b.wxss
+ * ├── independent-package-c  # this is a independent sub-package that contains two pages
+ * │   ├── commons.js
+ * │   ├── commons.wxss
+ * │   ├── page-a.js
+ * │   ├── page-a.wxss
+ * │   ├── page-b.js
+ * │   ├── page-b.wxss
+ *
+ * As you can see Goji CLI ( WebPack ) generated several common chunk files, which share code between
+ * different pages, output as `commons.*` files. The purpose of these files is:
+ * `commons.*` contains:
+ *   1. Shared code between pages from main packages, like `pages/index` and `pages/me`
+ *   2. Shared code between different packages including the main package, like `pages/index`
+ *      and `package-a/page-a.js`, `package-a/page-a.js` and `package-b/page-a.js`
+ * `package-a/commons.*` contains:
+ *   1. Shared code between pages inside `package-a`
+ * `independent-package-c/commons.*` contains:
+ *   1. Shared code between pages inside `independent-package-c`
+ *   2. If any module was required both inside and outside this package, it would be forked
+ *      into this chunk to ensure that no external dependency break its independence.
+ *      To prevent forking code from runtime issue the `GojiSingletonRuntimeWebpackPlugin`
+ *      hijack the `runtime.js` file, for more details please see `./singleton.ts`
+ *
+ * This plugin generate `compiler.options.optimization.splitChunks.cacheGroups` from `appConfig` to
+ * tell WebPack create correct common chunks.
+ *
+ * Because we cannot access `appConfig` while `webpack.config.js` is initializing, we have to use the
+ * `cacheGroupsPlaceholder` and then patch the `cacheGroups` in this plugin.
  */
 export class GojiSplitChunksWebpackPlugin extends GojiBasedWebpackPlugin {
   private overrideCacheGroups(compiler: webpack.Compiler) {
