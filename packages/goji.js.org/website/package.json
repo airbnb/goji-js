@@ -1,7 +1,7 @@
 {
   "name": "goji.js.org",
   "private": true,
-  "version": "0.8.1",
+  "version": "0.8.2",
   "scripts": {
     "examples": "docusaurus-examples",
     "start": "docusaurus-start",
