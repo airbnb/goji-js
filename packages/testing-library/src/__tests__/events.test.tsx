@@ -46,7 +46,7 @@ describe('fireEvent', () => {
     const App = () => {
       const [value, setValue] = useState('hello');
 
-      return <Input value={value} onInput={e => setValue(e.details.value)} testID="input" />;
+      return <Input value={value} onInput={e => setValue(e.detail.value)} testID="input" />;
     };
     const wrapper = render(<App />);
     expect(wrapper.getByTestId('input').props.value).toBe('hello');

@@ -9,13 +9,13 @@ const fireEventOnInstance = ({
   node,
   type,
   eventName,
-  details = {},
+  detail = {},
   bubble = false,
 }: {
   node: ReactTestInstance;
   type: string;
   eventName: string;
-  details?: Record<string, any>;
+  detail?: Record<string, any>;
   bubble?: boolean;
 }) => {
   act(() => {
@@ -23,7 +23,7 @@ const fireEventOnInstance = ({
     const stopPropagation = () => {
       stoppedPropagation = true;
     };
-    const eventPayload = { type, details, target: buildTargetInfo(node), stopPropagation };
+    const eventPayload = { type, detail, target: buildTargetInfo(node), stopPropagation };
     const eventHandler = node.props[eventName];
     if (typeof eventHandler === 'function') {
       eventHandler({ ...eventPayload, currentTarget: buildTargetInfo(node) });
@@ -50,7 +50,7 @@ class FireEvent {
       node,
       type: 'tap',
       eventName: 'onTap',
-      details: { x: 0, y: 0 },
+      detail: { x: 0, y: 0 },
       bubble: true,
     });
   }
@@ -60,8 +60,18 @@ class FireEvent {
       node,
       type: 'input',
       eventName: 'onInput',
-      details: { cursor: 0, keyCode: 0, value },
-      bubble: true,
+      detail: { cursor: 0, keyCode: 0, value },
+      bubble: false,
+    });
+  }
+
+  public static confirm(node: ReactTestInstance) {
+    fireEventOnInstance({
+      node,
+      type: 'confirm',
+      eventName: 'onConfirm',
+      detail: { value: node.props.value },
+      bubble: false,
     });
   }
 }

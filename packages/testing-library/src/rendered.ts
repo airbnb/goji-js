@@ -4,6 +4,7 @@ import { byTextQueries } from './queries/text';
 import { byTestIdQueries } from './queries/testId';
 import { byPropQueries } from './queries/prop';
 import { prettyPrint } from './utils/prettyPrint';
+import { byAnyQueries } from './queries/any';
 
 type Apply<T, Fn extends Function> = Fn extends (t: T, ...args: infer A) => infer R
   ? (...args: A) => R
@@ -32,10 +33,16 @@ function applyAll<T, Obj extends { [key: string]: (t: T, ...args: any) => any }>
 
 export const buildRenderResult = (container: ReactTestInstance) => {
   // this render result APIs are inspired from @testing-library/react-native
-  return {
-    debug: (node: ReactTestInstance) => console.log(prettyPrint(node)),
+  const wrapper = {
+    debug: (node?: ReactTestInstance) => console.log(prettyPrint(node ?? wrapper.baseElement)),
+    get baseElement() {
+      const allElements = byAnyQueries.queryAllByAny(container);
+      return allElements[0] ?? null;
+    },
     ...applyAll(byTextQueries, container),
     ...applyAll(byTestIdQueries, container),
     ...applyAll(byPropQueries, container),
   };
+
+  return wrapper;
 };

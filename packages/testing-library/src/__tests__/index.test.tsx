@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Button, Text, Input } from '@goji/core';
-import { fireEvent, render, wait } from '..';
+import { fireEvent, render, waitFor } from '..';
 
 function Example() {
   const [name, setUser] = React.useState('');
@@ -8,7 +8,7 @@ function Example() {
 
   return (
     <View>
-      <Input value={name} onInput={e => setUser(e.details.value)} testID="input" />
+      <Input value={name} onInput={e => setUser(e.detail.value)} testID="input" />
       <Button
         onTap={() => {
           // let's pretend this is making a server request, so it's async
@@ -38,7 +38,7 @@ test('examples of some things', async () => {
   expect(button).toBeTruthy();
   fireEvent.tap(button);
 
-  await wait(() => expect(queryByTestId('printed-username')).toBeTruthy());
+  await waitFor(() => expect(queryByTestId('printed-username')).toBeTruthy());
   expect(await findByTestId('printed-username')).toBeTruthy();
 
   expect(getByTestId('printed-username').props.children).toBe(famousWomanInHistory);

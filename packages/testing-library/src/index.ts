@@ -14,4 +14,4 @@ export const render = (element: ReactElement) => {
 
 export { act };
 export { fireEvent } from './events';
-export { wait } from './wait';
+export { waitFor, waitForElement } from './wait';
