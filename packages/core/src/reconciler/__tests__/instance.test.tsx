@@ -51,8 +51,10 @@ describe('ElementInstance', () => {
   });
 
   describe('getSubtreeId', () => {
-    // @ts-ignore
-    process.env.GOJI_WRAPPED_COMPONENTS = [];
+    beforeAll(() => {
+      // @ts-ignore
+      process.env.GOJI_WRAPPED_COMPONENTS = [];
+    });
     const view = () =>
       new ElementInstance('view', {}, [], new Container(new TestingAdaptorInstance()));
     const subtree = () =>
@@ -70,46 +72,76 @@ describe('ElementInstance', () => {
       }
     };
 
-    test('container works', () => {
-      let leaf: ElementInstance;
-      const elements = [view(), view(), (leaf = view())];
-      linkElements(elements);
-      expect(leaf.getSubtreeId()).toBe(undefined);
+    describe('wechat', () => {
+      beforeAll(() => {
+        process.env.GOJI_TARGET = 'wechat';
+      });
+
+      test('container works', () => {
+        let leaf: ElementInstance;
+        const elements = [view(), view(), (leaf = view())];
+        linkElements(elements);
+        expect(leaf.getSubtreeId()).toBe(undefined);
+      });
+
+      test('auto subtree works', () => {
+        let leaf: ElementInstance;
+        let sub: ElementInstance;
+        const elements = [view(), view(), view(), view(), (sub = view()), view(), (leaf = view())];
+        linkElements(elements);
+        expect(leaf.getSubtreeId()).toBe(sub.id);
+      });
+
+      test('manual subtree works', () => {
+        let leaf: ElementInstance;
+        let sub: ElementInstance;
+        const elements = [view(), view(), (sub = subtree()), view(), (leaf = view())];
+        linkElements(elements);
+        expect(leaf.getSubtreeId()).toBe(sub.id);
+      });
+
+      test('auto subtree inside manual subtree works', () => {
+        let leaf: ElementInstance;
+        let sub: ElementInstance;
+        const elements = [
+          view(),
+          view(),
+          subtree(),
+          view(),
+          view(),
+          view(),
+          view(),
+          (sub = view()),
+          view(),
+          (leaf = view()),
+        ];
+        linkElements(elements);
+        expect(leaf.getSubtreeId()).toBe(sub.id);
+      });
     });
 
-    test('auto subtree works', () => {
-      let leaf: ElementInstance;
-      let sub: ElementInstance;
-      const elements = [view(), view(), view(), view(), (sub = view()), view(), (leaf = view())];
-      linkElements(elements);
-      expect(leaf.getSubtreeId()).toBe(sub.id);
-    });
+    describe('non-wechat', () => {
+      beforeAll(() => {
+        process.env.GOJI_TARGET = 'baidu';
+      });
 
-    test('manual subtree works', () => {
-      let leaf: ElementInstance;
-      let sub: ElementInstance;
-      const elements = [view(), view(), (sub = subtree()), view(), (leaf = view())];
-      linkElements(elements);
-      expect(leaf.getSubtreeId()).toBe(sub.id);
-    });
-
-    test('auto subtree inside manual subtree works', () => {
-      let leaf: ElementInstance;
-      let sub: ElementInstance;
-      const elements = [
-        view(),
-        view(),
-        subtree(),
-        view(),
-        view(),
-        view(),
-        view(),
-        (sub = view()),
-        view(),
-        (leaf = view()),
-      ];
-      linkElements(elements);
-      expect(leaf.getSubtreeId()).toBe(sub.id);
+      test('subtree id should be always undefined', () => {
+        let leaf: ElementInstance;
+        const elements = [
+          view(),
+          view(),
+          subtree(),
+          view(),
+          view(),
+          view(),
+          view(),
+          view(),
+          view(),
+          (leaf = view()),
+        ];
+        linkElements(elements);
+        expect(leaf.getSubtreeId()).toBe(undefined);
+      });
     });
   });
 
