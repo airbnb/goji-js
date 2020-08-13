@@ -1,6 +1,6 @@
 {
   "name": "demo-todomvc",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "GojiJS TodoMVC Example",
   "main": "index.js",
   "repository": "git+https://github.com/airbnb/goji.git",
@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@goji/cli": "^0.7.6",
-    "@goji/testing-library": "^0.8.2",
+    "@goji/testing-library": "^0.8.3",
     "@types/classnames": "^2.2.10",
     "@types/css-modules": "^1.0.0",
     "@types/react": "^16.9.35",
