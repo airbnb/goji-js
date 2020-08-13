@@ -44,6 +44,10 @@
       "setup": {
         "title": "Setup",
         "sidebar_label": "Setup"
+      },
+      "testing": {
+        "title": "Testing Library",
+        "sidebar_label": "Testing"
       }
     },
     "links": {

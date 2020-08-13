@@ -1,0 +1,41 @@
+.todoItem {
+  font-size: 24rpx;
+  border-bottom: 1rpx solid #ededed;
+  height: 100rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20rpx;
+}
+
+.todoLabel {
+  word-break: break-all;
+  padding: 15rpx;
+  line-height: 1.2;
+  transition: color 0.4s;
+  display: inline-flex;
+  flex: 1;
+}
+
+.todoLabel.completedLabel {
+  color: #d9d9d9;
+  text-decoration: line-through;
+}
+
+.toggle {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.todoItem .destroy {
+  display: none;
+  flex: 0;
+  color: #cc9a9a;
+  margin: 20rpx;
+  font-size: 60rpx;
+  transition: color 0.2s ease-out;
+}
+
+.todoItem.completed .destroy {
+  display: inline-flex;
+}

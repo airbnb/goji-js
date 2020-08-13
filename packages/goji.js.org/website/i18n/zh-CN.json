@@ -44,6 +44,10 @@
       "setup": {
         "title": "安装",
         "sidebar_label": "安装"
+      },
+      "testing": {
+        "title": "测试库",
+        "sidebar_label": "测试"
       }
     },
     "links": {

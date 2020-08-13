@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ReactTestInstance } from 'react-test-renderer';
 import { Button, View } from '@goji/core';
 import { render, fireEvent, act } from '..';
-import { wait, waitForElement } from '../wait';
+import { waitFor, waitForElement } from '../wait';
 
 describe('test', () => {
   const App = () => {
@@ -31,7 +31,7 @@ describe('test', () => {
   test('test', async () => {
     const wrapper = render(<App />);
     fireEvent.tap(wrapper.getByText('click me'));
-    await wait(() => expect(wrapper.getByText('show')));
+    await waitFor(() => expect(wrapper.getByText('show')).toBeTruthy());
   });
 
   test('waitForElement', async () => {

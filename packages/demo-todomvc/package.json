@@ -1,0 +1,36 @@
+{
+  "name": "demo-todomvc",
+  "version": "0.8.2",
+  "description": "GojiJS TodoMVC Example",
+  "main": "index.js",
+  "repository": "git+https://github.com/airbnb/goji.git",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "jest": "jest --passWithNoTests",
+    "typecheck": "tsc",
+    "test": "npm run jest && npm run typecheck",
+    "start": "goji start",
+    "build": "goji build",
+    "lint": "eslint --ext .js,.ts,.jsx,.tsx ."
+  },
+  "dependencies": {
+    "@goji/core": "^0.7.6",
+    "classnames": "^2.2.6",
+    "core-js": "^3.6.5",
+    "react": "^16.13.1",
+    "react-redux": "^7.2.1",
+    "redux": "^4.0.5"
+  },
+  "devDependencies": {
+    "@goji/cli": "^0.7.6",
+    "@goji/testing-library": "^0.8.2",
+    "@types/classnames": "^2.2.10",
+    "@types/css-modules": "^1.0.0",
+    "@types/react": "^16.9.35",
+    "babel-jest": "^26.2.2",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.2.2",
+    "typescript": "^3.9.2"
+  }
+}
