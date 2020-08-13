@@ -86,6 +86,11 @@ export class ElementInstance extends BaseInstance {
   public subtreeDepth?: number;
 
   public getSubtreeId(): number | undefined {
+    // FIXME: For now, only WeChat has subtree while other platforms render all elements in one page
+    // We should consider enabling non-WeChat subtree/wrapped components support
+    if (process.env.GOJI_TARGET !== 'wechat') {
+      return undefined;
+    }
     // wrapped component should return its wrapper as subtree id
     // `process.env.GOJI_WRAPPED_COMPONENTS` is generated from `@goji/webpack-plugin` to tell which
     // components are wrapped as custom components
