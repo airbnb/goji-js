@@ -14,7 +14,9 @@ import {
 const loadAsset = async (context: webpack.loader.LoaderContext, assetPath: string) => {
   const source = await promisify(context.loadModule.bind(context))(
     // FIXME: should reuse `file-loader` rule from `webpack.config.js` ?
-    `!file-loader?esModule=false&name=assets/[name].[hash:6].[ext]&publicPath=/!${assetPath}`,
+    `!${require.resolve(
+      'file-loader',
+    )}?esModule=false&name=assets/[name].[hash:6].[ext]&publicPath=/!${assetPath}`,
   );
   return exec(source, assetPath, context.context);
 };
