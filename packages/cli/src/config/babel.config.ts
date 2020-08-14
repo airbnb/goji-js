@@ -22,20 +22,20 @@ const BABEL_MODULES = {
 module.exports = {
   presets: [
     [
-      '@babel/preset-env',
+      require.resolve('@babel/preset-env'),
       {
         modules: BABEL_MODULES[nodeEnv],
         targets: BABEL_PRESET_TARGETS[nodeEnv],
       },
     ],
-    '@babel/preset-typescript',
-    '@babel/preset-react',
+    require.resolve('@babel/preset-typescript'),
+    require.resolve('@babel/preset-react'),
   ],
   plugins: [
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-    ['@babel/plugin-transform-runtime', { useESModules: true }],
-    ['@babel/plugin-proposal-optional-chaining', { loose: true }],
-    ['@babel/plugin-proposal-nullish-coalescing-operator', { loose: true }],
+    [require.resolve('@babel/plugin-proposal-class-properties'), { loose: true }],
+    [require.resolve('@babel/plugin-transform-runtime'), { useESModules: true }],
+    [require.resolve('@babel/plugin-proposal-optional-chaining'), { loose: true }],
+    [require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'), { loose: true }],
   ],
   // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
   // https://babeljs.io/docs/en/options#sourcetype

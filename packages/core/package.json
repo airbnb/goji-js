@@ -83,7 +83,8 @@
   "dependencies": {
     "lodash": "^4.17.15",
     "react-is": "^16.13.1",
-    "react-reconciler": "^0.25.1"
+    "react-reconciler": "^0.25.1",
+    "tslib": "^2.0.0"
   },
   "peerDependencies": {
     "react": ">=16.9.0"

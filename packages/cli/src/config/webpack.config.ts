@@ -112,7 +112,7 @@ export const getWebpackConfig = ({
             ...cacheLoaders,
             ...threadLoaders,
             {
-              loader: 'babel-loader',
+              loader: require.resolve('babel-loader'),
               options: babelConfig,
             },
             preprocessLoader('js', nodeEnv, target),
@@ -124,7 +124,7 @@ export const getWebpackConfig = ({
             MiniCssExtractPlugin.loader,
             ...cacheLoaders,
             {
-              loader: resolve.sync('css-loader', { basedir: __dirname }),
+              loader: require.resolve('css-loader'),
               options: {
                 modules: {
                   mode: 'local',
@@ -137,16 +137,14 @@ export const getWebpackConfig = ({
               },
             },
             {
-              loader: resolve.sync('@goji/webpack-plugin/dist/cjs/loaders/transform', {
-                basedir: __dirname,
-              }),
+              loader: require.resolve('@goji/webpack-plugin/dist/cjs/loaders/transform'),
               options: {
                 target,
                 type: 'wxss',
               },
             },
             {
-              loader: resolve.sync('postcss-loader', { basedir: __dirname }),
+              loader: require.resolve('postcss-loader'),
               options: {
                 config: {
                   path: __dirname,
@@ -158,7 +156,7 @@ export const getWebpackConfig = ({
             },
             preprocessLoader('js', nodeEnv, target),
             {
-              loader: resolve.sync('postcss-loader', { basedir: __dirname }),
+              loader: require.resolve('postcss-loader'),
               options: {
                 // eslint-disable-next-line global-require
                 plugins: [require('postcss-import')({})],
@@ -170,7 +168,7 @@ export const getWebpackConfig = ({
           test: /\.(png|jpg|jpeg|gif)$/,
           use: [
             {
-              loader: resolve.sync('file-loader', { basedir: __dirname }),
+              loader: require.resolve('file-loader'),
               options: {
                 name: 'assets/[name].[hash:6].[ext]',
               },

@@ -61,6 +61,7 @@
     "replace-ext": "^2.0.0",
     "resolve": "^1.17.0",
     "terser": "^4.7.0",
+    "tslib": "^2.0.0",
     "unified": "^9.0.0",
     "webpack-sources": "^1.4.3",
     "wx2swan": "^1.2.20"
