@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>测试库 · GojiJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## 目的"/><meta name="docsearch:language" content="zh-CN"/><meta property="og:title" content="测试库 · GojiJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://goji.js.org/"/><meta property="og:description" content="## 目的"/><meta property="og:image" content="https://goji.js.org/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://goji.js.org/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/undefined"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-CN"><h2 class="headerTitle">GojiJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/zh-CN/introduction" target="_self">文档</a></li><li class=""><a href="https://github.com/airbnb/goji-js" target="_self">GitHub</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>简体中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/testing">English</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>教程</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">入门</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/introduction">介绍</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/setup">安装</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/preparation">准备工作</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">教程</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/app">入口</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/page">页面</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/hooks">钩子</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/lifecycle">生命周期</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/css">样式</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/cross-platform">跨平台</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/zh-CN/testing">测试</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">常见问题</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/faq">常见问题</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/airbnb/goji-js/tree/master/packages/goji.js.org/docs/testing.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">测试库</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="目的"></a><a href="#目的" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>目的</h2>
+<p>你想要编写可维护的单元测试，以增强您对组件正常工作的信心。 有许多为React和类React框架设计的开源测试库。 其中最受欢迎的是 <a href="https://testing-library.com/">testing library</a> ，它 提供友好和通用的 API 来写入可拓展的测试用例。</p>
+<p>我们为 <a href="https://testing-library.com/">testing library</a> 提供了绑定，叫做 <a href="https://www.npmjs.com/package/@goji/testing-library">@goji/testing-library</a>，它可以与Jest等测试运行器一起使用。</p>
+<h2><a class="anchor" aria-hidden="true" id="安装"></a><a href="#安装" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>安装</h2>
+<p>对于 npm 用户，</p>
+<pre><code class="hljs css language-bash">npm install @goji/testing-library --save-dev
+</code></pre>
+<p>对于 yarn 用户，</p>
+<pre><code class="hljs css language-bash">yarn add @goji/testing-library --dev
+</code></pre>
+<p>阅读 <a href="https://jestjs.io/">Jest 文档</a> 来编写一个 Jest配置文件。 你可以复制<a href="https://github.com/airbnb/goji-js/tree/master/packages/demo-todomvc">这里</a> 的三个文件 <code>jest.config.js</code>, <code>jestFileMocks</code> 和 <code>jestBabelTransform.js</code> 到你的项目。</p>
+<h2><a class="anchor" aria-hidden="true" id="示例"></a><a href="#示例" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>示例</h2>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">import</span> React, { useState } <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> { render, fireEvent } <span class="hljs-keyword">from</span> <span class="hljs-string">'@goji/testing-library'</span>;
+<span class="hljs-keyword">import</span> { <span class="hljs-keyword">Input</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@goji/core'</span>;
+
+const ExampleInput = ({ onSave }: { onSave: (<span class="hljs-keyword">value</span>: string) =&gt; <span class="hljs-type">void</span> }) =&gt; {
+  const [<span class="hljs-keyword">value</span>, setValue] = useState(<span class="hljs-string">''</span>);
+
+  <span class="hljs-keyword">return</span> (
+    &lt;<span class="hljs-keyword">Input</span>
+      testID="example-input"
+      <span class="hljs-keyword">value</span>={<span class="hljs-keyword">value</span>}
+      onInput={e =&gt; setValue(e.detail.<span class="hljs-keyword">value</span>)}
+      onConfirm={() =&gt; {
+        onSave(<span class="hljs-keyword">value</span>);
+        setValue(<span class="hljs-string">''</span>);
+      }}
+    /&gt;
+  );
+};
+
+describe(<span class="hljs-string">'example input'</span>, () =&gt; {
+  it(<span class="hljs-string">'works'</span>, () =&gt; {
+    const onSave = jest.fn();
+    const <span class="hljs-keyword">wrapper</span> = render(&lt;ExampleInput onSave={onSave} /&gt;);
+    const input = <span class="hljs-keyword">wrapper</span>.getByTestId(<span class="hljs-string">'example-input'</span>);
+    expect(<span class="hljs-keyword">input</span>).toBeTruthy();
+
+    // <span class="hljs-keyword">input</span>
+    fireEvent.<span class="hljs-keyword">input</span>(<span class="hljs-keyword">input</span>, <span class="hljs-string">'hi'</span>);
+    expect(<span class="hljs-keyword">input</span>.props.<span class="hljs-keyword">value</span>).toBe(<span class="hljs-string">'hi'</span>);
+
+    // confirm <span class="hljs-keyword">and</span> <span class="hljs-keyword">then</span> cleanup
+    fireEvent.confirm(<span class="hljs-keyword">input</span>);
+    expect(onSave).toBeCalledTimes(<span class="hljs-number">1</span>);
+    expect(onSave).toBeCalledWith(<span class="hljs-string">'hi'</span>);
+    expect(<span class="hljs-keyword">input</span>.props.<span class="hljs-keyword">value</span>).toBe(<span class="hljs-string">''</span>);
+  });
+});
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="api"></a><a href="#api" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API</h2>
+<h3><a class="anchor" aria-hidden="true" id="render"></a><a href="#render" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>render</code></h3>
+<p><code>render</code> 将使用<a href="https://reactjs.org/docs/test-renderer.html">React 测试渲染器</a>在NodeJS 中运行组件。 像在真实的小程序里一样，它可以挂载组件并运行组件的生命周期，。</p>
+<p>它返回一个wrapper，这样你可以通过不同的查询找到并访问特定的子节点。 在示例情况下 <code>getByTestId</code> 返回匹配 <code>testID</code> 属性的第一个节点。</p>
+<h3><a class="anchor" aria-hidden="true" id="-render--选项"></a><a href="#-render--选项" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>render</code> 选项</h3>
+<h4><a class="anchor" aria-hidden="true" id="查询"></a><a href="#查询" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>查询</h4>
+<p>GojiJS 提供了几种类型的查询，所有查询都是由variants和 <code>By-</code> 查询组合的。 它们遵循testing library的最佳实践。 你可以在<a href="https://testing-library.com/docs/dom-testing-library/api-queries">这里</a>找到更多信息。</p>
+<p>Variants</p>
+<ul>
+<li>getBy</li>
+<li>getAllBy</li>
+<li>queryBy</li>
+<li>queryAllBy</li>
+<li>findBy</li>
+<li>findAllBy</li>
+</ul>
+<p><code>By-</code> 查询：</p>
+<ul>
+<li>ByTestId(testId: string) : 匹配 <code>testID</code> 属性</li>
+<li>ByText(text: string) : 匹配节点的内部文本</li>
+<li>ByProp(propKey: string, propValue: string) : 匹配特定属性</li>
+</ul>
+<p>我们建议使用 <code>testID</code> ，因为它不会造成运行时损耗。</p>
+<blockquote>
+<p>如果你希望添加新的查询，欢迎<a href="https://github.com/airbnb/goji-js/issues">创建一个issue</a></p>
+</blockquote>
+<h4><a class="anchor" aria-hidden="true" id="debug"></a><a href="#debug" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>debug</code></h4>
+<p>此方法在控制台中打印元素以便调试.</p>
+<pre><code class="hljs css language-tsx">const <span class="hljs-keyword">wrapper</span> = render(&lt;Comp /&gt;);
+// print <span class="hljs-keyword">all</span> elements
+<span class="hljs-keyword">wrapper</span>.<span class="hljs-keyword">debug</span>();
+// print specific elements
+<span class="hljs-keyword">wrapper</span>.<span class="hljs-keyword">debug</span>(<span class="hljs-keyword">wrapper</span>.getByTextId(<span class="hljs-string">'test'</span>));
+</code></pre>
+<p><img src="https://user-images.githubusercontent.com/1812118/89996259-28396080-dcbd-11ea-9e4d-f031c65b835f.png" alt="调试示例"></p>
+<h3><a class="anchor" aria-hidden="true" id="fireevent"></a><a href="#fireevent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fireEvent</code></h3>
+<p>在测试用例中，如果你想模拟在节点上的交互事件，可以使用<code>fireEvent</code> 。</p>
+<p>例如，要将文本输入到 <code>&lt;Input testID=&quot;my-test-id&quot;&gt;</code> 元素中，你可以使用：</p>
+<pre><code class="hljs css language-tsx">const input = <span class="hljs-keyword">wrapper</span>.getByTestId(<span class="hljs-string">'my-test-id'</span>);
+fireEvent.<span class="hljs-keyword">input</span>(<span class="hljs-keyword">input</span>, <span class="hljs-string">'hello, world!'</span>);
+</code></pre>
+<p><code>fireEvent</code> 支持这些事件。</p>
+<ul>
+<li>tap</li>
+<li>input</li>
+<li>confirm</li>
+</ul>
+<blockquote>
+<p>如果你想要添加新的事件，欢迎 <a href="https://github.com/airbnb/goji-js/issues">创建一个issue</a>。</p>
+</blockquote>
+<h3><a class="anchor" aria-hidden="true" id="act"></a><a href="#act" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>act</code></h3>
+<p><code>act</code> 函数和 <a href="https://reactjs.org/docs/test-renderer.html#testrendereract">React测试渲染器</a> 中的类似。 通常你应该在 <code>act</code> 中包裹组件的异步更新。</p>
+<pre><code class="hljs css language-tsx">let increase: <span class="hljs-keyword">Function</span>;
+const Comp = () =&gt; {
+  const [count, setCount] = useState(<span class="hljs-number">0</span>);
+  increase = () =&gt; setCount(count + <span class="hljs-number">1</span>);
+
+  <span class="hljs-keyword">return</span> &lt;<span class="hljs-keyword">View</span>&gt;Count: {count}&lt;/<span class="hljs-keyword">View</span>&gt;;
+};
+const <span class="hljs-keyword">wrapper</span> = render(&lt;Comp /&gt;);
+act(() =&gt; {
+  // <span class="hljs-keyword">update</span> component
+  increase();
+});
+expect(<span class="hljs-keyword">wrapper</span>.getByText(<span class="hljs-string">'Count: 1'</span>)).toBeTruthy;
+</code></pre>
+<p>请注意，所有 <code>fireEvent</code> 方法已经被 <code>act</code>包裹了 ，因此没有必要再次使用。</p>
+<h3><a class="anchor" aria-hidden="true" id="waitfor-和-waitforelement"></a><a href="#waitfor-和-waitforelement" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>waitFor</code> 和 <code>waitForElement</code></h3>
+<p><code>waitFor</code> 会捕获断言错误直到通过，否则会在超时后抛出异常。 它用于组件的异步测试。</p>
+<p>此为一个示例：</p>
+<pre><code class="hljs css language-tsx">await waitFor(() =&gt; expect(<span class="hljs-keyword">wrapper</span>.getByText(<span class="hljs-string">'hello'</span>)).toBeTruthy());
+</code></pre>
+<p>它等价于：</p>
+<pre><code class="hljs css language-tsx">await waitForElement(() =&gt; <span class="hljs-keyword">wrapper</span>.getByText(<span class="hljs-string">'hello'</span>));
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 8/12/2020</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/zh-CN/cross-platform"><span class="arrow-prev">← </span><span>跨平台</span></a><a class="docs-next button" href="/docs/zh-CN/faq"><span>常见问题</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#目的">目的</a></li><li><a href="#安装">安装</a></li><li><a href="#示例">示例</a></li><li><a href="#api">API</a><ul class="toc-headings"><li><a href="#render"><code>render</code></a></li><li><a href="#-render--选项"><code>render</code> 选项</a></li><li><a href="#fireevent"><code>fireEvent</code></a></li><li><a href="#act"><code>act</code></a></li><li><a href="#waitfor-和-waitforelement"><code>waitFor</code> 和 <code>waitForElement</code></a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/zh-CN/introduction.html">Get Started</a><a href="/docs/zh-CN/app.html">Guide</a><a href="/docs/zh-CN/faq.html">FAQ</a></div><div><h5>Community</h5><a href="https://github.com/airbnb/goji-js/issues">GitHub Issues</a></div><div><h5>More</h5><a href="https://github.com/airbnb/goji-js">GitHub</a></div></section><section class="copyright">© 2020 Airbnb, Inc. All rights reserved.</section></footer></div></body></html>
