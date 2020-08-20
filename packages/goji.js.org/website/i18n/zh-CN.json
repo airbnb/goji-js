@@ -41,6 +41,10 @@
         "title": "准备工作",
         "sidebar_label": "准备工作"
       },
+      "refs": {
+        "title": "Refs 和 useRenderedEffect",
+        "sidebar_label": "Refs"
+      },
       "setup": {
         "title": "安装",
         "sidebar_label": "安装"
@@ -57,6 +61,7 @@
     "categories": {
       "Get Started": "入门",
       "Guide": "教程",
+      "Advanced": "高级",
       "FAQ": "常见问题"
     }
   },

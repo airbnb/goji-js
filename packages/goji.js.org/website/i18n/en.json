@@ -41,6 +41,10 @@
         "title": "Preparation",
         "sidebar_label": "Preparation"
       },
+      "refs": {
+        "title": "Refs and useRenderedEffect",
+        "sidebar_label": "Refs"
+      },
       "setup": {
         "title": "Setup",
         "sidebar_label": "Setup"
@@ -57,6 +61,7 @@
     "categories": {
       "Get Started": "Get Started",
       "Guide": "Guide",
+      "Advanced": "Advanced",
       "FAQ": "FAQ"
     }
   },
