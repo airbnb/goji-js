@@ -17,6 +17,12 @@ export const readPathsFromAppConfig = (config: AppConfig): Array<string> => {
     }
   }
 
+  if (process.env.PAGE_FILTER_REGEX) {
+    const pageFilterRegexp = new RegExp(process.env.PAGE_FILTER_REGEX);
+    // keep main package page for basic function
+    return paths.filter(item => (config.pages || []).includes(item) || pageFilterRegexp.test(item));
+  }
+
   return paths;
 };
 
