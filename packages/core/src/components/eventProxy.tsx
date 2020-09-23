@@ -2,8 +2,9 @@ import React, {
   createContext,
   PropsWithChildren,
   useMemo,
-  useImperativeHandle,
   useContext,
+  useImperativeHandle,
+  useEffect,
 } from 'react';
 import { EventEmitter } from 'events';
 import { batchedUpdates } from '../reconciler';
@@ -44,6 +45,14 @@ export const EventProxyProvider = ({ children }: PropsWithChildren<{}>) => {
     }),
     [events, returnValues],
   );
+
+  useEffect(() => {
+    // FIXME: optional for mock testing
+    if (container.flushPendingLifecycleEvents) {
+      container.flushPendingLifecycleEvents();
+    }
+  }, [container]);
+
   const context = useMemo(
     () => ({
       handleEvent: (name: string, callback?: any) => {

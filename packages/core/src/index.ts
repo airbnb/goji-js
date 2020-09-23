@@ -3,6 +3,7 @@ import './patchGlobalObject';
 import { createAdaptor, AdaptorType, ExportComponentMeta } from './adaptor';
 import { GOJI_TARGET } from './constants';
 import { batchedUpdates } from './reconciler';
+import { RootTag, BlockingRoot, ConcurrentRoot } from './render';
 
 interface RenderOptions {
   type: AdaptorType;
@@ -16,14 +17,19 @@ const DEFAULT_RENDER_OPTIONS: RenderOptions = {
   exportMeta: {},
 };
 
-export const render = (element: ReactNode, options: Partial<RenderOptions> = {}) => {
+export const render = (element: ReactNode, options: Partial<RenderOptions> = {}, tag?: RootTag) => {
   const { type, exportMeta, disablePageSharing }: RenderOptions = {
     ...DEFAULT_RENDER_OPTIONS,
     ...options,
   };
   const adaptor = createAdaptor(type, GOJI_TARGET, exportMeta, disablePageSharing);
-  return adaptor.run(element);
+  return adaptor.run(element, tag);
 };
+
+// function naming refer to react
+// https://reactjs.org/docs/concurrent-mode-adoption.html#migration-step-blocking-mode
+export const createBlockingRoot: typeof render = (element, options = {}) => render(element, options, BlockingRoot)
+export const createRoot: typeof render = (element, options = {}) => render(element, options, ConcurrentRoot);
 
 export * from './components/factoryComponents';
 export { Subtree } from './components/subtree';

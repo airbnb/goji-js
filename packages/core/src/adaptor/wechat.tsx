@@ -5,6 +5,7 @@ import { Container } from '../container';
 import { Adaptor, AdaptorInstance, AdaptorType, ExportComponentMeta } from './common';
 import { gojiEvents } from '../events';
 import { useInternalComponentUpdate } from '../lifecycles/native/hooks';
+import { RootTag } from '../render';
 import {
   WechatLifecycleName,
   OnScrollOptions,
@@ -110,13 +111,13 @@ export class WeChatAdaptor extends Adaptor {
     super();
   }
 
-  public run(element: JSX.Element) {
+  public run(element: JSX.Element, rootTag?: RootTag) {
     const pageLifecycles = {
       onLoad(this: WeChatInstance, options: any) {
         const container = new Container(new WechatAdaptorInstance(this));
         this.__GOJI_CONTAINER = container;
 
-        container.render(element);
+        container.render(element, rootTag);
 
         this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>('onLoad', options);
       },
@@ -197,6 +198,7 @@ export class WeChatAdaptor extends Adaptor {
 
     // to disable page sharing we have to remove `onShareAppMessage` at init
     if (this.disablePageSharing) {
+      // @ts-ignore
       delete pageLifecycles.onShareAppMessage;
     }
 

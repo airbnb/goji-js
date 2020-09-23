@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
+import { RootTag } from '../render';
 
 export abstract class Adaptor {
-  public abstract run(element: ReactNode);
+  public abstract run(element: ReactNode, rootTag?: RootTag);
 }
 
 export abstract class AdaptorInstance {

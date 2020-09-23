@@ -1,8 +1,8 @@
-import React, { createRef, ReactNode } from 'react';
+import React, { createRef, ReactNode, MutableRefObject } from 'react';
 import { FiberRoot } from 'react-reconciler';
 import { AdaptorInstance } from './adaptor';
 import { merge } from './utils/merge';
-import { renderIntoContainer } from './render';
+import { renderIntoContainer, RootTag } from './render';
 import { ElementInstance, TextInstance } from './reconciler/instance';
 import { EventProxy } from './components/eventProxy';
 import { GojiProvider } from './components';
@@ -38,6 +38,8 @@ export class Container {
   private isBlocking = false;
 
   private mergedDiff: Record<string, any> | null = null;
+
+  private pendingLifecycleEvents: [LifecycleName, any?][] = [];
 
   // always use `string` for `renderId`
   public getRenderId() {
@@ -171,10 +173,25 @@ export class Container {
   }
 
   public emitLifecycleEvent<T extends LifecycleName>(eventName: T, eventData?: any) {
-    return this.eventProxyRef.current?.emitEvent(eventName, eventData);
+    // for react concurrent mode, we can't ensure render always happened after page lifecycle
+    const eventProxy = this.eventProxyRef.current;
+    if (eventProxy) {
+      return this.eventProxyRef.current?.emitEvent(eventName, eventData);
+    }
+    this.pendingLifecycleEvents.push([eventName, eventData]);
+
+    return [];
   }
 
-  public render(element: ReactNode | null) {
-    renderIntoContainer(<GojiProvider container={this}>{element}</GojiProvider>, this);
+  public flushPendingLifecycleEvents() {
+    const { pendingLifecycleEvents } = this;
+    this.pendingLifecycleEvents = [];
+    pendingLifecycleEvents.forEach(params => {
+      this.emitLifecycleEvent(...params);
+    });
+  }
+
+  public render(element: ReactNode | null, rootTag?: RootTag) {
+    renderIntoContainer(<GojiProvider container={this}>{element}</GojiProvider>, this, rootTag);
   }
 }
