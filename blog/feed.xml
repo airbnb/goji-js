@@ -4,7 +4,7 @@
         <title>GojiJS Blog</title>
         <link>https://goji.js.org/blog</link>
         <description>The best place to stay up-to-date with the latest GojiJS news and events.</description>
-        <lastBuildDate>Tue, 24 Oct 2017 06:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 23 Sep 2020 06:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <image>
@@ -14,43 +14,11 @@
         </image>
         <copyright>© 2020 Airbnb, Inc. All rights reserved.</copyright>
         <item>
-            <title><![CDATA[New Version 1.0.0]]></title>
-            <link>https://goji.js.org/blog/2017/10/24/new-version-1.0.0.html</link>
-            <guid>https://goji.js.org/blog/2017/10/24/new-version-1.0.0.html</guid>
-            <pubDate>Tue, 24 Oct 2017 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>This blog post will test file name parsing issues when periods are present.</p> ]]></description>
-        </item>
-        <item>
-            <title><![CDATA[Adding RSS Support]]></title>
-            <link>https://goji.js.org/blog/2017/09/26/adding-rss.html</link>
-            <guid>https://goji.js.org/blog/2017/09/26/adding-rss.html</guid>
-            <pubDate>Tue, 26 Sep 2017 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>This is a test post.</p> <p>A whole bunch of other information.</p> ]]></description>
-        </item>
-        <item>
-            <title><![CDATA[Adding RSS Support - RSS Truncation Test]]></title>
-            <link>https://goji.js.org/blog/2017/09/25/testing-rss.html</link>
-            <guid>https://goji.js.org/blog/2017/09/25/testing-rss.html</guid>
-            <pubDate>Mon, 25 Sep 2017 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</p>
-<p>This should be truncated.</p>
-]]></description>
-        </item>
-        <item>
-            <title><![CDATA[New Blog Post]]></title>
-            <link>https://goji.js.org/blog/2017/04/10/blog-post-two.html</link>
-            <guid>https://goji.js.org/blog/2017/04/10/blog-post-two.html</guid>
-            <pubDate>Mon, 10 Apr 2017 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus elementum massa eget nulla aliquet sagittis. Proin odio tortor, vulputate ut odio in, ultrices ultricies augue. Cras ornare ultrices lorem malesuada iaculis. Etiam sit amet libero tempor, pulvinar mauris sed, sollicitudin sapien.</p>
-]]></description>
-        </item>
-        <item>
-            <title><![CDATA[Blog Title]]></title>
-            <link>https://goji.js.org/blog/2016/03/11/blog-post.html</link>
-            <guid>https://goji.js.org/blog/2016/03/11/blog-post.html</guid>
-            <pubDate>Fri, 11 Mar 2016 06:00:00 GMT</pubDate>
-            <description><![CDATA[<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus elementum massa eget nulla aliquet sagittis. Proin odio tortor, vulputate ut odio in, ultrices ultricies augue. Cras ornare ultrices lorem malesuada iaculis. Etiam sit amet libero tempor, pulvinar mauris sed, sollicitudin sapien.</p>
-]]></description>
+            <title><![CDATA[GojiJS——来自Airbnb的小程序跨平台解决方案]]></title>
+            <link>https://goji.js.org/blog/2020/09/23/gojijs-from-airbnb.html</link>
+            <guid>https://goji.js.org/blog/2020/09/23/gojijs-from-airbnb.html</guid>
+            <pubDate>Wed, 23 Sep 2020 06:00:00 GMT</pubDate>
+            <description><![CDATA[<blockquote> <p>作者：Chong Ma，Airbnb 中国工程师</p> </blockquote> <blockquote> <p>校对：Xijin Liu，Airbnb 中国工程经理；Lang Yang，Airbnb 中国工程经理</p> </blockquote> <h1><a class="anchor" aria-hidden="true" id="gojijs-是什么"></a><a href="#gojijs-是什么" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"/></svg></a>GojiJS 是什么</h1> <p>GojiJS 是由 Airbnb（爱彼迎）开发的小程序前端框架，在公司内部经历近一年的内测，支撑了公司各个平台小程序的业务，最终于2020年06月正式开源。</p> <p>它的目的是让开发者在各种小程序平台上获得统一的 React 开发体验。GojiJS 完整支持最新版 React 的常见功能——包括高阶组件（HOC）、Hooks...</p>]]></description>
         </item>
     </channel>
 </rss>
