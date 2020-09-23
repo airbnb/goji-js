@@ -24,6 +24,6 @@
     "@types/classnames": "^2.2.10",
     "@types/css-modules": "^1.0.0",
     "@types/react": "^16.9.35",
-    "typescript": "^3.9.2"
+    "typescript": "^4.0.3"
   }
 }
