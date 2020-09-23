@@ -42,7 +42,7 @@ const siteConfig = {
     { doc: 'introduction', label: 'Docs' },
     // { doc: 'doc4', label: 'API' },
     // { page: 'help', label: 'Help' },
-    // { blog: true, label: 'Blog' },
+    { blog: true, label: 'Blog' },
     { href: 'https://github.com/airbnb/goji-js', label: 'GitHub' },
   ],
 
