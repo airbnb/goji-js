@@ -1,4 +1,4 @@
-import React, { createRef, ReactNode, MutableRefObject } from 'react';
+import React, { createRef, ReactNode } from 'react';
 import { FiberRoot } from 'react-reconciler';
 import { AdaptorInstance } from './adaptor';
 import { merge } from './utils/merge';
