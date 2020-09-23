@@ -15,7 +15,7 @@ describe('updates', () => {
           diff = data;
         },
       };
-      options.onLoad.call(instance, {});
+      options.onLoad?.call(instance, {});
     };
 
     adaptor = new WeChatAdaptor('page', {}, false);

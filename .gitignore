@@ -58,5 +58,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# VSCode
+.vscode/
+
 miniprogram_npm/
 dist/
