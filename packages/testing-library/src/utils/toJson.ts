@@ -50,6 +50,7 @@ function realToJSON(inst, { omitProps = [] }: { omitProps?: Array<string> }) {
 
 export function toJSON(node: ReactTestInstance, options = {}) {
   // @ts-ignore
+  // eslint-disable-next-line no-underscore-dangle
   const stateNode = node?._fiber?.stateNode;
   if (!stateNode) return null;
   if (stateNode.rootContainerInstance && stateNode.rootContainerInstance.children.length === 0)
