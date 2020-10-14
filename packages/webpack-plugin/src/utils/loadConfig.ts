@@ -102,9 +102,17 @@ export const evalConfigSource = (
   try {
     const jsConetent = exec(configSource, 'GojiVM/file', 'GojiVM');
     // support both `module.exports` and `export default`
-    const defaultObject = getDefaultExport(jsConetent);
+    let defaultObject = getDefaultExport(jsConetent);
     if (typeof defaultObject === 'function') {
-      return defaultObject({ target });
+      defaultObject = defaultObject({ target });
+    }
+    if (process.env.PAGE_FILTER_REGEX && defaultObject?.subPackages) {
+      const pageFilterRegexp = new RegExp(process.env.PAGE_FILTER_REGEX);
+      const { subPackages = [] } = defaultObject;
+      subPackages.forEach(subPackage => {
+        subPackage.pages = (subPackage.pages || []).filter(page => pageFilterRegexp.test(`${subPackage.root}/${page}`));
+      });
+      defaultObject.subPackages = defaultObject.subPackages.filter(subPackage => !!subPackage?.pages?.length);
     }
     return defaultObject;
   } catch (e) {
