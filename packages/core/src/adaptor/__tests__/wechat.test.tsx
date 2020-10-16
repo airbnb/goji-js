@@ -12,7 +12,7 @@ describe('WeChatAdaptor', () => {
           data = newData;
         },
       };
-      options.onLoad.call(instance, {});
+      options.onLoad?.call(instance, {});
     };
   });
 

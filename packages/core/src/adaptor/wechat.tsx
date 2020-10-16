@@ -22,20 +22,21 @@ export interface WeChatInstance {
 }
 
 interface WeChatPageLifecycle {
-  onLoad(this: WeChatInstance, query: any): void;
-  onUnload(this: WeChatInstance): void;
-  onShow(this: WeChatInstance): void;
-  onHide(this: WeChatInstance): void;
-  onPullDownRefresh(this: WeChatInstance): void;
-  onReachBottom(this: WeChatInstance): void;
-  onPageScroll(this: WeChatInstance, options: OnScrollOptions): void;
-  onShareAppMessage(this: WeChatInstance, options: OnShareAppMessageOptions): any;
-  onResize(this: WeChatInstance, options: OnResizeOptions): void;
-  onTabItemTap(this: WeChatInstance, options: OnTabItemTapOptions): void;
-  onTitleClick(this: WeChatInstance): void;
-  onOptionMenuClick(this: WeChatInstance): void;
-  onPopMenuClick(this: WeChatInstance): void;
-  onPullIntercept(this: WeChatInstance): void;
+  onLoad?(this: WeChatInstance, query: any): void;
+  onReady?(this: WeChatInstance): void;
+  onUnload?(this: WeChatInstance): void;
+  onShow?(this: WeChatInstance): void;
+  onHide?(this: WeChatInstance): void;
+  onPullDownRefresh?(this: WeChatInstance): void;
+  onReachBottom?(this: WeChatInstance): void;
+  onPageScroll?(this: WeChatInstance, options: OnScrollOptions): void;
+  onShareAppMessage?(this: WeChatInstance, options: OnShareAppMessageOptions): any;
+  onResize?(this: WeChatInstance, options: OnResizeOptions): void;
+  onTabItemTap?(this: WeChatInstance, options: OnTabItemTapOptions): void;
+  onTitleClick?(this: WeChatInstance): void;
+  onOptionMenuClick?(this: WeChatInstance): void;
+  onPopMenuClick?(this: WeChatInstance): void;
+  onPullIntercept?(this: WeChatInstance): void;
 }
 
 export interface WeChatPageConfig extends WeChatPageLifecycle {}
@@ -111,7 +112,7 @@ export class WeChatAdaptor extends Adaptor {
   }
 
   public run(element: JSX.Element) {
-    const pageLifecycles = {
+    const pageLifecycles: WeChatPageLifecycle = {
       onLoad(this: WeChatInstance, options: any) {
         const container = new Container(new WechatAdaptorInstance(this));
         this.__GOJI_CONTAINER = container;

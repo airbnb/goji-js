@@ -6,6 +6,10 @@
 
 React ❤️ Mini Program
 
+[中文文档](https://goji.js.org/docs/zh-CN/introduction.html)
+
+[English](https://goji.js.org/docs/en/introduction)
+
 ## Visions
 
 GojiJS enables running React code on multi Mini Program platforms.
@@ -51,8 +55,4 @@ const App = () => {
 render(App);
 ```
 
-The main difference between GojiJS and React DOM is you have to use built-in components from
-`@goji/core`. You can find
-[all components here](https://developers.weixin.qq.com/miniprogram/dev/component/).
-
-> The official document site for GojiJS is still WIP.
+For more details, see [GojiJS official documentation website](https://goji.js.org/en/).
