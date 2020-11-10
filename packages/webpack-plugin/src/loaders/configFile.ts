@@ -81,10 +81,10 @@ module.exports = async function GojiConfigFileLoader(
     this.cacheable();
   }
   const callback = this.async();
-  const { target } = loaderUtils.getOptions(this as any);
+  const { target } = loaderUtils.getOptions(this);
 
   try {
-    await emitConfigFile(this, target);
+    await emitConfigFile(this, target as GojiTarget);
   } catch (err) {
     if (callback) {
       callback(err);
