@@ -15,15 +15,12 @@ const MINIMIZE_CONF = {
   removeStyleLinkTypeAttributes: true,
 };
 
-export const minimize = (source: string, ext: string): string => {
+export const minimize = async (source: string, ext: string): Promise<string> => {
   switch (ext) {
     case '.wxml':
       return Minifier.minify(source, MINIMIZE_CONF);
     case '.js': {
-      const { code, error } = Terser.minify(source);
-      if (error) {
-        throw error;
-      }
+      const { code } = await Terser.minify(source);
       return code || '';
     }
     case '.json':
