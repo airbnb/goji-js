@@ -53,7 +53,7 @@
     "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
     "@types/enzyme": "^3.10.5",
-    "@types/jest": "^25.2.3",
+    "@types/jest": "^26.0.15",
     "@types/lodash": "^4.14.151",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
@@ -78,13 +78,13 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.5"
   },
   "dependencies": {
     "lodash": "^4.17.15",
     "react-is": "^16.13.1",
     "react-reconciler": "^0.25.1",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.3"
   },
   "peerDependencies": {
     "react": ">=16.9.0"
