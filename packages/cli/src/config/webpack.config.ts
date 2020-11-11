@@ -132,7 +132,7 @@ export const getWebpackConfig = ({
                     nodeEnv === 'development'
                       ? '[local]__[name]--[hash:base64:5]'
                       : '[hash:base64:5]',
-                  context: path.resolve(basedir, 'src'),
+                  localIdentContext: path.resolve(basedir, 'src'),
                 },
               },
             },
