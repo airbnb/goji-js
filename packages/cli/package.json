@@ -62,7 +62,7 @@
     "resolve": "^1.19.0",
     "thread-loader": "^3.0.1",
     "webpack": "^4.43.0",
-    "yargs": "^15.3.1"
+    "yargs": "^16.1.0"
   },
   "devDependencies": {
     "@goji/core": "^0.8.4",
