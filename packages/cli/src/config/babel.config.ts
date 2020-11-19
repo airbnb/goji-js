@@ -30,6 +30,7 @@ module.exports = {
     ],
     require.resolve('@babel/preset-typescript'),
     require.resolve('@babel/preset-react'),
+    require.resolve('linaria/babel'),
   ],
   plugins: [
     [require.resolve('@babel/plugin-proposal-class-properties'), { loose: true }],

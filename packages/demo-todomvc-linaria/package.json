@@ -1,7 +1,7 @@
 {
-  "name": "demo-todomvc",
+  "name": "demo-todomvc-linaria",
   "version": "0.8.6",
-  "description": "GojiJS TodoMVC Example",
+  "description": "GojiJS Linaria Example",
   "main": "index.js",
   "repository": "git+https://github.com/airbnb/goji.git",
   "license": "MIT",

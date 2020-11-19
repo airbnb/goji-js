@@ -5,6 +5,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { GojiWebpackPlugin } from '@goji/webpack-plugin/dist/cjs';
 import resolve from 'resolve';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import findCacheDir from 'find-cache-dir';
 import { preprocessLoader, getThreadLoader, getCacheLoader } from './loaders';
 
 const getSourceMap = (nodeEnv: string, target: GojiTarget) => {
@@ -115,11 +116,25 @@ export const getWebpackConfig = ({
               loader: require.resolve('babel-loader'),
               options: babelConfig,
             },
+            {
+              loader: require.resolve('linaria/loader'),
+              options: {
+                configFile: require.resolve('./linaria.config'),
+                sourceMap: true,
+                // Linaria defaults to use `.linaria-cache` folder rather than standard `node_modules/.cache`
+                cacheDirectory: findCacheDir({ name: 'linaria', cwd: basedir }),
+                babelOptions: {
+                  // always use internal babel.config.js file
+                  configFile: require.resolve('./babel.config'),
+                },
+              },
+            },
             preprocessLoader('js', nodeEnv, target),
           ],
         },
         {
           test: /\.css$/,
+          exclude: /\.linaria\.css$/,
           use: [
             MiniCssExtractPlugin.loader,
             ...cacheLoaders,
@@ -135,6 +150,42 @@ export const getWebpackConfig = ({
                   localIdentContext: path.resolve(basedir, 'src'),
                 },
               },
+            },
+            {
+              loader: require.resolve('@goji/webpack-plugin/dist/cjs/loaders/transform'),
+              options: {
+                target,
+                type: 'wxss',
+              },
+            },
+            {
+              loader: require.resolve('postcss-loader'),
+              options: {
+                config: {
+                  path: __dirname,
+                  ctx: {
+                    integrationMode,
+                  },
+                },
+              },
+            },
+            preprocessLoader('js', nodeEnv, target),
+            {
+              loader: require.resolve('postcss-loader'),
+              options: {
+                // eslint-disable-next-line global-require
+                plugins: [require('postcss-import')({})],
+              },
+            },
+          ],
+        },
+        {
+          test: /\.linaria\.css$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            ...cacheLoaders,
+            {
+              loader: require.resolve('css-loader'),
             },
             {
               loader: require.resolve('@goji/webpack-plugin/dist/cjs/loaders/transform'),
