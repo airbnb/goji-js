@@ -66,6 +66,9 @@ const removeChildrenFromProps = (props: InstanceProps) => {
   return props;
 };
 
+const shouldUseSubtree = () =>
+  process.env.GOJI_TARGET === 'wechat' || process.env.GOJI_TARGET === 'qq';
+
 export class ElementInstance extends BaseInstance {
   public constructor(
     public type: string,
@@ -86,9 +89,9 @@ export class ElementInstance extends BaseInstance {
   public subtreeDepth?: number;
 
   public getSubtreeId(): number | undefined {
-    // FIXME: For now, only WeChat has subtree while other platforms render all elements in one page
-    // We should consider enabling non-WeChat subtree/wrapped components support
-    if (process.env.GOJI_TARGET !== 'wechat') {
+    // FIXME: For now, only WeChat and QQ have subtree while other platforms render all elements in one page
+    // We should consider enabling non-WeChat-like subtree/wrapped components support
+    if (!shouldUseSubtree()) {
       return undefined;
     }
     // wrapped component should return its wrapper as subtree id
