@@ -1,13 +1,26 @@
 const OriginalArray = Array;
 
 const patchArray = () => {
-  const PatchedArray = function Array<T>(this: any, value: any): Array<T> {
+  const PatchedArray = function Array<T>(this: any): Array<T> {
     let instance: Array<T>;
+    /**
+     * We should avoid calling the original Array in any way, otherwise you will encounter the
+     * maximum call stack size exceeded error.
+     * For example, `...args` is transformed to `new Array(len)` in Babel.
+     */
     if (this instanceof PatchedArray || this instanceof OriginalArray) {
-      // @ts-ignore
-      instance = new OriginalArray(value);
+      instance = OriginalArray.apply<any, Array<any>, Array<T>>(
+        this,
+        // eslint-disable-next-line prefer-rest-params
+        OriginalArray.prototype.slice.call(arguments),
+      );
     } else {
-      instance = OriginalArray(value);
+      // eslint-disable-next-line prefer-spread
+      instance = OriginalArray.apply<any, Array<any>, Array<T>>(
+        null,
+        // eslint-disable-next-line prefer-rest-params
+        OriginalArray.prototype.slice.call(arguments),
+      );
     }
     Object.setPrototypeOf(instance, PatchedArray.prototype);
 
