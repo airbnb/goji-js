@@ -16,7 +16,7 @@ import { GojiProjectConfigPlugin } from './plugins/projectConfig';
 import { GojiCollectUsedComponentsWebpackPlugin } from './plugins/collectUsedComponents';
 import { getWrappedComponents } from './constants/components';
 
-export class GojiWebpackPlugin implements webpack.Plugin {
+export class GojiWebpackPlugin implements webpack.WebpackPluginInstance {
   private options: GojiWebpackPluginOptions;
 
   public constructor(options: Partial<GojiWebpackPluginOptions> = {}) {
@@ -44,9 +44,9 @@ export class GojiWebpackPlugin implements webpack.Plugin {
     new GojiProjectConfigPlugin(options).apply(compiler);
   }
 
-  public static cacheGroupsPlaceholder = cacheGroupsPlaceholder;
+  public static cacheGroupsPlaceholder: typeof cacheGroupsPlaceholder = cacheGroupsPlaceholder;
 
-  public static runtimeChunkPlaceholder = runtimeChunkPlaceholder;
+  public static runtimeChunkPlaceholder: typeof runtimeChunkPlaceholder = runtimeChunkPlaceholder;
 
   public static getPoll = getPoll;
 }

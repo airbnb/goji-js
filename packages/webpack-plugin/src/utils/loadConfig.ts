@@ -42,7 +42,7 @@ const CHILD_FILENAME = 'GojiConfigFilename';
 export const loadConfigSourceByChildCompiler = async (
   configPath: string,
   context: string,
-  parentCompilation: webpack.compilation.Compilation,
+  parentCompilation: webpack.Compilation,
 ) =>
   // load `.config.js` file by child compiler
   new Promise<string>((resolvePromise, rejectPromise) => {
@@ -52,33 +52,27 @@ export const loadConfigSourceByChildCompiler = async (
       {
         filename: CHILD_FILENAME,
         publicPath: '/',
+        library: { type: 'commonjs2' },
       },
       [
         // add `.config.js` as entry
-        new webpack.SingleEntryPlugin(context, configPath, 'GojiConfigEntry'),
+        // @ts-ignore
+        new webpack.EntryPlugin(context, configPath, 'GojiConfigEntry'),
         // should export commonjs2 bundle
         // @ts-ignore
-        new webpack.LibraryTemplatePlugin('GojiLibraryTemplatePlugin', 'commonjs2'),
+        new webpack.library.EnableLibraryPlugin('commonjs2'),
       ],
     );
-    configCompiler.hooks.afterCompile.tap('GojiConfigPlugin', compilation => {
-      if (compilation.errors.length) {
-        for (const error of compilation.errors) {
-          throw error;
-        }
-      }
-      if (!compilation.assets[CHILD_FILENAME]) {
-        throw new Error(
-          'Cannot found app config source in assets of GojiConfigPlugin. This might be an internal error in GojiJS.',
-        );
-      }
-      // resolve source code before remove it
-      resolvePromise(compilation.assets[CHILD_FILENAME].source());
+    configCompiler.hooks.thisCompilation.tap('GojiConfigPlugin', compilation => {
+      compilation.hooks.processAssets.tap('GojiConfigPlugin', () => {
+        // resolve source code before remove it
+        resolvePromise(compilation.assets[CHILD_FILENAME].source());
 
-      // remove all chunk assets before emit
-      compilation.chunks.forEach(chunk => {
-        chunk.files.forEach(file => {
-          delete compilation.assets[file]; // eslint-disable-line no-param-reassign
+        // remove all chunk assets before emit
+        compilation.chunks.forEach(chunk => {
+          chunk.files.forEach(file => {
+            delete compilation.assets[file]; // eslint-disable-line no-param-reassign
+          });
         });
       });
     });

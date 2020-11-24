@@ -1,6 +1,5 @@
 import webpack from 'webpack';
 import loaderUtils from 'loader-utils';
-import Compilation from 'webpack/lib/Compilation';
 import { pathEntriesMap, appEntryMap, appConfigMap } from '../shared';
 import { GojiBasedWebpackPlugin } from './based';
 import {
@@ -11,14 +10,15 @@ import {
 import { AppConfig } from '../types';
 import { readPathsFromAppConfig } from '../utils/config';
 
-const DEFAULT_APP_CONFIG_FILE = 'app.config.js';
-
 /**
  * resolve `app.json` to generate dynamic entries
  */
 export class GojiEntryWebpackPlugin extends GojiBasedWebpackPlugin {
   private async rewrite(compiler: webpack.Compiler) {
-    const { context, entry = DEFAULT_APP_CONFIG_FILE } = compiler.options;
+    const { context, entry: entryOptions } = compiler.options;
+    const entryStaticNormalized =
+      typeof entryOptions === 'function' ? await entryOptions() : entryOptions;
+    const entry = entryStaticNormalized.main.import?.[0];
     if (typeof entry !== 'string') {
       throw new Error('`entry` must be string');
     }
@@ -27,7 +27,7 @@ export class GojiEntryWebpackPlugin extends GojiBasedWebpackPlugin {
     }
     // because no compilation was created while `compiler.run` or `compiler.watchRun`
     // we have to create a fake one to call `createChildCompiler`
-    const fakeCompilation = new Compilation(compiler);
+    const fakeCompilation = new webpack.Compilation(compiler);
     const appConfigPath = await resolveConfigPath(
       entry,
       context,
@@ -51,7 +51,7 @@ export class GojiEntryWebpackPlugin extends GojiBasedWebpackPlugin {
     // add app & pages
     for (const pathEntry of [appEntry, ...pathEntries]) {
       const request = loaderUtils.urlToRequest(pathEntry);
-      new webpack.SingleEntryPlugin(
+      new webpack.EntryPlugin(
         context,
         `${require.resolve('../loaders/configFile')}?target=${this.options.target}!${request}`,
         pathEntry,
@@ -65,10 +65,8 @@ export class GojiEntryWebpackPlugin extends GojiBasedWebpackPlugin {
 
   // FIXME: remove the main entry which content is `app.json`
   // is there any better way to avoid this chunk being generated ?
-  private removeMainEntry(compilation: webpack.compilation.Compilation) {
-    const mainChunk: webpack.compilation.Chunk = compilation.chunks.find(
-      (chunk: webpack.compilation.Chunk) => chunk.name === 'main',
-    );
+  private removeMainEntry(compilation: webpack.Compilation) {
+    const mainChunk = [...compilation.chunks].find((chunk: webpack.Chunk) => chunk.name === 'main');
     if (!mainChunk) {
       console.warn('main chunk not found');
       return;
@@ -91,8 +89,10 @@ export class GojiEntryWebpackPlugin extends GojiBasedWebpackPlugin {
       );
     }
 
-    compiler.hooks.emit.tap('GojiEntryWebpackPlugin', compilation => {
-      this.removeMainEntry(compilation);
+    compiler.hooks.thisCompilation.tap('GojiEntryWebpackPlugin', compilation => {
+      compilation.hooks.processAssets.tap('GojiEntryWebpackPlugin', () => {
+        this.removeMainEntry(compilation);
+      });
     });
   }
 }

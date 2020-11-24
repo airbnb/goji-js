@@ -1,20 +1,21 @@
 /* eslint-disable no-await-in-loop */
 import webpack from 'webpack';
+import WebpackError from 'webpack/lib/WebpackError';
 import kebabCase from 'lodash/kebabCase';
 import { GojiBasedWebpackPlugin } from './based';
 import { usedComponentsMap } from '../shared';
+import { WebpackReasonType } from '../types/patch';
 
 const GOJI_CORE_PACKAGE_NAME = '@goji/core';
 
 // hard code string in Webpack
 // https://github.com/webpack/webpack/blob/8d5ad83b3274029e37386dbd5d0c64d8102bcd6f/lib/dependencies/HarmonyImportSpecifierDependency.js#L36
-const HARMONY_IMPORT_SPECIFIER_DEPENDENCY_TYPE: webpack.Stats.ReasonType =
-  'harmony import specifier';
+const HARMONY_IMPORT_SPECIFIER_DEPENDENCY_TYPE: WebpackReasonType = 'harmony import specifier';
 // https://github.com/webpack/webpack/blob/8d5ad83b3274029e37386dbd5d0c64d8102bcd6f/lib/dependencies/CommonJsRequireDependency.js#L16
-const COMMON_JS_REQUIRE_DEPENDENCY_TYPE: webpack.Stats.ReasonType = 'cjs require';
+const COMMON_JS_REQUIRE_DEPENDENCY_TYPE: WebpackReasonType = 'cjs require';
 
 interface WebpackCompilationDependency {
-  type: webpack.Stats.ReasonType;
+  type: WebpackReasonType;
   request: string;
   name: string;
   id: string | null;
@@ -48,37 +49,44 @@ export class GojiCollectUsedComponentsWebpackPlugin extends GojiBasedWebpackPlug
       // @ts-ignore
       compilation.hooks.afterChunks.tap('GojiCollectUsedComponentsWebpackPlugin', () => {
         const collectDependencyOfGojiCore = (
-          modules: Array<WebpackCompilationModule>,
+          modules: Array<webpack.Module>,
         ): Array<string> | undefined => {
           const dependencyNamesSet = new Set<string>();
           for (const module of modules) {
             if (module.type.startsWith('javascript/')) {
               for (const dependency of module.dependencies) {
                 // only process `@goji/core`
+                // @ts-ignore
                 if (dependency.request !== GOJI_CORE_PACKAGE_NAME) {
                   continue;
                 }
                 switch (dependency.type) {
                   case COMMON_JS_REQUIRE_DEPENDENCY_TYPE: {
                     compilation.warnings.push(
-                      new Error(
+                      new WebpackError(
+                        // @ts-ignore
                         `[GojiCollectUsedComponentsWebpackPlugin] \nGojiJS strongly recommend to use ES module in ${module.resource} otherwise the bridge file size optimization was disabled`,
                       ),
                     );
                     return undefined;
                   }
                   case HARMONY_IMPORT_SPECIFIER_DEPENDENCY_TYPE: {
-                    // `dependency.id` would be `null` if this is a namespace import, which means `import * as xx from 'yy'`
-                    // see https://github.com/webpack/webpack/blob/8d5ad83b3274029e37386dbd5d0c64d8102bcd6f/lib/Parser.js#L1210
-                    if (!dependency.id) {
+                    // `dependency.ids` would be `[]` if this is a namespace import, which means `import * as xx from 'yy'`
+                    // see https://github.com/webpack/webpack/blob/a3bef27457d8936f81525beaa633eb1931382dc0/lib/javascript/JavascriptParser.js#L1750
+                    // @ts-ignore
+                    if (!dependency.ids.length) {
                       compilation.warnings.push(
-                        new Error(
+                        new WebpackError(
+                          // @ts-ignore
                           `[GojiCollectUsedComponentsWebpackPlugin] \nShould not use \`import * as ${dependency.name} from '@goji/core'\` in ${module.resource}`,
                         ),
                       );
                       return undefined;
                     }
-                    dependencyNamesSet.add(dependency.id);
+                    // @ts-ignore
+                    for (const id of dependency.ids) {
+                      dependencyNamesSet.add(id);
+                    }
                     break;
                   }
                   default:
@@ -90,7 +98,7 @@ export class GojiCollectUsedComponentsWebpackPlugin extends GojiBasedWebpackPlug
 
           return Array.from(dependencyNamesSet);
         };
-        const dependencyNames = collectDependencyOfGojiCore(compilation.modules);
+        const dependencyNames = collectDependencyOfGojiCore([...compilation.modules]);
         usedComponentsMap.set(
           compilation,
           dependencyNames ? formatUsedComponents(dependencyNames) : undefined,

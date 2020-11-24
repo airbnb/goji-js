@@ -3,11 +3,12 @@ import webpack from 'webpack';
 import { GojiTarget } from '@goji/core';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { GojiWebpackPlugin } from '@goji/webpack-plugin/dist/cjs';
+import nodeLibsBrowser from 'node-libs-browser';
 import resolve from 'resolve';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { preprocessLoader, getThreadLoader, getCacheLoader } from './loaders';
 
-const getSourceMap = (nodeEnv: string, target: GojiTarget) => {
+const getSourceMap = (nodeEnv: string, target: GojiTarget): webpack.Configuration['devtool'] => {
   // enable source map in development mode
   if (nodeEnv === 'development') {
     return 'cheap-source-map';
@@ -20,17 +21,19 @@ const getSourceMap = (nodeEnv: string, target: GojiTarget) => {
   return false;
 };
 
-// webpack@4 stats config
-const getStats = () => ({
-  // copied from `'minimal'` https://github.com/webpack/webpack/blob/009e47c8f76ae702857f3493f1133946e33881d0/lib/Stats.js#L1636
-  all: false,
-  modules: true,
-  maxModules: 0,
-  errors: true,
-  warnings: true,
-  // @ts-ignore
-  logging: 'warn',
-  // copied end
+const getNodeLibsAlias = (): { [key: string]: string } => {
+  const alias = {};
+  for (const key of Object.keys(nodeLibsBrowser)) {
+    if (nodeLibsBrowser[key] !== null) {
+      alias[key] = nodeLibsBrowser[key];
+    }
+  }
+
+  return alias;
+};
+
+const getStats = (): webpack.Configuration['stats'] => ({
+  preset: 'minimal',
   errorDetails: true,
   builtAt: true,
   colors: true,
@@ -75,6 +78,7 @@ export const getWebpackConfig = ({
     resolve: {
       alias: {
         'react-native$': resolve.sync('@goji/core/dist/esm', { basedir }),
+        ...getNodeLibsAlias(),
       },
       extensions: ['.native.js', '.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
     },
@@ -96,12 +100,23 @@ export const getWebpackConfig = ({
     watchOptions: {
       poll: GojiWebpackPlugin.getPoll(),
     },
+    cache: {
+      type: 'filesystem',
+      idleTimeout: 0,
+      idleTimeoutForInitialStore: 0,
+    },
     stats: getStats(),
     performance: {
       hints: false,
     },
     module: {
       rules: [
+        {
+          test: /\.m?js$/,
+          resolve: {
+            fullySpecified: false, // disable the behaviour
+          },
+        },
         {
           test: /\.(js|jsx|ts|tsx)$/,
           // compile node_modules in production mode

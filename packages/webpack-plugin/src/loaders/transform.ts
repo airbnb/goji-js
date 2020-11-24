@@ -1,7 +1,7 @@
-import { loader } from 'webpack';
 import loaderUtils from 'loader-utils';
 import { GojiTarget } from '@goji/core';
 import { transformTemplate } from '../utils/render';
+import { WebpackLoaderContext } from '../types/patch';
 
 interface TransformLoaderOptions {
   target?: GojiTarget;
@@ -9,7 +9,7 @@ interface TransformLoaderOptions {
 }
 
 module.exports = async function GojiTransformLoader(
-  this: loader.LoaderContext,
+  this: WebpackLoaderContext,
   source: string | Buffer,
 ) {
   if (this.cacheable) {

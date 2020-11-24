@@ -12,7 +12,7 @@ export const preprocessLoader = (
   type: string,
   nodeEnv: string,
   target: GojiTarget,
-): webpack.RuleSetUseItem => {
+): webpack.RuleSetRule => {
   const options = { ...getEnvForPreprocess(nodeEnv, target), ppOptions: { type } };
 
   // here is a bug in preprocess-loader that remove the `options.ppOptions` unexpectly
@@ -35,7 +35,7 @@ export const preprocessLoader = (
 
 // `thread-loader` enable multi-thread compiling for Webpack
 const MOST_ECONOMICAL_WORKER_COUNT = 3;
-export const getThreadLoader = (): Array<webpack.RuleSetUseItem> => {
+export const getThreadLoader = (): Array<webpack.RuleSetRule> => {
   // disable `thread-loader` on CI
   if (process.env.CI === 'true') {
     return [];
@@ -58,7 +58,7 @@ export const getCacheLoader = (
   isProduction: boolean,
   nodeEnv: string,
   target: GojiTarget,
-): Array<webpack.RuleSetUseItem> =>
+): Array<webpack.RuleSetRule> =>
   // disable cache-loader for production
   isProduction
     ? []

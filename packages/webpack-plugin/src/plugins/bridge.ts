@@ -2,7 +2,6 @@
 import webpack from 'webpack';
 import path from 'path';
 import { unstable_SIMPLIFY_COMPONENTS as SIMPLIFY_COMPONENTS } from '@goji/core';
-import { RawSource } from 'webpack-sources';
 import deepmerge from 'deepmerge';
 import { urlToRequest } from 'loader-utils';
 import { getWhitelistedComponents, getRenderedComponents } from '../utils/components';
@@ -27,7 +26,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     );
   }
 
-  private getWhitelistedComponents(compilation: webpack.compilation.Compilation) {
+  private getWhitelistedComponents(compilation: webpack.Compilation) {
     if (!usedComponentsMap.has(compilation)) {
       throw new Error('`usedComponents` not found, This might be an internal error in GojiJS.');
     }
@@ -35,7 +34,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     return getWhitelistedComponents(this.options.target, usedComponents);
   }
 
-  private getRenderedComponents(compilation: webpack.compilation.Compilation) {
+  private getRenderedComponents(compilation: webpack.Compilation) {
     if (!usedComponentsMap.has(compilation)) {
       throw new Error('`usedComponents` not found, This might be an internal error in GojiJS.');
     }
@@ -44,7 +43,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   }
 
   private async renderTemplateToAsset<T>(
-    compilation: webpack.compilation.Compilation,
+    compilation: webpack.Compilation,
     assetPath: string,
     templatePath: string,
     data: T,
@@ -56,12 +55,13 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       console.warn('skip existing asset', formattedAssetPath);
     }
     if (merge && compilation.assets[formattedAssetPath]) {
-      content = merge(content, compilation.assets[formattedAssetPath].source());
+      content = merge(content, compilation.assets[formattedAssetPath].source().toString());
     }
     if (this.options.minimize) {
       content = await minimize(content, path.extname(assetPath));
     }
-    compilation.assets[formattedAssetPath] = new RawSource(content);
+    // @ts-ignore
+    compilation.assets[formattedAssetPath] = new webpack.sources.RawSource(content);
   }
 
   private shouldInlineChildrenRender() {
@@ -89,7 +89,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     return target === 'alipay';
   }
 
-  private async renderSubtreeBridge(compilation: webpack.compilation.Compilation, basedir: string) {
+  private async renderSubtreeBridge(compilation: webpack.Compilation, basedir: string) {
     const components = this.getRenderedComponents(compilation);
     const { maxDepth } = this.options;
     for (let depth = 0; depth < maxDepth; depth += 1) {
@@ -121,7 +121,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     }
   }
 
-  private async renderLeafTemplate(compilation: webpack.compilation.Compilation, basedir: string) {
+  private async renderLeafTemplate(compilation: webpack.Compilation, basedir: string) {
     const components = this.getRenderedComponents(compilation);
     await this.renderTemplateToAsset(
       compilation,
@@ -133,10 +133,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     );
   }
 
-  private async renderChildrenRenderComponent(
-    compilation: webpack.compilation.Compilation,
-    basedir: string,
-  ) {
+  private async renderChildrenRenderComponent(compilation: webpack.Compilation, basedir: string) {
     await this.renderTemplateToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/subtree.js`),
@@ -161,7 +158,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   }
 
   private async renderComponentTemplate(
-    compilation: webpack.compilation.Compilation,
+    compilation: webpack.Compilation,
     basedir: string,
     inlineChildrenRender: boolean,
   ) {
@@ -181,10 +178,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     );
   }
 
-  private async renderChildrenTemplate(
-    compilation: webpack.compilation.Compilation,
-    basedir: string,
-  ) {
+  private async renderChildrenTemplate(compilation: webpack.Compilation, basedir: string) {
     await this.renderTemplateToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/children0.wxml`),
@@ -198,10 +192,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     );
   }
 
-  private async renderWrappedComponents(
-    compilation: webpack.compilation.Compilation,
-    basedir: string,
-  ) {
+  private async renderWrappedComponents(compilation: webpack.Compilation, basedir: string) {
     const components = this.getWhitelistedComponents(compilation);
     for (const component of components) {
       if (component.isWrapped) {
@@ -231,68 +222,70 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   }
 
   public apply(compiler: webpack.Compiler) {
-    compiler.hooks.emit.tapPromise('GojiBridgeWebpackPlugin', async compilation => {
-      const appConfig = appConfigMap.get(compiler);
-      if (!appConfig) {
-        throw new Error('`appConfig` not found. This might be an internal error in GojiJS.');
-      }
-      const [, independents] = getSubpackagesInfo(appConfig);
-      const independentRoots = independents.map(independent => independent.root!);
-      const independentPaths = independentRoots.map(root => urlToRequest(root));
+    compiler.hooks.thisCompilation.tap('GojiBridgeWebpackPlugin', compilation => {
+      compilation.hooks.processAssets.tapPromise('GojiBridgeWebpackPlugin', async () => {
+        const appConfig = appConfigMap.get(compiler);
+        if (!appConfig) {
+          throw new Error('`appConfig` not found. This might be an internal error in GojiJS.');
+        }
+        const [, independents] = getSubpackagesInfo(appConfig);
+        const independentRoots = independents.map(independent => independent.root!);
+        const independentPaths = independentRoots.map(root => urlToRequest(root));
 
-      const useSubtree = this.shouldUseSubtree();
+        const useSubtree = this.shouldUseSubtree();
 
-      for (const bridgeBasedirs of ['.', ...independentPaths]) {
-        if (useSubtree) {
-          // render componentX and childrenX
-          await this.renderSubtreeBridge(compilation, bridgeBasedirs);
-          // render subtree component
-          await this.renderChildrenRenderComponent(compilation, bridgeBasedirs);
-        } else if (this.shouldInlineChildrenRender()) {
-          // render component0 with inlined children0
-          await this.renderComponentTemplate(compilation, bridgeBasedirs, true);
-        } else {
-          // render component0
-          await this.renderComponentTemplate(compilation, bridgeBasedirs, false);
-          // render children0
-          await this.renderChildrenTemplate(compilation, bridgeBasedirs);
+        for (const bridgeBasedirs of ['.', ...independentPaths]) {
+          if (useSubtree) {
+            // render componentX and childrenX
+            await this.renderSubtreeBridge(compilation, bridgeBasedirs);
+            // render subtree component
+            await this.renderChildrenRenderComponent(compilation, bridgeBasedirs);
+          } else if (this.shouldInlineChildrenRender()) {
+            // render component0 with inlined children0
+            await this.renderComponentTemplate(compilation, bridgeBasedirs, true);
+          } else {
+            // render component0
+            await this.renderComponentTemplate(compilation, bridgeBasedirs, false);
+            // render children0
+            await this.renderChildrenTemplate(compilation, bridgeBasedirs);
+          }
+
+          // render leaf-components
+          await this.renderLeafTemplate(compilation, bridgeBasedirs);
+          // render wrapped components
+          await this.renderWrappedComponents(compilation, bridgeBasedirs);
         }
 
-        // render leaf-components
-        await this.renderLeafTemplate(compilation, bridgeBasedirs);
-        // render wrapped components
-        await this.renderWrappedComponents(compilation, bridgeBasedirs);
-      }
-
-      const pathEntries = pathEntriesMap.get(compiler);
-      if (!pathEntries) {
-        throw new Error('pathEntries not found');
-      }
-      for (const entrypoint of pathEntries) {
-        const belongingIndependentPackage = findBelongingSubPackage(entrypoint, independentRoots);
-        const bridgeBasedir = belongingIndependentPackage
-          ? urlToRequest(belongingIndependentPackage)
-          : '.';
-        // generate entry wxml
-        await this.renderTemplateToAsset(compilation, `${entrypoint}.wxml`, 'item.wxml.ejs', {
-          useSubtree,
-          relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
-          fixBaiduTemplateBug: this.options.target === 'baidu',
-        });
-        // generate entry json
-        await this.renderTemplateToAsset(
-          compilation,
-          `${entrypoint}.json`,
-          'item.json.ejs',
-          {
+        const pathEntries = pathEntriesMap.get(compiler);
+        if (!pathEntries) {
+          throw new Error('pathEntries not found');
+        }
+        for (const entrypoint of pathEntries) {
+          const belongingIndependentPackage = findBelongingSubPackage(entrypoint, independentRoots);
+          const bridgeBasedir = belongingIndependentPackage
+            ? urlToRequest(belongingIndependentPackage)
+            : '.';
+          // generate entry wxml
+          await this.renderTemplateToAsset(compilation, `${entrypoint}.wxml`, 'item.wxml.ejs', {
             useSubtree,
             relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
-            components: this.getWhitelistedComponents(compilation),
-          },
-          (newSource, oldSource) =>
-            JSON.stringify(deepmerge(JSON.parse(oldSource), JSON.parse(newSource)), null, 2),
-        );
-      }
+            fixBaiduTemplateBug: this.options.target === 'baidu',
+          });
+          // generate entry json
+          await this.renderTemplateToAsset(
+            compilation,
+            `${entrypoint}.json`,
+            'item.json.ejs',
+            {
+              useSubtree,
+              relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
+              components: this.getWhitelistedComponents(compilation),
+            },
+            (newSource, oldSource) =>
+              JSON.stringify(deepmerge(JSON.parse(oldSource), JSON.parse(newSource)), null, 2),
+          );
+        }
+      });
     });
   }
 }

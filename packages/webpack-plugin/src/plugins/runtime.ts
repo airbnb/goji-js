@@ -1,6 +1,5 @@
 import webpack from 'webpack';
 import path from 'path';
-import { ConcatSource } from 'webpack-sources';
 import { GojiBasedWebpackPlugin } from './based';
 import { safeUrlToRequest } from '../utils/path';
 
@@ -50,72 +49,78 @@ const RUNTIME_METAS: Array<{ ext: RuntimePluginExt; ignoreEmptyAsset: boolean }>
  */
 export class GojiRuntimePlugin extends GojiBasedWebpackPlugin {
   public apply(compiler: webpack.Compiler) {
-    compiler.hooks.emit.tap('GojiEntryWebpackPlugin', compilation => {
-      for (const entryChunk of compilation.chunks) {
-        if (!entryChunk.hasEntryModule()) {
-          continue;
-        }
-        const dependentChunkNames: Array<string> = [];
-        for (const group of entryChunk.groupsIterable) {
-          for (const chunk of group.chunks) {
-            // ignore self
-            if (chunk === entryChunk) {
-              continue;
-            }
-            // assume output.filename is chunk.name here
-            const depentChunkName = chunk.name;
-            // uniq
-            if (!dependentChunkNames.includes(depentChunkName)) {
-              dependentChunkNames.push(chunk.name);
-            }
-          }
-        }
-        // Add root common chunk for `app.*` even if it doesn't depends on the root common chunk, this
-        // ensures the hoist works as expected.
-        // No need to check `runtime` because it must be already included
-        if (entryChunk.name === 'app' && !dependentChunkNames.includes('commons')) {
-          dependentChunkNames.push('commons');
-        }
-
-        // This line try to fix the wrong order in CSS files
-        // For example, the `sub/pages/index.wxss` correct order should be:
-        //   @import '../../commons.wxss';
-        //   @import '../commons.wxss';
-        // This issue might be related to the `priority` in `cacheGroup.ts`
-        dependentChunkNames.reverse();
-
-        for (const meta of RUNTIME_METAS) {
-          const transformedExt = this.transformExt(meta.ext);
-          const file = entryChunk.name + transformedExt;
-          // ignore empty assets
-          if (meta.ignoreEmptyAsset && !compilation.assets[file]) {
+    compiler.hooks.thisCompilation.tap('GojiEntryWebpackPlugin', compilation => {
+      compilation.hooks.processAssets.tap('GojiEntryWebpackPlugin', () => {
+        for (const entryChunk of compilation.chunks) {
+          // filter out runtime chunk
+          if (compilation.chunkGraph.getNumberOfEntryModules(entryChunk) === 0) {
             continue;
           }
-          const existedDependentChunkNames = dependentChunkNames.filter(
-            chunkName => compilation.assets[chunkName + transformedExt],
-          );
-          // FIXME: ignore `@import 'commons.wxss'` in integration mode to reduce the main/full package size
-          // in this case you should import `commons.wxss` manually in `app.mina`
-
-          const filteredDependentChunkNames = existedDependentChunkNames.filter(chunkName => {
-            if (chunkName === 'commons' || chunkName === 'runtime') {
-              // remove root common/runtime chunk for pages
-              if (entryChunk.name !== 'app') {
-                return false;
+          const dependentChunkNames: Array<string> = [];
+          for (const group of entryChunk.groupsIterable) {
+            for (const chunk of group.chunks) {
+              // ignore self
+              if (chunk === entryChunk) {
+                continue;
+              }
+              // assume output.filename is chunk.name here
+              const depentChunkName = chunk.name;
+              // uniq
+              if (!dependentChunkNames.includes(depentChunkName)) {
+                dependentChunkNames.push(chunk.name);
               }
             }
-            return true;
-          });
-          const prefix = generateDependenciesSource(
-            meta.ext,
-            transformedExt,
-            filteredDependentChunkNames.map(chunkName =>
-              path.relative(path.dirname(entryChunk.name), chunkName),
-            ),
-          );
-          compilation.assets[file] = new ConcatSource(prefix, compilation.assets[file] || '');
+          }
+          // Add root common chunk for `app.*` even if it doesn't depends on the root common chunk, this
+          // ensures the hoist works as expected.
+          // No need to check `runtime` because it must be already included
+          if (entryChunk.name === 'app' && !dependentChunkNames.includes('commons')) {
+            dependentChunkNames.push('commons');
+          }
+
+          // This line try to fix the wrong order in CSS files
+          // For example, the `sub/pages/index.wxss` correct order should be:
+          //   @import '../../commons.wxss';
+          //   @import '../commons.wxss';
+          // This issue might be related to the `priority` in `cacheGroup.ts`
+          dependentChunkNames.reverse();
+
+          for (const meta of RUNTIME_METAS) {
+            const transformedExt = this.transformExt(meta.ext);
+            const file = entryChunk.name + transformedExt;
+            // ignore empty assets
+            if (meta.ignoreEmptyAsset && !compilation.assets[file]) {
+              continue;
+            }
+            const existedDependentChunkNames = dependentChunkNames.filter(
+              chunkName => compilation.assets[chunkName + transformedExt],
+            );
+            // FIXME: ignore `@import 'commons.wxss'` in integration mode to reduce the main/full package size
+            // in this case you should import `commons.wxss` manually in `app.mina`
+
+            const filteredDependentChunkNames = existedDependentChunkNames.filter(chunkName => {
+              if (chunkName === 'commons' || chunkName === 'runtime') {
+                // remove root common/runtime chunk for pages
+                if (entryChunk.name !== 'app') {
+                  return false;
+                }
+              }
+              return true;
+            });
+            const prefix = generateDependenciesSource(
+              meta.ext,
+              transformedExt,
+              filteredDependentChunkNames.map(chunkName =>
+                path.relative(path.dirname(entryChunk.name), chunkName),
+              ),
+            );
+            compilation.assets[file] = new webpack.sources.ConcatSource(
+              prefix,
+              compilation.assets[file] || '',
+            );
+          }
         }
-      }
+      });
     });
   }
 }

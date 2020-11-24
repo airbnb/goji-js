@@ -14,13 +14,13 @@
     "lint": "eslint --ext .js,.ts,.jsx,.tsx ."
   },
   "dependencies": {
-    "@goji/core": "^0.7.6",
+    "@goji/core": "^0.8.3",
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
     "react": "^16.13.1"
   },
   "devDependencies": {
-    "@goji/cli": "^0.7.6",
+    "@goji/cli": "^0.8.3",
     "@types/classnames": "^2.2.10",
     "@types/css-modules": "^1.0.0",
     "@types/react": "^16.9.35",

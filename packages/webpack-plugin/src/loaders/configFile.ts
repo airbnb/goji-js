@@ -1,5 +1,4 @@
 import { GojiTarget } from '@goji/core';
-import webpack from 'webpack';
 import replaceExt from 'replace-ext';
 import path from 'path';
 import loaderUtils from 'loader-utils';
@@ -10,8 +9,9 @@ import {
   evalConfigSource,
   resolveConfigPath,
 } from '../utils/loadConfig';
+import { WebpackLoaderContext } from '../types/patch';
 
-const loadAsset = async (context: webpack.loader.LoaderContext, assetPath: string) => {
+const loadAsset = async (context: WebpackLoaderContext, assetPath: string) => {
   const source = await promisify(context.loadModule.bind(context))(
     // FIXME: should reuse `file-loader` rule from `webpack.config.js` ?
     `!${require.resolve(
@@ -22,7 +22,7 @@ const loadAsset = async (context: webpack.loader.LoaderContext, assetPath: strin
 };
 
 // emit image assets from tab bar list
-const emitAssets = async (context: webpack.loader.LoaderContext, config: any) => {
+const emitAssets = async (context: WebpackLoaderContext, config: any) => {
   // support both `list` and `items`
   const tabBarList = config?.tabBar?.list ?? config?.tabBar?.items ?? [];
   for (const item of tabBarList) {
@@ -43,7 +43,7 @@ const emitAssets = async (context: webpack.loader.LoaderContext, config: any) =>
   return config;
 };
 
-const emitConfigFile = async (context: webpack.loader.LoaderContext, target: GojiTarget) => {
+const emitConfigFile = async (context: WebpackLoaderContext, target: GojiTarget) => {
   const { resourcePath, rootContext } = context;
   const configInputContext = path.dirname(resourcePath);
   const configInputPath = await resolveConfigPath(
@@ -74,7 +74,7 @@ const emitConfigFile = async (context: webpack.loader.LoaderContext, target: Goj
 };
 
 module.exports = async function GojiConfigFileLoader(
-  this: webpack.loader.LoaderContext,
+  this: WebpackLoaderContext,
   source: string | Buffer,
 ) {
   if (this.cacheable) {

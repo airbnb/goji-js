@@ -66,12 +66,11 @@ const main = async () => {
 
   // show progress
   if (gojiConfig.progress ?? cliConfig.progress ?? true) {
-    webpackConfig.plugins!.push(new webpack.ProgressPlugin());
+    webpackConfig.plugins!.push(new webpack.ProgressPlugin({}));
   }
 
   // create compiler
-  const compiler = webpack(webpackConfig);
-  const compilerCallback = (err: Error, stats: webpack.Stats) => {
+  const compilerCallback = (err?: Error, stats?: webpack.Stats) => {
     if (err) {
       console.error(err.stack || err);
       // @ts-ignore
@@ -82,19 +81,17 @@ const main = async () => {
       return;
     }
     const outputOptions = webpackConfig.stats;
-    const statsString = stats.toString(outputOptions);
+    const statsString = stats!.toString(outputOptions);
     if (statsString) {
       process.stdout.write(`${statsString}\n`);
     }
   };
-
   if (watch) {
     console.log('Start GojiJS in development mode.');
-    compiler.watch(webpackConfig.watchOptions ?? {}, compilerCallback);
   } else {
     console.log('Start GojiJS in production mode.');
-    compiler.run(compilerCallback);
   }
+  webpack(webpackConfig, compilerCallback);
 };
 
 main().catch(e => console.error(e));

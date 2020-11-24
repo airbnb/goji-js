@@ -11,7 +11,7 @@ const DEFAULT_MAC_OS_POLLING_INTERVAL = 500;
 export const getPoll = (pollingInterval: number = DEFAULT_MAC_OS_POLLING_INTERVAL) => {
   let canUseFsevents = false;
   try {
-    // eslint-disable-next-line global-require, import/no-extraneous-dependencies
+    // eslint-disable-next-line global-require, import/no-extraneous-dependencies, import/no-unresolved
     const fseventsHandler = require('chokidar/lib/fsevents-handler');
     canUseFsevents = fseventsHandler.canUse();
   } catch (e) {
