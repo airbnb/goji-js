@@ -1,6 +1,6 @@
 {
   "name": "@goji/webpack-plugin",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "GojiJS Webpack Plugin",
   "main": "dist/cjs/cjs.js",
   "module": "dist/esm/index.js",
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
     "@babel/plugin-proposal-optional-chaining": "^7.9.0",
-    "@goji/core": "^0.8.5",
+    "@goji/core": "^0.8.6",
     "@types/ejs": "^3.0.4",
     "@types/enhanced-resolve": "^3.0.6",
     "@types/html-minifier": "^4.0.0",
