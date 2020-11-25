@@ -13,6 +13,10 @@
         "title": "Cross-Platform Development",
         "sidebar_label": "Cross-Platform"
       },
+      "css-in-js": {
+        "title": "CSS-in-JS ( Beta )",
+        "sidebar_label": "CSS-in-JS ( Beta )"
+      },
       "css": {
         "title": "CSS",
         "sidebar_label": "CSS"

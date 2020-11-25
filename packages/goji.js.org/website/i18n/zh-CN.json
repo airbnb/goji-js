@@ -13,6 +13,10 @@
         "title": "跨平台开发",
         "sidebar_label": "跨平台"
       },
+      "css-in-js": {
+        "title": "CSS-in-JS ( 测试版 )",
+        "sidebar_label": "CSS-in-JS ( 测试版 )"
+      },
       "css": {
         "title": "样式",
         "sidebar_label": "样式"
@@ -56,6 +60,7 @@
     },
     "links": {
       "Docs": "文档",
+      "Blog": "博客",
       "GitHub": "GitHub"
     },
     "categories": {

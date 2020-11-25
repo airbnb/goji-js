@@ -6,8 +6,8 @@ sidebar_label: CSS
 
 ## CSS Module
 
-Goji support [CSS Module](https://github.com/css-modules/css-modules) and recommend to use it for
-these reasons.
+GojiJS support [CSS Module](https://github.com/css-modules/css-modules) by default and recommend to
+use it for these reasons.
 
 - Scoped CSS class names
 - Reduce the main package bundle size by
@@ -26,10 +26,58 @@ export const Comp = () => {
 };
 ```
 
-## Hashed class names
-
 In production mode, all class names are hashed to a random string and default length is `5`.
 
 In development mode, for better debug experience the class names will contain `path`, `name` and
 `local`. For more details please see
 [css-loader's localIdentName](https://github.com/webpack-contrib/css-loader#localidentname).
+
+## PostCSS
+
+GojiJS choses the well-known PostCSS as the CSS transformer and enables following plugins.
+
+- [postcss-preset-env](https://github.com/csstools/postcss-preset-env)
+
+Support `iOS >= 8` and `Android >= 4`.
+
+- [postcss-px2units](https://github.com/yingye/postcss-px2units)
+
+```css
+/* input */
+p {
+  margin: 0 0 20px;
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: 1px; /* no */
+}
+
+/* output */
+p {
+  margin: 0 0 20rpx;
+  font-size: 32rpx;
+  line-height: 1.2;
+  letter-spacing: 1px;
+}
+```
+
+- [postcss-nested](https://github.com/postcss/postcss-nested)
+
+```css
+/* input */
+.phone {
+  &_title {
+    width: 500px;
+  }
+  img {
+    display: block;
+  }
+}
+
+/* output */
+.phone_title {
+  width: 500px;
+}
+.phone img {
+  display: block;
+}
+```
