@@ -10,6 +10,7 @@ module.exports = {
     ],
     '@babel/preset-typescript',
     '@babel/preset-react',
+    'linaria/babel',
   ],
   plugins: [
     ['@babel/plugin-proposal-class-properties', { loose: true }],
