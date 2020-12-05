@@ -13,7 +13,6 @@ interface BaseProps {
   onTouchend?: (e: any) => void;
   onTap?: (e: any) => void;
   onLongpress?: (e: any) => void;
-  onLongtap?: (e: any) => void;
   onTransitionend?: (e: any) => void;
   onAnimationstart?: (e: any) => void;
   onAnimationiteration?: (e: any) => void;
