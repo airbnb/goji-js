@@ -15,7 +15,7 @@ const sortComponents = component => {
   });
 };
 
-const addCommonEvents = (components: ComponentDesc[]) => {
+const addCommonEvents = (target: GojiTarget, components: ComponentDesc[]) => {
   for (const component of components) {
     component.events.push(
       'touch-start',
@@ -23,8 +23,9 @@ const addCommonEvents = (components: ComponentDesc[]) => {
       'touch-cancel',
       'touch-end',
       'tap',
-      'long-press',
-      'long-tap',
+      // Alipay doesn't support `longpress` so we have to use `longtap` in bridge templates.
+      // For more details see https://github.com/airbnb/goji-js/pull/48
+      target === 'alipay' ? 'long-tap' : 'long-press',
       'transition-end',
       'animation-start',
       'animation-iteration',
@@ -63,7 +64,7 @@ export type ComponentDesc = {
 // docs: https://developers.weixin.qq.com/miniprogram/en/dev/component/
 export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
   sortComponents(
-    addCommonEvents([
+    addCommonEvents(target, [
       // View Container
       {
         name: 'movable-view',
