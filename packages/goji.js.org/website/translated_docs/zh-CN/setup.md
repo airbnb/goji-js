@@ -56,7 +56,7 @@ my-goji-app/
 
 要启动一个 Goji 项目，您可以运行 `npm run start [target]` 开启开发模式， 或运行 `npm run build [target]` 开启生产模式。
 
-> yarn 用户应该运行 `yarn starn [target]` 或 `yarn building [target]`
+> yarn 用户应该运行 `yarn start [target]` 或 `yarn build [target]`
 
 ` target ` 默认情况下为 `wechat`， 可以为此列表中的任意一个。
 
