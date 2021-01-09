@@ -27,5 +27,5 @@ const App = () => {
   );
 };
 
-render(App);
+render(<App />);
 ```
