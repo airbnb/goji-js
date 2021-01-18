@@ -811,6 +811,9 @@ export interface OfficialAccountProps extends BaseProps {
 
 export interface WebViewProps extends BaseProps {
   src?: string;
+  onMessage?: (e: any) => void;
+  onLoad?: (e: any) => void;
+  onError?: (e: any) => void;
 }
 
 export interface CoverImageProps extends BaseProps {
