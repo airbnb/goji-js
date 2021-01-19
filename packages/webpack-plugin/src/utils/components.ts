@@ -1,7 +1,6 @@
 import { unstable_SimplifyComponent as SimplifyComponent, GojiTarget } from '@goji/core';
 import camelCase from 'lodash/camelCase';
 import kebabCase from 'lodash/kebabCase';
-import pick from 'lodash/pick';
 import { getBuiltInComponents, ComponentDesc } from '../constants/components';
 
 export const getWhitelistedComponents = (
@@ -32,10 +31,15 @@ export const getSimplifiedComponents = (
       );
       continue;
     }
+    const simplifiedProperties = properties.map(kebabCase);
     simplifiedComponents.push({
       ...matched,
       events,
-      props: pick(matched.props, properties.map(kebabCase)),
+      props: matched.props.filter(prop => {
+        const [propName] = typeof prop === 'string' ? [prop, {}] : prop;
+
+        return simplifiedProperties.includes(propName);
+      }),
       sid: index,
     });
   }
@@ -85,22 +89,22 @@ export const getRenderedComponents = (
         events: component.events.map(eventName =>
           target === 'alipay' ? camelCase(`on-${eventName}`) : `bind${eventName.replace(/-/g, '')}`,
         ),
-        attributes: Object.keys(component.props).map(propsName => {
-          const desc = component.props[propsName];
+        attributes: component.props.map(prop => {
+          const [name, desc] = typeof prop === 'string' ? [prop, {}] : prop;
           if (
             (desc && !desc.required && desc.defaultValue) ||
-            forceRenderFallback(target, component.name, propsName)
+            forceRenderFallback(target, component.name, name)
           ) {
             return {
-              name: propsName,
-              value: camelCase(propsName),
+              name,
+              value: camelCase(name),
               fallback: desc.defaultValue,
             };
           }
 
           return {
-            name: propsName,
-            value: camelCase(propsName),
+            name,
+            value: camelCase(name),
           };
         }),
       };
