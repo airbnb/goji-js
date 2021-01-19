@@ -88,13 +88,13 @@ export const getRenderedComponents = (
         attributes: Object.keys(component.props).map(propsName => {
           const desc = component.props[propsName];
           if (
-            (desc && !desc.required && desc.value) ||
+            (desc && !desc.required && desc.defaultValue) ||
             forceRenderFallback(target, component.name, propsName)
           ) {
             return {
               name: propsName,
               value: camelCase(propsName),
-              fallback: desc.value,
+              fallback: desc.defaultValue,
             };
           }
 

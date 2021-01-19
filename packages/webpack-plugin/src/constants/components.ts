@@ -36,18 +36,8 @@ const addCommonEvents = (target: GojiTarget, components: ComponentDesc[]) => {
   return components;
 };
 
-export enum propTypes {
-  number = 'number',
-  string = 'string',
-  boolean = 'boolean',
-  color = 'color',
-  array = 'array',
-  object = 'object',
-}
-
 type PropDesc = {
-  type: propTypes[] | propTypes;
-  value?: any;
+  defaultValue?: any;
   required?: boolean;
 };
 
@@ -70,54 +60,39 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'movable-view',
         props: {
           direction: {
-            type: propTypes.string,
-            value: 'none',
+            defaultValue: 'none',
           },
           inertia: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'out-of-bounds': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
-          x: {
-            type: propTypes.number,
-          },
-          y: {
-            type: propTypes.number,
-          },
+          x: {},
+          y: {},
           damping: {
-            type: propTypes.number,
-            value: 20,
+            defaultValue: 20,
           },
           friction: {
-            type: propTypes.number,
-            value: 2,
+            defaultValue: 2,
           },
           disabled: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           scale: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'scale-min': {
-            type: propTypes.number,
-            value: 0.5,
+            defaultValue: 0.5,
           },
           'scale-max': {
-            type: propTypes.number,
-            value: 10,
+            defaultValue: 10,
           },
           'scale-value': {
-            type: propTypes.number,
-            value: 1,
+            defaultValue: 1,
           },
           animation: {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
         },
         events: [
@@ -131,18 +106,14 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'cover-image',
         props: {
-          src: {
-            type: propTypes.string,
-          },
+          src: {},
         },
         events: ['load', 'error'],
       },
       {
         name: 'cover-view',
         props: {
-          'scroll-top': {
-            type: [propTypes.string, propTypes.number],
-          },
+          'scroll-top': {},
         },
 
         events: [],
@@ -151,8 +122,7 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'movable-area',
         props: {
           'scale-area': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
         },
         events: [],
@@ -162,45 +132,31 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         isWrapped: ['wechat', 'qq'].includes(target),
         props: {
           'scroll-x': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'scroll-y': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'upper-threshold': {
-            type: [propTypes.number, propTypes.string],
-            value: 50,
+            defaultValue: 50,
           },
           'lower-threshold': {
-            type: [propTypes.number, propTypes.string],
-            value: 50,
+            defaultValue: 50,
           },
-          'scroll-top': {
-            type: [propTypes.number, propTypes.string],
-          },
-          'scroll-left': {
-            type: [propTypes.number, propTypes.string],
-          },
-          'scroll-into-view': {
-            type: propTypes.string,
-          },
+          'scroll-top': {},
+          'scroll-left': {},
+          'scroll-into-view': {},
           'scroll-with-animation': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'enable-back-to-top': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'enable-flex': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'scroll-anchoring': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
         },
         events: ['scroll-to-upper', 'scroll-to-lower', 'scroll'],
@@ -210,60 +166,46 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         isWrapped: ['wechat', 'qq'].includes(target),
         props: {
           'indicator-dots': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'indicator-color': {
-            type: propTypes.color,
-            value: 'rgba(0,0,0,.3)',
+            defaultValue: 'rgba(0,0,0,.3)',
           },
           'indicator-active-color': {
-            type: propTypes.color,
-            value: '#000000',
+            defaultValue: '#000000',
           },
           autoplay: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           current: {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
           interval: {
-            type: propTypes.number,
-            value: 5000,
+            defaultValue: 5000,
           },
           duration: {
-            type: propTypes.number,
-            value: 500,
+            defaultValue: 500,
           },
           circular: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           vertical: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'previous-margin': {
-            type: propTypes.string,
-            value: '0px',
+            defaultValue: '0px',
           },
           'next-margin': {
-            type: propTypes.string,
-            value: '0px',
+            defaultValue: '0px',
           },
           'display-multiple-items': {
-            type: propTypes.number,
-            value: 1,
+            defaultValue: 1,
           },
           'skip-hidden-item-layout': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'easing-function': {
-            type: propTypes.string,
-            value: 'default',
+            defaultValue: 'default',
           },
         },
         events: ['change', 'transition', 'animationfinish'],
@@ -271,9 +213,7 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'swiper-item',
         props: {
-          'item-id': {
-            type: propTypes.string,
-          },
+          'item-id': {},
         },
         events: [],
       },
@@ -281,15 +221,11 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'text',
         props: {
           selectable: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
-          space: {
-            type: propTypes.string,
-          },
+          space: {},
           decode: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
         },
         events: [],
@@ -299,16 +235,12 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'icon',
         props: {
           type: {
-            type: propTypes.string,
             required: true,
           },
           size: {
-            type: [propTypes.number, propTypes.string],
-            value: 23,
+            defaultValue: 23,
           },
-          color: {
-            type: propTypes.string,
-          },
+          color: {},
         },
         events: [],
         isLeaf: true,
@@ -316,44 +248,33 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'progress',
         props: {
-          percent: {
-            type: propTypes.number,
-          },
+          percent: {},
           'show-info': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'border-radius': {
-            type: [propTypes.number, propTypes.string],
-            value: 0,
+            defaultValue: 0,
           },
           'font-size': {
-            type: [propTypes.number, propTypes.string],
-            value: 16,
+            defaultValue: 16,
           },
           'stroke-width': {
-            type: [propTypes.number, propTypes.string],
-            value: 6,
+            defaultValue: 6,
           },
           color: {
-            type: propTypes.string,
-            value: '#09BB07',
+            defaultValue: '#09BB07',
           },
           activeColor: {
-            type: propTypes.string,
-            value: '#09BB07',
+            defaultValue: '#09BB07',
           },
           backgroundColor: {
-            type: propTypes.string,
-            value: '#EBEBEB',
+            defaultValue: '#EBEBEB',
           },
           active: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'active-mode': {
-            type: propTypes.string,
-            value: 'backwards',
+            defaultValue: 'backwards',
           },
         },
         events: ['activeend'],
@@ -363,12 +284,9 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'rich-text',
         props: {
           nodes: {
-            type: [propTypes.string, propTypes.array],
-            value: [],
+            defaultValue: [],
           },
-          space: {
-            type: propTypes.string,
-          },
+          space: {},
         },
         events: [],
       },
@@ -376,20 +294,16 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'view',
         props: {
           'hover-class': {
-            type: propTypes.string,
-            value: 'none',
+            defaultValue: 'none',
           },
           'hover-stop-propagation': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'hover-start-time': {
-            type: propTypes.number,
-            value: 50,
+            defaultValue: 50,
           },
           'hover-stay-time': {
-            type: propTypes.number,
-            value: 400,
+            defaultValue: 400,
           },
         },
         events: [],
@@ -399,71 +313,46 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'button',
         props: {
           size: {
-            type: propTypes.string,
-            value: 'default',
+            defaultValue: 'default',
           },
           type: {
-            type: propTypes.string,
             // the document said `type` defaults to `'default'` but `''` in fact otherwise the background-color won't work
             // doc: https://developers.weixin.qq.com/miniprogram/dev/component/button.html
-            value: '',
+            defaultValue: '',
           },
           plain: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           disabled: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           loading: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
-          'form-type': {
-            type: propTypes.string,
-          },
-          'open-type': {
-            type: propTypes.string,
-          },
+          'form-type': {},
+          'open-type': {},
           'hover-class': {
-            type: propTypes.string,
-            value: 'button-hover',
+            defaultValue: 'button-hover',
           },
           'hover-stop-propagation': {
-            type: propTypes.boolean,
-            value: 'false',
+            defaultValue: 'false',
           },
           'hover-start-time': {
-            type: propTypes.number,
-            value: 20,
+            defaultValue: 20,
           },
           'hover-stay-time': {
-            type: propTypes.number,
-            value: 70,
+            defaultValue: 70,
           },
           lang: {
-            type: propTypes.string,
-            value: 'en',
+            defaultValue: 'en',
           },
-          'session-from': {
-            type: propTypes.string,
-          },
-          'send-message-title': {
-            type: propTypes.string,
-          },
-          'send-message-path': {
-            type: propTypes.string,
-          },
-          'send-message-img': {
-            type: propTypes.string,
-          },
-          'app-parameter': {
-            type: propTypes.string,
-          },
+          'session-from': {},
+          'send-message-title': {},
+          'send-message-path': {},
+          'send-message-img': {},
+          'app-parameter': {},
           'show-message-card': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
         },
         events: ['getuserinfo', 'contact', 'getphonenumber', 'error', 'opensetting', 'launchapp'],
@@ -471,18 +360,11 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'checkbox',
         props: {
-          value: {
-            type: propTypes.string,
-          },
-          disabled: {
-            type: propTypes.boolean,
-          },
-          checked: {
-            type: propTypes.boolean,
-          },
+          value: {},
+          disabled: {},
+          checked: {},
           color: {
-            type: propTypes.string,
-            value: '#09BB07',
+            defaultValue: '#09BB07',
           },
         },
         events: [],
@@ -496,23 +378,17 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'editor',
         props: {
           'read-only': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
-          placeholder: {
-            type: propTypes.string,
-          },
+          placeholder: {},
           'show-img-size': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'show-img-toolbar': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'show-img-resize': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
         },
         events: ['ready', 'focus', 'blur', 'input', 'statuschange'],
@@ -522,12 +398,10 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'form',
         props: {
           'report-submit': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'report-submit-timeout': {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
         },
         events: ['submit', 'reset'],
@@ -537,78 +411,60 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         isWrapped: ['wechat', 'qq'].includes(target),
         props: {
           value: {
-            type: propTypes.string,
             required: true,
           },
           type: {
-            type: propTypes.string,
-            value: 'text',
+            defaultValue: 'text',
           },
           password: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           placeholder: {
-            type: propTypes.string,
             required: true,
           },
           'placeholder-style': {
-            type: propTypes.string,
             required: true,
           },
           'placeholder-class': {
-            type: propTypes.string,
-            value: 'input-placeholder',
+            defaultValue: 'input-placeholder',
           },
           disabled: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           maxlength: {
-            type: propTypes.number,
-            value: 140,
+            defaultValue: 140,
           },
           'cursor-spacing': {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
           'auto-focus': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           focus: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'confirm-type': {
-            type: propTypes.string,
-            value: 'done',
+            defaultValue: 'done',
           },
           'confirm-hold': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           cursor: {
-            type: propTypes.number,
             required: true,
           },
           'selection-start': {
-            type: propTypes.number,
-            value: -1,
+            defaultValue: -1,
           },
           'selection-end': {
-            type: propTypes.number,
-            value: -1,
+            defaultValue: -1,
           },
           'adjust-position': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           // Alipay MiniProgram need this prop to fix position of input box is not correct bug.
           // https://opendocs.alipay.com/mini/component/input
           enableNative: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
         },
         events: ['input', 'focus', 'blur', 'confirm', 'keyboardheightchange'],
@@ -617,9 +473,7 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'label',
         props: {
-          for: {
-            type: propTypes.string,
-          },
+          for: {},
         },
         events: [],
       },
@@ -627,58 +481,35 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'picker',
         props: {
           mode: {
-            type: propTypes.string,
-            value: 'selector',
+            defaultValue: 'selector',
           },
           disabled: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           range: {
-            type: [propTypes.array, propTypes.object],
-            value: [],
+            defaultValue: [],
           },
-          'range-key': {
-            type: propTypes.string,
-          },
+          'range-key': {},
           value: {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
-          start: {
-            type: propTypes.string,
-          },
-          end: {
-            type: propTypes.string,
-          },
+          start: {},
+          end: {},
           fields: {
-            type: propTypes.string,
-            value: 'day',
+            defaultValue: 'day',
           },
-          'custom-item': {
-            type: propTypes.string,
-          },
+          'custom-item': {},
         },
         events: ['cancel', 'change', 'columnchange'],
       },
       {
         name: 'picker-view',
         props: {
-          value: {
-            type: propTypes.array,
-          },
-          'indicator-style': {
-            type: propTypes.string,
-          },
-          'indicator-class': {
-            type: propTypes.string,
-          },
-          'mask-style': {
-            type: propTypes.string,
-          },
-          'mask-class': {
-            type: propTypes.string,
-          },
+          value: {},
+          'indicator-style': {},
+          'indicator-class': {},
+          'mask-style': {},
+          'mask-class': {},
         },
         events: ['change', 'pickstart', 'pickend'],
       },
@@ -690,20 +521,15 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'radio',
         props: {
-          value: {
-            type: propTypes.string,
-          },
+          value: {},
           checked: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           disabled: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           color: {
-            type: propTypes.string,
-            value: '#09BB07',
+            defaultValue: '#09BB07',
           },
         },
         events: [],
@@ -717,52 +543,40 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'slider',
         props: {
           min: {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
           max: {
-            type: propTypes.number,
-            value: 100,
+            defaultValue: 100,
           },
           step: {
-            type: propTypes.number,
-            value: 1,
+            defaultValue: 1,
           },
           disabled: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           value: {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
           color: {
-            type: propTypes.color,
-            value: '#e9e9e9',
+            defaultValue: '#e9e9e9',
           },
           'selected-color': {
-            type: propTypes.color,
-            value: '#1aad19',
+            defaultValue: '#1aad19',
           },
           activeColor: {
-            type: propTypes.color,
-            value: '#1aad19',
+            defaultValue: '#1aad19',
           },
           backgroundColor: {
-            type: propTypes.color,
-            value: '#e9e9e9',
+            defaultValue: '#e9e9e9',
           },
           'block-size': {
-            type: propTypes.number,
-            value: 28,
+            defaultValue: 28,
           },
           'block-color': {
-            type: propTypes.color,
-            value: '#ffffff',
+            defaultValue: '#ffffff',
           },
           'show-value': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
         },
         events: ['change', 'changing'],
@@ -772,20 +586,16 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'switch',
         props: {
           checked: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           disabled: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           type: {
-            type: propTypes.string,
-            value: 'switch',
+            defaultValue: 'switch',
           },
           color: {
-            type: propTypes.string,
-            value: '#04BE02',
+            defaultValue: '#04BE02',
           },
         },
         events: ['change'],
@@ -795,66 +605,47 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'textarea',
         isWrapped: ['wechat', 'qq'].includes(target),
         props: {
-          value: {
-            type: propTypes.string,
-          },
-          placeholder: {
-            type: propTypes.string,
-          },
-          'placeholder-style': {
-            type: propTypes.string,
-          },
+          value: {},
+          placeholder: {},
+          'placeholder-style': {},
           'placeholder-class': {
-            type: propTypes.string,
-            value: 'textarea-placeholder',
+            defaultValue: 'textarea-placeholder',
           },
           disabled: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           maxlength: {
-            type: propTypes.number,
-            value: 140,
+            defaultValue: 140,
           },
           'auto-focus': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           focus: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'auto-height': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           fixed: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'cursor-spacing': {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
           cursor: {
-            type: propTypes.number,
-            value: -1,
+            defaultValue: -1,
           },
           'show-confirm-bar': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'selection-start': {
-            type: propTypes.number,
-            value: -1,
+            defaultValue: -1,
           },
           'selection-end': {
-            type: propTypes.number,
-            value: -1,
+            defaultValue: -1,
           },
           'adjust-position': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
         },
         events: ['focus', 'blur', 'linechange', 'input', 'confirm', 'keyboardheightchange'],
@@ -865,15 +656,10 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'functional-page-navigator',
         props: {
           version: {
-            type: propTypes.string,
-            value: 'release',
+            defaultValue: 'release',
           },
-          name: {
-            type: propTypes.string,
-          },
-          args: {
-            type: propTypes.object,
-          },
+          name: {},
+          args: {},
         },
         events: ['success', 'fail'],
       },
@@ -881,48 +667,32 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'navigator',
         props: {
           target: {
-            type: propTypes.string,
-            value: 'self',
+            defaultValue: 'self',
           },
-          url: {
-            type: propTypes.string,
-          },
+          url: {},
           'open-type': {
-            type: propTypes.string,
-            value: 'navigate',
+            defaultValue: 'navigate',
           },
           delta: {
-            type: propTypes.number,
-            value: 1,
+            defaultValue: 1,
           },
-          'app-id': {
-            type: propTypes.string,
-          },
-          path: {
-            type: propTypes.string,
-          },
-          'extra-data': {
-            type: propTypes.object,
-          },
+          'app-id': {},
+          path: {},
+          'extra-data': {},
           version: {
-            type: propTypes.string,
-            value: 'release',
+            defaultValue: 'release',
           },
           'hover-class': {
-            type: propTypes.string,
-            value: 'navigator-hover',
+            defaultValue: 'navigator-hover',
           },
           'hover-stop-propagation': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'hover-start-time': {
-            type: propTypes.number,
-            value: 50,
+            defaultValue: 50,
           },
           'hover-stay-time': {
-            type: propTypes.number,
-            value: 600,
+            defaultValue: 600,
           },
         },
         events: ['success', 'fail', 'complete'],
@@ -931,30 +701,20 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'audio',
         props: {
-          id: {
-            type: propTypes.string,
-          },
-          src: {
-            type: propTypes.string,
-          },
+          id: {},
+          src: {},
           loop: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           controls: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
-          poster: {
-            type: propTypes.string,
-          },
+          poster: {},
           name: {
-            type: propTypes.string,
-            value: '未知音频',
+            defaultValue: '未知音频',
           },
           author: {
-            type: propTypes.string,
-            value: '未知作者',
+            defaultValue: '未知作者',
           },
         },
         events: ['error', 'play', 'pause', 'timeupdate', 'ended'],
@@ -964,20 +724,16 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'camera',
         props: {
           mode: {
-            type: propTypes.string,
-            value: 'normal',
+            defaultValue: 'normal',
           },
           'device-position': {
-            type: propTypes.string,
-            value: 'back',
+            defaultValue: 'back',
           },
           flash: {
-            type: propTypes.string,
-            value: 'auto',
+            defaultValue: 'auto',
           },
           'frame-size': {
-            type: propTypes.string,
-            value: 'medium',
+            defaultValue: 'medium',
           },
         },
         events: ['stop', 'error', 'initdone', 'scancode'],
@@ -986,20 +742,15 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'image',
         props: {
-          src: {
-            type: propTypes.string,
-          },
+          src: {},
           mode: {
-            type: propTypes.string,
-            value: 'scaleToFill',
+            defaultValue: 'scaleToFill',
           },
           'lazy-load': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'show-menu-by-longpress': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
         },
         events: ['error', 'load'],
@@ -1008,52 +759,39 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'live-player',
         props: {
-          src: {
-            type: propTypes.string,
-          },
+          src: {},
           mode: {
-            type: propTypes.string,
-            value: 'live',
+            defaultValue: 'live',
           },
           autoplay: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           muted: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           orientation: {
-            type: propTypes.string,
-            value: 'vertical',
+            defaultValue: 'vertical',
           },
           'object-fit': {
-            type: propTypes.string,
-            value: 'contain',
+            defaultValue: 'contain',
           },
           'background-mute': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'min-cache': {
-            type: propTypes.number,
-            value: 1,
+            defaultValue: 1,
           },
           'max-cache': {
-            type: propTypes.number,
-            value: 3,
+            defaultValue: 3,
           },
           'sound-mode': {
-            type: propTypes.string,
-            value: 'speaker',
+            defaultValue: 'speaker',
           },
           'auto-pause-if-navigate': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'auto-pause-if-open-native': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
         },
         events: ['statechange', 'fullscreenchange', 'netstatus'],
@@ -1062,74 +800,53 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'live-pusher',
         props: {
-          url: {
-            type: propTypes.string,
-          },
+          url: {},
           mode: {
-            type: propTypes.string,
-            value: 'RTC',
+            defaultValue: 'RTC',
           },
           autopush: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           muted: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'enable-camera': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'auto-focus': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           orientation: {
-            type: propTypes.string,
-            value: 'vertical',
+            defaultValue: 'vertical',
           },
           beauty: {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
           whiteness: {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
           aspect: {
-            type: propTypes.string,
-            value: '9:16',
+            defaultValue: '9:16',
           },
           'min-bitrate': {
-            type: propTypes.number,
-            value: 200,
+            defaultValue: 200,
           },
           'max-bitrate': {
-            type: propTypes.number,
-            value: 1000,
+            defaultValue: 1000,
           },
-          'waiting-image': {
-            type: propTypes.string,
-          },
-          'waiting-image-hash': {
-            type: propTypes.string,
-          },
+          'waiting-image': {},
+          'waiting-image-hash': {},
           zoom: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'device-position': {
-            type: propTypes.string,
-            value: 'front',
+            defaultValue: 'front',
           },
           'background-mute': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           mirror: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
         },
         events: ['statechange', 'netstatus', 'error', 'bgmstart', 'bgmprogress', 'bgmcomplete'],
@@ -1139,107 +856,75 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'video',
         props: {
           src: {
-            type: propTypes.string,
             required: true,
           },
-          duration: {
-            type: propTypes.number,
-          },
+          duration: {},
           controls: {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
-          'danmu-list': {
-            type: propTypes.array,
-          },
+          'danmu-list': {},
           'danmu-btn': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'enable-danmu': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           autoplay: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           loop: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           muted: {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'initial-time': {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
           'page-gesture': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
-          direction: {
-            type: propTypes.number,
-          },
+          direction: {},
           'show-progress': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'show-fullscreen-btn': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'show-play-btn': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'show-center-play-btn': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'enable-progress-gesture': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'object-fit': {
-            type: propTypes.string,
-            value: 'contain',
+            defaultValue: 'contain',
           },
-          poster: {
-            type: propTypes.string,
-          },
+          poster: {},
           'show-mute-btn': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
-          title: {
-            type: propTypes.string,
-          },
+          title: {},
           'play-btn-position': {
-            type: propTypes.string,
-            value: 'bottom',
+            defaultValue: 'bottom',
           },
           'enable-play-gesture': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'auto-pause-if-navigate': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'auto-pause-if-open-native': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'vslide-gesture': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'vslide-gesture-in-fullscreen': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
         },
         events: [
@@ -1260,92 +945,62 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         isWrapped: ['wechat', 'qq'].includes(target),
         props: {
           longitude: {
-            type: propTypes.number,
             required: true,
           },
           latitude: {
-            type: propTypes.number,
             required: true,
           },
           scale: {
-            type: propTypes.number,
-            value: 16,
+            defaultValue: 16,
           },
-          markers: {
-            type: propTypes.array,
-          },
+          markers: {},
           // don't support `covers`
           // 1. covers is deprecated
           // 2. covers cause map lost uncontrolled data
-          polyline: {
-            type: propTypes.array,
-          },
-          circles: {
-            type: propTypes.array,
-          },
-          controls: {
-            type: propTypes.array,
-          },
-          'include-points': {
-            type: propTypes.array,
-          },
+          polyline: {},
+          circles: {},
+          controls: {},
+          'include-points': {},
           'show-location': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
-          polygons: {
-            type: propTypes.array,
-          },
-          subkey: {
-            type: propTypes.string,
-          },
+          polygons: {},
+          subkey: {},
           'layer-style': {
-            type: propTypes.number,
-            value: 1,
+            defaultValue: 1,
           },
           rotate: {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
           skew: {
-            type: propTypes.number,
-            value: 0,
+            defaultValue: 0,
           },
           'enable-3D': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'show-compass': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'show-scale': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'enable-overlooking': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'enable-zoom': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'enable-scroll': {
-            type: propTypes.boolean,
-            value: true,
+            defaultValue: true,
           },
           'enable-rotate': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'enable-satellite': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
           'enable-traffic': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
         },
         events: [
@@ -1363,15 +1018,10 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'canvas',
         props: {
-          type: {
-            type: propTypes.string,
-          },
-          'canvas-id': {
-            type: propTypes.string,
-          },
+          type: {},
+          'canvas-id': {},
           'disable-scroll': {
-            type: propTypes.boolean,
-            value: false,
+            defaultValue: false,
           },
         },
         events: ['touchstart', 'touchmove', 'touchend', 'touchcancel', 'longtap', 'error'],
@@ -1382,12 +1032,9 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
         name: 'ad',
         props: {
           'unit-id': {
-            type: propTypes.string,
             required: true,
           },
-          'ad-intervals': {
-            type: propTypes.number,
-          },
+          'ad-intervals': {},
         },
         events: ['load', 'error', 'close'],
         isLeaf: true,
@@ -1401,22 +1048,13 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'open-data',
         props: {
-          type: {
-            type: propTypes.string,
-          },
-          'open-gid': {
-            type: propTypes.string,
-          },
+          type: {},
+          'open-gid': {},
           lang: {
-            type: propTypes.string,
-            value: 'en',
+            defaultValue: 'en',
           },
-          'default-text': {
-            type: propTypes.string,
-          },
-          'default-avatar': {
-            type: propTypes.string,
-          },
+          'default-text': {},
+          'default-avatar': {},
         },
         events: ['error'],
         isLeaf: true,
@@ -1424,9 +1062,7 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       {
         name: 'web-view',
         props: {
-          src: {
-            type: propTypes.string,
-          },
+          src: {},
         },
         events: ['message', 'load', 'error'],
         isLeaf: true,
