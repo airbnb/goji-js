@@ -15,6 +15,7 @@ import { getPoll } from './utils/polling';
 import { GojiProjectConfigPlugin } from './plugins/projectConfig';
 import { GojiCollectUsedComponentsWebpackPlugin } from './plugins/collectUsedComponents';
 import { getWrappedComponents } from './constants/components';
+import { registerPluginComponent } from './utils/pluginComponent';
 
 export class GojiWebpackPlugin implements webpack.Plugin {
   private options: GojiWebpackPluginOptions;
@@ -49,4 +50,7 @@ export class GojiWebpackPlugin implements webpack.Plugin {
   public static runtimeChunkPlaceholder = runtimeChunkPlaceholder;
 
   public static getPoll = getPoll;
+
+  // eslint-disable-next-line camelcase
+  public static internal_registerPluginComponent = registerPluginComponent;
 }

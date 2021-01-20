@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@goji/core": "^0.9.1",
+    "@goji/macro": "^0.9.1",
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
     "linaria": "^2.0.2",

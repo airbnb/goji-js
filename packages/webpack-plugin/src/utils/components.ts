@@ -2,16 +2,20 @@ import { unstable_SimplifyComponent as SimplifyComponent, GojiTarget } from '@go
 import camelCase from 'lodash/camelCase';
 import kebabCase from 'lodash/kebabCase';
 import { getBuiltInComponents, ComponentDesc } from '../constants/components';
+import { pluginComponents } from './pluginComponent';
 
 export const getWhitelistedComponents = (
   target: GojiTarget,
   componentWhitelist?: Array<string>,
 ): ComponentDesc[] => {
-  if (!componentWhitelist) {
-    return getBuiltInComponents(target);
-  }
-
-  return getBuiltInComponents(target).filter(comp => componentWhitelist.includes(comp.name));
+  const builtInComponents = getBuiltInComponents(target);
+  return (componentWhitelist
+    ? builtInComponents.filter(comp => componentWhitelist.includes(comp.name))
+    : builtInComponents
+  ).concat(
+    // add plugin components
+    ...pluginComponents.values(),
+  );
 };
 
 export interface SimplifiedComponentDesc extends ComponentDesc {

@@ -1,8 +1,14 @@
 {
   "usingComponents": {
     <% for (const component of components) {%>
+      <%# wrapped components %>
       <% if (component.isWrapped) {%>
         "goji-<%= component.name %>": "<%= relativePathToBridge %>/components/<%= component.name %>",
+      <% } %>
+
+      <%# plugin components %>
+      <% if (component.nativePath) {%>
+        "<%= component.name %>": "<%= component.nativePath %>",
       <% } %>
     <%[] }%>
 
