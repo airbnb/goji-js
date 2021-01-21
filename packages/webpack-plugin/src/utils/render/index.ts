@@ -1,6 +1,7 @@
 import ejs from 'ejs';
 import fs from 'fs';
 import path from 'path';
+import JSON5 from 'json5';
 import unified from 'unified';
 import parse from 'wx2swan/dist/src/view/plugins/parse';
 import wxmlToSwan from 'wx2swan/dist/src/view//plugins/wxml-to-swan';
@@ -16,6 +17,10 @@ export const transformTemplate = async (
   target: GojiWebpackPluginOptions['target'],
   type: string,
 ) => {
+  if (type === 'json') {
+    // format the JSON file
+    return JSON.stringify(JSON5.parse(source));
+  }
   switch (target) {
     case 'wechat':
       return source;

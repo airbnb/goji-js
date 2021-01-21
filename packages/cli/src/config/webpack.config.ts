@@ -110,6 +110,13 @@ export const getWebpackConfig = ({
           // https://github.com/babel/babel/issues/9764#issuecomment-476971266
           exclude: nodeEnv === 'production' ? /node_modules\/@babel\/runtime/ : /node_modules/,
           use: [
+            // support `@goji/macro`
+            {
+              loader: require.resolve('babel-loader'),
+              options: {
+                plugins: [[require.resolve('babel-plugin-macros'), { gojiMacro: { target } }]],
+              },
+            },
             ...cacheLoaders,
             ...threadLoaders,
             {

@@ -36,7 +36,7 @@ const addCommonEvents = (target: GojiTarget, components: ComponentDesc[]) => {
   return components;
 };
 
-type PropDesc = {
+export type PropDesc = {
   defaultValue?: any;
   required?: boolean;
 };
@@ -45,6 +45,7 @@ export type ComponentDesc = {
   name: string;
   props: Array<string | [string, PropDesc]>;
   events: string[];
+  nativePath?: string;
   isLeaf?: boolean;
   isWrapped?: boolean;
 };
