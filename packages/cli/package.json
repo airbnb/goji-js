@@ -71,6 +71,7 @@
     "@types/yargs": "^15.0.5"
   },
   "peerDependencies": {
-    "@goji/core": "*"
+    "@goji/core": "*",
+    "source-map": "*"
   }
 }
