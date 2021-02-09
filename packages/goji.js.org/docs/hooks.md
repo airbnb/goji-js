@@ -25,7 +25,7 @@ const Comp = () => {
     });
   }, []);
 
-  return <View>{data}</View>;
+  return <View>{dataString}</View>;
 };
 ```
 
