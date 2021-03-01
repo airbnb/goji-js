@@ -130,7 +130,11 @@ export const getWebpackConfig = ({
                 configFile: require.resolve('./linaria.config'),
                 sourceMap: true,
                 // Linaria defaults to use `.linaria-cache` folder rather than standard `node_modules/.cache`
-                cacheDirectory: findCacheDir({ name: 'linaria', cwd: basedir }),
+                // also we should use different folders based on `nodeEnv` and `target` to prevent wrong cache result
+                cacheDirectory: findCacheDir({
+                  name: `linaria-${nodeEnv}-${target}`,
+                  cwd: basedir,
+                }),
                 babelOptions: {
                   // always use internal babel.config.js file
                   configFile: require.resolve('./babel.config'),
