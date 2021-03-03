@@ -49,12 +49,14 @@ export class GojiEntryWebpackPlugin extends GojiBasedWebpackPlugin {
     const pathEntries = readPathsFromAppConfig(appConfig);
 
     // add app & pages
-    for (const pathEntry of [appEntry, ...pathEntries]) {
-      const request = loaderUtils.urlToRequest(pathEntry);
+    for (const theEntry of [appEntry, ...pathEntries]) {
+      const request = loaderUtils.urlToRequest(theEntry);
       new webpack.SingleEntryPlugin(
         context,
-        `${require.resolve('../loaders/configFile')}?target=${this.options.target}!${request}`,
-        pathEntry,
+        `${require.resolve('../loaders/configFile')}?target=${
+          this.options.target
+        }&entry=${theEntry}!${request}`,
+        theEntry,
       ).apply(compiler);
     }
     // save for other plugins
