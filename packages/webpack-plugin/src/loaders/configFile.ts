@@ -1,7 +1,5 @@
 import { GojiTarget } from '@goji/core';
 import webpack from 'webpack';
-import replaceExt from 'replace-ext';
-import path from 'path';
 import loaderUtils from 'loader-utils';
 import { promisify } from 'util';
 import {
@@ -43,13 +41,15 @@ const emitAssets = async (context: webpack.loader.LoaderContext, config: any) =>
   return config;
 };
 
-const emitConfigFile = async (context: webpack.loader.LoaderContext, target: GojiTarget) => {
-  const { resourcePath, rootContext } = context;
-  const configInputContext = path.dirname(resourcePath);
+const emitConfigFile = async (context: webpack.loader.LoaderContext) => {
+  const { rootContext } = context;
+  const { target, entry } = loaderUtils.getOptions(context) as {
+    target: GojiTarget;
+    entry: string;
+  };
   const configInputPath = await resolveConfigPath(
-    // remove ext `page.tsx` => `page`
-    replaceExt(resourcePath, ''),
-    configInputContext,
+    entry,
+    rootContext,
     // eslint-disable-next-line no-underscore-dangle
     context._compiler.options.resolve?.extensions,
   );
@@ -68,9 +68,7 @@ const emitConfigFile = async (context: webpack.loader.LoaderContext, target: Goj
   const configOutput = evalConfigSource(configInputPath, configSource, target);
 
   await emitAssets(context, configOutput);
-  const configOutputPath = replaceExt(resourcePath, '.json');
-  const relativeConfigPath = path.relative(rootContext, configOutputPath);
-  context.emitFile(relativeConfigPath, JSON.stringify(configOutput), undefined);
+  context.emitFile(`${entry}.json`, JSON.stringify(configOutput), undefined);
 };
 
 module.exports = async function GojiConfigFileLoader(
@@ -81,10 +79,9 @@ module.exports = async function GojiConfigFileLoader(
     this.cacheable();
   }
   const callback = this.async();
-  const { target } = loaderUtils.getOptions(this);
 
   try {
-    await emitConfigFile(this, target as GojiTarget);
+    await emitConfigFile(this);
   } catch (err) {
     if (callback) {
       callback(err);
