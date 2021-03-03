@@ -1,6 +1,6 @@
 {
   "name": "@goji/core",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "GojiJS Core",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
