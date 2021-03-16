@@ -26,6 +26,8 @@ module.exports = {
       {
         modules: BABEL_MODULES[nodeEnv],
         targets: BABEL_PRESET_TARGETS[nodeEnv],
+        useBuiltIns: 'entry',
+        corejs: 3,
       },
     ],
     require.resolve('@babel/preset-typescript'),
