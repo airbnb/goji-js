@@ -5,6 +5,7 @@ import { SetDifference } from 'utility-types';
 
 interface BaseProps {
   testID?: string;
+  id?: string;
   className?: string;
   style?: CSSProperties;
   onTouchstart?: (e: any) => void;
@@ -697,7 +698,6 @@ interface MapSetting {
 }
 
 export interface MapProps extends BaseProps {
-  id?: string;
   longitude: number;
   latitude: number;
   scale?: number;
