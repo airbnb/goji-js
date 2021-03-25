@@ -5,16 +5,13 @@
       <% if (component.isWrapped) { %>
         goji-id="{{id || -1}}"
         className="{{props.className}}"
+        the-id="{{props.id}}"
         the-style="{{props.style || ''}}"
       <% } else { %>
         data-goji-id="{{id || -1}}"
         class="{{props.className}}"
+        id="{{props.id}}"
         style="{{props.style || ''}}"
-      <% } %>
-      <%# FIXME: for performance reason we haven't enable `id` for all components %>
-      <%# only several components which required by `wx.` API are patched %>
-      <% if (component.name === 'map') { %>
-        the-id="{{props.id}}"
       <% } %>
       <% for (var attribute of component.attributes) {%>
         <% if (typeof attribute.fallback !== "undefined") {%>

@@ -9,25 +9,25 @@
   <%# FIXME: how to handle more depth of `text` ? %>
   <%# FIXME: refactor these lines for better readable %>
   <% if (useFlattenText) { %>
-    <text wx:elif="{{type === 'text'}}" data-goji-id="{{id || -1}}" class="{{props.className}}" style="{{props.style || ''}}" selectable="{{props.selectable}}" space="{{props.space}}" decode="{{props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
+    <text wx:elif="{{type === 'text'}}" data-goji-id="{{id || -1}}" id="{{props.id}}" class="{{props.className}}" style="{{props.style || ''}}" selectable="{{props.selectable}}" space="{{props.space}}" decode="{{props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
       <block wx:for="{{c}}" wx:key="id">
         <block wx:if="{{item.type === 'GOJI_TYPE_TEXT'}}">{{item.text}}</block>
-        <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
+        <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" id="{{props.id}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
           <block wx:for="{{item.c}}" wx:key="id">
             <block wx:if="{{item.type === 'GOJI_TYPE_TEXT'}}">{{item.text}}</block>
-            <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
+            <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" id="{{props.id}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
               <block wx:for="{{item.c}}" wx:key="id">
                 <block wx:if="{{item.type === 'GOJI_TYPE_TEXT'}}">{{item.text}}</block>
-                <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
+                <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" id="{{props.id}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
                   <block wx:for="{{item.c}}" wx:key="id">
                     <block wx:if="{{item.type === 'GOJI_TYPE_TEXT'}}">{{item.text}}</block>
-                    <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
+                    <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" id="{{props.id}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
                       <block wx:for="{{item.c}}" wx:key="id">
                         <block wx:if="{{item.type === 'GOJI_TYPE_TEXT'}}">{{item.text}}</block>
-                        <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
+                        <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" id="{{props.id}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e">
                           <block wx:for="{{item.c}}" wx:key="id">
                             <block wx:if="{{item.type === 'GOJI_TYPE_TEXT'}}">{{item.text}}</block>
-                            <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e"></text>
+                            <text wx:elif="item.type === 'text'" data-goji-id="{{item.id || -1}}" id="{{props.id}}" class="{{item.props.className}}" style="{{item.props.style || ''}}" selectable="{{item.props.selectable}}" space="{{item.props.space}}" decode="{{item.props.decode}}" bindtouchstart="e" bindtouchmove="e" bindtouchcancel="e" bindtouchend="e" bindtap="e" bindlongpress="e" bindlongtap="e" bindtransitionend="e" bindanimationstart="e" bindanimationiteration="e" bindanimationend="e" bindtouchforcechange="e"></text>
                           </block>
                         </text>
                       </block>
@@ -47,6 +47,7 @@
     <block wx:elif="{{type === 'swiper'}}">
       <swiper
         data-goji-id="{{id || -1}}"
+        id="{{props.id}}"
         class="{{props.className}}"
         style="{{props.style || ''}}"
         indicator-dots="{{props.indicatorDots}}"
@@ -97,10 +98,12 @@
         nodes="{{c}}"
         goji-id="{{id || -1}}"
         class-name="{{props.className}}"
+        the-id="{{props.id}}"
         the-style="{{props.style || ''}}"
       <% } else { %>
         data-goji-id="{{id || -1}}"
         class="{{props.className}}"
+        id="{{props.id}}"
         style="{{props.style || ''}}"
       <% } %>
         <% for (var attribute of component.attributes) {%>
