@@ -6,6 +6,8 @@ import { GojiWebpackPlugin } from '@goji/webpack-plugin/dist/cjs';
 import resolve from 'resolve';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import findCacheDir from 'find-cache-dir';
+import { version as babelCoreVersion } from '@babel/core/package.json';
+import { version as babelLoaderVersion } from 'babel-loader/package.json';
 import { preprocessLoader, getThreadLoader, getCacheLoader } from './loaders';
 
 const getSourceMap = (nodeEnv: string, target: GojiTarget) => {
@@ -125,7 +127,18 @@ export const getWebpackConfig = ({
             ...threadLoaders,
             {
               loader: require.resolve('babel-loader'),
-              options: babelConfig,
+              options: {
+                ...babelConfig,
+                cacheDirectory: true,
+                // inspired from https://github.com/babel/babel-loader/blob/144efda074cd09069ce976cfd2e26c0db2c20e94/src/index.js#L189-L193
+                cacheIdentifier: JSON.stringify({
+                  babelConfig,
+                  '@babel/core': babelCoreVersion,
+                  'babel-loader': babelLoaderVersion,
+                  nodeEnv,
+                  target,
+                }),
+              },
             },
             {
               loader: require.resolve('linaria/loader'),
