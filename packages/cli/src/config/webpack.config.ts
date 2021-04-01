@@ -98,9 +98,6 @@ export const getWebpackConfig = ({
     },
     watchOptions: {
       poll: GojiWebpackPlugin.getPoll(),
-      // should not watch cache file, for example Linaria use `node_modules/.cache/` to store temporary
-      // .css files that cause Webpack re-compile twice for a single change
-      ignored: [/node_modules\/\.cache/],
     },
     stats: getStats(),
     performance: {
