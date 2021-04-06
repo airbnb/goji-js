@@ -3,10 +3,11 @@ import { FiberRoot } from 'react-reconciler';
 import { AdaptorInstance } from './adaptor';
 import { merge } from './utils/merge';
 import { renderIntoContainer } from './render';
-import { ElementInstance, TextInstance } from './reconciler/instance';
+import { ElementInstance } from './reconciler/instance';
 import { EventProxy } from './components/eventProxy';
 import { GojiProvider } from './components';
 import { LifecycleName } from './lifecycles/types';
+import { GOJI_VIRTUAL_ROOT } from './constants';
 
 let gojiBlockingMode = false;
 
@@ -21,11 +22,21 @@ export class Container {
 
   public eventProxyRef = createRef<EventProxy>();
 
-  public rootDOM: Array<ElementInstance | TextInstance> = [];
-
   public fiberRootContainer?: FiberRoot;
 
-  private hasChildrenUpdate = false;
+  /**
+   * `virtualRootElement` is a virtual `ElementInstance` which is used to contain root
+   * dom and portal doms. This element looks like this:
+   * <GOJI_VIRTUAL_ROOT>
+   *   <view>the root dom</view>
+   *   <view>the portal dom 1</view>
+   *   <view>the portal dom 2</view>
+   *   <view>the portal dom 3</view>
+   *   ...
+   * </GOJI_VIRTUAL_ROOT>
+   * We should never render GOJI_VIRTUAL_ROOT into pages but only render its children.
+   */
+  public virtualRootElement = new ElementInstance(GOJI_VIRTUAL_ROOT, {}, [], this);
 
   private renderId = 0;
 
@@ -48,52 +59,8 @@ export class Container {
     this.renderId += 1;
   }
 
-  public removeChild(child: ElementInstance | TextInstance) {
-    const target = this.getRootDom();
-    target.splice(target.indexOf(child), 1);
-    child.setParent(undefined);
-    this.hasChildrenUpdate = true;
-  }
-
-  public appendChild(child: ElementInstance | TextInstance) {
-    const target = this.getRootDom();
-    // remove existed child before insert
-    // FIXME: should refactor this into ElementInstance
-    const existedIndex = target.indexOf(child);
-    if (existedIndex !== -1) {
-      target.splice(existedIndex, 1);
-    }
-    target.push(child);
-    child.setParent(this);
-    this.hasChildrenUpdate = true;
-  }
-
-  public insertBefore(
-    child: ElementInstance | TextInstance,
-    beforeChild: ElementInstance | TextInstance,
-  ) {
-    const target = this.getRootDom();
-    // remove existed child before insert
-    // FIXME: should refactor this into ElementInstance
-    const existedIndex = target.indexOf(child);
-    if (existedIndex !== -1) {
-      target.splice(existedIndex, 1);
-    }
-    target.splice(target.indexOf(beforeChild), 0, child);
-    child.setParent(this);
-    this.hasChildrenUpdate = true;
-  }
-
   public requestUpdate() {
-    const { hasChildrenUpdate } = this;
-    this.hasChildrenUpdate = false;
-
-    const rootInst = new ElementInstance('goji_root', {}, this.rootDOM, this);
-    // FIXME: the auto-generated id update every time and cause `verifyDiff` failed
-    rootInst.id = -1;
-    rootInst.tag = undefined;
-
-    const [data, diff] = rootInst.pure('');
+    const [data, diff] = this.virtualRootElement.pure('');
     if (process.env.NODE_ENV !== 'production') {
       // eslint-disable-next-line global-require
       const { verifyDiff } = require('./utils/diff');
@@ -103,9 +70,8 @@ export class Container {
     const startTime = new Date().getTime();
     const currentRenderId = this.getRenderId();
     const currentRenderIdNum = Number(currentRenderId);
-    const newData = hasChildrenUpdate ? data : diff;
     const callback = () => {
-      if (process.env.NODE_ENV !== 'production' && Object.keys(newData).length > 0) {
+      if (process.env.NODE_ENV !== 'production' && Object.keys(diff).length > 0) {
         const endTime = new Date().getTime();
         console.groupCollapsed(`[goji] updated time = ${endTime - startTime}ms`);
         console.log('diff =', diff);
@@ -147,27 +113,15 @@ export class Container {
 
       if (!this.isBlocking) {
         this.isBlocking = true;
-        this.adaptorInstance.updateData(newData, callback, currentRenderId);
+        this.adaptorInstance.updateData(diff, callback, currentRenderId);
         this.generateRenderId();
-      } else if (Object.keys(newData).length !== 0) {
-        this.mergedDiff = this.mergedDiff === null ? newData : merge(this.mergedDiff, newData);
+      } else if (Object.keys(diff).length !== 0) {
+        this.mergedDiff = this.mergedDiff === null ? diff : merge(this.mergedDiff, diff);
       }
     } else {
-      this.adaptorInstance.updateData(newData, callback, currentRenderId);
+      this.adaptorInstance.updateData(diff, callback, currentRenderId);
       this.generateRenderId();
     }
-  }
-
-  public registerEventHandler(handlerKey: string, handler: Function) {
-    this.adaptorInstance.registerEventHandling(handlerKey, handler);
-  }
-
-  public unregisterEventHandler(handlerKey: string) {
-    this.adaptorInstance.unregisterEventHandler(handlerKey);
-  }
-
-  private getRootDom() {
-    return this.rootDOM;
   }
 
   public emitLifecycleEvent<T extends LifecycleName>(eventName: T, eventData?: any) {

@@ -179,7 +179,12 @@ export class ElementInstance extends BaseInstance {
     }
 
     if (tag === UpdateType.CREATED) {
-      updates[path] = node;
+      if (path) {
+        updates[path] = node;
+      } else {
+        // always use fully update for root element
+        Object.assign(updates, node);
+      }
     }
 
     return [node, updates];
