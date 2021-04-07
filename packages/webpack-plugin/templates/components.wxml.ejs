@@ -94,9 +94,17 @@
   <% for (var component of components) {%>
     <block wx:elif="{{<% if (component.sid === undefined) {%>type === '<%= component.name %>'<%} else {%>sid === <%= component.sid %><%}%>}}">
       <<%= component.isWrapped ? 'goji-' : ''%><%= component.name %>
-      <% if (component.isWrapped) { %>
-        c="{{c}}"
+      <% if (component.isWrapped && component.isHostWrapped) { %>
+        <%# for HostWrapped component will take over gojiId by it self %>
         goji-id="{{id || -1}}"
+        data-goji-id="{{id || -1}}"
+        c="{{c}}"
+        class="{{props.className}}"
+        id="{{props.id}}"
+        style="{{props.style || ''}}"
+      <% } else if (component.isWrapped && !component.isHostWrapped) { %>
+        goji-id="{{id || -1}}"
+        c="{{c}}"
         class-name="{{props.className}}"
         the-id="{{props.id}}"
         the-style="{{props.style || ''}}"
@@ -117,7 +125,7 @@
             <%= attribute.name %>="{{props.<%= attribute.value %>}}"
           <% } %>
         <% } %>
-        <% if (component.isWrapped) { %>
+        <% if (component.isWrapped && !component.isHostWrapped) { %>
           <%# wrapped components will handle event inside themselves %>
         <% } else { %>
           <% for (var event of component.events) {%>

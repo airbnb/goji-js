@@ -55,6 +55,7 @@ export interface ComponentRenderData {
   name: string;
   isLeaf?: boolean;
   isWrapped?: boolean;
+  isHostWrapped?: boolean;
   sid?: number;
   events: string[];
   attributes: Array<{
@@ -89,6 +90,7 @@ export const getRenderedComponents = (
         name: component.name,
         isLeaf: component.isLeaf,
         isWrapped: component.isWrapped,
+        isHostWrapped: component.isHostWrapped,
         sid: (component as SimplifiedComponentDesc).sid,
         events: component.events.map(eventName =>
           target === 'alipay' ? camelCase(`on-${eventName}`) : `bind${eventName.replace(/-/g, '')}`,
