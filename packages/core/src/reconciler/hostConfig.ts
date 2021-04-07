@@ -113,7 +113,7 @@ export const hostConfig: GojiHostConfig<
   },
 
   insertInContainerBefore(container, child, beforeChild) {
-    container.insertBefore(child, beforeChild);
+    container.virtualRootElement.insertBefore(child, beforeChild);
   },
 
   finalizeInitialChildren: () => {
@@ -121,7 +121,7 @@ export const hostConfig: GojiHostConfig<
   },
 
   appendChildToContainer(container, child) {
-    container.appendChild(child);
+    container.virtualRootElement.appendChild(child);
   },
 
   removeChild(parentInstance, child) {
@@ -131,7 +131,7 @@ export const hostConfig: GojiHostConfig<
 
   removeChildFromContainer(container, child) {
     child.unregisterEventHandler();
-    container.removeChild(child);
+    container.virtualRootElement.removeChild(child);
   },
 
   resetTextContent() {

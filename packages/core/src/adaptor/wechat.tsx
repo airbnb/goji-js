@@ -66,14 +66,6 @@ export class WechatAdaptorInstance extends AdaptorInstance {
     }
     this.instance.setData(data, callback);
   }
-
-  public registerEventHandling(handlerKey: string, handler: Function) {
-    this.instance[handlerKey] = handler;
-  }
-
-  public unregisterEventHandler(handlerKey: string) {
-    delete this.instance[handlerKey];
-  }
 }
 
 const ExportComponentWrapper = ({

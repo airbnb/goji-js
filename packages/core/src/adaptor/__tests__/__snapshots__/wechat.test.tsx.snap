@@ -5,14 +5,14 @@ Object {
   "c": Array [
     Object {
       "c": Array [],
-      "id": 1,
+      "id": 2,
       "props": Object {},
       "sid": 0,
       "type": "view",
     },
   ],
-  "id": -1,
+  "id": 1,
   "props": Object {},
-  "type": "goji_root",
+  "type": "GOJI_VIRTUAL_ROOT",
 }
 `;
