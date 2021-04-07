@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ScopedUpdater, ScopedUpdaterProps } from '../..';
+import { ScopedUpdater, ScopedUpdaterProps } from '../../components/scopedUpdater';
 
 const getMockMiniappRuntimeComponentInstance = (setState?: (payload: any) => void) => {
   return {
@@ -7,11 +7,9 @@ const getMockMiniappRuntimeComponentInstance = (setState?: (payload: any) => voi
   };
 };
 
-export const ScopedUpdaterTester: React.FC<ScopedUpdaterProps & { gojiId: number, setState?: (payload: any) => void}> = ({
-  gojiId,
-  setState,
-  ...props
-}) => {
+export const ScopedUpdaterTester: React.FC<
+  ScopedUpdaterProps & { gojiId: number; setState?: (payload: any) => void }
+> = ({ gojiId, setState, ...props }) => {
   useEffect(() => {
     const mockInstance = getMockMiniappRuntimeComponentInstance(setState);
     // @ts-ignore

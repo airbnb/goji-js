@@ -1,5 +1,6 @@
 import { ElementInstance } from './instance';
 
+// FIXME: fix this type
 export type ComponentInstance = any;
 
 export interface PublicInstance {
@@ -11,5 +12,3 @@ export interface PublicInstance {
 }
 
 export const subtreeInstances = new Map<number, ComponentInstance>();
-
-export const scopedUpdaterInstance = new Map<number, ComponentInstance>();

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View } from '..';
 import { WeChatAdaptor, WeChatPageConfig, WeChatInstance } from '../adaptor/wechat';
 import { Adaptor } from '../adaptor';
-import { resetInstanceId } from '../utils/id';
+import { internal_resetInstanceId as resetInstanceId } from '../utils/id';
 
 import { ScopedUpdaterTester } from './helpers/ScopedUpdaterTester';
 
@@ -143,6 +143,5 @@ describe('updates', () => {
     updater();
     expect(Object.keys(diff)).toEqual(['c[0].c[1].c[0].c[0].text']);
     expect(Object.keys(scopeDiff)).toEqual(['c[0].c[0].text']);
-
   });
 });

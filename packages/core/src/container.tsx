@@ -8,7 +8,8 @@ import { EventProxy } from './components/eventProxy';
 import { GojiProvider } from './components';
 import { LifecycleName } from './lifecycles/types';
 import { GOJI_VIRTUAL_ROOT, TYPE_SCOPE_UPDATER } from './constants';
-import { scopedUpdaterInstance, ComponentInstance } from './reconciler/publicInstance';
+import { ComponentInstance } from './reconciler/publicInstance';
+import { scopedUpdaterInstances } from './reconciler/scopedUpdaterInstance';
 
 let gojiBlockingMode = false;
 
@@ -202,7 +203,7 @@ export class Container {
       cursor = componentInstance;
 
       if (componentInstance?.type === TYPE_SCOPE_UPDATER) {
-        const scopeComponentInstance = scopedUpdaterInstance.get(componentInstance.id);
+        const scopeComponentInstance = scopedUpdaterInstances.get(componentInstance.id);
         if (scopeComponentInstance) {
           instance = scopeComponentInstance;
           prefix = pathArr.slice(0, i + 1).join('.');

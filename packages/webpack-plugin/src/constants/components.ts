@@ -606,16 +606,18 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
   );
 
 export const getExtendComponents = (target: GojiTarget): ComponentDesc[] => {
-  return [
-    ['wechat', 'qq'].includes(target) && {
-      name: 'scoped-updater',
-      props: [],
-      events: [],
-      isWrapped: ['wechat', 'qq'].includes(target),
-      isLeaf: true,
-      isHostWrapped: true,
-    },
-  ].filter(Boolean) as ComponentDesc[];
+  return ['wechat', 'qq'].includes(target)
+    ? [
+        {
+          name: 'scoped-updater',
+          props: [],
+          events: [],
+          isWrapped: ['wechat', 'qq'].includes(target),
+          isLeaf: true,
+          isHostWrapped: true,
+        },
+      ]
+    : [];
 };
 
 // this function is used for generating a wrapped component list to calculate `getSubtreeId` in `@goji/core`

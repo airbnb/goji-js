@@ -5,18 +5,29 @@ export const useSubtree = GOJI_TARGET === 'wechat' || GOJI_TARGET === 'qq';
 
 export const subtreeMaxDepth = ((process.env.GOJI_MAX_DEPTH as any) as number) ?? 10;
 
+export type SubtreeProps = React.PropsWithChildren<{
+  testID?: string;
+  // eslint-disable-next-line camelcase
+  unsafe_id?: string;
+  // eslint-disable-next-line camelcase
+  unsafe_className?: string;
+  // eslint-disable-next-line camelcase
+  unsafe_style?: CSSProperties;
+}>;
+
 export const Subtree = ({
+  unsafe_id: id,
   unsafe_className: className,
   unsafe_style: style,
-  ...restProps
-}: // eslint-disable-next-line camelcase
-React.PropsWithChildren<{ unsafe_className?: string; unsafe_style?: CSSProperties }>) => {
+  children,
+}: SubtreeProps) => {
   if (useSubtree) {
-    return createElement(useSubtree ? TYPE_SUBTREE : Fragment, {
+    return createElement(TYPE_SUBTREE, {
+      id,
       className,
       style,
-      ...restProps,
+      children,
     });
   }
-  return createElement(Fragment, restProps);
+  return createElement(Fragment, { children });
 };

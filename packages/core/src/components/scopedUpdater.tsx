@@ -1,45 +1,32 @@
-import React, { createElement, CSSProperties, forwardRef, Fragment } from 'react';
+import React, { createElement, CSSProperties, Fragment } from 'react';
 import { TYPE_SCOPE_UPDATER, GOJI_TARGET } from '../constants';
-import { PublicInstance } from '../reconciler/publicInstance';
 
-const ENABLE_SCOPED_UPDATER = ['qq', 'wechat'].includes(GOJI_TARGET);
+const useScopedUpdater = ['qq', 'wechat'].includes(GOJI_TARGET);
 
 export type ScopedUpdaterProps = React.PropsWithChildren<{
   testID?: string;
-  id?: string;
+  // eslint-disable-next-line camelcase
+  unsafe_id?: string;
   // eslint-disable-next-line camelcase
   unsafe_className?: string;
   // eslint-disable-next-line camelcase
   unsafe_style?: CSSProperties;
 }>;
 
-const SelfScopedUpdater = (
-  {
-    unsafe_className: className,
-    unsafe_style: style,
-    ...props
-  }: ScopedUpdaterProps,
-  ref: React.Ref<PublicInstance>,
-) => {
-  const componentProps = {
-    className,
-    style,
-    ...props,
-  };
-  if (ENABLE_SCOPED_UPDATER) {
+export const ScopedUpdater = ({
+  unsafe_id: id,
+  unsafe_className: className,
+  unsafe_style: style,
+  children,
+}: ScopedUpdaterProps) => {
+  if (useScopedUpdater) {
     return createElement(TYPE_SCOPE_UPDATER, {
-      ref,
-      ...componentProps
+      id,
+      className,
+      style,
+      children,
     });
   }
 
-  return createElement(Fragment, {
-    ...componentProps
-  });
+  return createElement(Fragment, { children });
 };
-
-const ScopedUpdater = forwardRef<PublicInstance, ScopedUpdaterProps>(SelfScopedUpdater);
-
-ScopedUpdater.displayName = 'ScopedUpdater';
-
-export { ScopedUpdater };

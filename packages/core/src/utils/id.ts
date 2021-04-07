@@ -5,6 +5,7 @@ export const getNextInstanceId = () => {
   return instanceCount;
 };
 
-export const resetInstanceId = () => {
+// eslint-disable-next-line camelcase
+export const internal_resetInstanceId = () => {
   instanceCount = 0;
 };

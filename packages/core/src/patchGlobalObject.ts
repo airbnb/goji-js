@@ -1,5 +1,6 @@
 import { gojiEvents } from './events';
-import { subtreeInstances, scopedUpdaterInstance } from './reconciler/publicInstance';
+import { subtreeInstances } from './reconciler/publicInstance';
+import { scopedUpdaterInstances } from './reconciler/scopedUpdaterInstance';
 import events from './subtreeAttachEvents';
 
 // FIXME: a workaround to share global variable between js & ejs template
@@ -18,11 +19,11 @@ class ObjectE {
   }
 
   public scopedUpdaterAttach(id: number, instance: any) {
-    scopedUpdaterInstance.set(id, instance);
+    scopedUpdaterInstances.set(id, instance);
   }
 
   public scopedUpdaterDetached(id: number) {
-    scopedUpdaterInstance.delete(id);
+    scopedUpdaterInstances.delete(id);
   }
 }
 
