@@ -125,7 +125,7 @@ describe('updates', () => {
       return (
         <View>
           <View>
-            <ScopedUpdaterTester gojiId={3} setState={setState}>
+            <ScopedUpdaterTester gojiId={4} setState={setState}>
               <View>{count}</View>
             </ScopedUpdaterTester>
           </View>
