@@ -48,6 +48,7 @@ export type ComponentDesc = {
   nativePath?: string;
   isLeaf?: boolean;
   isWrapped?: boolean;
+  isHostWrapped?: boolean; // for wrapper component who need to handle events and styles by itself
 };
 
 // docs: https://developers.weixin.qq.com/miniprogram/en/dev/component/
@@ -611,6 +612,8 @@ export const getExtendComponents = (target: GojiTarget): ComponentDesc[] => {
       props: [],
       events: [],
       isWrapped: ['wechat', 'qq'].includes(target),
+      isLeaf: true,
+      isHostWrapped: true,
     },
   ];
 };
