@@ -10,8 +10,6 @@ interface GojiConfig {
   configureWebpack?: (config: webpack.Configuration, webpackInGoji: typeof webpack) => undefined;
   configureBabel?: (config: any) => any;
   progress?: boolean;
-  // eslint-disable-next-line camelcase
-  unsafe_integrationMode?: boolean;
 }
 
 const GOJI_CONFIG_FILE_NAME = 'goji.config';
@@ -51,7 +49,6 @@ const main = async () => {
     target: cliConfig.target,
     nodeEnv: cliConfig.production ? 'production' : 'development',
     babelConfig,
-    unsafe_integrationMode: gojiConfig.unsafe_integrationMode ?? false,
   });
 
   // apply goji.config.js configureWebpack

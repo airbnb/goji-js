@@ -12,8 +12,7 @@ export abstract class GojiBasedWebpackPlugin implements webpack.Plugin {
   protected transformExt(extension: string) {
     return transformExtension({
       extension,
-      // use WeChat extensions in integration mode
-      miniProgramTarget: this.options.unsafe_integrationMode ? 'wechat' : this.options.target,
+      miniProgramTarget: this.options.target,
     });
   }
 

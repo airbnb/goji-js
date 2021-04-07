@@ -1,7 +1,5 @@
 /* eslint-disable global-require */
-module.exports = ({ options }: { options: { integrationMode?: boolean } }) => {
-  const { integrationMode = false } = options;
-
+module.exports = () => {
   return {
     plugins: [
       require('postcss-each')(),
@@ -20,13 +18,12 @@ module.exports = ({ options }: { options: { integrationMode?: boolean } }) => {
       }),
       require('postcss-nested'),
       // use postcss-px2units because some plugins, like postcss-calc, don't support `rpx` unit
-      !integrationMode &&
-        require('postcss-px2units')({
-          multiple: 2,
-          targetUnits: 'rpx',
-        }),
-      !integrationMode && require('postcss-clean')({}),
+      require('postcss-px2units')({
+        multiple: 2,
+        targetUnits: 'rpx',
+      }),
+      require('postcss-clean')({}),
       require('postcss-reporter')(),
-    ].filter(Boolean),
+    ],
   };
 };

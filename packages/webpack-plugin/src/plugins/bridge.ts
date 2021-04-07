@@ -19,12 +19,7 @@ import { getSubpackagesInfo, findBelongingSubPackage } from '../utils/config';
  */
 export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   private renderTemplate<T>(pathname: string, data?: T) {
-    return renderTemplate(
-      // use wechat for integration mode because `mina-webpack` would transform the code to different platforms
-      this.options.unsafe_integrationMode ? 'wechat' : this.options.target,
-      path.resolve(TEMPLATES_DIR, pathname),
-      data,
-    );
+    return renderTemplate(this.options.target, path.resolve(TEMPLATES_DIR, pathname), data);
   }
 
   private getWhitelistedComponents(compilation: webpack.compilation.Compilation) {
