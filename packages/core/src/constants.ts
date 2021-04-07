@@ -1,6 +1,8 @@
 export const GOJI_VIRTUAL_ROOT = 'GOJI_VIRTUAL_ROOT';
 export const TYPE_TEXT = 'GOJI_TYPE_TEXT';
 export const TYPE_SUBTREE = 'GOJI_TYPE_SUBTREE';
+export const TYPE_SCOPE_UPDATER = 'scoped-updater';
+
 
 export type GojiTarget = 'wechat' | 'baidu' | 'alipay' | 'toutiao' | 'qq' | 'toutiao';
 

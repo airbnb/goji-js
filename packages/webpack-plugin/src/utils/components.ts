@@ -1,17 +1,17 @@
 import { unstable_SimplifyComponent as SimplifyComponent, GojiTarget } from '@goji/core';
 import camelCase from 'lodash/camelCase';
 import kebabCase from 'lodash/kebabCase';
-import { getBuiltInComponents, ComponentDesc } from '../constants/components';
+import { getBuiltInComponents, ComponentDesc, getExtendComponents } from '../constants/components';
 import { pluginComponents } from './pluginComponent';
 
 export const getWhitelistedComponents = (
   target: GojiTarget,
   componentWhitelist?: Array<string>,
 ): ComponentDesc[] => {
-  const builtInComponents = getBuiltInComponents(target);
+  const components = [...getBuiltInComponents(target), ...getExtendComponents()];
   return (componentWhitelist
-    ? builtInComponents.filter(comp => componentWhitelist.includes(comp.name))
-    : builtInComponents
+    ? components.filter(comp => componentWhitelist.includes(comp.name))
+    : components
   ).concat(
     // add plugin components
     ...pluginComponents.values(),

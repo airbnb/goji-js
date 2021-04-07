@@ -11,3 +11,5 @@ export interface PublicInstance {
 }
 
 export const subtreeInstances = new Map<number, ComponentInstance>();
+
+export const scopedUpdaterInstance = new Map<number, ComponentInstance>();

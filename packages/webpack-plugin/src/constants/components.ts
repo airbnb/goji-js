@@ -604,8 +604,19 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
     ]),
   );
 
+export const getExtendComponents = (): ComponentDesc[] => {
+  return [
+    {
+      name: 'scoped-updater',
+      isWrapped: true,
+      props: [],
+      events: [],
+    },
+  ];
+};
+
 // this function is used for generating a wrapped component list to calculate `getSubtreeId` in `@goji/core`
 export const getWrappedComponents = (target: GojiTarget): Array<string> =>
-  getBuiltInComponents(target)
+  [...getBuiltInComponents(target), ...getExtendComponents()]
     .filter(comp => comp.isWrapped)
     .map(comp => comp.name);
