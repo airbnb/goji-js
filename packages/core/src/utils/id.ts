@@ -6,6 +6,5 @@ export const getNextInstanceId = () => {
 };
 
 export const resetInstanceId = () => {
-  console.log('resetInstanceId', instanceCount);
   instanceCount = 0;
 };

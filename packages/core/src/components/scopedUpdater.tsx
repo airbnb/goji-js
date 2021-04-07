@@ -7,24 +7,34 @@ const ENABLE_SCOPED_UPDATER = ['qq', 'wechat'].includes(GOJI_TARGET);
 export type ScopedUpdaterProps = React.PropsWithChildren<{
   testID?: string;
   id?: string;
-  className?: string;
-  style?: CSSProperties;
+  // eslint-disable-next-line camelcase
+  unsafe_className?: string;
+  // eslint-disable-next-line camelcase
+  unsafe_style?: CSSProperties;
 }>;
 
 const SelfScopedUpdater = (
-  props: ScopedUpdaterProps,
+  {
+    unsafe_className: className,
+    unsafe_style: style,
+    ...props
+  }: ScopedUpdaterProps,
   ref: React.Ref<PublicInstance>,
 ) => {
+  const componentProps = {
+    className,
+    style,
+    ...props,
+  };
   if (ENABLE_SCOPED_UPDATER) {
     return createElement(TYPE_SCOPE_UPDATER, {
       ref,
-      ...props
+      ...componentProps
     });
   }
 
   return createElement(Fragment, {
-    ref,
-    ...props
+    ...componentProps
   });
 };
 
