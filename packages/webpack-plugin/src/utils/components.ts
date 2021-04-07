@@ -8,7 +8,7 @@ export const getWhitelistedComponents = (
   target: GojiTarget,
   componentWhitelist?: Array<string>,
 ): ComponentDesc[] => {
-  const components = [...getBuiltInComponents(target), ...getExtendComponents()];
+  const components = [...getBuiltInComponents(target), ...getExtendComponents(target)];
   return (componentWhitelist
     ? components.filter(comp => componentWhitelist.includes(comp.name))
     : components
