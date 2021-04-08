@@ -45,21 +45,14 @@ export const getWebpackConfig = ({
   target,
   nodeEnv,
   babelConfig,
-  unsafe_integrationMode: integrationMode = false,
 }: {
   basedir: string;
   outputPath?: string;
   target: GojiTarget;
   nodeEnv: string;
   babelConfig: any;
-  // eslint-disable-next-line camelcase
-  unsafe_integrationMode?: boolean;
 }): webpack.Configuration => {
-  const cacheLoaders = getCacheLoader(
-    nodeEnv === 'production',
-    integrationMode ? `${nodeEnv}-integration` : nodeEnv,
-    target,
-  );
+  const cacheLoaders = getCacheLoader(nodeEnv === 'production', nodeEnv, target);
   const threadLoaders = getThreadLoader();
 
   const CSS_FILE_EXT = {
@@ -188,9 +181,6 @@ export const getWebpackConfig = ({
               options: {
                 config: {
                   path: __dirname,
-                  ctx: {
-                    integrationMode,
-                  },
                 },
               },
             },
@@ -224,9 +214,6 @@ export const getWebpackConfig = ({
               options: {
                 config: {
                   path: __dirname,
-                  ctx: {
-                    integrationMode,
-                  },
                 },
               },
             },
@@ -255,15 +242,14 @@ export const getWebpackConfig = ({
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: `[name].${CSS_FILE_EXT[integrationMode ? 'wechat' : target] ?? 'wxss'}`,
-        chunkFilename: `[name].${CSS_FILE_EXT[integrationMode ? 'wechat' : target] ?? 'wxss'}`,
+        filename: `[name].${CSS_FILE_EXT[target] ?? 'wxss'}`,
+        chunkFilename: `[name].${CSS_FILE_EXT[target] ?? 'wxss'}`,
         ignoreOrder: true,
       }),
       new GojiWebpackPlugin({
         target,
         maxDepth: 5,
         minimize: nodeEnv !== 'development',
-        unsafe_integrationMode: integrationMode,
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(nodeEnv),
