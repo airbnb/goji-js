@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>使用插件 · GojiJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="一些平台（如微信和百度）提供了一种在小程序上封装和复用使用JS代码、组件和页面的方法。"/><meta name="docsearch:language" content="zh-CN"/><meta property="og:title" content="使用插件 · GojiJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://goji.js.org/"/><meta property="og:description" content="一些平台（如微信和百度）提供了一种在小程序上封装和复用使用JS代码、组件和页面的方法。"/><meta property="og:image" content="https://goji.js.org/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://goji.js.org/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/undefined"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://goji.js.org/blog/atom.xml" title="GojiJS Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://goji.js.org/blog/feed.xml" title="GojiJS Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-CN"><h2 class="headerTitle">GojiJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/zh-CN/introduction" target="_self">文档</a></li><li class=""><a href="/blog/" target="_self">博客</a></li><li class=""><a href="https://github.com/airbnb/goji-js" target="_self">GitHub</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>简体中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/plugins">English</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>高级</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">入门</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/introduction">介绍</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/setup">安装</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/preparation">准备工作</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">教程</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/app">入口</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/page">页面</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/hooks">钩子</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/lifecycle">生命周期</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/refs">Refs</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/cross-platform">跨平台</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">高级</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/css">样式</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/css-in-js">CSS-in-JS</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/zh-CN/plugins">使用插件</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/testing">测试</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">常见问题</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/faq">常见问题</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/airbnb/goji-js/tree/master/packages/goji.js.org/docs/plugins.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">使用插件</h1></header><article><div><span><p>一些平台（如微信和百度）提供了一种在小程序上封装和复用使用JS代码、组件和页面的方法。</p>
+<p>在阅读下一节之前，我们建议你先学习一下这些官方文档。</p>
+<ul>
+<li><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/plugin/">微信 <code>插件</code></a></li>
+<li><a href="https://smartprogram.baidu.com/docs/develop/framework/dynamiclib_use/">百度 <code>动态库</code></a></li>
+</ul>
+<p>GojiJS 提供了在 React 代码中导入和使用插件/动态库的能力。</p>
+<blockquote>
+<p>目前 GojiJS 不支持编写插件。</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="导入插件"></a><a href="#导入插件" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>导入插件</h2>
+<p>首先，你需要在 <code>app.config.ts</code> 文件中添加一些元数据。 你可以使用 <code>target</code> 参数来检测平台。</p>
+<p>这是一个例子，展示了如何在同一个 GojiJS 应用中启用不同的插件。</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-builtin-name">export</span><span class="hljs-built_in"> default </span>({ target }: { target: GojiTarget }) =&gt; {
+  const enableLivePlayer = target === <span class="hljs-string">'wechat'</span>;
+  const enableSwanSitemap = target === <span class="hljs-string">'baidu'</span>;
+
+  return {
+    <span class="hljs-built_in">..</span>.(enableLivePlayer &amp;&amp; {
+      plugins: {
+        <span class="hljs-string">'live-player-plugin'</span>: {
+          version: <span class="hljs-string">'1.2.10'</span>,
+          provider: <span class="hljs-string">'wx2b03c6e691cd7370'</span>,
+        },
+      },
+    }),
+    <span class="hljs-built_in">..</span>.(enableSwanSitemap &amp;&amp; {
+      dynamicLib: {
+        <span class="hljs-string">'swan-sitemap-lib'</span>: {
+          provider: <span class="hljs-string">'swan-sitemap'</span>,
+        },
+      },
+    }),
+  };
+};
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="使用组件"></a><a href="#使用组件" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>使用组件</h2>
+<p>要启用插件组件，你需要确认安装 <code>@goji/macro</code> 包。</p>
+<pre><code class="hljs css language-bash">yarn add @goji/macro
+</code></pre>
+<p><code>@goji/macro</code> 导出了一个名为 <code>registerPluginComponent</code> 的API，它接受这些参数：</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">registerPluginComponent</span><span class="hljs-params">(
+  target: GojiTarget,
+  <span class="hljs-keyword">name</span>: <span class="hljs-keyword">string</span>,
+  path: <span class="hljs-keyword">string</span>,
+  props: <span class="hljs-keyword">Array</span>&lt;<span class="hljs-keyword">string</span> | [<span class="hljs-keyword">string</span>, PropDesc]&gt;,
+)</span>:</span> React.FunctionComponent&lt;any&gt;;
+</code></pre>
+<ul>
+<li><code>target</code>：此组件应当在哪个平台上运行。 在其他平台上将渲染一个空组件.</li>
+<li><code>name</code>：生成到 <code>usingComponents</code>里的组件名，应该是唯一的，不能与任何内置组件相同。 例如 <code>&lt;my-component-name&gt;</code> 是合法的, <code>&lt;view&gt;</code> 是不合法的。</li>
+<li><code>path</code>：生成到 <code>usingComponents</code>里的组件路径，应以 <code>plugin://</code> 或 <code>dynamicLib://</code> 开头。</li>
+<li><code>props</code>：在使用组件前需要手动定义属性。 例如， <code>props: ['a', ['b', { defaultValue: '100' }]]</code> 会让 GojiJS 生成类似于这样的组件 <code>&lt;my-component-name a=&quot;{{props.a}}&quot; b=&quot;{{props.b === undefined ? 100 : props.b}}&quot;&gt;</code>.</li>
+</ul>
+<p><code>registerPluginComponent</code> 返回一个可以正常使用的React组件。</p>
+<p>这里是一个 <a href="https://smartprogram.baidu.com/docs/develop/framework/sitemap/">百度sitemap</a> 的完整例子。</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">import</span> { registerPluginComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'@goji/macro'</span>;
+
+<span class="hljs-keyword">const</span> SwanSitemapList = registerPluginComponent(
+  <span class="hljs-string">'baidu'</span>,
+  <span class="hljs-string">'swan-sitemap-list'</span>,
+  <span class="hljs-string">'dynamicLib://swan-sitemap-lib/swan-sitemap-list'</span>,
+  [<span class="hljs-string">'list-data'</span>, <span class="hljs-string">'current-page'</span>, <span class="hljs-string">'total-page'</span>, <span class="hljs-string">'path'</span>],
+);
+
+<span class="hljs-keyword">const</span> listData = [
+  {
+    <span class="hljs-attr">title</span>: <span class="hljs-string">'GojiJS'</span>,
+    <span class="hljs-attr">path</span>: <span class="hljs-string">'/packageA/pages/details?id=1'</span>,
+    <span class="hljs-attr">releaseDate</span>: <span class="hljs-string">'2021-1-1 00-00-00'</span>,
+  },
+  {
+    <span class="hljs-attr">title</span>: <span class="hljs-string">'Powered by'</span>,
+    <span class="hljs-attr">path</span>: <span class="hljs-string">'/packageA/pages/details?id=2'</span>,
+    <span class="hljs-attr">releaseDate</span>: <span class="hljs-string">'2021-1-2 00-00-00'</span>,
+  },
+  {
+    <span class="hljs-attr">title</span>: <span class="hljs-string">'Airbnb'</span>,
+    <span class="hljs-attr">path</span>: <span class="hljs-string">'/packageA/pages/details?id=3'</span>,
+    <span class="hljs-attr">releaseDate</span>: <span class="hljs-string">'2021-1-3 00-00-00'</span>,
+  },
+];
+
+render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">SwanSitemapList</span>
+    <span class="hljs-attr">listData</span>=<span class="hljs-string">{listData}</span>
+    <span class="hljs-attr">currentPage</span>=<span class="hljs-string">{1}</span>
+    <span class="hljs-attr">totalPage</span>=<span class="hljs-string">{500}</span>
+    <span class="hljs-attr">path</span>=<span class="hljs-string">"/swan-sitemap/index"</span>
+  /&gt;</span></span>,
+);
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="使用页面"></a><a href="#使用页面" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>使用页面</h2>
+<p>使用 <code>wx.navigate</code> API 或 <code>Navigator</code> 组件跳转到插件中的页面。</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">import</span> { Navigator } <span class="hljs-keyword">from</span> <span class="hljs-string">'@goji/core'</span>;
+
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Navigator</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"plugin://myPlugin/hello-page"</span>&gt;</span>WeChat<span class="hljs-tag">&lt;/<span class="hljs-name">Navigator</span>&gt;</span></span>;
+
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Navigator</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"dynamicLib://dynamicLibName/pages/index/index"</span>&gt;</span>Baidu<span class="hljs-tag">&lt;/<span class="hljs-name">Navigator</span>&gt;</span></span>;
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="使用-js-api"></a><a href="#使用-js-api" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>使用 JS API</h2>
+<p>直接使用 <code>requirePlugin</code> 或 <code>requireDynamicLib</code>即可。</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">if</span> (process.env.GOJI_TARGET === <span class="hljs-string">'wechat'</span>) {
+  <span class="hljs-keyword">const</span> myPluginInterface = requirePlugin(<span class="hljs-string">'myPlugin'</span>);
+  myPluginInterface.hello();
+}
+<span class="hljs-keyword">if</span> (process.env.GOJI_TARGET === <span class="hljs-string">'baidu'</span>) {
+  <span class="hljs-keyword">const</span> lib = requireDynamicLib(<span class="hljs-string">'myDynamicLib'</span>);
+  lib.getData();
+}
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 4/11/2021</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/zh-CN/css-in-js"><span class="arrow-prev">← </span><span>CSS-in-JS</span></a><a class="docs-next button" href="/docs/zh-CN/testing"><span>测试</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#导入插件">导入插件</a></li><li><a href="#使用组件">使用组件</a></li><li><a href="#使用页面">使用页面</a></li><li><a href="#使用-js-api">使用 JS API</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/zh-CN/introduction.html">Get Started</a><a href="/docs/zh-CN/app.html">Guide</a><a href="/docs/zh-CN/faq.html">FAQ</a></div><div><h5>Community</h5><a href="https://github.com/airbnb/goji-js/issues">GitHub Issues</a></div><div><h5>More</h5><a href="https://github.com/airbnb/goji-js">GitHub</a></div></section><section class="copyright">© 2021 Airbnb, Inc. All rights reserved.</section></footer></div></body></html>

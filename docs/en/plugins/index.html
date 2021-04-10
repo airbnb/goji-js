@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Plugins · GojiJS</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Some platforms like WeChat and Baidu provide a way to wrap and reuse JS code, components and pages"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Plugins · GojiJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://goji.js.org/"/><meta property="og:description" content="Some platforms like WeChat and Baidu provide a way to wrap and reuse JS code, components and pages"/><meta property="og:image" content="https://goji.js.org/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://goji.js.org/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/undefined"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://goji.js.org/blog/atom.xml" title="GojiJS Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://goji.js.org/blog/feed.xml" title="GojiJS Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/en"><h2 class="headerTitle">GojiJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/en/introduction" target="_self">Docs</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li><li class=""><a href="https://github.com/airbnb/goji-js" target="_self">GitHub</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>English</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/zh-CN/plugins">简体中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Advanced</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Get Started</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/en/introduction">Introduction</a></li><li class="navListItem"><a class="navItem" href="/docs/en/setup">Setup</a></li><li class="navListItem"><a class="navItem" href="/docs/en/preparation">Preparation</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Guide</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/en/app">App</a></li><li class="navListItem"><a class="navItem" href="/docs/en/page">Page</a></li><li class="navListItem"><a class="navItem" href="/docs/en/hooks">Hooks</a></li><li class="navListItem"><a class="navItem" href="/docs/en/lifecycle">Lifecycle</a></li><li class="navListItem"><a class="navItem" href="/docs/en/refs">Refs</a></li><li class="navListItem"><a class="navItem" href="/docs/en/cross-platform">Cross-Platform</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Advanced</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/en/css">CSS</a></li><li class="navListItem"><a class="navItem" href="/docs/en/css-in-js">CSS-in-JS</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/en/plugins">Plugins</a></li><li class="navListItem"><a class="navItem" href="/docs/en/testing">Testing</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">FAQ</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/en/faq">FAQ</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/airbnb/goji-js/tree/master/packages/goji.js.org/docs/plugins.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">Plugins</h1></header><article><div><span><p>Some platforms like WeChat and Baidu provide a way to wrap and reuse JS code, components and pages
+on mini programs.</p>
+<p>Before reading next sections, we advice you to learn these official documentations.</p>
+<ul>
+<li><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/plugin/">WeChat <code>plugins</code></a></li>
+<li><a href="https://smartprogram.baidu.com/docs/develop/framework/dynamiclib_use/">Baidu <code>dynamicLib</code></a></li>
+</ul>
+<p>GojiJS enables the ability to import and use plugin/dynamicLib in React code.</p>
+<blockquote>
+<p>For now, GojiJS doesn't support writing plugins.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="import-a-plugin"></a><a href="#import-a-plugin" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Import a plugin</h2>
+<p>At first, you need to add some meta data in the <code>app.config.ts</code> file. You can use param <code>target</code> to
+detect platform.</p>
+<p>Here is an example to show how to enable different plugin in the same GojiJS app.</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-builtin-name">export</span><span class="hljs-built_in"> default </span>({ target }: { target: GojiTarget }) =&gt; {
+  const enableLivePlayer = target === <span class="hljs-string">'wechat'</span>;
+  const enableSwanSitemap = target === <span class="hljs-string">'baidu'</span>;
+
+  return {
+    <span class="hljs-built_in">..</span>.(enableLivePlayer &amp;&amp; {
+      plugins: {
+        <span class="hljs-string">'live-player-plugin'</span>: {
+          version: <span class="hljs-string">'1.2.10'</span>,
+          provider: <span class="hljs-string">'wx2b03c6e691cd7370'</span>,
+        },
+      },
+    }),
+    <span class="hljs-built_in">..</span>.(enableSwanSitemap &amp;&amp; {
+      dynamicLib: {
+        <span class="hljs-string">'swan-sitemap-lib'</span>: {
+          provider: <span class="hljs-string">'swan-sitemap'</span>,
+        },
+      },
+    }),
+  };
+};
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="use-components"></a><a href="#use-components" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Use components</h2>
+<p>To enable plugin components, you need to make sure <code>@goji/macro</code> package is installed.</p>
+<pre><code class="hljs css language-bash">yarn add @goji/macro
+</code></pre>
+<p><code>@goji/macro</code> exports a API called <code>registerPluginComponent</code> that accepts these params.</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">registerPluginComponent</span><span class="hljs-params">(
+  target: GojiTarget,
+  <span class="hljs-keyword">name</span>: <span class="hljs-keyword">string</span>,
+  path: <span class="hljs-keyword">string</span>,
+  props: <span class="hljs-keyword">Array</span>&lt;<span class="hljs-keyword">string</span> | [<span class="hljs-keyword">string</span>, PropDesc]&gt;,
+)</span>:</span> React.FunctionComponent&lt;any&gt;;
+</code></pre>
+<ul>
+<li><code>target</code>: On which platform this component could work. An empty component will be rendered on
+other platforms.</li>
+<li><code>name</code>: The component name generated in <code>usingComponents</code>, should be unique and not equal to any
+built-in component, for example <code>&lt;my-component-name&gt;</code> is valid and <code>&lt;view&gt;</code> is invalid.</li>
+<li><code>path</code>: The component path generated in <code>usingComponents</code>, should start with <code>plugin://</code> or
+<code>dynamicLib://</code>.</li>
+<li><code>props</code>: Properties should be defined manually before using. For example,
+<code>props: ['a', ['b', { defaultValue: '100' }]]</code> let GojiJS generate template like this
+<code>&lt;my-component-name a=&quot;{{props.a}}&quot; b=&quot;{{props.b === undefined ? 100 : props.b}}&quot;&gt;</code>.</li>
+</ul>
+<p><code>registerPluginComponent</code> returns a React component that you can use as normal.</p>
+<p>Here is a full example of
+<a href="https://smartprogram.baidu.com/docs/develop/framework/sitemap/">Baidu sitemap component</a>.</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">import</span> { registerPluginComponent } <span class="hljs-keyword">from</span> <span class="hljs-string">'@goji/macro'</span>;
+
+<span class="hljs-keyword">const</span> SwanSitemapList = registerPluginComponent(
+  <span class="hljs-string">'baidu'</span>,
+  <span class="hljs-string">'swan-sitemap-list'</span>,
+  <span class="hljs-string">'dynamicLib://swan-sitemap-lib/swan-sitemap-list'</span>,
+  [<span class="hljs-string">'list-data'</span>, <span class="hljs-string">'current-page'</span>, <span class="hljs-string">'total-page'</span>, <span class="hljs-string">'path'</span>],
+);
+
+<span class="hljs-keyword">const</span> listData = [
+  {
+    <span class="hljs-attr">title</span>: <span class="hljs-string">'GojiJS'</span>,
+    <span class="hljs-attr">path</span>: <span class="hljs-string">'/packageA/pages/details?id=1'</span>,
+    <span class="hljs-attr">releaseDate</span>: <span class="hljs-string">'2021-1-1 00-00-00'</span>,
+  },
+  {
+    <span class="hljs-attr">title</span>: <span class="hljs-string">'Powered by'</span>,
+    <span class="hljs-attr">path</span>: <span class="hljs-string">'/packageA/pages/details?id=2'</span>,
+    <span class="hljs-attr">releaseDate</span>: <span class="hljs-string">'2021-1-2 00-00-00'</span>,
+  },
+  {
+    <span class="hljs-attr">title</span>: <span class="hljs-string">'Airbnb'</span>,
+    <span class="hljs-attr">path</span>: <span class="hljs-string">'/packageA/pages/details?id=3'</span>,
+    <span class="hljs-attr">releaseDate</span>: <span class="hljs-string">'2021-1-3 00-00-00'</span>,
+  },
+];
+
+render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">SwanSitemapList</span>
+    <span class="hljs-attr">listData</span>=<span class="hljs-string">{listData}</span>
+    <span class="hljs-attr">currentPage</span>=<span class="hljs-string">{1}</span>
+    <span class="hljs-attr">totalPage</span>=<span class="hljs-string">{500}</span>
+    <span class="hljs-attr">path</span>=<span class="hljs-string">"/swan-sitemap/index"</span>
+  /&gt;</span></span>,
+);
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="use-pages"></a><a href="#use-pages" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Use pages</h2>
+<p>Use <code>wx.navigate</code> API or <code>Navigator</code> component to navigate to a page in plugin.</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">import</span> { Navigator } <span class="hljs-keyword">from</span> <span class="hljs-string">'@goji/core'</span>;
+
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Navigator</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"plugin://myPlugin/hello-page"</span>&gt;</span>WeChat<span class="hljs-tag">&lt;/<span class="hljs-name">Navigator</span>&gt;</span></span>;
+
+<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Navigator</span> <span class="hljs-attr">url</span>=<span class="hljs-string">"dynamicLib://dynamicLibName/pages/index/index"</span>&gt;</span>Baidu<span class="hljs-tag">&lt;/<span class="hljs-name">Navigator</span>&gt;</span></span>;
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="use-js-api"></a><a href="#use-js-api" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Use JS API</h2>
+<p>Use <code>requirePlugin</code> or <code>requireDynamicLib</code> directly.</p>
+<pre><code class="hljs css language-tsx"><span class="hljs-keyword">if</span> (process.env.GOJI_TARGET === <span class="hljs-string">'wechat'</span>) {
+  <span class="hljs-keyword">const</span> myPluginInterface = requirePlugin(<span class="hljs-string">'myPlugin'</span>);
+  myPluginInterface.hello();
+}
+<span class="hljs-keyword">if</span> (process.env.GOJI_TARGET === <span class="hljs-string">'baidu'</span>) {
+  <span class="hljs-keyword">const</span> lib = requireDynamicLib(<span class="hljs-string">'myDynamicLib'</span>);
+  lib.getData();
+}
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 4/11/2021</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/en/css-in-js"><span class="arrow-prev">← </span><span>CSS-in-JS</span></a><a class="docs-next button" href="/docs/en/testing"><span>Testing</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#import-a-plugin">Import a plugin</a></li><li><a href="#use-components">Use components</a></li><li><a href="#use-pages">Use pages</a></li><li><a href="#use-js-api">Use JS API</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/introduction.html">Get Started</a><a href="/docs/en/app.html">Guide</a><a href="/docs/en/faq.html">FAQ</a></div><div><h5>Community</h5><a href="https://github.com/airbnb/goji-js/issues">GitHub Issues</a></div><div><h5>More</h5><a href="https://github.com/airbnb/goji-js">GitHub</a></div></section><section class="copyright">© 2021 Airbnb, Inc. All rights reserved.</section></footer></div></body></html>
