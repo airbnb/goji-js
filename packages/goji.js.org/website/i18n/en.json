@@ -14,8 +14,8 @@
         "sidebar_label": "Cross-Platform"
       },
       "css-in-js": {
-        "title": "CSS-in-JS ( Beta )",
-        "sidebar_label": "CSS-in-JS ( Beta )"
+        "title": "CSS-in-JS",
+        "sidebar_label": "CSS-in-JS"
       },
       "css": {
         "title": "CSS",
@@ -40,6 +40,10 @@
       "page": {
         "title": "Page",
         "sidebar_label": "Page"
+      },
+      "plugins": {
+        "title": "Plugins",
+        "sidebar_label": "Plugins"
       },
       "preparation": {
         "title": "Preparation",
