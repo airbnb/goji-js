@@ -1,7 +1,7 @@
 ---
 id: css-in-js
-title: CSS-in-JS ( Beta )
-sidebar_label: CSS-in-JS ( Beta )
+title: CSS-in-JS
+sidebar_label: CSS-in-JS
 ---
 
 CSS-in-JS is a way to organize React styling codes that allows developers to write mixture of CSS
@@ -114,7 +114,7 @@ Linaria provides a API called `styled` in `linaria/react`, which might be inspir
 _styled-components_. It's useful to create a component with some styles applied.
 
 ```tsx
-const Heading = styled(View)`
+const Heading = styled(View)<{ color?: string }>`
   font-size: 20rpx;
   font-weight: bold;
   color: ${props => props.color ?? 'black'};

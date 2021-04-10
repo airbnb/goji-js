@@ -1,7 +1,7 @@
 ---
 id: css-in-js
-title: CSS-in-JS ( 测试版 )
-sidebar_label: CSS-in-JS ( 测试版 )
+title: CSS-in-JS
+sidebar_label: CSS-in-JS
 ---
 
 CSS-in-JS 是一种组织 React 样式代码的方法，它允许开发者在同一个文件中混合编写 CSS 和 JS。 它通常被认为是 CSS Module 的替代品。
@@ -106,7 +106,7 @@ const button = css`
 Linaria 在 `linaria/react` 中提供了一个叫 ` styled`的API，它应该是参考了_styled-components_。 它可以用来创建一个带样式的组件。
 
 ```tsx
-const Heading = styled(View)`
+const Heading = styled(View)<{ color?: string }>`
   font-size: 20rpx;
   font-weight: bold;
   color: ${props => props.color ?? 'black'};

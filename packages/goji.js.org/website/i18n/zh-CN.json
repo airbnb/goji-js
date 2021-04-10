@@ -14,8 +14,8 @@
         "sidebar_label": "跨平台"
       },
       "css-in-js": {
-        "title": "CSS-in-JS ( 测试版 )",
-        "sidebar_label": "CSS-in-JS ( 测试版 )"
+        "title": "CSS-in-JS",
+        "sidebar_label": "CSS-in-JS"
       },
       "css": {
         "title": "样式",
@@ -40,6 +40,10 @@
       "page": {
         "title": "页面",
         "sidebar_label": "页面"
+      },
+      "plugins": {
+        "title": "使用插件",
+        "sidebar_label": "使用插件"
       },
       "preparation": {
         "title": "准备工作",
