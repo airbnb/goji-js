@@ -4,10 +4,6 @@ export interface GojiWebpackPluginOptions {
   maxDepth: number;
   target: GojiTarget;
   minimize: boolean;
-  // `unsafe_integrationMode` is used for bundle GojiJS within Mina project
-  // we should remove it after GojiJS fully migrated
-  // eslint-disable-next-line camelcase
-  unsafe_integrationMode?: boolean;
 }
 
 export interface AppSubpackage {
