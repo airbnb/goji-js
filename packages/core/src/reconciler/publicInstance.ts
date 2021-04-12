@@ -1,5 +1,6 @@
 import { ElementInstance } from './instance';
 
+// FIXME: fix this type
 export type ComponentInstance = any;
 
 export interface PublicInstance {

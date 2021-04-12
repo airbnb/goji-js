@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { View } from '..';
 import { WeChatAdaptor, WeChatPageConfig, WeChatInstance } from '../adaptor/wechat';
 import { Adaptor } from '../adaptor';
+import { internal_resetInstanceId as resetInstanceId } from '../utils/id';
+
+import { ScopedUpdaterTester } from './helpers/ScopedUpdaterTester';
 
 describe('updates', () => {
   let diff: any;
@@ -104,5 +107,41 @@ describe('updates', () => {
     // @ts-ignore
     updater(false);
     expect(Object.keys(diff)).toEqual(['c[0].sid']);
+  });
+
+  it('should update in scoped updater', () => {
+    resetInstanceId();
+    let updater: () => void;
+    let scopeDiff = {};
+
+    const setState = (payload: any) => {
+      scopeDiff = payload;
+    };
+
+    const TestComp = () => {
+      const [count, setCount] = useState(0);
+      updater = () => setCount(i => i + 1);
+
+      return (
+        <View>
+          <View>
+            <ScopedUpdaterTester gojiId={4} setState={setState}>
+              <View>{count}</View>
+            </ScopedUpdaterTester>
+          </View>
+          <View>
+            <View>{count}</View>
+          </View>
+        </View>
+      );
+    };
+
+    adaptor.run(<TestComp />);
+    diff = null;
+
+    // @ts-ignore
+    updater();
+    expect(Object.keys(diff)).toEqual(['c[0].c[1].c[0].c[0].text']);
+    expect(Object.keys(scopeDiff)).toEqual(['c[0].c[0].text']);
   });
 });

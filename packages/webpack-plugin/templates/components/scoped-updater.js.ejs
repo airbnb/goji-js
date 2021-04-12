@@ -17,9 +17,11 @@ Component({
   },
   lifetimes: {
     attached() {
+      Object.e.scopedUpdaterAttach(this.properties.gojiId, this);
       Object.e.subtreeAttached(this.properties.gojiId, this);
     },
     detached() {
+      Object.e.scopedUpdaterDetached(this.properties.gojiId);
       Object.e.subtreeDetached(this.properties.gojiId);
     },
   },

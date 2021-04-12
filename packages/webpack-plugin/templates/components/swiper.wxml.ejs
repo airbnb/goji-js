@@ -38,7 +38,7 @@
   <%# we assume there won't be any other elements except `swiper-item` %>
   <%# don't use style here because WeChat's bug https://developers.weixin.qq.com/community/develop/doc/00064c6c9a4650420e59218ea5ac00 %>
   <swiper-item
-    wx:for="{{nodes}}"
+    wx:for="{{c}}"
     wx:key="id"
     class="{{item.props.className}}"
     item-id="{{item.props.itemId}}"

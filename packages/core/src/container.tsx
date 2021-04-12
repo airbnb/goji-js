@@ -3,11 +3,13 @@ import { FiberRoot } from 'react-reconciler';
 import { AdaptorInstance } from './adaptor';
 import { merge } from './utils/merge';
 import { renderIntoContainer } from './render';
-import { ElementInstance } from './reconciler/instance';
+import { ElementInstance, Updates } from './reconciler/instance';
 import { EventProxy } from './components/eventProxy';
 import { GojiProvider } from './components';
 import { LifecycleName } from './lifecycles/types';
-import { GOJI_VIRTUAL_ROOT } from './constants';
+import { GOJI_VIRTUAL_ROOT, TYPE_SCOPE_UPDATER } from './constants';
+import { ComponentInstance } from './reconciler/publicInstance';
+import { scopedUpdaterInstances } from './reconciler/scopedUpdaterInstance';
 
 let gojiBlockingMode = false;
 
@@ -50,6 +52,8 @@ export class Container {
 
   private mergedDiff: Record<string, any> | null = null;
 
+  private initialRendered = false;
+
   // always use `string` for `renderId`
   public getRenderId() {
     return String(this.renderId);
@@ -67,10 +71,18 @@ export class Container {
       verifyDiff(this, data, diff);
     }
 
+    let readyPendingCount = 1;
+
     const startTime = new Date().getTime();
     const currentRenderId = this.getRenderId();
     const currentRenderIdNum = Number(currentRenderId);
     const callback = () => {
+      readyPendingCount -= 1;
+
+      if (readyPendingCount > 0) {
+        return;
+      }
+
       if (process.env.NODE_ENV !== 'production' && Object.keys(diff).length > 0) {
         const endTime = new Date().getTime();
         console.groupCollapsed(`[goji] updated time = ${endTime - startTime}ms`);
@@ -98,6 +110,45 @@ export class Container {
       this.next();
     };
 
+    const sendUpdateData = (payload: Updates, _callback: () => void, _currentRenderId: string) => {
+      if (!this.initialRendered) {
+        this.initialRendered = true;
+        this.adaptorInstance.updateData(payload, _callback, _currentRenderId);
+
+        return;
+      }
+
+      const scopedUpdates: Map<ComponentInstance, Updates> = new Map<ComponentInstance, Updates>();
+      const rootUpdates: Updates = {};
+
+      Object.keys(payload).forEach(diffPath => {
+        const [scopeComponentInstance, prefix] = this.findScopeUpdateComponentInstance(diffPath);
+        if (scopeComponentInstance) {
+          const cachedScopedUpdate = scopedUpdates.get(scopeComponentInstance) || {};
+          const isReplaceSelf = prefix === diffPath;
+          const shortedPath = isReplaceSelf ? 'c' : diffPath.replace(`${prefix}.`, '');
+          // @ts-ignore
+          const diffPayload = isReplaceSelf ? payload[diffPath]?.c : payload[diffPath];
+          Object.assign(cachedScopedUpdate, {
+            [shortedPath]: diffPayload,
+          });
+          scopedUpdates.set(scopeComponentInstance, cachedScopedUpdate);
+        } else {
+          Object.assign(rootUpdates, { [diffPath]: payload[diffPath] });
+        }
+      });
+
+      const scopedUpdatesInstances = Array.from(scopedUpdates.keys());
+
+      readyPendingCount = scopedUpdatesInstances.length + 1;
+
+      scopedUpdatesInstances.forEach(item => {
+        item?.setData(scopedUpdates.get(item), _callback);
+      });
+
+      this.adaptorInstance.updateData(rootUpdates, _callback, _currentRenderId);
+    };
+
     if (gojiBlockingMode) {
       this.next = () => {
         if (this.mergedDiff === null || Object.keys(this.mergedDiff).length === 0) {
@@ -105,7 +156,7 @@ export class Container {
         }
 
         this.isBlocking = true;
-        this.adaptorInstance.updateData(this.mergedDiff, callback, currentRenderId);
+        sendUpdateData(this.mergedDiff, callback, currentRenderId);
         this.generateRenderId();
         this.next = noop;
         this.mergedDiff = null;
@@ -113,13 +164,13 @@ export class Container {
 
       if (!this.isBlocking) {
         this.isBlocking = true;
-        this.adaptorInstance.updateData(diff, callback, currentRenderId);
+        sendUpdateData(diff, callback, currentRenderId);
         this.generateRenderId();
       } else if (Object.keys(diff).length !== 0) {
         this.mergedDiff = this.mergedDiff === null ? diff : merge(this.mergedDiff, diff);
       }
     } else {
-      this.adaptorInstance.updateData(diff, callback, currentRenderId);
+      sendUpdateData(diff, callback, currentRenderId);
       this.generateRenderId();
     }
   }
@@ -130,5 +181,36 @@ export class Container {
 
   public render(element: ReactNode | null) {
     renderIntoContainer(<GojiProvider container={this}>{element}</GojiProvider>, this);
+  }
+
+  private findScopeUpdateComponentInstance(path: string) {
+    const pathArr = path.split('.');
+
+    let instance: ComponentInstance | null = null;
+    let prefix: string | null = null;
+
+    let cursor = this.virtualRootElement;
+
+    for (let i = 0; i < pathArr.length; i += 1) {
+      const curPath = pathArr[i];
+      const result = /c\[(\d+)\]/.exec(curPath);
+      if (!result || !result.length || !result[1] || !cursor.children) {
+        break;
+      }
+
+      const componentInstance = cursor.children?.[result[1]] as ElementInstance;
+
+      cursor = componentInstance;
+
+      if (componentInstance?.type === TYPE_SCOPE_UPDATER) {
+        const scopeComponentInstance = scopedUpdaterInstances.get(componentInstance.id);
+        if (scopeComponentInstance) {
+          instance = scopeComponentInstance;
+          prefix = pathArr.slice(0, i + 1).join('.');
+        }
+      }
+    }
+
+    return [instance, prefix];
   }
 }

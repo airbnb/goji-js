@@ -48,6 +48,7 @@ export type ComponentDesc = {
   nativePath?: string;
   isLeaf?: boolean;
   isWrapped?: boolean;
+  isHostWrapped?: boolean; // for wrapper component who need to handle events and styles by itself
 };
 
 // docs: https://developers.weixin.qq.com/miniprogram/en/dev/component/
@@ -604,8 +605,23 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
     ]),
   );
 
+export const getExtendComponents = (target: GojiTarget): ComponentDesc[] => {
+  return ['wechat', 'qq'].includes(target)
+    ? [
+        {
+          name: 'scoped-updater',
+          props: [],
+          events: [],
+          isWrapped: ['wechat', 'qq'].includes(target),
+          isLeaf: true,
+          isHostWrapped: true,
+        },
+      ]
+    : [];
+};
+
 // this function is used for generating a wrapped component list to calculate `getSubtreeId` in `@goji/core`
 export const getWrappedComponents = (target: GojiTarget): Array<string> =>
-  getBuiltInComponents(target)
+  [...getBuiltInComponents(target), ...getExtendComponents(target)]
     .filter(comp => comp.isWrapped)
     .map(comp => comp.name);
