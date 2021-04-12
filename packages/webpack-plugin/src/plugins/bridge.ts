@@ -196,7 +196,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   private async renderWrappedComponents(
     compilation: webpack.compilation.Compilation,
     basedir: string,
-    useSubtree: boolean
   ) {
     const components = this.getWhitelistedComponents(compilation);
     for (const component of components) {
@@ -212,7 +211,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           path.join(basedir, `${BRIDGE_OUTPUT_PATH}/components/${component.name}.json`),
           `components/${component.name}.json.ejs`,
           {
-            useSubtree,
             relativePathToBridge: '.',
             components: this.getWhitelistedComponents(compilation),
           },
@@ -258,7 +256,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
         // render leaf-components
         await this.renderLeafTemplate(compilation, bridgeBasedirs);
         // render wrapped components
-        await this.renderWrappedComponents(compilation, bridgeBasedirs, useSubtree);
+        await this.renderWrappedComponents(compilation, bridgeBasedirs);
       }
 
       const pathEntries = pathEntriesMap.get(compiler);

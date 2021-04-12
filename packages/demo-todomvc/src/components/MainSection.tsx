@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { View, ScopedUpdater } from '@goji/core';
+import { View } from '@goji/core';
 import { Footer } from './Footer';
 import { TodoList } from './TodoList';
 import { addTodo } from '../duck/todo';
@@ -14,22 +14,16 @@ export const MainSection = () => {
     <View className={styles.container}>
       <View className={styles.todosHeader}>todos</View>
       <View className={styles.main}>
-        <ScopedUpdater>
-          <TodoTextInput
-            onSave={(text: string) => {
-              if (text.length !== 0) {
-                dispatch(addTodo(text));
-              }
-            }}
-            placeholder="What needs to be done?"
-          />
-        </ScopedUpdater>
-        <ScopedUpdater>
-          <TodoList />
-        </ScopedUpdater>
-        <ScopedUpdater>
-          <Footer />
-        </ScopedUpdater>
+        <TodoTextInput
+          onSave={(text: string) => {
+            if (text.length !== 0) {
+              dispatch(addTodo(text));
+            }
+          }}
+          placeholder="What needs to be done?"
+        />
+        <TodoList />
+        <Footer />
       </View>
     </View>
   );
