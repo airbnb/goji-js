@@ -27,7 +27,6 @@ export const render = (element: ReactNode, options: Partial<RenderOptions> = {})
 
 export * from './components/factoryComponents';
 export { Subtree } from './components/subtree';
-export { ScopedUpdater } from './components/scopedUpdater';
 export { createPortal } from './portal';
 export * from './lifecycles';
 export * from './portal';

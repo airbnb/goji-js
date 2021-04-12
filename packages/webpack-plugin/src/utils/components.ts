@@ -1,17 +1,17 @@
 import { unstable_SimplifyComponent as SimplifyComponent, GojiTarget } from '@goji/core';
 import camelCase from 'lodash/camelCase';
 import kebabCase from 'lodash/kebabCase';
-import { getBuiltInComponents, ComponentDesc, getExtendComponents } from '../constants/components';
+import { getBuiltInComponents, ComponentDesc } from '../constants/components';
 import { pluginComponents } from './pluginComponent';
 
 export const getWhitelistedComponents = (
   target: GojiTarget,
   componentWhitelist?: Array<string>,
 ): ComponentDesc[] => {
-  const components = [...getBuiltInComponents(target), ...getExtendComponents(target)];
+  const builtInComponents = getBuiltInComponents(target);
   return (componentWhitelist
-    ? components.filter(comp => componentWhitelist.includes(comp.name))
-    : components
+    ? builtInComponents.filter(comp => componentWhitelist.includes(comp.name))
+    : builtInComponents
   ).concat(
     // add plugin components
     ...pluginComponents.values(),
@@ -55,7 +55,6 @@ export interface ComponentRenderData {
   name: string;
   isLeaf?: boolean;
   isWrapped?: boolean;
-  isHostWrapped?: boolean;
   sid?: number;
   events: string[];
   attributes: Array<{
@@ -90,7 +89,6 @@ export const getRenderedComponents = (
         name: component.name,
         isLeaf: component.isLeaf,
         isWrapped: component.isWrapped,
-        isHostWrapped: component.isHostWrapped,
         sid: (component as SimplifiedComponentDesc).sid,
         events: component.events.map(eventName =>
           target === 'alipay' ? camelCase(`on-${eventName}`) : `bind${eventName.replace(/-/g, '')}`,
