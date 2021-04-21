@@ -43,7 +43,7 @@ function flushWorkAndMicroTasks(onDone: (err?: Error) => void) {
 let actingUpdatesScopeDepth = 0;
 let didWarnAboutUsingActInProd = false;
 
-export function act(callback: () => Thenable | void) {
+export function act(callback: () => Thenable<unknown> | void) {
   if (!__DEV__) {
     if (didWarnAboutUsingActInProd === false) {
       didWarnAboutUsingActInProd = true;

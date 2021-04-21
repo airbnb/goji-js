@@ -1,8 +1,11 @@
 import { Container } from '../container';
 import { InstanceProps, ElementInstance, TextInstance } from './instance';
-import { GojiHostConfig } from './hostConfigTypes';
 import { PublicInstance, subtreeInstances } from './publicInstance';
 import events from '../subtreeAttachEvents';
+import { GojiHostConfig } from './hostConfigTypes';
+
+type SuspenseInstance = any;
+type HydratableInstance = any;
 
 export const hostConfig: GojiHostConfig<
   string,
@@ -10,7 +13,8 @@ export const hostConfig: GojiHostConfig<
   Container,
   ElementInstance,
   TextInstance,
-  unknown,
+  SuspenseInstance,
+  HydratableInstance,
   PublicInstance | undefined,
   {},
   boolean,
@@ -52,8 +56,6 @@ export const hostConfig: GojiHostConfig<
     return undefined;
   },
 
-  shouldDeprioritizeSubtree: () => false,
-
   getRootHostContext: () => {
     return {};
   },
@@ -62,7 +64,9 @@ export const hostConfig: GojiHostConfig<
     return false;
   },
 
-  prepareForCommit: () => {},
+  prepareForCommit: () => {
+    return null;
+  },
 
   resetAfterCommit: container => {
     container.requestUpdate();
@@ -125,13 +129,15 @@ export const hostConfig: GojiHostConfig<
   },
 
   removeChild(parentInstance, child) {
-    child.unregisterEventHandler();
     parentInstance.removeChild(child);
   },
 
   removeChildFromContainer(container, child) {
-    child.unregisterEventHandler();
     container.virtualRootElement.removeChild(child);
+  },
+
+  clearContainer(container) {
+    container.virtualRootElement.clear();
   },
 
   resetTextContent() {
@@ -150,4 +156,6 @@ export const hostConfig: GojiHostConfig<
   unhideTextInstance: () => {
     // do nothing
   },
+
+  preparePortalMount: () => {},
 };

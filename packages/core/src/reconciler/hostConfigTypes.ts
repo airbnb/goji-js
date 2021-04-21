@@ -8,6 +8,8 @@ import { HostConfig, OpaqueHandle } from 'react-reconciler';
 type OmittedSchedulerKeys =
   | 'now'
   | 'setTimeout'
+  | 'scheduleTimeout'
+  | 'cancelTimeout'
   | 'clearTimeout'
   | 'noTimeout'
   | 'scheduleDeferredCallback'
@@ -55,12 +57,15 @@ type OmittedPersistenceKeys =
   | 'cloneHiddenInstance'
   | 'cloneHiddenTextInstance';
 
+type OmittedMicrotasksKeys = 'supportsMicrotasks' | 'scheduleMicrotask' | 'queueMicrotask';
+
 export type GojiHostConfig<
   Type,
   Props,
   Container,
   Instance,
   TextInstance,
+  SuspenseInstance,
   HydratableInstance,
   PublicInstance,
   HostContext,
@@ -75,6 +80,7 @@ export type GojiHostConfig<
     Container,
     Instance,
     TextInstance,
+    SuspenseInstance,
     HydratableInstance,
     PublicInstance,
     HostContext,
@@ -83,7 +89,7 @@ export type GojiHostConfig<
     TimeoutHandle,
     NoTimeout
   >,
-  OmittedSchedulerKeys | OmittedHydrationKeys | OmittedPersistenceKeys
+  OmittedSchedulerKeys | OmittedHydrationKeys | OmittedPersistenceKeys | OmittedMicrotasksKeys
 > & {
   // Add missing mutation configs and mark all of them required
   // https://github.com/facebook/react/blob/dac9202a9c5add480f853bcad2ee04d371e72c0c/packages/shared/HostConfigWithNoMutation.js
