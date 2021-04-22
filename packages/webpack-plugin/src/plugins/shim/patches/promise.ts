@@ -8,7 +8,7 @@ const patchPromise = () => {
   const PatchedPromise = function Promise<T>(
     this: any,
     executor: (
-      resolve: (value?: T | PromiseLike<T>) => void,
+      resolve: (value: T | PromiseLike<T>) => void,
       reject: (reason?: any) => void,
     ) => void,
   ): Promise<T> {

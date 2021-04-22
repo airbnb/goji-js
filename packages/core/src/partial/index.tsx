@@ -10,8 +10,8 @@ const createPartialContextValue = () => {
   const register = () => {
     let resolver;
     const currentPromise = chain;
-    const nextPromise = new Promise(resolve => {
-      resolver = () => resolve();
+    const nextPromise = new Promise<undefined>(resolve => {
+      resolver = () => resolve(undefined);
     });
 
     chain = chain.then(() => nextPromise);
