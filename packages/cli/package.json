@@ -63,7 +63,7 @@
     "preprocess-loader": "^0.3.0",
     "resolve": "^1.19.0",
     "thread-loader": "^3.0.1",
-    "webpack": "^4.43.0",
+    "webpack": "^4.46.0",
     "yargs": "^16.1.0"
   },
   "devDependencies": {

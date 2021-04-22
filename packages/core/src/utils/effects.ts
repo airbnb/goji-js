@@ -4,7 +4,7 @@ import { useRef, useEffect, useCallback, EffectCallback, useMemo } from 'react';
 // it is useful to update component in the same rendering tick like https://reactjs.org/docs/hooks-faq.html#how-do-i-implement-getderivedstatefromprops
 // NOTE: this hook might not work in concurrent mode
 export const useImmediatelyEffect = <T extends Array<any>>(callback: EffectCallback, deps?: T) => {
-  const unsubscribeRef = useRef<void | (() => void | undefined)>(undefined);
+  const unsubscribeRef = useRef<ReturnType<EffectCallback>>(undefined);
 
   const resolveUnsubscribe = useCallback(() => {
     if (unsubscribeRef.current) {
