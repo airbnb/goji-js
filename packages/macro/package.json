@@ -12,31 +12,16 @@
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc --module esnext --outDir dist/esm",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "prepublishOnly": "npm run build",
-    "lint": "eslint --ext .js,.ts,.jsx,.tsx .",
-    "test": "jest"
+    "prepublishOnly": "npm run build"
   },
   "repository": "git+https://github.com/airbnb/goji.git",
   "license": "MIT",
   "keywords": [
     "babel-plugin-macros"
   ],
-  "jest": {
-    "testMatch": [
-      "**/src/**/?(*.)+(spec|test).[jt]s?(x)"
-    ],
-    "cacheDirectory": "/tmp/.cache/jest",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "./src/**/*.{js,jsx,ts,tsx}"
-    ],
-    "transform": {
-      "^.+\\.(j|t)sx?$": "./babel-jest.config.js"
-    }
-  },
   "dependencies": {
-    "@babel/types": "^7.12.12",
-    "babel-plugin-macros": "^3.0.1"
+    "@babel/types": "^7.14.5",
+    "babel-plugin-macros": "^3.1.0"
   },
   "devDependencies": {
     "@goji/core": "^0.10.0",

@@ -8,10 +8,8 @@
   "scripts": {
     "jest": "jest --passWithNoTests",
     "typecheck": "tsc",
-    "test": "npm run jest && npm run typecheck",
     "start": "goji start",
-    "build": "goji build",
-    "lint": "eslint --ext .js,.ts,.jsx,.tsx ."
+    "build": "goji build"
   },
   "dependencies": {
     "@goji/core": "^0.7.6",

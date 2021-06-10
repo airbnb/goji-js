@@ -13,33 +13,11 @@
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc --module esnext --outDir dist/esm",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "prepublishOnly": "npm run build",
-    "lint": "eslint --ext .js,.ts,.jsx,.tsx .",
-    "test": "jest"
-  },
-  "jest": {
-    "testMatch": [
-      "**/src/**/?(*.)+(spec|test).[jt]s?(x)"
-    ],
-    "cacheDirectory": "/tmp/.cache/jest",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "./src/**/*.{js,jsx,ts,tsx}"
-    ],
-    "transform": {
-      "^.+\\.(j|t)sx?$": "./babel-jest.config.js"
-    }
+    "prepublishOnly": "npm run build"
   },
   "repository": "git+https://github.com/airbnb/goji.git",
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.10.1",
-    "@babel/plugin-proposal-class-properties": "^7.10.1",
-    "@babel/plugin-transform-runtime": "^7.10.1",
-    "@babel/preset-env": "^7.10.1",
-    "@babel/preset-react": "^7.10.1",
-    "@babel/preset-typescript": "^7.10.1",
-    "@babel/runtime": "^7.10.1",
     "@goji/webpack-plugin": "^0.10.0",
     "babel-loader": "^8.2.1",
     "cache-loader": "^4.1.0",
@@ -71,6 +49,7 @@
     "@types/yargs": "^15.0.5"
   },
   "peerDependencies": {
+    "@babel/core": "*",
     "@goji/core": "*",
     "source-map": "*"
   }

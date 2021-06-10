@@ -67,7 +67,7 @@ export type GojiHostConfig<
   UpdatePayload,
   ChildSet,
   TimeoutHandle,
-  NoTimeout
+  NoTimeout,
 > = Omit<
   HostConfig<
     Type,

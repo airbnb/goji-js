@@ -11,27 +11,9 @@
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc --module esnext --outDir dist/esm",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "prepublishOnly": "npm run build",
-    "lint": "eslint --ext .js,.ts,.jsx,.tsx .",
-    "test": "jest",
-    "demo": "(cd demo && webpack)"
-  },
-  "jest": {
-    "testMatch": [
-      "**/src/**/?(*.)+(spec|test).[jt]s?(x)"
-    ],
-    "cacheDirectory": "/tmp/.cache/jest",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "./src/**/*.{js,jsx,ts,tsx}"
-    ],
-    "transform": {
-      "^.+\\.(j|t)sx?$": "./babel-jest.config.js"
-    }
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
-    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "@goji/core": "^0.10.0",
     "@types/ejs": "^3.0.4",
     "@types/enhanced-resolve": "^3.0.6",
@@ -43,7 +25,6 @@
     "@types/resolve": "^1.17.1",
     "@types/webpack": "^4.41.13",
     "@types/webpack-sources": "^0.1.7",
-    "jest": "^26.0.1",
     "rimraf": "^3.0.0",
     "typescript": "^4.0.5",
     "webpack": "^4.46.0",

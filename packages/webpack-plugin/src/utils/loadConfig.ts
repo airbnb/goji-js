@@ -110,9 +110,13 @@ export const evalConfigSource = (
       const pageFilterRegexp = new RegExp(process.env.PAGE_FILTER_REGEX);
       const { subPackages = [] } = defaultObject;
       subPackages.forEach(subPackage => {
-        subPackage.pages = (subPackage.pages || []).filter(page => pageFilterRegexp.test(`${subPackage.root}/${page}`));
+        subPackage.pages = (subPackage.pages || []).filter(page =>
+          pageFilterRegexp.test(`${subPackage.root}/${page}`),
+        );
       });
-      defaultObject.subPackages = defaultObject.subPackages.filter(subPackage => !!subPackage?.pages?.length);
+      defaultObject.subPackages = defaultObject.subPackages.filter(
+        subPackage => !!subPackage?.pages?.length,
+      );
     }
     return defaultObject;
   } catch (e) {

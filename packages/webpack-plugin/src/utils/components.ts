@@ -9,9 +9,10 @@ export const getWhitelistedComponents = (
   componentWhitelist?: Array<string>,
 ): ComponentDesc[] => {
   const builtInComponents = getBuiltInComponents(target);
-  return (componentWhitelist
-    ? builtInComponents.filter(comp => componentWhitelist.includes(comp.name))
-    : builtInComponents
+  return (
+    componentWhitelist
+      ? builtInComponents.filter(comp => componentWhitelist.includes(comp.name))
+      : builtInComponents
   ).concat(
     // add plugin components
     ...pluginComponents.values(),
@@ -83,35 +84,33 @@ export const getRenderedComponents = (
     ...getSimplifiedComponents(components, simplifyComponents),
     ...components,
   ];
-  return renderedComponents.map(
-    (component): ComponentRenderData => {
-      return {
-        name: component.name,
-        isLeaf: component.isLeaf,
-        isWrapped: component.isWrapped,
-        sid: (component as SimplifiedComponentDesc).sid,
-        events: component.events.map(eventName =>
-          target === 'alipay' ? camelCase(`on-${eventName}`) : `bind${eventName.replace(/-/g, '')}`,
-        ),
-        attributes: component.props.map(prop => {
-          const [name, desc] = typeof prop === 'string' ? [prop, {}] : prop;
-          if (
-            (desc && !desc.required && desc.defaultValue) ||
-            forceRenderFallback(target, component.name, name)
-          ) {
-            return {
-              name,
-              value: camelCase(name),
-              fallback: desc.defaultValue,
-            };
-          }
-
+  return renderedComponents.map((component): ComponentRenderData => {
+    return {
+      name: component.name,
+      isLeaf: component.isLeaf,
+      isWrapped: component.isWrapped,
+      sid: (component as SimplifiedComponentDesc).sid,
+      events: component.events.map(eventName =>
+        target === 'alipay' ? camelCase(`on-${eventName}`) : `bind${eventName.replace(/-/g, '')}`,
+      ),
+      attributes: component.props.map(prop => {
+        const [name, desc] = typeof prop === 'string' ? [prop, {}] : prop;
+        if (
+          (desc && !desc.required && desc.defaultValue) ||
+          forceRenderFallback(target, component.name, name)
+        ) {
           return {
             name,
             value: camelCase(name),
+            fallback: desc.defaultValue,
           };
-        }),
-      };
-    },
-  );
+        }
+
+        return {
+          name,
+          value: camelCase(name),
+        };
+      }),
+    };
+  });
 };
