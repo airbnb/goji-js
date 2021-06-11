@@ -15,22 +15,7 @@
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc --module esnext --outDir dist/esm",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "prepublishOnly": "npm run build",
-    "lint": "eslint --ext .js,.ts,.jsx,.tsx .",
-    "test": "jest --passWithNoTests"
-  },
-  "jest": {
-    "testMatch": [
-      "**/src/**/?(*.)+(spec|test).[jt]s?(x)"
-    ],
-    "cacheDirectory": "/tmp/.cache/jest",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "./src/**/*.{js,jsx,ts,tsx}"
-    ],
-    "transform": {
-      "^.+\\.(j|t)sx?$": "./babel-jest.config.js"
-    }
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "chalk": "^4.1.0",

@@ -35,7 +35,6 @@ module.exports = {
     require.resolve('linaria/babel'),
   ],
   plugins: [
-    [require.resolve('@babel/plugin-proposal-class-properties'), { loose: true }],
     [require.resolve('@babel/plugin-transform-runtime'), { useESModules: true }],
     [require.resolve('@babel/plugin-proposal-optional-chaining'), { loose: true }],
     [require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'), { loose: true }],

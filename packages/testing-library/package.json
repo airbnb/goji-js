@@ -10,9 +10,7 @@
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc --module esnext --outDir dist/esm",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "prepublishOnly": "npm run build",
-    "lint": "eslint --ext .js,.ts,.jsx,.tsx .",
-    "test": "jest"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "lodash": "^4.17.15",
@@ -20,20 +18,6 @@
     "react-test-renderer": "^16.13.1",
     "tslib": "^2.0.3",
     "wait-for-expect": "^3.0.2"
-  },
-  "jest": {
-    "testMatch": [
-      "**/src/**/?(*.)+(spec|test).[jt]s?(x)"
-    ],
-    "cacheDirectory": "/tmp/.cache/jest",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "./src/**/*.{js,jsx,ts,tsx}"
-    ],
-    "transform": {
-      "^.+\\.(j|t)sx?$": "./babel-jest.config.js"
-    },
-    "transformIgnorePatterns": []
   },
   "peerDependencies": {
     "@goji/core": "*",

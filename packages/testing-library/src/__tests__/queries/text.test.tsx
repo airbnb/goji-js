@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Button } from '@goji/core';
 import { render, fireEvent } from '../..';
 
+jest.setTimeout(10000);
+
 describe('ByText works', () => {
   test('getByText', () => {
     const App = () => {
@@ -68,7 +70,6 @@ describe('ByText works', () => {
   });
 
   test('findByText', async () => {
-    jest.setTimeout(10000);
     const App = () => {
       const [show, setShow] = useState(false);
 

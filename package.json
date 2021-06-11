@@ -7,12 +7,13 @@
     "packages/goji.js.org/*"
   ],
   "scripts": {
-    "postinstall": "lerna run prepublishOnly",
-    "lint": "lerna run lint",
+    "postinstall": "yarn create-config && lerna run prepublishOnly",
+    "lint": "eslint --color --ext .js,.ts,.jsx,.tsx .",
     "prettier": "prettier --list-different \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
     "prettier:fix": "prettier --write \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
+    "create-config": "yarn beemo create-config",
     "build": "lerna run build",
-    "test": "lerna run test"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -24,9 +25,5 @@
   "bugs": {
     "url": "https://github.com/airbnb/goji/issues"
   },
-  "homepage": "https://github.com/airbnb/goji#readme",
-  "devDependencies": {
-    "lerna": "^3.21.0",
-    "prettier": "^2.0.5"
-  }
+  "homepage": "https://github.com/airbnb/goji#readme"
 }

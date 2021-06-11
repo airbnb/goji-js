@@ -1,4 +1,17 @@
-module.exports = {
+import { ESLintConfig } from '@beemo/driver-eslint';
+
+const config: ESLintConfig = {
+  ignore: [
+    '**/dist/*',
+    '**/node_modules/*',
+    '**/.cache-loader/*',
+    '**/coverage/*',
+    'packages/goji.js.org/website/**/*',
+    'lerna.json',
+    'babel.config.js',
+    'jest.config.js',
+  ],
+  root: true,
   extends: ['airbnb', 'airbnb/hooks', 'prettier', 'prettier/react'],
   plugins: ['@typescript-eslint', 'jest'],
   parser: '@typescript-eslint/parser',
@@ -96,3 +109,5 @@ module.exports = {
     'no-undef': 'off',
   },
 };
+
+export default config;

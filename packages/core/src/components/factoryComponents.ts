@@ -5,7 +5,7 @@ import { BuildInComponentsProps } from './componentsTypes';
 
 const factoryComponent = <
   T extends keyof BuildInComponentsProps,
-  P extends BuildInComponentsProps[T]
+  P extends BuildInComponentsProps[T],
 >(
   component: T,
 ) => {

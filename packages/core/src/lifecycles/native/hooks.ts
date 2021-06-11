@@ -28,9 +28,8 @@ export const useOnUnload = createLifecycleHook('onUnload');
 export const useOnPullDownRefresh = createLifecycleHook('onPullDownRefresh');
 export const useOnReachBottom = createLifecycleHook('onReachBottom');
 export const useOnPageScroll = createLifecycleHook<OnScrollOptions>('onPageScroll');
-export const useOnShareAppMessage = createLifecycleHook<OnShareAppMessageOptions>(
-  'onShareAppMessage',
-);
+export const useOnShareAppMessage =
+  createLifecycleHook<OnShareAppMessageOptions>('onShareAppMessage');
 export const useOnResize = createLifecycleHook<OnResizeOptions>('onResize');
 export const useOnTabItemTap = createLifecycleHook<OnTabItemTapOptions>('onTabItemTap');
 // alipay only

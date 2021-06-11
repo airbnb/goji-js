@@ -4,7 +4,7 @@ import { transformObjectASTToObject } from '../transformObjectASTToObject';
 
 describe('parseObjectASTToObject', () => {
   const parseObjectCode = (code: string) => {
-    const program = parseSync(`a = ${code}`) as t.File;
+    const program = parseSync(`a = ${code}`, { filename: 'unknown' }) as t.File;
     return ((program.program.body[0] as t.ExpressionStatement).expression as t.AssignmentExpression)
       .right as t.Node;
   };
