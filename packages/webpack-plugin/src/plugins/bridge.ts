@@ -6,13 +6,18 @@ import { RawSource } from 'webpack-sources';
 import deepmerge from 'deepmerge';
 import { urlToRequest } from 'loader-utils';
 import { getWhitelistedComponents, getRenderedComponents } from '../utils/components';
-import { renderTemplate } from '../utils/render';
+import { renderTemplate, transformTemplate } from '../utils/render';
 import { getRelativePathToBridge } from '../utils/path';
 import { TEMPLATES_DIR, BRIDGE_OUTPUT_PATH } from '../constants';
 import { pathEntriesMap, appConfigMap, usedComponentsMap } from '../shared';
 import { GojiBasedWebpackPlugin } from './based';
 import { minimize } from '../utils/minimize';
 import { getSubpackagesInfo, findBelongingSubPackage } from '../utils/config';
+import {
+  childrenWxml,
+  componentWxml,
+  renderTemplate as renderTemplateComponent,
+} from '../templates';
 
 /**
  * render bridge files and page/components entry files
@@ -36,6 +41,28 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     }
     const usedComponents = usedComponentsMap.get(compilation);
     return getRenderedComponents(this.options.target, SIMPLIFY_COMPONENTS, usedComponents);
+  }
+
+  private async renderTemplateComponentToAsset(
+    compilation: webpack.compilation.Compilation,
+    assetPath: string,
+    component: () => string,
+    merge?: (newSource: string, oldSource: string) => string,
+  ) {
+    const formattedAssetPath = this.transformExtForPath(assetPath);
+    let content = renderTemplateComponent({ target: this.options.target }, component);
+    const type = path.extname(assetPath).replace(/^\./, '');
+    content = await transformTemplate(content, this.options.target, type);
+    if (!merge && compilation.assets[formattedAssetPath] !== undefined) {
+      console.warn('skip existing asset', formattedAssetPath);
+    }
+    if (merge && compilation.assets[formattedAssetPath]) {
+      content = merge(content, compilation.assets[formattedAssetPath].source());
+    }
+    if (this.options.minimize) {
+      content = await minimize(content, path.extname(assetPath));
+    }
+    compilation.assets[formattedAssetPath] = new RawSource(content);
   }
 
   private async renderTemplateToAsset<T>(
@@ -88,30 +115,25 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     const components = this.getRenderedComponents(compilation);
     const { maxDepth } = this.options;
     for (let depth = 0; depth < maxDepth; depth += 1) {
-      await this.renderTemplateToAsset(
+      await this.renderTemplateComponentToAsset(
         compilation,
         path.join(basedir, `${BRIDGE_OUTPUT_PATH}/children${depth}.wxml`),
-        'children.wxml.ejs',
-        {
-          depth,
-          maxDepth,
-          componentsDepth: depth + 1,
-          fixBaiduTemplateBug: this.options.target === 'baidu',
-        },
+        () =>
+          childrenWxml({
+            maxDepth,
+            componentsDepth: depth + 1,
+          }),
       );
-      await this.renderTemplateToAsset(
+      await this.renderTemplateComponentToAsset(
         compilation,
         path.join(basedir, `${BRIDGE_OUTPUT_PATH}/components${depth}.wxml`),
-        'components.wxml.ejs',
-        {
-          depth,
-          maxDepth,
-          componentsDepth: depth + 1,
-          components: components.filter(c => !c.isLeaf),
-          inlineChildrenRender: this.shouldInlineChildrenRender(),
-          useFlattenText: this.useFlattenText(),
-          useFlattenSwiper: this.useFlattenSwiper(),
-        },
+        () =>
+          componentWxml({
+            depth,
+            componentsDepth: depth + 1,
+            components: components.filter(c => !c.isLeaf),
+            useFlattenSwiper: this.useFlattenSwiper(),
+          }),
       );
     }
   }
@@ -158,21 +180,18 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   private async renderComponentTemplate(
     compilation: webpack.compilation.Compilation,
     basedir: string,
-    inlineChildrenRender: boolean,
   ) {
     const components = this.getRenderedComponents(compilation);
-    await this.renderTemplateToAsset(
+    await this.renderTemplateComponentToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/components0.wxml`),
-      'components.wxml.ejs',
-      {
-        depth: 0,
-        componentsDepth: 0,
-        components: components.filter(c => !c.isLeaf),
-        inlineChildrenRender,
-        useFlattenText: this.useFlattenText(),
-        useFlattenSwiper: this.useFlattenSwiper(),
-      },
+      () =>
+        componentWxml({
+          depth: 0,
+          componentsDepth: 0,
+          components: components.filter(c => !c.isLeaf),
+          useFlattenSwiper: this.useFlattenSwiper(),
+        }),
     );
   }
 
@@ -180,16 +199,14 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     compilation: webpack.compilation.Compilation,
     basedir: string,
   ) {
-    await this.renderTemplateToAsset(
+    await this.renderTemplateComponentToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/children0.wxml`),
-      'children.wxml.ejs',
-      {
-        depth: 0,
-        maxDepth: Infinity,
-        componentsDepth: 0,
-        fixBaiduTemplateBug: this.options.target === 'baidu',
-      },
+      () =>
+        childrenWxml({
+          maxDepth: Infinity,
+          componentsDepth: 0,
+        }),
     );
   }
 
@@ -245,10 +262,10 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           await this.renderChildrenRenderComponent(compilation, bridgeBasedirs);
         } else if (this.shouldInlineChildrenRender()) {
           // render component0 with inlined children0
-          await this.renderComponentTemplate(compilation, bridgeBasedirs, true);
+          await this.renderComponentTemplate(compilation, bridgeBasedirs);
         } else {
           // render component0
-          await this.renderComponentTemplate(compilation, bridgeBasedirs, false);
+          await this.renderComponentTemplate(compilation, bridgeBasedirs);
           // render children0
           await this.renderChildrenTemplate(compilation, bridgeBasedirs);
         }
