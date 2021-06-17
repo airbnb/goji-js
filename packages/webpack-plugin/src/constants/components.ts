@@ -552,22 +552,14 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
           ['enable-satellite', { defaultValue: false }],
           ['enable-traffic', { defaultValue: false }],
         ],
-        events: [
-          'tap',
-          'markertap',
-          'controltap',
-          'callouttap',
-          'updated',
-          'regionchange',
-          'poitap',
-        ],
+        events: ['markertap', 'controltap', 'callouttap', 'updated', 'regionchange', 'poitap'],
         isLeaf: true,
       },
       // Canvas
       {
         name: 'canvas',
         props: ['type', 'canvas-id', ['disable-scroll', { defaultValue: false }]],
-        events: ['touchstart', 'touchmove', 'touchend', 'touchcancel', 'longtap', 'error'],
+        events: ['error'],
         isLeaf: true,
       },
       // Open Capabilities
