@@ -13,13 +13,12 @@ import { pathEntriesMap, appConfigMap, usedComponentsMap } from '../shared';
 import { GojiBasedWebpackPlugin } from './based';
 import { minimize } from '../utils/minimize';
 import { getSubpackagesInfo, findBelongingSubPackage } from '../utils/config';
-import {
-  childrenWxml,
-  componentWxml,
-  renderTemplate as renderTemplateComponent,
-} from '../templates';
+import { renderTemplate as renderTemplateComponent } from '../templates';
+import { componentWxml } from '../templates/components/components.wxml';
+import { childrenWxml } from '../templates/components/children.wxml';
 import { leafComponentWxml } from '../templates/components/leaf-components.wxml';
 import { itemWxml } from '../templates/components/item.wxml';
+import { itemJson } from '../templates/components/item.json';
 
 /**
  * render bridge files and page/components entry files
@@ -295,15 +294,14 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           }),
         );
         // generate entry json
-        await this.renderTemplateToAsset(
+        await this.renderTemplateComponentToAsset(
           compilation,
           `${entrypoint}.json`,
-          'item.json.ejs',
-          {
-            useSubtree,
-            relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
-            components: this.getWhitelistedComponents(compilation),
-          },
+          () =>
+            itemJson({
+              relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
+              components: this.getWhitelistedComponents(compilation),
+            }),
           (newSource, oldSource) =>
             JSON.stringify(deepmerge(JSON.parse(oldSource), JSON.parse(newSource)), null, 2),
         );
