@@ -18,6 +18,7 @@ import {
   componentWxml,
   renderTemplate as renderTemplateComponent,
 } from '../templates';
+import { leafComponentWxml } from '../templates/components/leaf-components.wxml';
 
 /**
  * render bridge files and page/components entry files
@@ -140,13 +141,13 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
 
   private async renderLeafTemplate(compilation: webpack.compilation.Compilation, basedir: string) {
     const components = this.getRenderedComponents(compilation);
-    await this.renderTemplateToAsset(
+    await this.renderTemplateComponentToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/leaf-components.wxml`),
-      `leaf-components.wxml.ejs`,
-      {
-        components: components.filter(c => c.isLeaf),
-      },
+      () =>
+        leafComponentWxml({
+          components: components.filter(c => c.isLeaf),
+        }),
     );
   }
 

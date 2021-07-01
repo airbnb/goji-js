@@ -30,11 +30,13 @@ export const componentAttribute = ({
   }
 };
 
-export const componentProps = ({ component }: { component: ComponentRenderData }) => {
+export const componentAttributes = ({ component }: { component: ComponentRenderData }) => {
   const propsArray: Array<string> = [];
   if (component.isWrapped) {
+    if (!component.isLeaf) {
+      propsArray.push('nodes="{{c}}"');
+    }
     propsArray.push(
-      'nodes="{{c}}"',
       'goji-id="{{id || -1}}"',
       // use non-keywords to passthrough props to wrapped components
       componentAttribute({ name: 'class-name', value: 'className' }),
@@ -58,6 +60,32 @@ export const componentProps = ({ component }: { component: ComponentRenderData }
   return propsArray;
 };
 
+export const element = ({
+  tagName,
+  attributes,
+  children,
+}: {
+  tagName: string;
+  attributes: Array<string>;
+  children: string;
+}) => {
+  if (!children) {
+    return t`
+      <${tagName}
+        ${attributes}
+      />
+    `;
+  }
+
+  return t`
+    <${tagName}
+      ${attributes}
+    >
+      ${children}
+    </${tagName}>
+  `;
+};
+
 export const componentItem = ({
   component,
   depth,
@@ -69,26 +97,27 @@ export const componentItem = ({
 }) => {
   const inlineChildrenRender = CommonContext.read().target === 'alipay';
   const tagName = getComponentTagName(component);
+  const attributes = componentAttributes({ component });
+  const children = ((): string => {
+    if (component.isWrapped || component.isLeaf) {
+      return '';
+    }
+    if (inlineChildrenRender) {
+      return t`
+        <block wx:for="{{c}}" wx:key="id">
+          <template is="$$GOJI_COMPONENT${componentsDepth}" data="{{ ...item }}" />
+        </block>
+      `;
+    }
+
+    return t`
+      <include src="./children${depth}.wxml" />
+    `;
+  })();
 
   return t`
     <block wx:elif="{{${getConditionFromSidOrName(component)}}}">
-      <${tagName}
-        ${componentProps({ component })}
-      >
-        ${
-          // children will be rendered by `nodes` in the same way the `subtree` does
-          !component.isWrapped &&
-          (inlineChildrenRender
-            ? t`
-            <block wx:for="{{c}}" wx:key="id">
-              <template is="$$GOJI_COMPONENT${componentsDepth}" data="{{ ...item }}" />
-            </block>
-            `
-            : t`
-              <include src="./children${depth}.wxml" />
-            `)
-        }
-      </${tagName}>
+      ${element({ tagName, attributes, children })}
     </block>
   `;
 };
