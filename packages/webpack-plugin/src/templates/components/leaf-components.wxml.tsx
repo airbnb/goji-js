@@ -4,8 +4,8 @@ import { componentItem } from './components.wxml';
 
 export const leafComponentWxml = ({ components }: { components: ComponentRenderData[] }) => {
   return t`
-		<block wx:if="{{false}}"></block>
-		${components.map(component =>
+    <block wx:if="{{false}}"></block>
+    ${components.map(component =>
       componentItem({
         component,
         // FIXME: remove this filed
@@ -14,5 +14,5 @@ export const leafComponentWxml = ({ components }: { components: ComponentRenderD
         componentsDepth: -1,
       }),
     )}
-	`;
+  `;
 };

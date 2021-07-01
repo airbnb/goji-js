@@ -19,6 +19,7 @@ import {
   renderTemplate as renderTemplateComponent,
 } from '../templates';
 import { leafComponentWxml } from '../templates/components/leaf-components.wxml';
+import { itemWxml } from '../templates/components/item.wxml';
 
 /**
  * render bridge files and page/components entry files
@@ -287,11 +288,12 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           ? urlToRequest(belongingIndependentPackage)
           : '.';
         // generate entry wxml
-        await this.renderTemplateToAsset(compilation, `${entrypoint}.wxml`, 'item.wxml.ejs', {
-          useSubtree,
-          relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
-          fixBaiduTemplateBug: this.options.target === 'baidu',
-        });
+        await this.renderTemplateComponentToAsset(compilation, `${entrypoint}.wxml`, () =>
+          itemWxml({
+            relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
+            fixBaiduTemplateBug: this.options.target === 'baidu',
+          }),
+        );
         // generate entry json
         await this.renderTemplateToAsset(
           compilation,
