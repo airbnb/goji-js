@@ -1,3 +1,5 @@
+import { GojiTarget } from '@goji/core';
+import camelCase from 'lodash/camelCase';
 import { t } from '../helpers/t';
 
 export const getConditionFromSidOrName = ({ sid, name }: { sid?: number; name: string }) =>
@@ -5,6 +7,9 @@ export const getConditionFromSidOrName = ({ sid, name }: { sid?: number; name: s
 
 export const getComponentTagName = ({ isWrapped, name }: { isWrapped?: boolean; name: string }) =>
   t`${isWrapped && 'goji-'}${name}`;
+
+export const getEventName = ({ target, event }: { target: GojiTarget; event: string }) =>
+  target === 'alipay' ? camelCase(`on-${event}`) : `bind${event.replace(/-/g, '')}`;
 
 export const element = ({
   tagName,

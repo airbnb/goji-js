@@ -2,6 +2,7 @@ import { unstable_SimplifyComponent as SimplifyComponent, GojiTarget } from '@go
 import camelCase from 'lodash/camelCase';
 import kebabCase from 'lodash/kebabCase';
 import { getBuiltInComponents, ComponentDesc } from '../constants/components';
+import { getEventName } from '../templates/commons/wxmlElement';
 import { pluginComponents } from './pluginComponent';
 
 export const getWhitelistedComponents = (
@@ -90,9 +91,7 @@ export const getRenderedComponents = (
       isLeaf: component.isLeaf,
       isWrapped: component.isWrapped,
       sid: (component as SimplifiedComponentDesc).sid,
-      events: component.events.map(eventName =>
-        target === 'alipay' ? camelCase(`on-${eventName}`) : `bind${eventName.replace(/-/g, '')}`,
-      ),
+      events: component.events.map(event => getEventName({ target, event })),
       attributes: component.props.map(prop => {
         const [name, desc] = typeof prop === 'string' ? [prop, {}] : prop;
         if (
