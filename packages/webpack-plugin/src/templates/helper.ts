@@ -1,14 +1,47 @@
-import { source } from 'common-tags';
+import {
+  stripIndent,
+  TemplateTransformer,
+  createTag,
+  inlineArrayTransformer,
+  splitStringTransformer,
+  // @ts-ignore
+  removeNonPrintingValuesTransformer,
+  trimResultTransformer,
+} from 'common-tags';
 
-function runFunc(f: any) {
-  return typeof f === 'function' ? runFunc(f()) : f;
-}
+const runFunctionSubstitutions = (): TemplateTransformer => {
+  function runFunc(f: any): string {
+    return typeof f === 'function' ? runFunc(f()) : f;
+  }
 
-export const t = (template: TemplateStringsArray, ...substitutions: any[]) => {
-  const calledSubstitutions = substitutions.map(runFunc);
-
-  return source(template, ...calledSubstitutions);
+  return {
+    onSubstitution(sub) {
+      return runFunc(sub as any);
+    },
+  };
 };
+
+const trimEndSubstitutions = (): TemplateTransformer => {
+  return {
+    onSubstitution(sub) {
+      return sub.toString().replace(/\n+\s*$/, '');
+    },
+  };
+};
+
+// @ts-ignore
+export const t = createTag(
+  // support function substitutions: ${() => 'hi'}
+  runFunctionSubstitutions(),
+  splitStringTransformer('\n'),
+  removeNonPrintingValuesTransformer(),
+  inlineArrayTransformer(),
+  // always trim end of substitutions
+  trimEndSubstitutions(),
+  stripIndent,
+  // always trim end of result
+  trimResultTransformer('end'),
+);
 
 export class Context<T> {
   private value: T | undefined;
