@@ -1,5 +1,5 @@
 import { ComponentRenderData } from '../../utils/components';
-import { t } from '../helper';
+import { t } from '../helpers/t';
 import { componentItem } from './components.wxml';
 
 export const leafComponentWxml = ({ components }: { components: ComponentRenderData[] }) => {

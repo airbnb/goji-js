@@ -1,4 +1,4 @@
-import { t } from '../helper';
+import { t } from '../helpers/t';
 
 export const subtreeWxml = () => {
   return t`

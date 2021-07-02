@@ -1,5 +1,5 @@
-import { CommonContext } from '../context';
-import { t } from '../helper';
+import { CommonContext } from '../helpers/context';
+import { t } from '../helpers/t';
 
 export const childrenWxml = ({
   componentsDepth,

@@ -1,13 +1,8 @@
 import { ComponentRenderData } from '../../../utils/components';
-import { CommonContext } from '../../context';
-import { t } from '../../helper';
+import { element, getComponentTagName, getConditionFromSidOrName } from '../../commons/wxmlElement';
+import { CommonContext } from '../../helpers/context';
+import { t } from '../../helpers/t';
 import { FlattenText, FlattenSwiper } from './flatten';
-
-export const getConditionFromSidOrName = ({ sid, name }: { sid?: number; name: string }) =>
-  sid === undefined ? t`type === '${name}'` : t`sid === ${sid}`;
-
-export const getComponentTagName = ({ isWrapped, name }: { isWrapped?: boolean; name: string }) =>
-  t`${isWrapped && 'goji-'}${name}`;
 
 export const componentAttribute = ({
   name,
@@ -58,32 +53,6 @@ export const componentAttributes = ({ component }: { component: ComponentRenderD
   }
 
   return propsArray;
-};
-
-export const element = ({
-  tagName,
-  attributes,
-  children,
-}: {
-  tagName: string;
-  attributes: Array<string>;
-  children: string;
-}) => {
-  if (!children) {
-    return t`
-      <${tagName}
-        ${attributes}
-      />
-    `;
-  }
-
-  return t`
-    <${tagName}
-      ${attributes}
-    >
-      ${children}
-    </${tagName}>
-  `;
 };
 
 export const componentItem = ({

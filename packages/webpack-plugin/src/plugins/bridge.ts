@@ -22,6 +22,8 @@ import { itemJson } from '../templates/components/item.json';
 import { subtreeJs } from '../templates/components/subtree.js';
 import { subtreeJson } from '../templates/components/subtree.json';
 import { subtreeWxml } from '../templates/components/subtree.wxml';
+import { wrappedJson } from '../templates/components/wrapped.json';
+import { getFeatures } from '../constants/features';
 
 /**
  * render bridge files and page/components entry files
@@ -90,31 +92,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     compilation.assets[formattedAssetPath] = new RawSource(content);
   }
 
-  private shouldInlineChildrenRender() {
-    const { target } = this.options;
-    // alipay only support recursion dependency self to self so we have to inline the children.wxml
-    // Success: A -> A -> A
-    // Fail: A -> B -> A
-    return target === 'alipay';
-  }
-
-  private shouldUseSubtree() {
-    const { target } = this.options;
-    return target === 'wechat' || target === 'qq';
-  }
-
-  // Baidu doesn't support `template` inside `text` so we need to flat text manually
-  private useFlattenText() {
-    const { target } = this.options;
-    return target === 'baidu';
-  }
-
-  // Alipay has a bug that should use `swiper-item` directly inside `swiper`, no `template` is accepted
-  private useFlattenSwiper() {
-    const { target } = this.options;
-    return target === 'alipay';
-  }
-
   private async renderSubtreeBridge(compilation: webpack.compilation.Compilation, basedir: string) {
     const components = this.getRenderedComponents(compilation);
     const { maxDepth } = this.options;
@@ -136,7 +113,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
             depth,
             componentsDepth: depth + 1,
             components: components.filter(c => !c.isLeaf),
-            useFlattenSwiper: this.useFlattenSwiper(),
+            useFlattenSwiper: getFeatures(this.options.target).useFlattenSwiper,
           }),
       );
     }
@@ -192,7 +169,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           depth: 0,
           componentsDepth: 0,
           components: components.filter(c => !c.isLeaf),
-          useFlattenSwiper: this.useFlattenSwiper(),
+          useFlattenSwiper: getFeatures(this.options.target).useFlattenSwiper,
         }),
     );
   }
@@ -225,14 +202,15 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           `components/${component.name}.wxml.ejs`,
           {},
         );
-        await this.renderTemplateToAsset(
+        await this.renderTemplateComponentToAsset(
           compilation,
           path.join(basedir, `${BRIDGE_OUTPUT_PATH}/components/${component.name}.json`),
-          `components/${component.name}.json.ejs`,
-          {
-            relativePathToBridge: '.',
-            components: this.getWhitelistedComponents(compilation),
-          },
+          () =>
+            wrappedJson({
+              relativePathToBridge: '..',
+              component,
+              components: this.getWhitelistedComponents(compilation),
+            }),
         );
         await this.renderTemplateToAsset(
           compilation,
@@ -254,7 +232,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       const independentRoots = independents.map(independent => independent.root!);
       const independentPaths = independentRoots.map(root => urlToRequest(root));
 
-      const useSubtree = this.shouldUseSubtree();
+      const { useSubtree } = getFeatures(this.options.target);
 
       for (const bridgeBasedirs of ['.', ...independentPaths]) {
         if (useSubtree) {
@@ -262,7 +240,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           await this.renderSubtreeBridge(compilation, bridgeBasedirs);
           // render subtree component
           await this.renderChildrenRenderComponent(compilation, bridgeBasedirs);
-        } else if (this.shouldInlineChildrenRender()) {
+        } else if (getFeatures(this.options.target).useInlineChildren) {
           // render component0 with inlined children0
           await this.renderComponentTemplate(compilation, bridgeBasedirs);
         } else {

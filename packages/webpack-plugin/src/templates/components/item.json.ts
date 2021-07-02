@@ -1,6 +1,7 @@
-import { useSubtree } from '@goji/core/dist/cjs/components/subtree';
 import { ComponentDesc } from '../../constants/components';
-import { getComponentTagName } from './components.wxml';
+import { getFeatures } from '../../constants/features';
+import { getComponentTagName } from '../commons/wxmlElement';
+import { CommonContext } from '../helpers/context';
 
 export const itemJson = ({
   relativePathToBridge,
@@ -9,6 +10,7 @@ export const itemJson = ({
   relativePathToBridge: string;
   components: ComponentDesc[];
 }) => {
+  const features = getFeatures(CommonContext.read().target);
   const usingComponents: Record<string, string> = {};
   for (const component of components) {
     if (component.isWrapped) {
@@ -19,7 +21,7 @@ export const itemJson = ({
       usingComponents[component.name] = component.nativePath;
     }
   }
-  if (useSubtree) {
+  if (features.useSubtree) {
     usingComponents[
       getComponentTagName({ isWrapped: true, name: 'subtree' })
     ] = `${relativePathToBridge}/subtree`;

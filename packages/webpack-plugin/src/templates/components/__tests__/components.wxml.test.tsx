@@ -1,30 +1,5 @@
 import { ComponentRenderData } from '../../../utils/components';
-import {
-  componentAttribute,
-  componentAttributes,
-  getComponentTagName,
-  getConditionFromSidOrName,
-} from '../components.wxml';
-
-describe('getConditionFromSidOrName', () => {
-  test('only name', () => {
-    expect(getConditionFromSidOrName({ name: 'view' })).toBe(`type === 'view'`);
-  });
-
-  test('has simplify id', () => {
-    expect(getConditionFromSidOrName({ name: 'view', sid: 100 })).toBe('sid === 100');
-  });
-});
-
-describe('getComponentTagName', () => {
-  test('simple component', () => {
-    expect(getComponentTagName({ name: 'view' })).toBe('view');
-  });
-
-  test('wrapped component', () => {
-    expect(getComponentTagName({ name: 'view', isWrapped: true })).toBe('goji-view');
-  });
-});
+import { componentAttribute, componentAttributes } from '../components.wxml';
 
 describe('componentAttribute', () => {
   test('no fallback', () => {
