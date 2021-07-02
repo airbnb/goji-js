@@ -19,6 +19,9 @@ import { childrenWxml } from '../templates/components/children.wxml';
 import { leafComponentWxml } from '../templates/components/leaf-components.wxml';
 import { itemWxml } from '../templates/components/item.wxml';
 import { itemJson } from '../templates/components/item.json';
+import { subtreeJs } from '../templates/components/subtree.js';
+import { subtreeJson } from '../templates/components/subtree.json';
+import { subtreeWxml } from '../templates/components/subtree.wxml';
 
 /**
  * render bridge files and page/components entry files
@@ -155,26 +158,24 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     compilation: webpack.compilation.Compilation,
     basedir: string,
   ) {
-    await this.renderTemplateToAsset(
+    await this.renderTemplateComponentToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/subtree.js`),
-      'subtree.js.ejs',
-      {},
+      () => subtreeJs(),
     );
-    await this.renderTemplateToAsset(
+    await this.renderTemplateComponentToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/subtree.json`),
-      'subtree.json.ejs',
-      {
-        relativePathToBridge: '.',
-        components: this.getWhitelistedComponents(compilation),
-      },
+      () =>
+        subtreeJson({
+          relativePathToBridge: '.',
+          components: this.getWhitelistedComponents(compilation),
+        }),
     );
-    await this.renderTemplateToAsset(
+    await this.renderTemplateComponentToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/subtree.wxml`),
-      'subtree.wxml.ejs',
-      {},
+      () => subtreeWxml(),
     );
   }
 

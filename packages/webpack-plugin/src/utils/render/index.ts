@@ -19,7 +19,7 @@ export const transformTemplate = async (
 ) => {
   if (type === 'json') {
     // format the JSON file
-    return JSON.stringify(JSON5.parse(source));
+    return JSON.stringify(JSON5.parse(source), null, 2);
   }
   switch (target) {
     case 'wechat':
