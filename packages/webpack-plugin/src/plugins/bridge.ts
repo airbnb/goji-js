@@ -13,11 +13,18 @@ import { pathEntriesMap, appConfigMap, usedComponentsMap } from '../shared';
 import { GojiBasedWebpackPlugin } from './based';
 import { minimize } from '../utils/minimize';
 import { getSubpackagesInfo, findBelongingSubPackage } from '../utils/config';
-import {
-  childrenWxml,
-  componentWxml,
-  renderTemplate as renderTemplateComponent,
-} from '../templates';
+import { renderTemplate as renderTemplateComponent } from '../templates';
+import { componentWxml } from '../templates/components/components.wxml';
+import { childrenWxml } from '../templates/components/children.wxml';
+import { leafComponentWxml } from '../templates/components/leaf-components.wxml';
+import { itemWxml } from '../templates/components/item.wxml';
+import { itemJson } from '../templates/components/item.json';
+import { subtreeJs } from '../templates/components/subtree.js';
+import { subtreeJson } from '../templates/components/subtree.json';
+import { subtreeWxml } from '../templates/components/subtree.wxml';
+import { wrappedJson } from '../templates/components/wrapped.json';
+import { getFeatures } from '../constants/features';
+import { wrappedWxml } from '../templates/components/wrapped.wxml';
 
 /**
  * render bridge files and page/components entry files
@@ -86,31 +93,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     compilation.assets[formattedAssetPath] = new RawSource(content);
   }
 
-  private shouldInlineChildrenRender() {
-    const { target } = this.options;
-    // alipay only support recursion dependency self to self so we have to inline the children.wxml
-    // Success: A -> A -> A
-    // Fail: A -> B -> A
-    return target === 'alipay';
-  }
-
-  private shouldUseSubtree() {
-    const { target } = this.options;
-    return target === 'wechat' || target === 'qq';
-  }
-
-  // Baidu doesn't support `template` inside `text` so we need to flat text manually
-  private useFlattenText() {
-    const { target } = this.options;
-    return target === 'baidu';
-  }
-
-  // Alipay has a bug that should use `swiper-item` directly inside `swiper`, no `template` is accepted
-  private useFlattenSwiper() {
-    const { target } = this.options;
-    return target === 'alipay';
-  }
-
   private async renderSubtreeBridge(compilation: webpack.compilation.Compilation, basedir: string) {
     const components = this.getRenderedComponents(compilation);
     const { maxDepth } = this.options;
@@ -132,7 +114,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
             depth,
             componentsDepth: depth + 1,
             components: components.filter(c => !c.isLeaf),
-            useFlattenSwiper: this.useFlattenSwiper(),
+            useFlattenSwiper: getFeatures(this.options.target).useFlattenSwiper,
           }),
       );
     }
@@ -140,13 +122,13 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
 
   private async renderLeafTemplate(compilation: webpack.compilation.Compilation, basedir: string) {
     const components = this.getRenderedComponents(compilation);
-    await this.renderTemplateToAsset(
+    await this.renderTemplateComponentToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/leaf-components.wxml`),
-      `leaf-components.wxml.ejs`,
-      {
-        components: components.filter(c => c.isLeaf),
-      },
+      () =>
+        leafComponentWxml({
+          components: components.filter(c => c.isLeaf),
+        }),
     );
   }
 
@@ -154,26 +136,24 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     compilation: webpack.compilation.Compilation,
     basedir: string,
   ) {
-    await this.renderTemplateToAsset(
+    await this.renderTemplateComponentToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/subtree.js`),
-      'subtree.js.ejs',
-      {},
+      () => subtreeJs(),
     );
-    await this.renderTemplateToAsset(
+    await this.renderTemplateComponentToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/subtree.json`),
-      'subtree.json.ejs',
-      {
-        relativePathToBridge: '.',
-        components: this.getWhitelistedComponents(compilation),
-      },
+      () =>
+        subtreeJson({
+          relativePathToBridge: '.',
+          components: this.getWhitelistedComponents(compilation),
+        }),
     );
-    await this.renderTemplateToAsset(
+    await this.renderTemplateComponentToAsset(
       compilation,
       path.join(basedir, `${BRIDGE_OUTPUT_PATH}/subtree.wxml`),
-      'subtree.wxml.ejs',
-      {},
+      () => subtreeWxml(),
     );
   }
 
@@ -190,7 +170,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           depth: 0,
           componentsDepth: 0,
           components: components.filter(c => !c.isLeaf),
-          useFlattenSwiper: this.useFlattenSwiper(),
+          useFlattenSwiper: getFeatures(this.options.target).useFlattenSwiper,
         }),
     );
   }
@@ -217,20 +197,20 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     const components = this.getWhitelistedComponents(compilation);
     for (const component of components) {
       if (component.isWrapped) {
-        await this.renderTemplateToAsset(
+        await this.renderTemplateComponentToAsset(
           compilation,
           path.join(basedir, `${BRIDGE_OUTPUT_PATH}/components/${component.name}.wxml`),
-          `components/${component.name}.wxml.ejs`,
-          {},
+          () => wrappedWxml({ component }),
         );
-        await this.renderTemplateToAsset(
+        await this.renderTemplateComponentToAsset(
           compilation,
           path.join(basedir, `${BRIDGE_OUTPUT_PATH}/components/${component.name}.json`),
-          `components/${component.name}.json.ejs`,
-          {
-            relativePathToBridge: '.',
-            components: this.getWhitelistedComponents(compilation),
-          },
+          () =>
+            wrappedJson({
+              relativePathToBridge: '..',
+              component,
+              components: this.getWhitelistedComponents(compilation),
+            }),
         );
         await this.renderTemplateToAsset(
           compilation,
@@ -252,7 +232,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       const independentRoots = independents.map(independent => independent.root!);
       const independentPaths = independentRoots.map(root => urlToRequest(root));
 
-      const useSubtree = this.shouldUseSubtree();
+      const { useSubtree } = getFeatures(this.options.target);
 
       for (const bridgeBasedirs of ['.', ...independentPaths]) {
         if (useSubtree) {
@@ -260,7 +240,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           await this.renderSubtreeBridge(compilation, bridgeBasedirs);
           // render subtree component
           await this.renderChildrenRenderComponent(compilation, bridgeBasedirs);
-        } else if (this.shouldInlineChildrenRender()) {
+        } else if (getFeatures(this.options.target).useInlineChildren) {
           // render component0 with inlined children0
           await this.renderComponentTemplate(compilation, bridgeBasedirs);
         } else {
@@ -286,21 +266,21 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           ? urlToRequest(belongingIndependentPackage)
           : '.';
         // generate entry wxml
-        await this.renderTemplateToAsset(compilation, `${entrypoint}.wxml`, 'item.wxml.ejs', {
-          useSubtree,
-          relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
-          fixBaiduTemplateBug: this.options.target === 'baidu',
-        });
+        await this.renderTemplateComponentToAsset(compilation, `${entrypoint}.wxml`, () =>
+          itemWxml({
+            relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
+            fixBaiduTemplateBug: this.options.target === 'baidu',
+          }),
+        );
         // generate entry json
-        await this.renderTemplateToAsset(
+        await this.renderTemplateComponentToAsset(
           compilation,
           `${entrypoint}.json`,
-          'item.json.ejs',
-          {
-            useSubtree,
-            relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
-            components: this.getWhitelistedComponents(compilation),
-          },
+          () =>
+            itemJson({
+              relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
+              components: this.getWhitelistedComponents(compilation),
+            }),
           (newSource, oldSource) =>
             JSON.stringify(deepmerge(JSON.parse(oldSource), JSON.parse(newSource)), null, 2),
         );

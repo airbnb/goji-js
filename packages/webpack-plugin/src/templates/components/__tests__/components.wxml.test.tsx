@@ -1,30 +1,5 @@
 import { ComponentRenderData } from '../../../utils/components';
-import {
-  componentAttribute,
-  componentProps,
-  getComponentTagName,
-  getConditionFromSidOrName,
-} from '../components.wxml';
-
-describe('getConditionFromSidOrName', () => {
-  test('only name', () => {
-    expect(getConditionFromSidOrName({ name: 'view' })).toBe(`type === 'view'`);
-  });
-
-  test('has simplify id', () => {
-    expect(getConditionFromSidOrName({ name: 'view', sid: 100 })).toBe('sid === 100');
-  });
-});
-
-describe('getComponentTagName', () => {
-  test('simple component', () => {
-    expect(getComponentTagName({ name: 'view' })).toBe('view');
-  });
-
-  test('wrapped component', () => {
-    expect(getComponentTagName({ name: 'view', isWrapped: true })).toBe('goji-view');
-  });
-});
+import { componentAttribute, componentAttributes } from '../components.wxml';
 
 describe('componentAttribute', () => {
   test('no fallback', () => {
@@ -52,7 +27,7 @@ describe('componentAttribute', () => {
   });
 });
 
-describe('componentProps', () => {
+describe('componentAttributes', () => {
   test('simple component', () => {
     const component: ComponentRenderData = {
       name: 'view',
@@ -60,7 +35,7 @@ describe('componentProps', () => {
       attributes: [],
     };
 
-    expect(componentProps({ component })).toEqual(
+    expect(componentAttributes({ component })).toEqual(
       expect.arrayContaining([
         'data-goji-id="{{id || -1}}"',
         'class="{{props.className}}"',
@@ -78,7 +53,7 @@ describe('componentProps', () => {
       attributes: [],
     };
 
-    expect(componentProps({ component })).toEqual(
+    expect(componentAttributes({ component })).toEqual(
       expect.arrayContaining([
         'nodes="{{c}}"',
         'goji-id="{{id || -1}}"',
@@ -96,7 +71,7 @@ describe('componentProps', () => {
       attributes: [],
     };
 
-    expect(componentProps({ component })).toEqual(
+    expect(componentAttributes({ component })).toEqual(
       expect.arrayContaining(['tap="e"', 'change="e"']),
     );
   });
@@ -109,7 +84,7 @@ describe('componentProps', () => {
       attributes: [],
     };
 
-    expect(componentProps({ component })).not.toEqual(
+    expect(componentAttributes({ component })).not.toEqual(
       expect.arrayContaining(['tap="e"', 'change="e"']),
     );
   });
@@ -131,7 +106,7 @@ describe('componentProps', () => {
       ],
     };
 
-    expect(componentProps({ component })).toEqual(
+    expect(componentAttributes({ component })).toEqual(
       expect.arrayContaining([
         'scale-min="{{props.scaleMin}}"',
         'scale-max="{{props.scaleMax === undefined ? 100 : props.scaleMax }}"',

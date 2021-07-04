@@ -41,9 +41,11 @@ export type PropDesc = {
   required?: boolean;
 };
 
+type ComponentProp = string | [string, PropDesc];
+
 export type ComponentDesc = {
   name: string;
-  props: Array<string | [string, PropDesc]>;
+  props: Array<ComponentProp>;
   events: string[];
   nativePath?: string;
   isLeaf?: boolean;
@@ -268,8 +270,9 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
           ['adjust-position', { defaultValue: true }],
           // Alipay MiniProgram need this prop to fix position of input box is not correct bug.
           // https://opendocs.alipay.com/mini/component/input
-          ['enableNative', { defaultValue: false }],
-        ],
+          // please note this event is camelCase in Alipay rather than kebab-case
+          target === 'alipay' && ['enableNative', { defaultValue: false }],
+        ].filter(Boolean) as any,
         events: ['input', 'focus', 'blur', 'confirm', 'keyboardheightchange'],
         isLeaf: true,
       },
@@ -551,8 +554,20 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
           ['enable-rotate', { defaultValue: false }],
           ['enable-satellite', { defaultValue: false }],
           ['enable-traffic', { defaultValue: false }],
+          ['enable-poi', { defaultValue: false }],
+          'enable-building',
+          'setting',
         ],
-        events: ['markertap', 'controltap', 'callouttap', 'updated', 'regionchange', 'poitap'],
+        events: [
+          'markertap',
+          'labeltap',
+          'controltap',
+          'callouttap',
+          'updated',
+          'regionchange',
+          'poitap',
+          'anchorpointtap',
+        ],
         isLeaf: true,
       },
       // Canvas

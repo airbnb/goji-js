@@ -1,14 +1,4 @@
-import { source } from 'common-tags';
-
-function runFunc(f: any) {
-  return typeof f === 'function' ? runFunc(f()) : f;
-}
-
-export const t = (template: TemplateStringsArray, ...substitutions: any[]) => {
-  const calledSubstitutions = substitutions.map(runFunc);
-
-  return source(template, ...calledSubstitutions);
-};
+import { GojiTarget } from '@goji/core';
 
 export class Context<T> {
   private value: T | undefined;
@@ -35,3 +25,9 @@ export function withContext<T, R>(context: Context<T>, value: T, callback: () =>
   context.write(value);
   return result;
 }
+
+export interface CommonContextType {
+  target: GojiTarget;
+}
+
+export const CommonContext = createContext<CommonContextType>();
