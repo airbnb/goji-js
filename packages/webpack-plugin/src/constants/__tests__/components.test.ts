@@ -1,3 +1,5 @@
+import { kebabCase } from 'lodash';
+import { GojiTarget } from '../../../../core/dist/cjs';
 import { getBuiltInComponents } from '../components';
 
 const builtInComponents = getBuiltInComponents('wechat');
@@ -66,6 +68,29 @@ describe('components', () => {
         expect(formatWeChatStyleEventName(builtInComponent.events).includes('longtap')).toBe(false);
       }
     });
+
+    test.each<[GojiTarget]>([['wechat'], ['baidu'], ['alipay']])(
+      'props name should be kebab-case on %s',
+      target => {
+        for (const builtInComponent of getBuiltInComponents(target)) {
+          for (const propName of Object.keys(builtInComponent.props)) {
+            // skip these tests
+            if (builtInComponent.name === 'map' && propName === 'enable-3D') {
+              continue;
+            }
+            // alipay must use `enableNative` not `enable-native`
+            if (
+              target === 'alipay' &&
+              builtInComponent.name === 'input' &&
+              propName === 'enableNative'
+            ) {
+              continue;
+            }
+            expect(kebabCase(propName)).toBe(propName);
+          }
+        }
+      },
+    );
 
     it('events name should not duplicate', () => {
       for (const builtInComponent of builtInComponents) {

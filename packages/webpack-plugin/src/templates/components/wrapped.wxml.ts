@@ -16,8 +16,7 @@ export const wrappedWxml = ({ component }: { component: ComponentDesc }) => {
     'data-goji-id="{{gojiId}}"',
   );
   // add props
-  for (const prop of component.props) {
-    const propName = typeof prop === 'string' ? prop : prop[0];
+  for (const [propName] of Object.entries(component.props)) {
     if (config.memorizedProps && config.memorizedProps.includes(propName)) {
       attributes.push(`${propName}="{{${camelCase(`internal-${propName}`)}}}"`);
     } else {

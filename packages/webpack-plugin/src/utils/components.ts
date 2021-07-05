@@ -1,6 +1,7 @@
 import { unstable_SimplifyComponent as SimplifyComponent, GojiTarget } from '@goji/core';
 import camelCase from 'lodash/camelCase';
 import kebabCase from 'lodash/kebabCase';
+import pickBy from 'lodash/pickBy';
 import { getBuiltInComponents, ComponentDesc } from '../constants/components';
 import { getEventName } from '../templates/commons/wxmlElement';
 import { pluginComponents } from './pluginComponent';
@@ -41,9 +42,7 @@ export const getSimplifiedComponents = (
     simplifiedComponents.push({
       ...matched,
       events,
-      props: matched.props.filter(prop => {
-        const [propName] = typeof prop === 'string' ? [prop, {}] : prop;
-
+      props: pickBy(matched.props, (_propDesc, propName) => {
         return simplifiedProperties.includes(propName);
       }),
       sid: index,
@@ -92,10 +91,9 @@ export const getRenderedComponents = (
       isWrapped: component.isWrapped,
       sid: (component as SimplifiedComponentDesc).sid,
       events: component.events.map(event => getEventName({ target, event })),
-      attributes: component.props.map(prop => {
-        const [name, desc] = typeof prop === 'string' ? [prop, {}] : prop;
+      attributes: Object.entries(component.props).map(([name, desc]) => {
         if (
-          (desc && !desc.required && desc.defaultValue) ||
+          (!desc.required && desc.defaultValue) ||
           forceRenderFallback(target, component.name, name)
         ) {
           return {
