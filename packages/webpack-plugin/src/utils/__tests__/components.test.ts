@@ -37,20 +37,12 @@ describe('getSimplifiedComponents', () => {
 
     expect(simplifiedComponents[0].name).toBe('view');
     expect(simplifiedComponents[0].sid).toBe(0);
-    expect(
-      simplifiedComponents[0].props.find(
-        prop => (typeof prop === 'string' ? prop : prop[0]) === 'hover-class',
-      ),
-    ).not.toBeUndefined();
+    expect(simplifiedComponents[0].props['hover-class']).not.toBeUndefined();
     expect(simplifiedComponents[0].events).toEqual([]);
 
     expect(simplifiedComponents[1].name).toBe('view');
     expect(simplifiedComponents[1].sid).toBe(1);
-    expect(
-      simplifiedComponents[1].props.find(
-        prop => (typeof prop === 'string' ? prop : prop[0]) === 'hover-class',
-      ),
-    ).not.toBeUndefined();
+    expect(simplifiedComponents[1].props['hover-class']).not.toBeUndefined();
     expect(simplifiedComponents[1].events).toEqual(['click']);
   });
 });

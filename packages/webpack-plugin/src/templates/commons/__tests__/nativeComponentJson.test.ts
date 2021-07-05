@@ -6,7 +6,14 @@ describe('nativeComponentJson', () => {
   const components: ComponentDesc[] = [
     {
       name: 'view',
-      props: ['x', 'y'],
+      props: {
+        x: {
+          type: 'Number',
+        },
+        y: {
+          type: 'Number',
+        },
+      },
       events: ['change', 'input'],
       isWrapped: true,
     },

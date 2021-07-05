@@ -1,4 +1,4 @@
-import { ComponentDesc } from '../constants/components';
+import { ComponentDesc, ComponentPropDesc } from '../constants/components';
 
 export const pluginComponents = new Map<string, ComponentDesc>();
 
@@ -10,7 +10,11 @@ export const registerPluginComponent = (name: string, nativePath: string, props:
   pluginComponents.set(name, {
     name,
     nativePath,
-    props,
+    props: props.reduce<Record<string, ComponentPropDesc>>(
+      // FIXME: assume all props is String type here
+      (propsDesc, prop) => ({ ...propsDesc, [prop]: { required: false, type: 'String' } }),
+      {},
+    ),
     events: [],
     isLeaf: true,
     isWrapped: false,
