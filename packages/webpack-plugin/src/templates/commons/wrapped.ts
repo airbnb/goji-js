@@ -4,6 +4,7 @@ import { t } from '../helpers/t';
 interface WrappedConfig {
   memorizedProps?: Array<string>;
   overrideEvents?: Array<string>;
+  overrideEventsCode?: Record<string, string>;
   customizedChildren?: string;
 }
 
@@ -17,6 +18,15 @@ export const WRAPPED_CONFIGS: Record<string, WrappedConfig> = {
   map: {
     memorizedProps: ['longitude', 'latitude', 'scale'],
     overrideEvents: ['regionchange'],
+    overrideEventsCode: {
+      // there is a bug on WeChat that the `evt.type` of `regionchange` is not consistent with its name
+      regionchange: t`
+        onRegionchange(evt) {
+          evt.type = 'regionchange';
+          this.e(evt);
+        },
+      `,
+    },
   },
   'scroll-view': {
     memorizedProps: ['scroll-top', 'scroll-left', 'scroll-into-view'],

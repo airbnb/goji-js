@@ -25,6 +25,7 @@ import { subtreeWxml } from '../templates/components/subtree.wxml';
 import { wrappedJson } from '../templates/components/wrapped.json';
 import { getFeatures } from '../constants/features';
 import { wrappedWxml } from '../templates/components/wrapped.wxml';
+import { wrappedJs } from '../templates/components/wrapped.js';
 
 /**
  * render bridge files and page/components entry files
@@ -212,11 +213,13 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
               components: this.getWhitelistedComponents(compilation),
             }),
         );
-        await this.renderTemplateToAsset(
+        await this.renderTemplateComponentToAsset(
           compilation,
           path.join(basedir, `${BRIDGE_OUTPUT_PATH}/components/${component.name}.js`),
-          `components/${component.name}.js.ejs`,
-          {},
+          () =>
+            wrappedJs({
+              component,
+            }),
         );
       }
     }
