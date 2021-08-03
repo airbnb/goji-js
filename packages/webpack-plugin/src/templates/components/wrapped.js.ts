@@ -49,7 +49,9 @@ export const processWrappedProps = ({
     `);
   }
   const attachedInitData: Array<string> = [];
+
   for (const [propName, propDesc] of Object.entries(component.props)) {
+    const propertyFields = [t`type: ${propDesc.type},`];
     const camelCasePropName = camelCase(propName);
     if (config.memorizedProps?.includes(propName)) {
       const camelCaseInternalPropName = camelCase(`internal-${propName}`);
@@ -58,28 +60,24 @@ export const processWrappedProps = ({
           propDesc.defaultValue ?? DEFAULT_VALUE_FROM_TYPE[propDesc.type],
         )},`,
       );
-      properties.push(t`
-        ${camelCasePropName}: {
-          type: ${propDesc.type},
-          observer() {
-            if (this.properties.${camelCasePropName} !== this.data.${camelCaseInternalPropName}) {
-              this.setData({
-                ${camelCaseInternalPropName}: this.properties.${camelCasePropName},
-              });
-            }
-          },
+      propertyFields.push(t`
+        observer() {
+          if (this.properties.${camelCasePropName} !== this.data.${camelCaseInternalPropName}) {
+            this.setData({
+              ${camelCaseInternalPropName}: this.properties.${camelCasePropName},
+            });
+          }
         },
       `);
       attachedInitData.push(t`
         ${camelCaseInternalPropName}: this.properties.${camelCasePropName},
       `);
-    } else {
-      properties.push(t`
-        ${camelCasePropName}: {
-          type: ${propDesc.type},
-        },
-      `);
     }
+    properties.push(t`
+      ${camelCasePropName}: {
+        ${propertyFields}
+      },
+    `);
   }
 
   return { data, properties, attachedInitData };
