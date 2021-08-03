@@ -1,7 +1,6 @@
-// FIXME: merge this file into packages/webpack-plugin/src/constants/components.ts
 import { t } from '../helpers/t';
 
-interface WrappedConfig {
+export interface WrappedConfig {
   memorizedProps?: Array<string>;
   overrideEvents?: Array<string>;
   overrideEventsCode?: Record<string, string>;

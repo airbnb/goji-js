@@ -1,6 +1,6 @@
 import camelCase from 'lodash/camelCase';
 import { ComponentDesc, ComponentPropDesc } from '../../constants/components';
-import { WRAPPED_CONFIGS, DEFAULT_WRAPPED_CONFIG } from '../commons/wrapped';
+import { WRAPPED_CONFIGS, DEFAULT_WRAPPED_CONFIG, WrappedConfig } from '../commons/wrapped';
 import { t } from '../helpers/t';
 
 const DEFAULT_VALUE_FROM_TYPE: Record<ComponentPropDesc['type'], any> = {
@@ -11,10 +11,13 @@ const DEFAULT_VALUE_FROM_TYPE: Record<ComponentPropDesc['type'], any> = {
   Array: [],
 };
 
-export const wrappedJs = ({ component }: { component: ComponentDesc }) => {
-  const config = WRAPPED_CONFIGS[component.name] ?? DEFAULT_WRAPPED_CONFIG;
-
-  // add props
+export const processWrappedProps = ({
+  component,
+  config,
+}: {
+  component: ComponentDesc;
+  config: WrappedConfig;
+}) => {
   const data: Array<string> = [];
   const properties: Array<string> = [
     t`
@@ -79,6 +82,16 @@ export const wrappedJs = ({ component }: { component: ComponentDesc }) => {
     }
   }
 
+  return { data, properties, attachedInitData };
+};
+
+export const processWrappedEvents = ({
+  component,
+  config,
+}: {
+  component: ComponentDesc;
+  config: WrappedConfig;
+}) => {
   // add events
   const methods: Array<string> = [];
   for (const event of component.events) {
@@ -96,6 +109,15 @@ export const wrappedJs = ({ component }: { component: ComponentDesc }) => {
       }
     }
   }
+
+  return { methods };
+};
+
+export const wrappedJs = ({ component }: { component: ComponentDesc }) => {
+  const config = WRAPPED_CONFIGS[component.name] ?? DEFAULT_WRAPPED_CONFIG;
+  const { data, properties, attachedInitData } = processWrappedProps({ config, component });
+  const { methods } = processWrappedEvents({ config, component });
+
   return t`
     Component({
       options: {
