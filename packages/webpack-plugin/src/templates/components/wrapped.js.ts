@@ -51,7 +51,7 @@ export const processWrappedProps = ({
   const attachedInitData: Array<string> = [];
   for (const [propName, propDesc] of Object.entries(component.props)) {
     const camelCasePropName = camelCase(propName);
-    if (config.memorizedProps && config.memorizedProps.includes(propName)) {
+    if (config.memorizedProps?.includes(propName)) {
       const camelCaseInternalPropName = camelCase(`internal-${propName}`);
       data.push(
         t`${camelCaseInternalPropName}: ${JSON.stringify(
@@ -95,18 +95,8 @@ export const processWrappedEvents = ({
   // add events
   const methods: Array<string> = [];
   for (const event of component.events) {
-    if (config.overrideEvents?.includes(event)) {
-      if (config.overrideEventsCode?.[event]) {
-        methods.push(config.overrideEventsCode[event]);
-      } else {
-        // TODO: only support override `value`
-        methods.push(t`
-          ${camelCase(`on-${event}`)}(evt) {
-            this.data.internalValue = evt.detail.value;
-            this.e(evt);
-          },
-        `);
-      }
+    if (config.customizedEventHandler?.[event]) {
+      methods.push(config.customizedEventHandler[event]);
     }
   }
 

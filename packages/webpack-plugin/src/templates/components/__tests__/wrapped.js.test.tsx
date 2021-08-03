@@ -1,5 +1,5 @@
 import { ComponentDesc, getBuiltInComponents } from '../../../constants/components';
-import { WrappedConfig } from '../../commons/wrapped';
+import { updateInternalValueHandler, WrappedConfig } from '../../commons/wrapped';
 import { t } from '../../helpers/t';
 import { processWrappedEvents, processWrappedProps, wrappedJs } from '../wrapped.js';
 
@@ -24,15 +24,14 @@ describe('wrapped.js', () => {
   };
   const mockConfig: WrappedConfig = {
     memorizedProps: ['scale'],
-    overrideEvents: ['regionchange', 'input'],
-    overrideEventsCode: {
+    customizedEventHandler: {
       // there is a bug on WeChat that the `evt.type` of `regionchange` is not consistent with its name
       regionchange: t`
-      onRegionchange(evt) {
-        evt.type = 'regionchange';
-        this.e(evt);
-      },
-    `,
+        onRegionchange(evt) {
+          evt.type = 'regionchange';
+          this.e(evt);
+        },`,
+      input: updateInternalValueHandler('input'),
     },
   };
 
