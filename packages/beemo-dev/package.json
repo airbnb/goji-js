@@ -1,6 +1,6 @@
 {
   "name": "@goji/beemo-dev",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Beemo Config for GojiJS Development",
   "main": "src/index.ts",
   "repository": "https://github.com/airbnb/goji-js.git",
