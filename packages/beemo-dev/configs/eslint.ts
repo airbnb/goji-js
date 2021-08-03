@@ -107,6 +107,7 @@ const config: ESLintConfig = {
     '@typescript-eslint/explicit-member-accessibility': ['error'],
     // https://github.com/typescript-eslint/typescript-eslint/issues/2477
     'no-undef': 'off',
+    'no-tabs': 'error',
   },
 };
 

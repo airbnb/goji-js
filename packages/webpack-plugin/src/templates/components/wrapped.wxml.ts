@@ -17,7 +17,7 @@ export const wrappedWxml = ({ component }: { component: ComponentDesc }) => {
   );
   // add props
   for (const [propName] of Object.entries(component.props)) {
-    if (config.memorizedProps && config.memorizedProps.includes(propName)) {
+    if (config.memorizedProps?.includes(propName)) {
       attributes.push(`${propName}="{{${camelCase(`internal-${propName}`)}}}"`);
     } else {
       attributes.push(`${propName}="{{${camelCase(propName)}}}"`);
@@ -27,7 +27,7 @@ export const wrappedWxml = ({ component }: { component: ComponentDesc }) => {
   // add events
   for (const event of component.events) {
     const eventName = getEventName({ target, event });
-    if (config.overrideEvents && config.overrideEvents.includes(event)) {
+    if (config.customizedEventHandler?.[event]) {
       attributes.push(`${eventName}="${camelCase(`on-${event}`)}"`);
     } else {
       attributes.push(`${eventName}="e"`);

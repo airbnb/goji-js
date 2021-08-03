@@ -1,0 +1,676 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`wrapped.js snapshot works: input 1`] = `
+"Component({
+  options: {
+    addGlobalClass: true,
+  },
+  data: {
+    internalValue: \\"\\",
+    internalFocus: false,
+  },
+  properties: {
+    theId: {
+      type: String,
+    },
+    className: {
+      type: String,
+    },
+    theStyle: {
+      type: String,
+    },
+    gojiId: {
+      type: Number,
+    },
+    value: {
+      type: String,
+      observer() {
+        if (this.properties.value !== this.data.internalValue) {
+          this.setData({
+            internalValue: this.properties.value,
+          });
+        }
+      },
+    },
+    type: {
+      type: String,
+    },
+    password: {
+      type: Boolean,
+    },
+    placeholder: {
+      type: String,
+    },
+    placeholderStyle: {
+      type: String,
+    },
+    placeholderClass: {
+      type: String,
+    },
+    disabled: {
+      type: Boolean,
+    },
+    maxlength: {
+      type: Number,
+    },
+    cursorSpacing: {
+      type: Number,
+    },
+    autoFocus: {
+      type: Boolean,
+    },
+    focus: {
+      type: Boolean,
+      observer() {
+        if (this.properties.focus !== this.data.internalFocus) {
+          this.setData({
+            internalFocus: this.properties.focus,
+          });
+        }
+      },
+    },
+    confirmType: {
+      type: String,
+    },
+    confirmHold: {
+      type: Boolean,
+    },
+    cursor: {
+      type: Number,
+    },
+    selectionStart: {
+      type: Number,
+    },
+    selectionEnd: {
+      type: Number,
+    },
+    adjustPosition: {
+      type: Boolean,
+    },
+  },
+  lifetimes: {
+    attached() {
+      Object.e.subtreeAttached(this.properties.gojiId, this);
+      this.setData({
+        internalValue: this.properties.value,
+        internalFocus: this.properties.focus,
+      });
+    },
+    detached() {
+      Object.e.subtreeDetached(this.properties.gojiId);
+    },
+  },
+  methods: {
+    e(evt) {
+      Object.e.trigger(evt);
+    },
+    onInput(evt) {
+      this.data.internalValue = evt.detail.value;
+      this.e(evt);
+    },
+  },
+});"
+`;
+
+exports[`wrapped.js snapshot works: map 1`] = `
+"Component({
+  options: {
+    addGlobalClass: true,
+  },
+  data: {
+    internalLongitude: 0,
+    internalLatitude: 0,
+    internalScale: 16,
+  },
+  properties: {
+    theId: {
+      type: String,
+    },
+    className: {
+      type: String,
+    },
+    theStyle: {
+      type: String,
+    },
+    gojiId: {
+      type: Number,
+    },
+    longitude: {
+      type: Number,
+      observer() {
+        if (this.properties.longitude !== this.data.internalLongitude) {
+          this.setData({
+            internalLongitude: this.properties.longitude,
+          });
+        }
+      },
+    },
+    latitude: {
+      type: Number,
+      observer() {
+        if (this.properties.latitude !== this.data.internalLatitude) {
+          this.setData({
+            internalLatitude: this.properties.latitude,
+          });
+        }
+      },
+    },
+    scale: {
+      type: Number,
+      observer() {
+        if (this.properties.scale !== this.data.internalScale) {
+          this.setData({
+            internalScale: this.properties.scale,
+          });
+        }
+      },
+    },
+    markers: {
+      type: Array,
+    },
+    polyline: {
+      type: Array,
+    },
+    circles: {
+      type: Array,
+    },
+    controls: {
+      type: Array,
+    },
+    includePoints: {
+      type: Array,
+    },
+    showLocation: {
+      type: Boolean,
+    },
+    polygons: {
+      type: Array,
+    },
+    subkey: {
+      type: String,
+    },
+    layerStyle: {
+      type: Number,
+    },
+    rotate: {
+      type: Number,
+    },
+    skew: {
+      type: Number,
+    },
+    enable3D: {
+      type: Boolean,
+    },
+    showCompass: {
+      type: Boolean,
+    },
+    showScale: {
+      type: Boolean,
+    },
+    enableOverlooking: {
+      type: Boolean,
+    },
+    enableZoom: {
+      type: Boolean,
+    },
+    enableScroll: {
+      type: Boolean,
+    },
+    enableRotate: {
+      type: Boolean,
+    },
+    enableSatellite: {
+      type: Boolean,
+    },
+    enableTraffic: {
+      type: Boolean,
+    },
+    enablePoi: {
+      type: Boolean,
+    },
+    enableBuilding: {
+      type: Boolean,
+    },
+    setting: {
+      type: Object,
+    },
+  },
+  lifetimes: {
+    attached() {
+      Object.e.subtreeAttached(this.properties.gojiId, this);
+      this.setData({
+        internalLongitude: this.properties.longitude,
+        internalLatitude: this.properties.latitude,
+        internalScale: this.properties.scale,
+      });
+    },
+    detached() {
+      Object.e.subtreeDetached(this.properties.gojiId);
+    },
+  },
+  methods: {
+    e(evt) {
+      Object.e.trigger(evt);
+    },
+    onRegionchange(evt) {
+      evt.type = 'regionchange';
+      this.e(evt);
+    },
+  },
+});"
+`;
+
+exports[`wrapped.js snapshot works: scroll-view 1`] = `
+"Component({
+  options: {
+    addGlobalClass: true,
+  },
+  data: {
+    internalScrollTop: \\"\\",
+    internalScrollLeft: \\"\\",
+    internalScrollIntoView: \\"\\",
+  },
+  properties: {
+    theId: {
+      type: String,
+    },
+    className: {
+      type: String,
+    },
+    theStyle: {
+      type: String,
+    },
+    gojiId: {
+      type: Number,
+    },
+    nodes: {
+      type: Object,
+    },
+    scrollX: {
+      type: Boolean,
+    },
+    scrollY: {
+      type: Boolean,
+    },
+    upperThreshold: {
+      type: Number,
+    },
+    lowerThreshold: {
+      type: Number,
+    },
+    scrollTop: {
+      type: String,
+      observer() {
+        if (this.properties.scrollTop !== this.data.internalScrollTop) {
+          this.setData({
+            internalScrollTop: this.properties.scrollTop,
+          });
+        }
+      },
+    },
+    scrollLeft: {
+      type: String,
+      observer() {
+        if (this.properties.scrollLeft !== this.data.internalScrollLeft) {
+          this.setData({
+            internalScrollLeft: this.properties.scrollLeft,
+          });
+        }
+      },
+    },
+    scrollIntoView: {
+      type: String,
+      observer() {
+        if (this.properties.scrollIntoView !== this.data.internalScrollIntoView) {
+          this.setData({
+            internalScrollIntoView: this.properties.scrollIntoView,
+          });
+        }
+      },
+    },
+    scrollWithAnimation: {
+      type: Boolean,
+    },
+    enableBackToTop: {
+      type: Boolean,
+    },
+    enableFlex: {
+      type: Boolean,
+    },
+    scrollAnchoring: {
+      type: Boolean,
+    },
+  },
+  lifetimes: {
+    attached() {
+      Object.e.subtreeAttached(this.properties.gojiId, this);
+      this.setData({
+        internalScrollTop: this.properties.scrollTop,
+        internalScrollLeft: this.properties.scrollLeft,
+        internalScrollIntoView: this.properties.scrollIntoView,
+      });
+    },
+    detached() {
+      Object.e.subtreeDetached(this.properties.gojiId);
+    },
+  },
+  methods: {
+    e(evt) {
+      Object.e.trigger(evt);
+    },
+
+  },
+});"
+`;
+
+exports[`wrapped.js snapshot works: swiper 1`] = `
+"Component({
+  options: {
+    addGlobalClass: true,
+  },
+  data: {
+    internalCurrent: 0,
+  },
+  properties: {
+    theId: {
+      type: String,
+    },
+    className: {
+      type: String,
+    },
+    theStyle: {
+      type: String,
+    },
+    gojiId: {
+      type: Number,
+    },
+    nodes: {
+      type: Object,
+    },
+    indicatorDots: {
+      type: Boolean,
+    },
+    indicatorColor: {
+      type: String,
+    },
+    indicatorActiveColor: {
+      type: String,
+    },
+    autoplay: {
+      type: Boolean,
+    },
+    current: {
+      type: Number,
+      observer() {
+        if (this.properties.current !== this.data.internalCurrent) {
+          this.setData({
+            internalCurrent: this.properties.current,
+          });
+        }
+      },
+    },
+    interval: {
+      type: Number,
+    },
+    duration: {
+      type: Number,
+    },
+    circular: {
+      type: Boolean,
+    },
+    vertical: {
+      type: Boolean,
+    },
+    previousMargin: {
+      type: String,
+    },
+    nextMargin: {
+      type: String,
+    },
+    displayMultipleItems: {
+      type: Number,
+    },
+    skipHiddenItemLayout: {
+      type: Boolean,
+    },
+    easingFunction: {
+      type: String,
+    },
+  },
+  lifetimes: {
+    attached() {
+      Object.e.subtreeAttached(this.properties.gojiId, this);
+      this.setData({
+        internalCurrent: this.properties.current,
+      });
+    },
+    detached() {
+      Object.e.subtreeDetached(this.properties.gojiId);
+    },
+  },
+  methods: {
+    e(evt) {
+      Object.e.trigger(evt);
+    },
+
+  },
+});"
+`;
+
+exports[`wrapped.js snapshot works: textarea 1`] = `
+"Component({
+  options: {
+    addGlobalClass: true,
+  },
+  data: {
+    internalValue: \\"\\",
+    internalFocus: false,
+  },
+  properties: {
+    theId: {
+      type: String,
+    },
+    className: {
+      type: String,
+    },
+    theStyle: {
+      type: String,
+    },
+    gojiId: {
+      type: Number,
+    },
+    value: {
+      type: String,
+      observer() {
+        if (this.properties.value !== this.data.internalValue) {
+          this.setData({
+            internalValue: this.properties.value,
+          });
+        }
+      },
+    },
+    placeholder: {
+      type: String,
+    },
+    placeholderStyle: {
+      type: String,
+    },
+    placeholderClass: {
+      type: String,
+    },
+    disabled: {
+      type: Boolean,
+    },
+    maxlength: {
+      type: Number,
+    },
+    autoFocus: {
+      type: Boolean,
+    },
+    focus: {
+      type: Boolean,
+      observer() {
+        if (this.properties.focus !== this.data.internalFocus) {
+          this.setData({
+            internalFocus: this.properties.focus,
+          });
+        }
+      },
+    },
+    autoHeight: {
+      type: Boolean,
+    },
+    fixed: {
+      type: Boolean,
+    },
+    cursorSpacing: {
+      type: Number,
+    },
+    cursor: {
+      type: Number,
+    },
+    showConfirmBar: {
+      type: Boolean,
+    },
+    selectionStart: {
+      type: Number,
+    },
+    selectionEnd: {
+      type: Number,
+    },
+    adjustPosition: {
+      type: Boolean,
+    },
+  },
+  lifetimes: {
+    attached() {
+      Object.e.subtreeAttached(this.properties.gojiId, this);
+      this.setData({
+        internalValue: this.properties.value,
+        internalFocus: this.properties.focus,
+      });
+    },
+    detached() {
+      Object.e.subtreeDetached(this.properties.gojiId);
+    },
+  },
+  methods: {
+    e(evt) {
+      Object.e.trigger(evt);
+    },
+    onInput(evt) {
+      this.data.internalValue = evt.detail.value;
+      this.e(evt);
+    },
+  },
+});"
+`;
+
+exports[`wrapped.js snapshot works: textarea 2`] = `
+"Component({
+  options: {
+    addGlobalClass: true,
+  },
+  data: {
+    internalValue: \\"\\",
+    internalFocus: false,
+  },
+  properties: {
+    theId: {
+      type: String,
+    },
+    className: {
+      type: String,
+    },
+    theStyle: {
+      type: String,
+    },
+    gojiId: {
+      type: Number,
+    },
+    value: {
+      type: String,
+      observer() {
+        if (this.properties.value !== this.data.internalValue) {
+          this.setData({
+            internalValue: this.properties.value,
+          });
+        }
+      },
+    },
+    placeholder: {
+      type: String,
+    },
+    placeholderStyle: {
+      type: String,
+    },
+    placeholderClass: {
+      type: String,
+    },
+    disabled: {
+      type: Boolean,
+    },
+    maxlength: {
+      type: Number,
+    },
+    autoFocus: {
+      type: Boolean,
+    },
+    focus: {
+      type: Boolean,
+      observer() {
+        if (this.properties.focus !== this.data.internalFocus) {
+          this.setData({
+            internalFocus: this.properties.focus,
+          });
+        }
+      },
+    },
+    autoHeight: {
+      type: Boolean,
+    },
+    fixed: {
+      type: Boolean,
+    },
+    cursorSpacing: {
+      type: Number,
+    },
+    cursor: {
+      type: Number,
+    },
+    showConfirmBar: {
+      type: Boolean,
+    },
+    selectionStart: {
+      type: Number,
+    },
+    selectionEnd: {
+      type: Number,
+    },
+    adjustPosition: {
+      type: Boolean,
+    },
+  },
+  lifetimes: {
+    attached() {
+      Object.e.subtreeAttached(this.properties.gojiId, this);
+      this.setData({
+        internalValue: this.properties.value,
+        internalFocus: this.properties.focus,
+      });
+    },
+    detached() {
+      Object.e.subtreeDetached(this.properties.gojiId);
+    },
+  },
+  methods: {
+    e(evt) {
+      Object.e.trigger(evt);
+    },
+    onInput(evt) {
+      this.data.internalValue = evt.detail.value;
+      this.e(evt);
+    },
+  },
+});"
+`;

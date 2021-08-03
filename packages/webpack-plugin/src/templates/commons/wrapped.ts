@@ -1,29 +1,47 @@
-// FIXME: merge this file into packages/webpack-plugin/src/constants/components.ts
+import { camelCase } from 'lodash';
 import { t } from '../helpers/t';
 
-interface WrappedConfig {
+export interface WrappedConfig {
   memorizedProps?: Array<string>;
-  overrideEvents?: Array<string>;
+  customizedEventHandler?: Record<string, string>;
   customizedChildren?: string;
 }
 
 export const DEFAULT_WRAPPED_CONFIG: WrappedConfig = {};
 
+export const updateInternalValueHandler = (event: string) => t`
+  ${camelCase(`on-${event}`)}(evt) {
+    this.data.internalValue = evt.detail.value;
+    this.e(evt);
+  },`;
+
 export const WRAPPED_CONFIGS: Record<string, WrappedConfig> = {
   input: {
     memorizedProps: ['value', 'focus'],
-    overrideEvents: ['input'],
+    customizedEventHandler: {
+      input: updateInternalValueHandler('input'),
+    },
   },
   map: {
     memorizedProps: ['longitude', 'latitude', 'scale'],
-    overrideEvents: ['regionchange'],
+    customizedEventHandler: {
+      // there is a bug on WeChat that the `evt.type` of `regionchange` is not consistent with its name
+      regionchange: t`
+        onRegionchange(evt) {
+          evt.type = 'regionchange';
+          this.e(evt);
+        },
+      `,
+    },
   },
   'scroll-view': {
     memorizedProps: ['scroll-top', 'scroll-left', 'scroll-into-view'],
   },
   textarea: {
     memorizedProps: ['value', 'focus'],
-    overrideEvents: ['input'],
+    customizedEventHandler: {
+      input: updateInternalValueHandler('input'),
+    },
   },
   swiper: {
     memorizedProps: ['current'],
