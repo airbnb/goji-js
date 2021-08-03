@@ -1,6 +1,6 @@
 {
   "name": "@goji/macro",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "GojiJS binding for babel-plugin-macros",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -24,8 +24,8 @@
     "babel-plugin-macros": "^3.1.0"
   },
   "devDependencies": {
-    "@goji/core": "^0.10.0",
-    "@goji/webpack-plugin": "^0.10.0",
+    "@goji/core": "^0.11.0",
+    "@goji/webpack-plugin": "^0.11.0",
     "@types/babel-plugin-macros": "^2.8.4",
     "react": "^16.13.1"
   },
