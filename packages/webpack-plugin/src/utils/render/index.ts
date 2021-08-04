@@ -1,6 +1,3 @@
-import ejs from 'ejs';
-import fs from 'fs';
-import path from 'path';
 import JSON5 from 'json5';
 import unified from 'unified';
 import parse from 'wx2swan/dist/src/view/plugins/parse';
@@ -86,20 +83,4 @@ export const transformTemplate = async (
     default:
       return source;
   }
-};
-
-export const renderTemplate = (
-  target: GojiWebpackPluginOptions['target'],
-  pathname: string,
-  data: any = {},
-) => {
-  const content = fs.readFileSync(pathname).toString();
-  const source = ejs.render(content, data, {
-    filename: pathname,
-  });
-  const type = path.extname(path.basename(pathname, path.extname(pathname))).replace(/^\./, '');
-
-  const result = transformTemplate(source, target, type);
-
-  return result;
 };

@@ -6,14 +6,14 @@ import { RawSource } from 'webpack-sources';
 import deepmerge from 'deepmerge';
 import { urlToRequest } from 'loader-utils';
 import { getWhitelistedComponents, getRenderedComponents } from '../utils/components';
-import { renderTemplate, transformTemplate } from '../utils/render';
+import { transformTemplate } from '../utils/render';
 import { getRelativePathToBridge } from '../utils/path';
-import { TEMPLATES_DIR, BRIDGE_OUTPUT_PATH } from '../constants';
+import { BRIDGE_OUTPUT_PATH } from '../constants';
 import { pathEntriesMap, appConfigMap, usedComponentsMap } from '../shared';
 import { GojiBasedWebpackPlugin } from './based';
 import { minimize } from '../utils/minimize';
 import { getSubpackagesInfo, findBelongingSubPackage } from '../utils/config';
-import { renderTemplate as renderTemplateComponent } from '../templates';
+import { renderTemplate } from '../templates';
 import { componentWxml } from '../templates/components/components.wxml';
 import { childrenWxml } from '../templates/components/children.wxml';
 import { leafComponentWxml } from '../templates/components/leaf-components.wxml';
@@ -31,10 +31,6 @@ import { wrappedJs } from '../templates/components/wrapped.js';
  * render bridge files and page/components entry files
  */
 export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
-  private renderTemplate<T>(pathname: string, data?: T) {
-    return renderTemplate(this.options.target, path.resolve(TEMPLATES_DIR, pathname), data);
-  }
-
   private getWhitelistedComponents(compilation: webpack.compilation.Compilation) {
     if (!usedComponentsMap.has(compilation)) {
       throw new Error('`usedComponents` not found, This might be an internal error in GojiJS.');
@@ -58,30 +54,9 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     merge?: (newSource: string, oldSource: string) => string,
   ) {
     const formattedAssetPath = this.transformExtForPath(assetPath);
-    let content = renderTemplateComponent({ target: this.options.target }, component);
+    let content = renderTemplate({ target: this.options.target }, component);
     const type = path.extname(assetPath).replace(/^\./, '');
     content = await transformTemplate(content, this.options.target, type);
-    if (!merge && compilation.assets[formattedAssetPath] !== undefined) {
-      console.warn('skip existing asset', formattedAssetPath);
-    }
-    if (merge && compilation.assets[formattedAssetPath]) {
-      content = merge(content, compilation.assets[formattedAssetPath].source());
-    }
-    if (this.options.minimize) {
-      content = await minimize(content, path.extname(assetPath));
-    }
-    compilation.assets[formattedAssetPath] = new RawSource(content);
-  }
-
-  private async renderTemplateToAsset<T>(
-    compilation: webpack.compilation.Compilation,
-    assetPath: string,
-    templatePath: string,
-    data: T,
-    merge?: (newSource: string, oldSource: string) => string,
-  ) {
-    const formattedAssetPath = this.transformExtForPath(assetPath);
-    let content: string = await this.renderTemplate(templatePath, data);
     if (!merge && compilation.assets[formattedAssetPath] !== undefined) {
       console.warn('skip existing asset', formattedAssetPath);
     }
