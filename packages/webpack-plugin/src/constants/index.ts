@@ -1,4 +1,3 @@
-import path from 'path';
 import { GojiWebpackPluginOptions } from '../types';
 
 export const DEFAULT_OPTIONS: GojiWebpackPluginOptions = {
@@ -8,5 +7,3 @@ export const DEFAULT_OPTIONS: GojiWebpackPluginOptions = {
 };
 
 export const BRIDGE_OUTPUT_PATH = '_goji';
-
-export const TEMPLATES_DIR = path.resolve(__dirname, '../../../templates');

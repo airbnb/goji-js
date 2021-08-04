@@ -21,6 +21,8 @@
     "@beemo/driver-jest": "^2.0.0-rc.2",
     "@beemo/driver-lerna": "^2.0.0-alpha.1",
     "@beemo/driver-prettier": "^2.0.0-rc.3",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
     "babel-jest": "^27.0.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
