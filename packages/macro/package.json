@@ -22,7 +22,7 @@
   "dependencies": {
     "@babel/types": "^7.15.0",
     "babel-plugin-macros": "^3.1.0",
-    "tslib": "^2.0.3"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@goji/core": "^0.11.0",
