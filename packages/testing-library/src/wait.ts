@@ -1,11 +1,9 @@
 import waitForExpect from 'wait-for-expect';
 import { act } from '.';
 
-export const waitFor = (callback = () => {}, { timeout = 4500, interval = 50 } = {}) => {
-  return act(async () => {
+export const waitFor = (callback = () => {}, { timeout = 4500, interval = 50 } = {}) => act(async () => {
     await waitForExpect(callback, timeout, interval);
   });
-};
 
 export function waitForElement<T>(
   callback: (...args: any) => T,

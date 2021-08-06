@@ -11,8 +11,7 @@ export const GojiProvider = ({
   container,
 }: PropsWithChildren<{
   container: Container;
-}>) => {
-  return (
+}>) => (
     <ContainerProvider container={container}>
       <EventProxyProvider>
         <UniversalHooksProvider>
@@ -23,4 +22,3 @@ export const GojiProvider = ({
       </EventProxyProvider>
     </ContainerProvider>
   );
-};

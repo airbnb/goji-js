@@ -3,8 +3,7 @@ import { UniversalLifecycleName, OnLoadOptions } from '../types';
 import { UniversalHooksContext } from './context';
 import { useImmediatelyEffect } from '../../utils/effects';
 
-const createUniversalLifecycleHook = <T = undefined>(name: UniversalLifecycleName) => {
-  return (callback: (data: T) => void, deps?: Array<any>) => {
+const createUniversalLifecycleHook = <T = undefined>(name: UniversalLifecycleName) => (callback: (data: T) => void, deps?: Array<any>) => {
     const universalHooksContext = useContext(UniversalHooksContext);
     if (!universalHooksContext) {
       throw new Error(
@@ -27,7 +26,6 @@ const createUniversalLifecycleHook = <T = undefined>(name: UniversalLifecycleNam
       };
     }, deps); // eslint-disable-line react-hooks/exhaustive-deps
   };
-};
 
 export const useLoadOptions = createUniversalLifecycleHook<OnLoadOptions>('loadOptions');
 export const useVisibility = createUniversalLifecycleHook<boolean>('visibility');

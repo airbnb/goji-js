@@ -2,9 +2,7 @@ import { ReactTestInstance, act } from 'react-test-renderer';
 import { prettyPrint } from './prettyPrint';
 import { waitForElement } from '../wait';
 
-export const validComponentFilter = (node: ReactTestInstance) => {
-  return typeof node.type === 'string';
-};
+export const validComponentFilter = (node: ReactTestInstance) => typeof node.type === 'string';
 
 interface QueryAllBy<T extends Array<any>> {
   (container: ReactTestInstance, ...args: T): Array<ReactTestInstance>;

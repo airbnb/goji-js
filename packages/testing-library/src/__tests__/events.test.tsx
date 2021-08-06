@@ -5,13 +5,11 @@ import { render, fireEvent } from '..';
 describe('fireEvent', () => {
   test('tap', () => {
     const buttonHandler = jest.fn();
-    const App = () => {
-      return (
+    const App = () => (
         <>
           <Button onTap={buttonHandler}>click me</Button>
         </>
       );
-    };
     const wrapper = render(<App />);
     fireEvent.tap(wrapper.getByText('click me'));
     expect(buttonHandler).toHaveBeenCalledTimes(1);
@@ -24,8 +22,7 @@ describe('fireEvent', () => {
       e.stopPropagation();
     });
     const buttonHandler = jest.fn();
-    const App = () => {
-      return (
+    const App = () => (
         <>
           <View onTap={viewHandler}>
             <Text onTap={textHandler}>
@@ -34,7 +31,6 @@ describe('fireEvent', () => {
           </View>
         </>
       );
-    };
     const wrapper = render(<App />);
     fireEvent.tap(wrapper.getByText('click me'));
     expect(viewHandler).toHaveBeenCalledTimes(0);

@@ -42,7 +42,7 @@
     "replace-ext": "^2.0.0",
     "terser": "^5.7.1",
     "tslib": "^2.3.0",
-    "unified": "^10.1.0",
+    "unified": "^9.0.0",
     "webpack-sources": "^1.4.3",
     "wx2swan": "^1.2.20"
   },

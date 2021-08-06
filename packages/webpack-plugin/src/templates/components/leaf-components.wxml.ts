@@ -2,8 +2,7 @@ import { ComponentRenderData } from '../../utils/components';
 import { t } from '../helpers/t';
 import { componentItem } from './components.wxml';
 
-export const leafComponentWxml = ({ components }: { components: ComponentRenderData[] }) => {
-  return t`
+export const leafComponentWxml = ({ components }: { components: ComponentRenderData[] }) => t`
     <block wx:if="{{false}}"></block>
     ${components.map(component =>
       componentItem({
@@ -15,4 +14,3 @@ export const leafComponentWxml = ({ components }: { components: ComponentRenderD
       }),
     )}
   `;
-};

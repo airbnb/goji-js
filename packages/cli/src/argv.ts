@@ -10,8 +10,7 @@ export interface CliConfig {
 
 const GOJI_TARGETS: Array<GojiTarget> = ['wechat', 'baidu', 'alipay', 'toutiao', 'qq', 'toutiao'];
 
-export const parseArgv = (arg: Array<string>) => {
-  return new Promise<CliConfig>((resolve, reject) => {
+export const parseArgv = (arg: Array<string>) => new Promise<CliConfig>((resolve, reject) => {
     const yargsConfig = yargs
       .command({
         command: 'start [target]',
@@ -61,4 +60,3 @@ export const parseArgv = (arg: Array<string>) => {
       // resolve in command handlers
     });
   });
-};

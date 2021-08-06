@@ -3,9 +3,7 @@ import camelCase from 'lodash/camelCase';
 import { InstanceProps } from '../reconciler/instance';
 import { SIMPLIFY_COMPONENTS } from '../constants';
 
-const isSubsetOf = <T>(subset: Array<T>, fullset: Array<T>) => {
-  return difference(subset, fullset).length === 0;
-};
+const isSubsetOf = <T>(subset: Array<T>, fullset: Array<T>) => difference(subset, fullset).length === 0;
 
 const filterPropsAndEventsName = (names: Array<string>) => {
   const props: Array<string> = [];

@@ -54,9 +54,7 @@ export const hostConfig: GojiHostConfig<
 
   shouldDeprioritizeSubtree: () => false,
 
-  getRootHostContext: () => {
-    return {};
-  },
+  getRootHostContext: () => ({}),
 
   shouldSetTextContent() {
     return false;
@@ -68,9 +66,7 @@ export const hostConfig: GojiHostConfig<
     container.requestUpdate();
   },
 
-  getChildHostContext: () => {
-    return {};
-  },
+  getChildHostContext: () => ({}),
 
   prepareUpdate() {
     // FIXME: should use this hook correctly
@@ -116,9 +112,7 @@ export const hostConfig: GojiHostConfig<
     container.virtualRootElement.insertBefore(child, beforeChild);
   },
 
-  finalizeInitialChildren: () => {
-    return false;
-  },
+  finalizeInitialChildren: () => false,
 
   appendChildToContainer(container, child) {
     container.virtualRootElement.appendChild(child);

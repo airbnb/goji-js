@@ -153,7 +153,5 @@ export interface CacheGroups {
 export const cacheGroupsPlaceholder: CacheGroups = {};
 
 export const runtimeChunkPlaceholder = {
-  name: (entrypoint: WebpackEntrypoint) => {
-    return realRuntimeChunkName(entrypoint);
-  },
+  name: (entrypoint: WebpackEntrypoint) => realRuntimeChunkName(entrypoint),
 };

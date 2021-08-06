@@ -1,7 +1,6 @@
 import { t } from '../helpers/t';
 
-export const subtreeJs = () => {
-  return t`
+export const subtreeJs = () => t`
     Component({
       options: {
         addGlobalClass: true,
@@ -29,4 +28,3 @@ export const subtreeJs = () => {
       },
     });
   `;
-};

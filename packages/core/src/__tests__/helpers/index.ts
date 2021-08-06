@@ -5,9 +5,7 @@ import { ElementNode } from '../../reconciler/instance';
 export class RenderResult {
   public constructor(private adaptorInstance: TestingAdaptorInstance) {}
 
-  public getContainer = (): ElementNode => {
-    return this.adaptorInstance.data;
-  };
+  public getContainer = (): ElementNode => this.adaptorInstance.data;
 
   // ByText
 
@@ -23,9 +21,7 @@ export class RenderResult {
     // TODO:
   };
 
-  public resolveUpdateCallback = (renderId?: string) => {
-    return this.adaptorInstance.resolveUpdateCallback(renderId);
-  };
+  public resolveUpdateCallback = (renderId?: string) => this.adaptorInstance.resolveUpdateCallback(renderId);
 
   public setManuallyResolvedUpdateCallback = (enabled: boolean) => {
     this.adaptorInstance.setManuallyResolvedUpdateCallback(enabled);

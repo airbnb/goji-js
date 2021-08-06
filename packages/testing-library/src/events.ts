@@ -1,9 +1,7 @@
 import { ReactTestInstance, act } from 'react-test-renderer';
 import { validComponentFilter } from './utils/queryHelpers';
 
-const buildTargetInfo = (node: ReactTestInstance) => {
-  return { offsetLeft: 0, offsetTop: 0, id: node.props.id, dataset: {} };
-};
+const buildTargetInfo = (node: ReactTestInstance) => ({ offsetLeft: 0, offsetTop: 0, id: node.props.id, dataset: {} });
 
 const fireEventOnInstance = ({
   node,

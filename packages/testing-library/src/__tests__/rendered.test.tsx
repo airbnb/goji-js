@@ -3,14 +3,12 @@ import { View, Button, Text } from '@goji/core';
 import { render } from '..';
 
 describe('rendered', () => {
-  const App = () => {
-    return (
+  const App = () => (
       <View testID="a">
         <Button onTap={() => {}}>hello</Button>
         <Text className="a b c">world</Text>
       </View>
     );
-  };
   test('debug', () => {
     const wrapper = render(<App />);
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});

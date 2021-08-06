@@ -1,6 +1,5 @@
 /* eslint-disable global-require */
-module.exports = () => {
-  return {
+module.exports = () => ({
     plugins: [
       require('postcss-each')(),
       require('postcss-preset-env')({
@@ -25,5 +24,4 @@ module.exports = () => {
       require('postcss-clean')({}),
       require('postcss-reporter')(),
     ],
-  };
-};
+  });

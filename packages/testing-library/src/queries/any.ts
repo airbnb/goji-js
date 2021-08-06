@@ -3,9 +3,7 @@ import { buildQueries, validComponentFilter } from '../utils/queryHelpers';
 
 // this query match all valid elements
 // it's useful to find the base elements
-const queryAllByAny = (container: ReactTestInstance) => {
-  return Array.from(container.findAll(node => validComponentFilter(node)));
-};
+const queryAllByAny = (container: ReactTestInstance) => Array.from(container.findAll(node => validComponentFilter(node)));
 
 const getMultipleError = () => new Error('Found multiple elements');
 const getMissingError = () => new Error('Unable to find any element');
