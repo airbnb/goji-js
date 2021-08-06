@@ -20,14 +20,14 @@
     "babel-plugin-macros"
   ],
   "dependencies": {
-    "@babel/types": "^7.14.5",
+    "@babel/types": "^7.15.0",
     "babel-plugin-macros": "^3.1.0",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
     "@goji/core": "^0.11.0",
     "@goji/webpack-plugin": "^0.11.0",
-    "@types/babel-plugin-macros": "^2.8.4",
+    "@types/babel-plugin-macros": "^2.8.5",
     "react": "^16.13.1"
   },
   "peerDependencies": {
