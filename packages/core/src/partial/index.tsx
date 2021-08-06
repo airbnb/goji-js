@@ -26,13 +26,11 @@ const createPartialContextValue = () => {
 
 const PartialContext = createContext(createPartialContextValue());
 
-export const PartialProvider = ({ children }) => {
-  return (
+export const PartialProvider = ({ children }) => (
     <PartialContext.Provider value={createPartialContextValue()}>
       {children}
     </PartialContext.Provider>
   );
-};
 
 // Let's imagine there are only two Partial Components on the page,
 // the first component will throw the very first promise in the chain which is already resolved,

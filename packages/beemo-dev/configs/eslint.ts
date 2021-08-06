@@ -12,7 +12,7 @@ const config: ESLintConfig = {
     'jest.config.js',
   ],
   root: true,
-  extends: ['airbnb', 'airbnb/hooks', 'prettier', 'prettier/react'],
+  extends: ['airbnb', 'airbnb/hooks', 'prettier'],
   plugins: ['@typescript-eslint', 'jest'],
   parser: '@typescript-eslint/parser',
   settings: {

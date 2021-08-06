@@ -9,10 +9,8 @@ export const wrappedJson = ({
   relativePathToBridge: string;
   component: ComponentDesc;
   components: ComponentDesc[];
-}) => {
-  return nativeComponentJson({
+}) => nativeComponentJson({
     relativePathToBridge,
     components,
     isLeaf: component.isLeaf ?? false,
   });
-};

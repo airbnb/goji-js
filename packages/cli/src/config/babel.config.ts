@@ -20,6 +20,10 @@ const BABEL_MODULES = {
 };
 
 module.exports = {
+  assumptions: {
+    noDocumentAll: true,
+    noClassCalls: true,
+  },
   presets: [
     [
       require.resolve('@babel/preset-env'),
@@ -34,11 +38,7 @@ module.exports = {
     require.resolve('@babel/preset-react'),
     require.resolve('linaria/babel'),
   ],
-  plugins: [
-    [require.resolve('@babel/plugin-transform-runtime'), { useESModules: true }],
-    [require.resolve('@babel/plugin-proposal-optional-chaining'), { loose: true }],
-    [require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'), { loose: true }],
-  ],
+  plugins: [[require.resolve('@babel/plugin-transform-runtime'), { useESModules: true }]],
   // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
   // https://babeljs.io/docs/en/options#sourcetype
   // https://github.com/babel/babel/issues/8900

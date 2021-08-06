@@ -1,7 +1,6 @@
 import { GojiTarget } from '@goji/core';
 
-export default ({ target }: { target: GojiTarget }) => {
-  return {
+export default ({ target }: { target: GojiTarget }) => ({
     pages: ['pages/index/index'],
     window: {
       backgroundTextStyle: 'dark',
@@ -10,5 +9,4 @@ export default ({ target }: { target: GojiTarget }) => {
       navigationBarTitleText: `A GojiJS App on ${target}`,
       navigationBarTextStyle: 'black',
     },
-  };
-};
+  });

@@ -98,16 +98,12 @@ export const todoReducer = (
     case 'EDIT_TODO':
       return {
         ...state,
-        todos: todos.map(todo => {
-          return todo.id === payload.id ? { ...todo, text: payload.text } : todo;
-        }),
+        todos: todos.map(todo => todo.id === payload.id ? { ...todo, text: payload.text } : todo),
       };
     case 'COMPLETE_TODO':
       return {
         ...state,
-        todos: todos.map(todo => {
-          return todo.id === payload.id ? { ...todo, completed: !todo.completed } : todo;
-        }),
+        todos: todos.map(todo => todo.id === payload.id ? { ...todo, completed: !todo.completed } : todo),
       };
     case 'COMPLETE_ALL_TODO':
       return {

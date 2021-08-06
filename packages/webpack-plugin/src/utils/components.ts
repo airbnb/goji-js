@@ -42,9 +42,7 @@ export const getSimplifiedComponents = (
     simplifiedComponents.push({
       ...matched,
       events,
-      props: pickBy(matched.props, (_propDesc, propName) => {
-        return simplifiedProperties.includes(propName);
-      }),
+      props: pickBy(matched.props, (_propDesc, propName) => simplifiedProperties.includes(propName)),
       sid: index,
     });
   }
@@ -84,8 +82,7 @@ export const getRenderedComponents = (
     ...getSimplifiedComponents(components, simplifyComponents),
     ...components,
   ];
-  return renderedComponents.map((component): ComponentRenderData => {
-    return {
+  return renderedComponents.map((component): ComponentRenderData => ({
       name: component.name,
       isLeaf: component.isLeaf,
       isWrapped: component.isWrapped,
@@ -108,6 +105,5 @@ export const getRenderedComponents = (
           value: camelCase(name),
         };
       }),
-    };
-  });
+    }));
 };

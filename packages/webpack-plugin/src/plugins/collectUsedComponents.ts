@@ -32,9 +32,8 @@ const isUpperCase = (char: string) => char.toUpperCase() === char;
  * 1. filter component-like name, e.g. CoverView
  * 2. convert it to kebab case, e.g. CoverView => cover-view
  */
-const formatUsedComponents = (names: Array<string>): Array<string> => {
-  return names.filter(name => isUpperCase(name[0])).map(name => kebabCase(name));
-};
+const formatUsedComponents = (names: Array<string>): Array<string> =>
+  names.filter(name => isUpperCase(name[0])).map(name => kebabCase(name));
 
 /**
  * collect used component by analyzing Webpack dependency tree for GojiBridgeWebpackPlugin

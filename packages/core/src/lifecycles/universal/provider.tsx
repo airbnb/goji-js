@@ -29,19 +29,13 @@ export const UniversalHooksProvider = ({ children }: React.PropsWithChildren<{}>
 
   // must use `useImmediatelyEffect` instead of `useEffect`
   // useLoadOptions
-  useImmediatelyEffect(() => {
-    return eventProxyContext.handleEvent('onLoad', (options: OnLoadOptions) =>
+  useImmediatelyEffect(() => eventProxyContext.handleEvent('onLoad', (options: OnLoadOptions) =>
       emit('loadOptions', options),
-    );
-  }, [emit, eventProxyContext]);
+    ), [emit, eventProxyContext]);
 
   // useVisibility
-  useImmediatelyEffect(() => {
-    return eventProxyContext.handleEvent('onShow', () => emit('visibility', true));
-  }, [emit, eventProxyContext]);
-  useImmediatelyEffect(() => {
-    return eventProxyContext.handleEvent('onHide', () => emit('visibility', false));
-  }, [emit, eventProxyContext]);
+  useImmediatelyEffect(() => eventProxyContext.handleEvent('onShow', () => emit('visibility', true)), [emit, eventProxyContext]);
+  useImmediatelyEffect(() => eventProxyContext.handleEvent('onHide', () => emit('visibility', false)), [emit, eventProxyContext]);
 
   const { Provider } = UniversalHooksContext;
 

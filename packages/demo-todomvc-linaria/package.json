@@ -15,12 +15,12 @@
   "dependencies": {
     "@goji/core": "^0.11.0",
     "classnames": "^2.2.6",
-    "core-js": "^3.6.5",
+    "core-js": "^3.16.0",
     "linaria": "^2.0.2",
     "react": "^16.13.1",
-    "react-redux": "^7.2.1",
-    "redux": "^4.0.5",
-    "tslib": "^2.0.3"
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.1",
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@goji/cli": "^0.11.0",
@@ -29,6 +29,6 @@
     "@types/css-modules": "^1.0.0",
     "@types/react": "^16.9.35",
     "identity-obj-proxy": "^3.0.0",
-    "typescript": "^4.0.5"
+    "typescript": "^4.3.5"
   }
 }

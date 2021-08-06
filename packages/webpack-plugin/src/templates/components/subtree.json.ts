@@ -7,6 +7,4 @@ export const subtreeJson = ({
 }: {
   relativePathToBridge: string;
   components: ComponentDesc[];
-}) => {
-  return nativeComponentJson({ relativePathToBridge, components, isLeaf: false });
-};
+}) => nativeComponentJson({ relativePathToBridge, components, isLeaf: false });

@@ -6,17 +6,13 @@ import { act } from '../../testUtils';
 
 describe('createPortal', () => {
   test('works', () => {
-    const Content = () => {
-      return createPortal(<View>Content</View>);
-    };
-    const App = () => {
-      return (
+    const Content = () => createPortal(<View>Content</View>);
+    const App = () => (
         <View>
           <View>title</View>
           <Content />
         </View>
       );
-    };
     const wrapper = render(<App />);
     expect(wrapper.getContainer().c.length).toBe(2);
   });

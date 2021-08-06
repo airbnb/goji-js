@@ -19,7 +19,5 @@ export const useImmediatelyEffect = <T extends Array<any>>(callback: EffectCallb
     return callback();
   }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    return resolveUnsubscribe;
-  }, [resolveUnsubscribe]);
+  useEffect(() => resolveUnsubscribe, [resolveUnsubscribe]);
 };

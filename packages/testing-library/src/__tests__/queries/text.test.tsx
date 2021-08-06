@@ -6,15 +6,13 @@ jest.setTimeout(10000);
 
 describe('ByText works', () => {
   test('getByText', () => {
-    const App = () => {
-      return (
+    const App = () => (
         <>
           <View className="a">a</View>
           <View className="b">b</View>
           <View className="c">c</View>
         </>
       );
-    };
 
     const wrapper = render(<App />);
     expect(wrapper.getByText('a')).toBeTruthy();
@@ -23,30 +21,26 @@ describe('ByText works', () => {
   });
 
   test('getAllByText', () => {
-    const App = () => {
-      return (
+    const App = () => (
         <>
           <View className="a1">a</View>
           <View className="a2">a</View>
           <View className="a3">a</View>
         </>
       );
-    };
     const wrapper = render(<App />);
     expect(wrapper.getAllByText('a')).toHaveLength(3);
     expect(() => wrapper.getAllByText('z')).toThrow();
   });
 
   test('queryByText', () => {
-    const App = () => {
-      return (
+    const App = () => (
         <>
           <View className="a">a</View>
           <View className="b">b</View>
           <View className="c">c</View>
         </>
       );
-    };
 
     const wrapper = render(<App />);
     expect(wrapper.queryByText('a')).toBeTruthy();
@@ -55,15 +49,13 @@ describe('ByText works', () => {
   });
 
   test('queryAllByText', () => {
-    const App = () => {
-      return (
+    const App = () => (
         <>
           <View className="a1">a</View>
           <View className="a2">a</View>
           <View className="a3">a</View>
         </>
       );
-    };
     const wrapper = render(<App />);
     expect(wrapper.queryAllByText('a')).toHaveLength(3);
     expect(wrapper.queryAllByText('z')).toHaveLength(0);

@@ -1,5 +1,5 @@
 import mkdirp from 'mkdirp';
-import globby from 'globby';
+import { globbyStream } from 'globby';
 import path from 'path';
 import ejs from 'ejs';
 import fs from 'fs';
@@ -15,7 +15,7 @@ const renderTemplate = async (sourceFile: string, destFile: string, data: any = 
 };
 
 export const generateProject = async (projectName, sourcePath: string, destPath: string) => {
-  for await (const sourceFileBuf of globby.stream(path.join(sourcePath, '**'))) {
+  for await (const sourceFileBuf of globbyStream(path.join(sourcePath, '**'))) {
     const sourceFile = sourceFileBuf.toString();
     const relativePath = path.relative(sourcePath, sourceFile);
     const destFile = path.join(destPath, relativePath);

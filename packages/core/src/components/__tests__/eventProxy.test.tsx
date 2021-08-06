@@ -14,12 +14,10 @@ describe('eventProxy', () => {
       const [, forceRender] = useReducer(s => s + 1, 0);
       const eventProxyContext = useEventProxy();
 
-      useEffect(() => {
-        return eventProxyContext.handleEvent('test', () => {
+      useEffect(() => eventProxyContext.handleEvent('test', () => {
           forceRender();
           forceRender();
-        });
-      }, [eventProxyContext]);
+        }), [eventProxyContext]);
       renderCount += 1;
       return <View />;
     };
