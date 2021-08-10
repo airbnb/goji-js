@@ -11,7 +11,7 @@ const config: JestConfig = {
     // https://github.com/facebook/jest/issues/7359#issuecomment-471509996
     '^.+\\.(ts|js|tsx|jsx)$': path.resolve(__dirname, '../utils/jestBabelTransform.js'),
   },
-  transformIgnorePatterns: [],
+  transformIgnorePatterns: ['/node_modules/', '\\.pnp\\.[^\\/]+$'],
   testMatch: ['**/src/**/?(*.)+(spec|test).[jt]s?(x)'],
   moduleFileExtensions: ['ts', 'js', 'tsx', 'jsx', 'json', 'node'],
   moduleNameMapper: {
