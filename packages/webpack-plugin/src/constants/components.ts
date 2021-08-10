@@ -1635,10 +1635,12 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
             required: false,
             type: 'Boolean',
           },
-          setting: {
-            required: false,
-            type: 'Object',
-          },
+          // Disable <map>'s setting usage temporary
+          // for more details see https://github.com/airbnb/goji-js/pull/103
+          // setting: {
+          //   required: false,
+          //   type: 'Object',
+          // },
         },
         events: [
           'markertap',
