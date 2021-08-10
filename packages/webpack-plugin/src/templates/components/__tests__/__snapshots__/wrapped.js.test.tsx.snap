@@ -231,9 +231,6 @@ exports[`wrapped.js snapshot works: map 1`] = `
     enableBuilding: {
       type: Boolean,
     },
-    setting: {
-      type: Object,
-    },
   },
   lifetimes: {
     attached() {
