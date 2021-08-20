@@ -106,9 +106,11 @@ Variants:
 
 `By-` queries:
 
-- ByTestId(testId: string) : matches the `testID` property
-- ByText(text: string) : matches element's inner text
-- ByProp(propKey: string, propValue: string) : matches specific property
+- `ByTestId(testId: string)` : matches the `testID` property
+- `ByText(text: string | RegExp | ((text: string, node: ReactTestInstance) => boolean))` : matches
+  element's inner text, for more details see
+  [TextMatch](https://testing-library.com/docs/queries/about/#textmatch)
+- `ByProp(propKey: string, propValue: string)` : matches specific property
 
 We recommend to use `testID` because it doesn't affect any runtime cost.
 
