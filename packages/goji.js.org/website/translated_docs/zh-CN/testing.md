@@ -94,9 +94,9 @@ Variants
 
 `By-` 查询：
 
-- ByTestId(testId: string) : 匹配 `testID` 属性
-- ByText(text: string) : 匹配节点的内部文本
-- ByProp(propKey: string, propValue: string) : 匹配特定属性
+- `ByTestId(testId: string)` : 匹配 `testID` 属性
+- `ByText(text: string | RegExp | ((text: string, node: ReactTestInstance) => boolean))` : 匹配元素内的文本，更多细节见 [TextMatch](https://testing-library.com/docs/queries/about/#textmatch)
+- `ByProp(propKey: string, propValue: string)` : 匹配特定属性
 
 我们建议使用 `testID` ，因为它不会造成运行时损耗。
 
