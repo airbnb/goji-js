@@ -1,6 +1,7 @@
 import { ReactTestInstance } from 'react-test-renderer';
 import mapValues from 'lodash/mapValues';
 import { byTextQueries } from './queries/text';
+import type { TextMatch } from './queries/text';
 import { byTestIdQueries } from './queries/testId';
 import { byPropQueries } from './queries/prop';
 import { prettyPrint } from './utils/prettyPrint';
@@ -30,6 +31,9 @@ function applyAll<T, Obj extends { [key: string]: (t: T, ...args: any) => any }>
 ): { [key in keyof Obj]: Apply<T, Obj[key]> } {
   return mapValues(obj, fn => apply(fn, t)) as any;
 }
+
+// to fix TS4023 error in `buildRenderResult`
+export { TextMatch };
 
 export const buildRenderResult = (container: ReactTestInstance) => {
   // this render result APIs are inspired from @testing-library/react-native

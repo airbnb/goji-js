@@ -2,9 +2,9 @@ import { ReactTestInstance } from 'react-test-renderer';
 import { validComponentFilter, buildQueries } from '../utils/queryHelpers';
 
 // docs: https://testing-library.com/docs/queries/about/#textmatch
-type TextMatch = string | RegExp | ((text: string, node: ReactTestInstance) => boolean);
+export type TextMatch = string | RegExp | ((text: string, node: ReactTestInstance) => boolean);
 
-interface ByTextOptions {
+export interface ByTextOptions {
   exact?: boolean;
   trim?: boolean;
   collapseWhitespace?: boolean;
