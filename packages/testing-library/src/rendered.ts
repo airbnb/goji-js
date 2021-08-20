@@ -33,7 +33,7 @@ function applyAll<T, Obj extends { [key: string]: (t: T, ...args: any) => any }>
 }
 
 // to fix TS4023 error in `buildRenderResult`
-export { TextMatch };
+export type { TextMatch };
 
 export const buildRenderResult = (container: ReactTestInstance) => {
   // this render result APIs are inspired from @testing-library/react-native
