@@ -85,7 +85,10 @@ const config: ESLintConfig = {
     '@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions'] }],
     // use @typescript-eslint/no-unused-vars instead
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { ignoreRestSiblings: true, argsIgnorePattern: '^_' },
+    ],
     'import/extensions': [
       'error',
       'always',
