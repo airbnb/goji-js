@@ -21,6 +21,8 @@ export const generateProject = async (projectName, sourcePath: string, destPath:
     const destFile = path.join(destPath, relativePath);
     await renderTemplate(sourceFile, destFile, {
       projectName,
+      // eslint-disable-next-line global-require, import/no-unresolved
+      version: require('../../package.json').version,
     });
   }
 };
