@@ -131,6 +131,21 @@ wrapper.debug(wrapper.getByTextId('test'));
 
 ![demo of debug](https://user-images.githubusercontent.com/1812118/89996259-28396080-dcbd-11ea-9e4d-f031c65b835f.png)
 
+### `within`
+
+If you'd like to restrict your query in specific container, you can use `within`.
+
+```tsx
+const Comp = () => (
+  <View testID="view">
+    <Button>Click me</Button>
+  </View>
+);
+const wrapper = render(<Comp />);
+const view = wrapper.getByTestId('view');
+const buttonInsideView = within(view).getByText('Click me');
+```
+
 ### `fireEvent`
 
 In your test cases, if you'd like to simulates the interactive events on the elements the
