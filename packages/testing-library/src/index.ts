@@ -15,3 +15,4 @@ export const render = (element: ReactElement) => {
 export { act };
 export { fireEvent } from './events';
 export { waitFor, waitForElement } from './wait';
+export { getQueriesForElement as within } from './rendered';

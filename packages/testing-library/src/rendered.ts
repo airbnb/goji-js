@@ -35,6 +35,12 @@ function applyAll<T, Obj extends { [key: string]: (t: T, ...args: any) => any }>
 // to fix TS4023 error in `buildRenderResult`
 export type { TextMatch };
 
+export const getQueriesForElement = (container: ReactTestInstance) => ({
+  ...applyAll(byTextQueries, container),
+  ...applyAll(byTestIdQueries, container),
+  ...applyAll(byPropQueries, container),
+});
+
 export const buildRenderResult = (container: ReactTestInstance) => {
   // this render result APIs are inspired from @testing-library/react-native
   const wrapper = {
@@ -43,9 +49,7 @@ export const buildRenderResult = (container: ReactTestInstance) => {
       const allElements = byAnyQueries.queryAllByAny(container);
       return allElements[0] ?? null;
     },
-    ...applyAll(byTextQueries, container),
-    ...applyAll(byTestIdQueries, container),
-    ...applyAll(byPropQueries, container),
+    ...getQueriesForElement(container),
   };
 
   return wrapper;

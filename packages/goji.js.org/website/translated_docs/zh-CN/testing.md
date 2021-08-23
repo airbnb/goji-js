@@ -116,9 +116,23 @@ wrapper.debug(wrapper.getByTextId('test'));
 
 ![调试示例](https://user-images.githubusercontent.com/1812118/89996259-28396080-dcbd-11ea-9e4d-f031c65b835f.png)
 
+### `within`
+
+如果你想在特定的节点中查询，可以使用</code> within `。</p>
+
+<pre><code class="tsx">const Comp = () => (
+  <View testID="view">
+    <Button>Click me</Button>
+  </View>
+);
+const wrapper = render(<Comp />);
+const view = wrapper.getByTestId('view');
+const buttonInsideView = within(view).getByText('Click me');
+`</pre>
+
 ### `fireEvent`
 
-在测试用例中，如果你想模拟在节点上的交互事件，可以使用`fireEvent` 。
+在测试用例中，如果你想模拟节点上的交互事件，可以使用`fireEvent.[event]` 。
 
 例如，要将文本输入到 `<Input testID="my-test-id">` 元素中，你可以使用：
 
@@ -155,13 +169,13 @@ act(() => {
 expect(wrapper.getByText('Count: 1')).toBeTruthy;
 ```
 
-请注意，所有 `fireEvent ` 方法已经被 `act`包裹了 ，因此没有必要再次使用。
+请注意，所有 `fireEvent ` 方法已经被 `act`包裹了 ，因此没有必要再次调用。
 
 ### `waitFor` 和 `waitForElement`
 
 ` waitFor ` 会捕获断言错误直到通过，否则会在超时后抛出异常。 它用于组件的异步测试。
 
-此为一个示例：
+这里是一个示例：
 
 ```tsx
 await waitFor(() => expect(wrapper.getByText('hello')).toBeTruthy());
