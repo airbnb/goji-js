@@ -1627,7 +1627,7 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
             required: false,
           },
           'enable-poi': {
-            defaultValue: false,
+            defaultValue: true,
             type: 'Boolean',
             required: false,
           },
