@@ -1,6 +1,6 @@
 {
   "name": "@goji/testing-library",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "description": "GojiJS Testing Library",
   "main": "dist/cjs/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "react": "*"
   },
   "devDependencies": {
-    "@goji/core": "^0.11.2",
+    "@goji/core": "^0.11.3",
     "@types/lodash": "^4.14.172",
     "@types/react-test-renderer": "^16.9.2",
     "react": "^16.13.1"

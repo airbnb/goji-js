@@ -1,6 +1,6 @@
 {
   "name": "@goji/webpack-plugin",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "description": "GojiJS Webpack Plugin",
   "main": "dist/cjs/cjs.js",
   "module": "dist/esm/index.js",
@@ -14,7 +14,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@goji/core": "^0.11.2",
+    "@goji/core": "^0.11.3",
     "@types/common-tags": "^1.8.1",
     "@types/enhanced-resolve": "^3.0.7",
     "@types/html-minifier": "^4.0.1",
