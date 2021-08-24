@@ -722,6 +722,8 @@ export interface MapProps extends BaseProps {
   enableRotate?: boolean;
   enableSatellite?: boolean;
   enableTraffic?: boolean;
+  enablePoi?: boolean;
+  enableBuilding?: boolean;
   setting?: MapSetting;
   onMarkertap?: (e: any) => void;
   onLabeltap?: (e: any) => void;
