@@ -2,16 +2,64 @@ import webpack from 'webpack';
 import { GojiBasedWebpackPlugin } from './based';
 import { appConfigMap } from '../shared';
 import { getSubpackagesInfo, isBelongsTo } from '../utils/config';
+import { AppConfig } from '../types';
 
-export interface WebpackCacheGroups {
+interface WebpackCacheGroups {
   [key: string]: webpack.Options.CacheGroupsOptions | false;
 }
 
-export interface WebpackEntrypoint {
+const getCacheGroups = (appConfig: AppConfig) => {
+  const cacheGroups: WebpackCacheGroups = {};
+  const [subPackages, independents] = getSubpackagesInfo(appConfig);
+  cacheGroups.commons = {
+    name: 'commons',
+    priority: -5,
+    chunks(chunk) {
+      if (independents.find(item => isBelongsTo(chunk.name, item.root ?? ''))) {
+        return false;
+      }
+
+      return true;
+    },
+  };
+  subPackages.forEach(({ root: subPackage, independent }) => {
+    if (!subPackage) {
+      return;
+    }
+    cacheGroups[subPackage] = {
+      name: `${subPackage}/commons`,
+      test(_module, chunks: Array<webpack.compilation.Chunk>) {
+        if (independent) {
+          return true;
+        }
+        return chunks.every(item => isBelongsTo(item.name, subPackage));
+      },
+      chunks(chunk) {
+        if (independent) {
+          return isBelongsTo(chunk.name, subPackage);
+        }
+
+        return true;
+      },
+    };
+  });
+
+  return cacheGroups;
+};
+
+interface WebpackEntrypoint {
   name: string;
 }
 
-let realRuntimeChunkName: (entrypoint: WebpackEntrypoint) => string;
+const getRuntimeNameCallback = (appConfig: AppConfig) => (entrypoint: WebpackEntrypoint) => {
+  const [, independents] = getSubpackagesInfo(appConfig);
+  for (const item of independents) {
+    if (isBelongsTo(entrypoint.name, item.root ?? '')) {
+      return `${item.root}/runtime`;
+    }
+  }
+  return `runtime`;
+};
 
 /**
  * Before understanding this plugin, we need to introduce the output folder structure of a simple
@@ -68,90 +116,51 @@ let realRuntimeChunkName: (entrypoint: WebpackEntrypoint) => string;
  * Because we cannot access `appConfig` while `webpack.config.js` is initializing, we have to use the
  * `cacheGroupsPlaceholder` and then patch the `cacheGroups` in this plugin.
  */
-export class GojiSplitChunksWebpackPlugin extends GojiBasedWebpackPlugin {
-  private overrideCacheGroups(compiler: webpack.Compiler) {
-    // @ts-ignore
-    const cacheGroups = compiler.options.optimization.splitChunks.cacheGroups as WebpackCacheGroups;
-    // clean up cache group before use it
-    for (const key of Object.keys(cacheGroups)) {
-      delete cacheGroups[key];
+export class GojiChunksWebpackPlugin extends GojiBasedWebpackPlugin {
+  private loadSplitChunksPlugin(compiler: webpack.Compiler) {
+    if (compiler.options.optimization?.splitChunks !== false) {
+      throw new Error(
+        'To enable `GojiChunksWebpackPlugin`, the `optimization.splitChunks` in webpack config file must be `false`.',
+      );
     }
-
     const appConfig = appConfigMap.get(compiler);
     if (!appConfig) {
       throw new Error('`appConfig` not found. This might be an internal error in GojiJS.');
     }
-    const [subPackages, independents] = getSubpackagesInfo(appConfig);
-    cacheGroups.commons = {
-      name: 'commons',
-      priority: -5,
-      chunks(chunk) {
-        if (independents.find(item => isBelongsTo(chunk.name, item.root ?? ''))) {
-          return false;
-        }
-
-        return true;
-      },
-    };
-    subPackages.forEach(({ root: subPackage, independent }) => {
-      if (!subPackage) {
-        return;
-      }
-      cacheGroups[subPackage] = {
-        name: `${subPackage}/commons`,
-        test(_module, chunks: Array<webpack.compilation.Chunk>) {
-          if (independent) {
-            return true;
-          }
-          return chunks.every(item => isBelongsTo(item.name, subPackage));
-        },
-        chunks(chunk) {
-          if (independent) {
-            return isBelongsTo(chunk.name, subPackage);
-          }
-
-          return true;
-        },
-      };
-    });
-    // override options
+    const cacheGroups = getCacheGroups(appConfig);
     // @ts-ignore
-    compiler.options.optimization.splitChunks.cacheGroups = cacheGroups;
+    new webpack.optimize.SplitChunksPlugin({
+      minChunks: 2,
+      minSize: 0,
+      maxAsyncRequests: Infinity,
+      maxInitialRequests: Infinity,
+      cacheGroups,
+    }).apply(compiler);
   }
 
-  private overrideRuntimeChunk(compiler: webpack.Compiler) {
-    realRuntimeChunkName = (entrypoint: WebpackEntrypoint) => {
-      const appConfig = appConfigMap.get(compiler);
-      if (!appConfig) {
-        throw new Error('`appConfig` not found. This might be an internal error in GojiJS.');
-      }
-      const [, independents] = getSubpackagesInfo(appConfig);
-      // FIXME: should use same runtime to fix shared closure issue
-      for (const item of independents) {
-        if (isBelongsTo(entrypoint.name, item.root ?? '')) {
-          return `${item.root}/runtime`;
-        }
-      }
-      return `runtime`;
-    };
+  private loadRuntimeChunkPlugin(compiler: webpack.Compiler) {
+    if (compiler.options.optimization?.runtimeChunk !== false) {
+      throw new Error(
+        'To enable `GojiChunksWebpackPlugin`, the `optimization.runtimeChunk` in webpack config file must be `false`.',
+      );
+    }
+    const appConfig = appConfigMap.get(compiler);
+    if (!appConfig) {
+      throw new Error('`appConfig` not found. This might be an internal error in GojiJS.');
+    }
+    const name = getRuntimeNameCallback(appConfig);
+    // @ts-ignore
+    new webpack.optimize.RuntimeChunkPlugin({
+      name,
+    }).apply(compiler);
   }
 
   private rewrite(compiler: webpack.Compiler) {
-    this.overrideCacheGroups(compiler);
-    this.overrideRuntimeChunk(compiler);
+    this.loadSplitChunksPlugin(compiler);
+    this.loadRuntimeChunkPlugin(compiler);
   }
 
   public apply(compiler: webpack.Compiler) {
-    compiler.hooks.compile.tap('GojiSplitChunksWebpackPlugin', () => this.rewrite(compiler));
+    compiler.hooks.compile.tap('GojiChunksWebpackPlugin', () => this.rewrite(compiler));
   }
 }
-
-export interface CacheGroups {
-  [key: string]: webpack.Options.CacheGroupsOptions | false;
-}
-
-export const cacheGroupsPlaceholder: CacheGroups = {};
-
-export const runtimeChunkPlaceholder = {
-  name: (entrypoint: WebpackEntrypoint) => realRuntimeChunkName(entrypoint),
-};

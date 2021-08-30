@@ -82,12 +82,10 @@ export const getWebpackConfig = ({
     },
     optimization: {
       minimize: nodeEnv === 'production',
-      runtimeChunk: GojiWebpackPlugin.runtimeChunkPlaceholder,
-      splitChunks: {
-        minChunks: 2,
-        minSize: 0,
-        cacheGroups: GojiWebpackPlugin.cacheGroupsPlaceholder,
-      },
+      // set `optimization.splitChunks` and `optimization.splitChunks` to `false`
+      // to disable built-in plugins and then we can load `GojiChunksWebpackPlugin` manually.
+      runtimeChunk: false,
+      splitChunks: false,
     },
     watchOptions: {
       poll: GojiWebpackPlugin.getPoll(),

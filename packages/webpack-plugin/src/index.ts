@@ -5,11 +5,7 @@ import { GojiRuntimePlugin } from './plugins/runtime';
 import { GojiWebpackPluginOptions } from './types';
 import { DEFAULT_OPTIONS } from './constants';
 import { GojiSingletonRuntimeWebpackPlugin } from './plugins/singleton';
-import {
-  GojiSplitChunksWebpackPlugin,
-  cacheGroupsPlaceholder,
-  runtimeChunkPlaceholder,
-} from './plugins/splitChunks';
+import { GojiChunksWebpackPlugin } from './plugins/chunks';
 import { GojiShimPlugin } from './plugins/shim';
 import { getPoll } from './utils/polling';
 import { GojiProjectConfigPlugin } from './plugins/projectConfig';
@@ -38,16 +34,12 @@ export class GojiWebpackPlugin implements webpack.Plugin {
     new GojiCollectUsedComponentsWebpackPlugin(options).apply(compiler);
     new GojiBridgeWebpackPlugin(options).apply(compiler);
     new GojiEntryWebpackPlugin(options).apply(compiler);
-    new GojiSplitChunksWebpackPlugin(options).apply(compiler);
+    new GojiChunksWebpackPlugin(options).apply(compiler);
     new GojiRuntimePlugin(options).apply(compiler);
     new GojiSingletonRuntimeWebpackPlugin(options).apply(compiler);
     new GojiShimPlugin(options).apply(compiler);
     new GojiProjectConfigPlugin(options).apply(compiler);
   }
-
-  public static cacheGroupsPlaceholder = cacheGroupsPlaceholder;
-
-  public static runtimeChunkPlaceholder = runtimeChunkPlaceholder;
 
   public static getPoll = getPoll;
 
