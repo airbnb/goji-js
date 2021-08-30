@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/airbnb/goji#readme",
   "devDependencies": {
+    "@testing-library/react-hooks": "^7.0.1",
     "@types/enzyme": "^3.10.9",
     "@types/jest": "^26.0.15",
     "@types/lodash": "^4.14.172",
