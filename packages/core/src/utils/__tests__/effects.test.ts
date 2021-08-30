@@ -61,6 +61,12 @@ describe('useImmediatelyEffect', () => {
     });
     expect(immediatelyEffectCallback).toBeCalledTimes(2);
     expect(immediatelyEffectUnsubscribedCallback).toBeCalledTimes(1);
+    // update deps with same value
+    act(() => {
+      result.current.setCount(c => c);
+    });
+    expect(immediatelyEffectCallback).toBeCalledTimes(2); // should not run
+    expect(immediatelyEffectUnsubscribedCallback).toBeCalledTimes(1);
     // update non-deps
     act(() => {
       result.current.setAnother(c => c + 1);

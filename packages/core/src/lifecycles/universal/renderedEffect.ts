@@ -1,28 +1,45 @@
-import { useMemo } from 'react';
+import { EffectCallback, useEffect, useMemo, useRef } from 'react';
 import { EventEmitter } from 'events';
 import { useImmediatelyEffect } from '../../utils/effects';
 import { useContainer } from '../../components/container';
 import { useEventProxy } from '../../components/eventProxy';
 
-export const useRenderedEffect = (callback: () => void, deps?: Array<any>) => {
+/**
+ * This hook runs not only the component rendered but also the `setData` callback is done.
+ * It's the earliest time to get instance of component's `ref`.
+ */
+export const useRenderedEffect = (callback: EffectCallback, deps?: Array<any>) => {
   const container = useContainer();
   const eventProxyContext = useEventProxy();
-  const events = useMemo(() => new EventEmitter(), []);
-
-  useImmediatelyEffect(() => {
-    const unsubscribe = eventProxyContext.handleEvent('internalRendered', (renderId: string) =>
-      events.emit(renderId),
-    );
-
-    return () => {
-      unsubscribe();
-      events.removeAllListeners();
-    };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
+  const cleanupEvents = useMemo(() => new EventEmitter(), []);
   const currentRenderId = container.getRenderId();
+  const unmountedRef = useRef(false);
 
   useImmediatelyEffect(() => {
-    events.once(currentRenderId, callback);
+    const unsubscribe = eventProxyContext.handleEvent('internalRendered', (renderId: number) => {
+      if (renderId !== Number(currentRenderId)) {
+        return;
+      }
+      // TODO: implement `once` for `eventProxyContext`
+      unsubscribe();
+      // run all existing clean-up functions
+      cleanupEvents.emit('cleanup');
+      // then run the new effect
+      const cleanup = callback();
+      if (unmountedRef.current) {
+        cleanup?.();
+      } else {
+        cleanupEvents.once('cleanup', () => cleanup?.());
+      }
+    });
   }, deps); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // call all clean-up functions when unmount
+  useEffect(
+    () => () => {
+      unmountedRef.current = true;
+      cleanupEvents.emit('cleanup');
+    },
+    [cleanupEvents],
+  );
 };
