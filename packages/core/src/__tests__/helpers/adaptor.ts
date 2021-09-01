@@ -68,7 +68,7 @@ export class TestingAdaptorInstance extends AdaptorInstance {
 
     if (updateCallback) {
       delete this.updateCallbackMap[renderId];
-      this.updateCallbacks = this.updateCallbacks.filter(val => val === renderId);
+      this.updateCallbacks = this.updateCallbacks.filter(val => val !== renderId);
       updateCallback();
       return true;
     }
