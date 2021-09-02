@@ -71,10 +71,10 @@ const shouldUseSubtree = () =>
 
 export class ElementInstance extends BaseInstance {
   public constructor(
-    public type: string,
+    public override type: string,
     public props: InstanceProps,
     public children: Array<ElementInstance | TextInstance> = [],
-    public container: Container,
+    public override container: Container,
   ) {
     super(type, container);
     this.props = removeChildrenFromProps(props);
@@ -292,7 +292,7 @@ export class ElementInstance extends BaseInstance {
 }
 
 export class TextInstance extends BaseInstance {
-  public constructor(public text: string, public container: Container) {
+  public constructor(public text: string, public override container: Container) {
     super(TYPE_TEXT, container);
   }
 

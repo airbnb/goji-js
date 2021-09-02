@@ -1,4 +1,4 @@
-import { EventChannel } from '../eventChannel';
+import { CachedEventChannel, EventChannel } from '../eventChannel';
 
 describe('EventChannel', () => {
   test('on and emit', () => {
@@ -161,5 +161,78 @@ describe('EventChannel', () => {
     expect(listener2).toBeCalledTimes(0);
     expect(listener3).toBeCalledTimes(1);
     expect(listener4).toBeCalledTimes(0);
+  });
+});
+
+describe('CachedEventChannel', () => {
+  test('on with cache', () => {
+    const channel = new CachedEventChannel<string>();
+    channel.emit('a');
+    const listener1 = jest.fn();
+    channel.on(listener1);
+    expect(listener1).toBeCalledTimes(1);
+    expect(listener1).toBeCalledWith('a');
+    channel.emit('b');
+    expect(listener1).toBeCalledTimes(2);
+    expect(listener1).toBeCalledWith('b');
+  });
+
+  test('once with cache', () => {
+    const channel = new CachedEventChannel<string>();
+    channel.emit('a');
+    const listener1 = jest.fn();
+    channel.once(listener1);
+    expect(listener1).toBeCalledTimes(1);
+    expect(listener1).toBeCalledWith('a');
+    channel.emit('b');
+    expect(listener1).toBeCalledTimes(1);
+  });
+
+  test('filteredOnce with cache', () => {
+    const channel = new CachedEventChannel<string>();
+    channel.emit('a');
+    const listener1 = jest.fn();
+    channel.filteredOnce(data => data === 'a', listener1);
+    expect(listener1).toBeCalledTimes(1);
+    expect(listener1).toBeCalledWith('a');
+    channel.emit('b');
+    expect(listener1).toBeCalledTimes(1);
+  });
+
+  test('on without cache', () => {
+    const channel = new CachedEventChannel<string>();
+    const listener1 = jest.fn();
+    channel.on(listener1);
+    expect(listener1).toBeCalledTimes(0);
+    channel.emit('a');
+    expect(listener1).toBeCalledTimes(1);
+    expect(listener1).toBeCalledWith('a');
+    expect(channel.listenerCount()).toBe(1);
+  });
+
+  test('once without cache', () => {
+    const channel = new CachedEventChannel<string>();
+    const listener1 = jest.fn();
+    channel.once(listener1);
+    expect(listener1).toBeCalledTimes(0);
+    channel.emit('a');
+    expect(listener1).toBeCalledTimes(1);
+    expect(listener1).toBeCalledWith('a');
+    channel.emit('b');
+    expect(listener1).toBeCalledTimes(1);
+    expect(channel.listenerCount()).toBe(0);
+  });
+
+  test('filteredOnce without cache', () => {
+    const channel = new CachedEventChannel<string>();
+    const listener1 = jest.fn();
+    channel.filteredOnce(data => data === 'b', listener1);
+    expect(listener1).toBeCalledTimes(0);
+    channel.emit('a');
+    expect(listener1).toBeCalledTimes(0);
+    channel.emit('b');
+    expect(listener1).toBeCalledTimes(1);
+    expect(listener1).toBeCalledWith('b');
+    expect(channel.listenerCount()).toBe(0);
   });
 });

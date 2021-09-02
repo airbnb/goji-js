@@ -24,9 +24,11 @@ class EventChannelTask<T = undefined, R = void> {
  * channel.emit('Hello'); // returns ['HELLO', 'hello']
  */
 export class EventChannel<T = undefined, R = void> {
-  private tasks: Array<EventChannelTask<T, R>> = [];
+  // protected interfaces
 
-  private enqueueTask(callback: Callback<T, R>, times: number, filter: Callback<T, boolean>) {
+  protected tasks: Array<EventChannelTask<T, R>> = [];
+
+  protected enqueueTask(callback: Callback<T, R>, times: number, filter: Callback<T, boolean>) {
     const channel = this;
     const task = new EventChannelTask<T, R>(
       function taskCallback(data) {
@@ -52,6 +54,22 @@ export class EventChannel<T = undefined, R = void> {
     return () => this.off(callback);
   }
 
+  protected emitTask(data: T): Array<R> {
+    const results: Array<R> = [];
+    // cache the listeners in case of being modified during emitting
+    const forkedTasks = [...this.tasks];
+    for (let index = 0; index < forkedTasks.length; index += 1) {
+      const task = forkedTasks[index];
+      const result = task.taskCallback(data);
+      if (result.success) {
+        results.push(result.result);
+      }
+    }
+    return results;
+  }
+
+  // public interfaces
+
   public on(callback: Callback<T, R>) {
     return this.enqueueTask(callback, Infinity, () => true);
   }
@@ -67,19 +85,7 @@ export class EventChannel<T = undefined, R = void> {
     return this.enqueueTask(callback, 1, filter);
   }
 
-  public emit: Callback<T, Array<R>> = data => {
-    const results: Array<R> = [];
-    // cache the listeners in case of being modified during emitting
-    const forkedTasks = [...this.tasks];
-    for (let index = 0; index < forkedTasks.length; index += 1) {
-      const task = forkedTasks[index];
-      const result = task.taskCallback(data);
-      if (result.success) {
-        results.push(result.result);
-      }
-    }
-    return results;
-  };
+  public emit: Callback<T, Array<R>> = data => this.emitTask(data);
 
   public off(callback: Callback<T, R>) {
     const pos = this.tasks.findIndex(listener => listener.originalCallback === callback);
@@ -100,5 +106,53 @@ export class EventChannel<T = undefined, R = void> {
 
   public listenerCount() {
     return this.tasks.length;
+  }
+}
+
+export class CachedEventChannel<T = undefined, R = void> extends EventChannel<T, R> {
+  public constructor() {
+    super();
+  }
+
+  private isCached = false;
+
+  private cachedData?: T;
+
+  public override emit: Callback<T, Array<R>> = data => {
+    this.isCached = true;
+    this.cachedData = data;
+
+    return this.emitTask(data);
+  };
+
+  public override on(callback: Callback<T, R>) {
+    const cancel = super.on(callback);
+    if (this.isCached) {
+      callback(this.cachedData!);
+    }
+
+    return cancel;
+  }
+
+  public override once(callback: Callback<T, R>) {
+    const cancel = super.once(callback);
+    if (this.isCached) {
+      callback(this.cachedData!);
+      // cancel the task immediately
+      cancel();
+    }
+
+    return cancel;
+  }
+
+  public override filteredOnce(filter: Callback<T, boolean>, callback: Callback<T, R>) {
+    const cancel = super.filteredOnce(filter, callback);
+    if (this.isCached && filter(this.cachedData!)) {
+      callback(this.cachedData!);
+      // cancel the task immediately
+      cancel();
+    }
+
+    return cancel;
   }
 }
