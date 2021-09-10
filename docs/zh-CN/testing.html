@@ -158,8 +158,19 @@ describe(<span class="hljs-string">'example input'</span>, () =&gt; {
 <span class="hljs-keyword">wrapper</span>.<span class="hljs-keyword">debug</span>(<span class="hljs-keyword">wrapper</span>.getByTextId(<span class="hljs-string">'test'</span>));
 </code></pre>
 <p><img src="https://user-images.githubusercontent.com/1812118/89996259-28396080-dcbd-11ea-9e4d-f031c65b835f.png" alt="调试示例"></p>
+<h3><a class="anchor" aria-hidden="true" id="within"></a><a href="#within" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>within</code></h3>
+<p>如果你想在特定的节点中查询，可以使用</code> within `。</p></p>
+<pre><code class="tsx">const Comp = () => (
+  <View testID="view">
+    <Button>Click me</Button>
+  </View>
+);
+const wrapper = render(<Comp />);
+const view = wrapper.getByTestId('view');
+const buttonInsideView = within(view).getByText('Click me');
+`</pre>
 <h3><a class="anchor" aria-hidden="true" id="fireevent"></a><a href="#fireevent" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fireEvent</code></h3>
-<p>在测试用例中，如果你想模拟在节点上的交互事件，可以使用<code>fireEvent</code> 。</p>
+<p>在测试用例中，如果你想模拟节点上的交互事件，可以使用<code>fireEvent.[event]</code> 。</p>
 <p>例如，要将文本输入到 <code>&lt;Input testID=&quot;my-test-id&quot;&gt;</code> 元素中，你可以使用：</p>
 <pre><code class="hljs css language-tsx">const input = <span class="hljs-keyword">wrapper</span>.getByTestId(<span class="hljs-string">'my-test-id'</span>);
 fireEvent.<span class="hljs-keyword">input</span>(<span class="hljs-keyword">input</span>, <span class="hljs-string">'hello, world!'</span>);
@@ -189,13 +200,13 @@ act(() =&gt; {
 });
 expect(<span class="hljs-keyword">wrapper</span>.getByText(<span class="hljs-string">'Count: 1'</span>)).toBeTruthy;
 </code></pre>
-<p>请注意，所有 <code>fireEvent</code> 方法已经被 <code>act</code>包裹了 ，因此没有必要再次使用。</p>
+<p>请注意，所有 <code>fireEvent</code> 方法已经被 <code>act</code>包裹了 ，因此没有必要再次调用。</p>
 <h3><a class="anchor" aria-hidden="true" id="waitfor-和-waitforelement"></a><a href="#waitfor-和-waitforelement" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>waitFor</code> 和 <code>waitForElement</code></h3>
 <p><code>waitFor</code> 会捕获断言错误直到通过，否则会在超时后抛出异常。 它用于组件的异步测试。</p>
-<p>此为一个示例：</p>
+<p>这里是一个示例：</p>
 <pre><code class="hljs css language-tsx">await waitFor(() =&gt; expect(<span class="hljs-keyword">wrapper</span>.getByText(<span class="hljs-string">'hello'</span>)).toBeTruthy());
 </code></pre>
 <p>它等价于：</p>
 <pre><code class="hljs css language-tsx">await waitForElement(() =&gt; <span class="hljs-keyword">wrapper</span>.getByText(<span class="hljs-string">'hello'</span>));
 </code></pre>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated on 8/20/2021</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/zh-CN/plugins"><span class="arrow-prev">← </span><span>使用插件</span></a><a class="docs-next button" href="/docs/zh-CN/faq"><span>常见问题</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#目的">目的</a></li><li><a href="#安装">安装</a></li><li><a href="#示例">示例</a></li><li><a href="#api">API</a><ul class="toc-headings"><li><a href="#render"><code>render</code></a></li><li><a href="#-render--选项"><code>render</code> 选项</a></li><li><a href="#fireevent"><code>fireEvent</code></a></li><li><a href="#act"><code>act</code></a></li><li><a href="#waitfor-和-waitforelement"><code>waitFor</code> 和 <code>waitForElement</code></a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/zh-CN/introduction.html">Get Started</a><a href="/docs/zh-CN/app.html">Guide</a><a href="/docs/zh-CN/faq.html">FAQ</a></div><div><h5>Community</h5><a href="https://github.com/airbnb/goji-js/issues">GitHub Issues</a></div><div><h5>More</h5><a href="https://github.com/airbnb/goji-js">GitHub</a></div></section><section class="copyright">© 2021 Airbnb, Inc. All rights reserved.</section></footer></div></body></html>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 8/23/2021</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/zh-CN/plugins"><span class="arrow-prev">← </span><span>使用插件</span></a><a class="docs-next button" href="/docs/zh-CN/faq"><span>常见问题</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#目的">目的</a></li><li><a href="#安装">安装</a></li><li><a href="#示例">示例</a></li><li><a href="#api">API</a><ul class="toc-headings"><li><a href="#render"><code>render</code></a></li><li><a href="#-render--选项"><code>render</code> 选项</a></li><li><a href="#within"><code>within</code></a></li><li><a href="#fireevent"><code>fireEvent</code></a></li><li><a href="#act"><code>act</code></a></li><li><a href="#waitfor-和-waitforelement"><code>waitFor</code> 和 <code>waitForElement</code></a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/zh-CN/introduction.html">Get Started</a><a href="/docs/zh-CN/app.html">Guide</a><a href="/docs/zh-CN/faq.html">FAQ</a></div><div><h5>Community</h5><a href="https://github.com/airbnb/goji-js/issues">GitHub Issues</a></div><div><h5>More</h5><a href="https://github.com/airbnb/goji-js">GitHub</a></div></section><section class="copyright">© 2021 Airbnb, Inc. All rights reserved.</section></footer></div></body></html>
