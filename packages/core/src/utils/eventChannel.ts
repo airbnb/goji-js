@@ -1,3 +1,5 @@
+import { batchedUpdates } from '../reconciler';
+
 type Callback<T, R> = T extends undefined ? (data?: T) => R : (data: T) => R;
 
 type TaskResult<R> = { success: false } | { success: true; result: R };
@@ -8,6 +10,19 @@ class EventChannelTask<T = undefined, R = void> {
     public originalCallback: Callback<T, R>,
     public ttl: number,
   ) {}
+}
+
+/**
+ * `batchedRun` is a simple wrapper of `batchedUpdates`
+ * @param callback
+ * @returns
+ */
+function batchedRun<R>(callback: () => R): R {
+  let result: R;
+  batchedUpdates(() => {
+    result = callback();
+  });
+  return result!;
 }
 
 /**
@@ -41,7 +56,7 @@ export class EventChannel<T = undefined, R = void> {
           if (this.ttl <= 0) {
             channel.off(this.originalCallback);
           }
-          return { success: true, result: callback(data) };
+          return { success: true, result: batchedRun(() => callback(data)) };
         }
 
         return { success: false };
@@ -55,17 +70,19 @@ export class EventChannel<T = undefined, R = void> {
   }
 
   protected emitTask(data: T): Array<R> {
-    const results: Array<R> = [];
-    // cache the listeners in case of being modified during emitting
-    const forkedTasks = [...this.tasks];
-    for (let index = 0; index < forkedTasks.length; index += 1) {
-      const task = forkedTasks[index];
-      const result = task.taskCallback(data);
-      if (result.success) {
-        results.push(result.result);
+    return batchedRun(() => {
+      const results: Array<R> = [];
+      // cache the listeners in case of being modified during emitting
+      const forkedTasks = [...this.tasks];
+      for (let index = 0; index < forkedTasks.length; index += 1) {
+        const task = forkedTasks[index];
+        const result = task.taskCallback(data);
+        if (result.success) {
+          results.push(result.result);
+        }
       }
-    }
-    return results;
+      return results;
+    });
   }
 
   // public interfaces
@@ -128,7 +145,7 @@ export class CachedEventChannel<T = undefined, R = void> extends EventChannel<T,
   public override on(callback: Callback<T, R>) {
     const cancel = super.on(callback);
     if (this.isCached) {
-      callback(this.cachedData!);
+      batchedRun(() => callback(this.cachedData!));
     }
 
     return cancel;
@@ -137,7 +154,7 @@ export class CachedEventChannel<T = undefined, R = void> extends EventChannel<T,
   public override once(callback: Callback<T, R>) {
     const cancel = super.once(callback);
     if (this.isCached) {
-      callback(this.cachedData!);
+      batchedRun(() => callback(this.cachedData!));
       // cancel the task immediately
       cancel();
     }
@@ -148,7 +165,7 @@ export class CachedEventChannel<T = undefined, R = void> extends EventChannel<T,
   public override filteredOnce(filter: Callback<T, boolean>, callback: Callback<T, R>) {
     const cancel = super.filteredOnce(filter, callback);
     if (this.isCached && filter(this.cachedData!)) {
-      callback(this.cachedData!);
+      batchedRun(() => callback(this.cachedData!));
       // cancel the task immediately
       cancel();
     }
