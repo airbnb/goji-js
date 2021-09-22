@@ -12,7 +12,8 @@
     "skipLibCheck": true,
     "importHelpers": true,
     "moduleResolution": "node",
-    "jsx": "react"
+    "jsx": "react",
+    "noImplicitOverride": true
   },
   "include": ["./src/**/*"]
 }
