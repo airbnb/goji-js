@@ -1,10 +1,10 @@
-import React, { useState, createRef, useReducer } from 'react';
+import React, { useState, useReducer } from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { TestingAdaptor } from '../../../__tests__/helpers/adaptor';
 import { View, useLoadOptions, useRenderedEffect, setGojiBlockingMode } from '../../..';
 import { GojiProvider } from '../../../components';
-import { EventProxy } from '../../../components/eventProxy';
+import { createEventProxy } from '../../../components/eventProxy';
 import { render, RenderResult } from '../../../__tests__/helpers';
 
 describe('universal lifecycles', () => {
@@ -28,9 +28,9 @@ describe('universal lifecycles', () => {
 
       return showComp ? <Comp /> : null;
     };
-    const eventProxyRef = createRef<EventProxy>();
+    const eventProxy = createEventProxy();
     const wrapper = mount(
-      <GojiProvider container={{ eventProxyRef } as any}>
+      <GojiProvider container={{ eventProxy } as any}>
         <App />
       </GojiProvider>,
     );
@@ -38,7 +38,7 @@ describe('universal lifecycles', () => {
     // trigger onLoad
     const mockOnLoadOptions = { key: 'haha' };
     act(() => {
-      eventProxyRef.current!.emitEvent('onLoad', mockOnLoadOptions);
+      eventProxy.lifecycleChannel.onLoad.emit(mockOnLoadOptions);
     });
 
     expect(onLoadOptions).toBeUndefined();

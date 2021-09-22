@@ -1,12 +1,11 @@
-import React, { createRef, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { FiberRoot } from 'react-reconciler';
 import { AdaptorInstance } from './adaptor';
 import { merge } from './utils/merge';
 import { renderIntoContainer } from './render';
 import { ElementInstance } from './reconciler/instance';
-import { EventProxy } from './components/eventProxy';
+import { createEventProxy } from './components/eventProxy';
 import { GojiProvider } from './components';
-import { LifecycleName } from './lifecycles/types';
 import { GOJI_VIRTUAL_ROOT } from './constants';
 
 let gojiBlockingMode = false;
@@ -20,7 +19,7 @@ const noop = () => {};
 export class Container {
   public constructor(protected adaptorInstance: AdaptorInstance) {}
 
-  public eventProxyRef = createRef<EventProxy>();
+  public eventProxy = createEventProxy();
 
   public fiberRootContainer?: FiberRoot;
 
@@ -89,8 +88,8 @@ export class Container {
       this.pendingIds.splice(index, 0, currentRenderIdNum);
 
       while (this.pendingIds.length > 0 && this.consumedId + 1 === this.pendingIds[0]) {
-        const renderId = this.pendingIds.shift();
-        this.emitLifecycleEvent('internalRendered', renderId);
+        const renderId = this.pendingIds.shift()!;
+        this.eventProxy.internalChannels.rendered.emit(renderId);
         this.consumedId = renderId as number;
       }
 
@@ -122,10 +121,6 @@ export class Container {
       this.adaptorInstance.updateData(diff, callback, currentRenderId);
       this.generateRenderId();
     }
-  }
-
-  public emitLifecycleEvent<T extends LifecycleName>(eventName: T, eventData?: any) {
-    return this.eventProxyRef.current?.emitEvent(eventName, eventData);
   }
 
   public render(element: ReactNode | null) {

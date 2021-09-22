@@ -6,12 +6,9 @@ import { Adaptor, AdaptorInstance, AdaptorType, ExportComponentMeta } from './co
 import { gojiEvents } from '../events';
 import { useInternalComponentUpdate } from '../lifecycles/native/hooks';
 import {
-  WechatLifecycleName,
   OnScrollOptions,
   OnShareAppMessageOptions,
-  AlipayLifecycleName,
   OnResizeOptions,
-  InternalLifecycleName,
   OnTabItemTapOptions,
 } from '../lifecycles/types';
 
@@ -111,23 +108,23 @@ export class WeChatAdaptor extends Adaptor {
 
         container.render(element);
 
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>('onLoad', options);
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onLoad.emit(options);
       },
 
       onReady(this: WeChatInstance) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>('onReady');
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onReady.emit();
       },
 
       onShow(this: WeChatInstance) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>('onShow');
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onShow.emit();
       },
 
       onHide(this: WeChatInstance) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>('onHide');
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onHide.emit();
       },
 
       onUnload(this: WeChatInstance) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>('onUnload');
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onUnload.emit();
 
         if (this.__GOJI_CONTAINER) {
           this.__GOJI_CONTAINER.render(null);
@@ -136,22 +133,20 @@ export class WeChatAdaptor extends Adaptor {
       },
 
       onPullDownRefresh(this: WeChatInstance) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>('onPullDownRefresh');
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onPullDownRefresh.emit();
       },
 
       onReachBottom(this: WeChatInstance) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>('onReachBottom');
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onReachBottom.emit();
       },
 
       onPageScroll(this: WeChatInstance, options: OnScrollOptions) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>('onPageScroll', options);
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onPageScroll.emit(options);
       },
 
       onShareAppMessage(this: WeChatInstance, options: OnShareAppMessageOptions) {
-        const results = this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>(
-          'onShareAppMessage',
-          options,
-        );
+        const results =
+          this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onShareAppMessage.emit(options);
 
         if (results && results.length > 1) {
           console.warn(
@@ -159,32 +154,32 @@ export class WeChatAdaptor extends Adaptor {
           );
         }
 
-        return results?.[results.length - 1];
+        return results[0];
       },
 
       onResize(this: WeChatInstance, options: OnResizeOptions) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>('onResize', options);
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onResize.emit(options);
       },
 
       onTabItemTap(this: WeChatInstance, options: OnTabItemTapOptions) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<WechatLifecycleName>('onTabItemTap', options);
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onTabItemTap.emit(options);
       },
 
       // FIXME: Alipay specific lifecycles. We should fork them to alipay adaptor later
       onTitleClick(this: WeChatInstance) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<AlipayLifecycleName>('onTitleClick');
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onTitleClick.emit();
       },
 
       onOptionMenuClick(this: WeChatInstance) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<AlipayLifecycleName>('onOptionMenuClick');
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onOptionMenuClick.emit();
       },
 
       onPopMenuClick(this: WeChatInstance) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<AlipayLifecycleName>('onPopMenuClick');
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onPopMenuClick.emit();
       },
 
       onPullIntercept(this: WeChatInstance) {
-        this.__GOJI_CONTAINER!.emitLifecycleEvent<AlipayLifecycleName>('onPullIntercept');
+        this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onPullIntercept.emit();
       },
     };
 
@@ -229,12 +224,9 @@ export class WeChatAdaptor extends Adaptor {
               if (!this.__GOJI_CONTAINER) {
                 return;
               }
-              this.__GOJI_CONTAINER.emitLifecycleEvent<InternalLifecycleName>(
-                'internalComponentUpdate',
-                {
-                  [prop]: newVal,
-                },
-              );
+              this.__GOJI_CONTAINER.eventProxy.internalChannels.exportedComponentUpdate.emit({
+                [prop]: newVal,
+              });
             },
           })),
         ),
@@ -249,8 +241,7 @@ export class WeChatAdaptor extends Adaptor {
               </ExportComponentWrapper>,
             );
 
-            this.__GOJI_CONTAINER.emitLifecycleEvent<InternalLifecycleName>(
-              'internalComponentUpdate',
+            this.__GOJI_CONTAINER.eventProxy.internalChannels.exportedComponentUpdate.emit(
               this.properties,
             );
           },

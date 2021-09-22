@@ -1,15 +1,15 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useRenderedEffect } from '../renderedEffect';
 import { ContainerProvider } from '../../../components/container';
-import { EventProxy, EventProxyProvider } from '../../../components/eventProxy';
+import { createEventProxy } from '../../../components/eventProxy';
 
 describe('useRenderedEffect', () => {
   test('callback works', () => {
     const renderId = 0;
     // TODO: find a better way to mock container
     const container = {
-      eventProxyRef: createRef<EventProxy>(),
+      eventProxy: createEventProxy(),
       getRenderId() {
         return renderId;
       },
@@ -21,15 +21,13 @@ describe('useRenderedEffect', () => {
       });
     };
     const wrapper = ({ children }) => (
-      <ContainerProvider container={container as any}>
-        <EventProxyProvider>{children}</EventProxyProvider>
-      </ContainerProvider>
+      <ContainerProvider container={container as any}>{children}</ContainerProvider>
     );
     const { result } = renderHook(useTest, { wrapper });
     expect(result.error).toBeFalsy();
 
     expect(callback.mock.calls).toEqual([]);
-    container.eventProxyRef.current?.emitEvent('internalRendered', renderId);
+    container.eventProxy.internalChannels.rendered.emit(renderId);
     expect(callback.mock.calls).toEqual([['rendered effect']]);
   });
 
@@ -37,7 +35,7 @@ describe('useRenderedEffect', () => {
     let renderId = 0;
     // TODO: find a better way to mock container
     const container = {
-      eventProxyRef: createRef<EventProxy>(),
+      eventProxy: createEventProxy(),
       getRenderId: () => renderId,
     };
     const callback = jest.fn() as jest.Mock<undefined, [string]>;
@@ -49,9 +47,7 @@ describe('useRenderedEffect', () => {
       });
     };
     const wrapper = ({ children }: React.PropsWithChildren<{ count: number }>) => (
-      <ContainerProvider container={container as any}>
-        <EventProxyProvider>{children}</EventProxyProvider>
-      </ContainerProvider>
+      <ContainerProvider container={container as any}>{children}</ContainerProvider>
     );
     const { result, rerender, unmount } = renderHook(useTest, {
       wrapper,
@@ -71,17 +67,17 @@ describe('useRenderedEffect', () => {
 
     expect(callback.mock.calls).toEqual([]);
 
-    container.eventProxyRef.current?.emitEvent('internalRendered', 0);
+    container.eventProxy.internalChannels.rendered.emit(0);
     expect(callback.mock.calls).toEqual([['rendered effect 0']]);
 
-    container.eventProxyRef.current?.emitEvent('internalRendered', 1);
+    container.eventProxy.internalChannels.rendered.emit(1);
     expect(callback.mock.calls).toEqual([
       ['rendered effect 0'],
       ['rendered effect callback 0'],
       ['rendered effect 1'],
     ]);
 
-    container.eventProxyRef.current?.emitEvent('internalRendered', 2);
+    container.eventProxy.internalChannels.rendered.emit(2);
     expect(callback.mock.calls).toEqual([
       ['rendered effect 0'],
       ['rendered effect callback 0'],
