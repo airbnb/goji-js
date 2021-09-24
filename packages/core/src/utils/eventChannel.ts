@@ -1,6 +1,8 @@
-import { batchedUpdates } from '../reconciler';
-
-type Callback<T, R> = T extends undefined ? (data?: T) => R : (data: T) => R;
+// `[T] extends [undefined]` is used to support union type in T
+// For more details see:
+// https://stackoverflow.com/questions/61926729/why-does-a-typescript-type-conditional-on-t-extends-undefined-with-t-instanti
+// https://github.com/microsoft/TypeScript/issues/37279#issuecomment-596192183
+type Callback<T, R> = [T] extends [undefined] ? (data?: T) => R : (data: T) => R;
 
 type TaskResult<R> = { success: false } | { success: true; result: R };
 
@@ -12,18 +14,11 @@ class EventChannelTask<T = undefined, R = void> {
   ) {}
 }
 
-/**
- * `batchedRun` is a simple wrapper of `batchedUpdates`
- * @param callback
- * @returns
- */
-function batchedRun<R>(callback: () => R): R {
-  let result: R;
-  batchedUpdates(() => {
-    result = callback();
-  });
-  return result!;
-}
+let batchedRun: <R>(callback: () => R) => R = callback => callback();
+
+export const setBatchedUpdates = (batchedUpdates: <R>(callback: () => R) => R) => {
+  batchedRun = batchedUpdates;
+};
 
 /**
  * `EventChannel` is a pub-sub event hub implementation.

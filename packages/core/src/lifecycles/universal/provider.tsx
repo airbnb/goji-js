@@ -1,30 +1,25 @@
-import React, { useCallback, useMemo } from 'react';
-import { EventEmitter } from 'events';
+import React, { useMemo } from 'react';
 import { UniversalHooksContext } from './context';
-import { OnLoadOptions, UniversalLifecycleName } from '../types';
+import { OnLoadOptions } from '../types';
 import { useImmediatelyEffect } from '../../utils/effects';
 import { useEventProxy } from '../../components/eventProxy';
+import { CachedEventChannel } from '../../utils/eventChannel';
 
 export const UniversalHooksProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const eventProxyContext = useEventProxy();
 
-  // use `useMemo` to cache a singleton value
-  const cache = useMemo(() => new Map<UniversalLifecycleName, any>(), []);
-  const events = useMemo(() => new EventEmitter(), []);
+  const universalLifecycleChannel = useMemo(
+    () => ({
+      loadOptions: new CachedEventChannel<OnLoadOptions>(),
+      visibility: new CachedEventChannel<boolean>(),
+    }),
+    [],
+  );
   const universalHooksContext = useMemo(
     () => ({
-      cache,
-      events,
+      universalLifecycleChannel,
     }),
-    [cache, events],
-  );
-
-  const emit = useCallback(
-    (name: UniversalLifecycleName, data: any) => {
-      cache.set(name, data);
-      events.emit(name, data);
-    },
-    [cache, events],
+    [universalLifecycleChannel],
   );
 
   // must use `useImmediatelyEffect` instead of `useEffect`
@@ -32,19 +27,25 @@ export const UniversalHooksProvider = ({ children }: React.PropsWithChildren<{}>
   useImmediatelyEffect(
     () =>
       eventProxyContext.lifecycleChannel.onLoad.on((options: OnLoadOptions) =>
-        emit('loadOptions', options),
+        universalLifecycleChannel.loadOptions.emit(options),
       ),
-    [emit, eventProxyContext],
+    [universalLifecycleChannel, eventProxyContext],
   );
 
   // useVisibility
   useImmediatelyEffect(
-    () => eventProxyContext.lifecycleChannel.onLoad.on(() => emit('visibility', true)),
-    [emit, eventProxyContext],
+    () =>
+      eventProxyContext.lifecycleChannel.onLoad.on(() =>
+        universalLifecycleChannel.visibility.emit(true),
+      ),
+    [universalLifecycleChannel, eventProxyContext],
   );
   useImmediatelyEffect(
-    () => eventProxyContext.lifecycleChannel.onLoad.on(() => emit('visibility', false)),
-    [emit, eventProxyContext],
+    () =>
+      eventProxyContext.lifecycleChannel.onLoad.on(() =>
+        universalLifecycleChannel.visibility.emit(false),
+      ),
+    [universalLifecycleChannel, eventProxyContext],
   );
 
   const { Provider } = UniversalHooksContext;

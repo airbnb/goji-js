@@ -1,31 +1,36 @@
-import { useContext } from 'react';
-import { UniversalLifecycleName, OnLoadOptions } from '../types';
-import { UniversalHooksContext } from './context';
+import { useContext, useRef } from 'react';
+import { OnLoadOptions } from '../types';
+import { UniversalHooksContext, UniversalHooksContextType } from './context';
 import { useImmediatelyEffect } from '../../utils/effects';
+import { EventChannel } from '../../utils/eventChannel';
 
-const createUniversalLifecycleHook = <T = undefined>(name: UniversalLifecycleName) => (callback: (data: T) => void, deps?: Array<any>) => {
+const createUniversalLifecycleHook =
+  <T = undefined>(
+    channelSelector: (context: UniversalHooksContextType) => EventChannel<any, any>,
+  ) =>
+  (callback: (data: T) => void, deps?: Array<any>) => {
     const universalHooksContext = useContext(UniversalHooksContext);
     if (!universalHooksContext) {
       throw new Error(
         'Cannot found `universalHooksContext`. This might be an internal error in GojiJS.',
       );
     }
-    const { cache, events } = universalHooksContext;
 
-    // check cache and run callback at the first rendering
+    const callbackRef = useRef<(data: T) => void>(callback);
+    // only update callbackRef when deps changed
     useImmediatelyEffect(() => {
-      if (cache.has(name)) {
-        callback(cache.get(name));
-      }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+      callbackRef.current = callback;
+    }, deps);
 
-    useImmediatelyEffect(() => {
-      events.on(name, callback);
-      return () => {
-        events.removeListener(name, callback);
-      };
-    }, deps); // eslint-disable-line react-hooks/exhaustive-deps
+    useImmediatelyEffect(
+      () => channelSelector(universalHooksContext).on(data => callbackRef.current(data)),
+      [],
+    );
   };
 
-export const useLoadOptions = createUniversalLifecycleHook<OnLoadOptions>('loadOptions');
-export const useVisibility = createUniversalLifecycleHook<boolean>('visibility');
+export const useLoadOptions = createUniversalLifecycleHook<OnLoadOptions>(
+  _ => _.universalLifecycleChannel.loadOptions,
+);
+export const useVisibility = createUniversalLifecycleHook<boolean>(
+  _ => _.universalLifecycleChannel.visibility,
+);

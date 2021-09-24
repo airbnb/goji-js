@@ -9,18 +9,15 @@ import { render, RenderResult } from '../../../__tests__/helpers';
 
 describe('universal lifecycles', () => {
   test('useLoadOptions works', () => {
-    let onLoadOptions: any;
+    const useLoadOptionsCallback = jest.fn();
     let showCompCallback: Function;
+    let forceRerenderCallback: Function;
 
     const Comp = () => {
-      const [value, setValue] = useState('none');
-      useLoadOptions(options => {
-        // callback should only be called once
-        expect(onLoadOptions).toBeUndefined();
-        onLoadOptions = options;
-        setValue(options.key);
-      });
-      return <View>value is {value}</View>;
+      const [state, setState] = useState(0);
+      forceRerenderCallback = () => setState(state + 1);
+      useLoadOptions(useLoadOptionsCallback);
+      return <View>hello</View>;
     };
     const App = () => {
       const [showComp, setShowComp] = useState(false);
@@ -40,15 +37,20 @@ describe('universal lifecycles', () => {
     act(() => {
       eventProxy.lifecycleChannel.onLoad.emit(mockOnLoadOptions);
     });
-
-    expect(onLoadOptions).toBeUndefined();
+    expect(useLoadOptionsCallback).not.toBeCalled();
+    useLoadOptionsCallback.mockReset();
 
     // click button to mount the `Comp`
     act(() => showCompCallback());
     wrapper.update();
+    expect(useLoadOptionsCallback).toBeCalledWith({ key: 'haha' });
+    useLoadOptionsCallback.mockReset();
 
-    expect(onLoadOptions).toEqual(mockOnLoadOptions);
-    expect(wrapper.text()).toContain('value is haha');
+    // force re-render should not call loadOptions callback
+    act(() => forceRerenderCallback());
+    wrapper.update();
+    expect(useLoadOptionsCallback).not.toBeCalled();
+    useLoadOptionsCallback.mockReset();
   });
 
   test('useRenderedEffect works', () => {

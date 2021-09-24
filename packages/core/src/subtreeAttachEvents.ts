@@ -1,3 +1,3 @@
-import { EventEmitter } from 'events';
+import { EventChannel } from './utils/eventChannel';
 
-export default new EventEmitter();
+export default new EventChannel<string>();
