@@ -1,78 +1,63 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  useMemo,
-  useImperativeHandle,
-  useContext,
-} from 'react';
-import { EventEmitter } from 'events';
-import { batchedUpdates } from '../reconciler';
+import {
+  OnResizeOptions,
+  OnScrollOptions,
+  OnShareAppMessageOptions,
+  OnShareAppMessageReturn,
+  OnTabItemTapOptions,
+} from '../lifecycles/types';
+import { EventChannel } from '../utils/eventChannel';
 import { useContainer } from './container';
 
-interface EventProxyContextType {
-  handleEvent(name: string, callback: Function): () => void;
-}
-
-const EventProxyContext = createContext<EventProxyContextType | undefined>(undefined);
 export interface EventProxy {
-  emitEvent(name: string, data?: any): any[];
+  lifecycleChannel: {
+    onLoad: EventChannel<Record<string, string>, void>;
+    onReady: EventChannel;
+    onShow: EventChannel;
+    onHide: EventChannel;
+    onUnload: EventChannel;
+    onPullDownRefresh: EventChannel;
+    onReachBottom: EventChannel;
+    onPageScroll: EventChannel<OnScrollOptions, void>;
+    onShareAppMessage: EventChannel<OnShareAppMessageOptions, OnShareAppMessageReturn>;
+    onResize: EventChannel<OnResizeOptions, void>;
+    onTabItemTap: EventChannel<OnTabItemTapOptions, void>;
+    onTitleClick: EventChannel;
+    onOptionMenuClick: EventChannel;
+    onPopMenuClick: EventChannel;
+    onPullIntercept: EventChannel;
+  };
+  internalChannels: {
+    rendered: EventChannel<number>;
+    exportedComponentUpdate: EventChannel<any>;
+  };
 }
 
-/**
- * EventProxyProvider is the gateway to communicate between reconciler container and React elements
- * For example, for native lifecycles:
- * @example
- * onLoad => EventProxyProvider.emitEvent('load') => eventProxyContext.handleEvent('load') => useOnLoad
- */
-export const EventProxyProvider = ({ children }: PropsWithChildren<{}>) => {
-  const container = useContainer();
-  const events = useMemo(() => new EventEmitter(), []);
-  const returnValues: Record<string, any[]> = useMemo(() => ({}), []);
-
-  useImperativeHandle(
-    container.eventProxyRef,
-    () => ({
-      emitEvent: (name: string, data?: any) => {
-        batchedUpdates(() => {
-          events.emit(name, data);
-        });
-
-        const retArr = returnValues[name];
-        delete returnValues[name];
-        return retArr;
-      },
-    }),
-    [events, returnValues],
-  );
-  const context = useMemo(
-    () => ({
-      handleEvent: (name: string, callback?: any) => {
-        const innerCallback = (...args) => {
-          const ret = callback(...args);
-          const retArr = returnValues[name] || [];
-          retArr.push(ret);
-          returnValues[name] = retArr;
-        };
-
-        events.on(name, innerCallback);
-        return () => {
-          events.removeListener(name, innerCallback);
-        };
-      },
-    }),
-    [events, returnValues],
-  );
-  const { Provider } = EventProxyContext;
-
-  return <Provider value={context}>{children}</Provider>;
-};
+export const createEventProxy = (): EventProxy => ({
+  lifecycleChannel: {
+    onLoad: new EventChannel<Record<string, string>, void>(),
+    onReady: new EventChannel(),
+    onShow: new EventChannel(),
+    onHide: new EventChannel(),
+    onUnload: new EventChannel(),
+    onPullDownRefresh: new EventChannel(),
+    onReachBottom: new EventChannel(),
+    onPageScroll: new EventChannel<OnScrollOptions, void>(),
+    onShareAppMessage: new EventChannel<OnShareAppMessageOptions, OnShareAppMessageReturn>(),
+    onResize: new EventChannel<OnResizeOptions, void>(),
+    onTabItemTap: new EventChannel<OnTabItemTapOptions, void>(),
+    onTitleClick: new EventChannel(),
+    onOptionMenuClick: new EventChannel(),
+    onPopMenuClick: new EventChannel(),
+    onPullIntercept: new EventChannel(),
+  },
+  internalChannels: {
+    rendered: new EventChannel<number>(),
+    exportedComponentUpdate: new EventChannel<any>(),
+  },
+});
 
 export const useEventProxy = () => {
-  const eventProxy = useContext(EventProxyContext);
+  const container = useContainer();
 
-  if (!eventProxy) {
-    throw new Error('Cannot found `eventProxy`. This might be an internal error in GojiJS.');
-  }
-
-  return eventProxy;
+  return container.eventProxy;
 };

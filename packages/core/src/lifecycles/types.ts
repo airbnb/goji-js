@@ -1,28 +1,3 @@
-export type WechatLifecycleName =
-  | 'onLoad'
-  | 'onShow'
-  | 'onReady'
-  | 'onHide'
-  | 'onUnload'
-  | 'onUnload'
-  | 'onPullDownRefresh'
-  | 'onReachBottom'
-  | 'onPageScroll'
-  | 'onShareAppMessage'
-  | 'onResize'
-  | 'onTabItemTap';
-
-export type AlipayLifecycleName =
-  | WechatLifecycleName
-  | 'onTitleClick'
-  | 'onOptionMenuClick'
-  | 'onPopMenuClick'
-  | 'onPullIntercept';
-
-export type InternalLifecycleName = 'internalComponentUpdate' | 'internalRendered';
-
-export type LifecycleName = WechatLifecycleName | AlipayLifecycleName | InternalLifecycleName;
-
 export type UniversalLifecycleName = 'loadOptions' | 'visibility' | 'renderedEffect';
 
 export interface OnLoadOptions {
@@ -36,6 +11,18 @@ export interface OnScrollOptions {
 export interface OnShareAppMessageOptions {
   from: 'button' | 'menu';
   target: object | undefined;
+  webViewUrl?: string;
+}
+
+export interface OnShareAppMessageReturn {
+  title?: string;
+  imageUrl?: string;
+  path?: string;
+  promise?: Promise<{
+    title?: string;
+    imageUrl?: string;
+    path?: string;
+  }>;
 }
 
 export interface OnResizeOptions {

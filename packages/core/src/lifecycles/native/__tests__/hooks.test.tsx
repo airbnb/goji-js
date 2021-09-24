@@ -1,10 +1,10 @@
-import React, { useState, createRef } from 'react';
+import React, { useState } from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { View } from '../../..';
 import { useOnPageScroll } from '../hooks';
 import { GojiProvider } from '../../../components';
-import { EventProxy } from '../../../components/eventProxy';
+import { createEventProxy } from '../../../components/eventProxy';
 
 describe('native lifecycles', () => {
   it('onLoad works', () => {
@@ -17,9 +17,9 @@ describe('native lifecycles', () => {
       });
       return <View>value is {value}</View>;
     };
-    const eventProxyRef = createRef<EventProxy>();
+    const eventProxy = createEventProxy();
     const wrapper = mount(
-      <GojiProvider container={{ eventProxyRef } as any}>
+      <GojiProvider container={{ eventProxy } as any}>
         <View className="text">hello, world!</View>
         <App />
       </GojiProvider>,
@@ -31,7 +31,7 @@ describe('native lifecycles', () => {
     // trigger onLoad
     const mockOnPageScroll = { scrollTop: 1024 };
     act(() => {
-      eventProxyRef.current!.emitEvent('onPageScroll', mockOnPageScroll);
+      eventProxy.lifecycleChannel.onPageScroll.emit(mockOnPageScroll);
     });
 
     expect(onPageScrollOptions).toEqual(mockOnPageScroll);

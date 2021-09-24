@@ -16,22 +16,20 @@ export const useRenderedEffect = (callback: EffectCallback, deps?: Array<any>) =
   const unmountedRef = useRef(false);
 
   useImmediatelyEffect(() => {
-    const unsubscribe = eventProxyContext.handleEvent('internalRendered', (renderId: number) => {
-      if (renderId !== Number(currentRenderId)) {
-        return;
-      }
-      // TODO: implement `once` for `eventProxyContext`
-      unsubscribe();
-      // run all existing clean-up functions
-      cleanupEvents.emit('cleanup');
-      // then run the new effect
-      const cleanup = callback();
-      if (unmountedRef.current) {
-        cleanup?.();
-      } else {
-        cleanupEvents.once('cleanup', () => cleanup?.());
-      }
-    });
+    eventProxyContext.internalChannels.rendered.filteredOnce(
+      renderId => renderId === Number(currentRenderId),
+      () => {
+        // run all existing clean-up functions
+        cleanupEvents.emit('cleanup');
+        // then run the new effect
+        const cleanup = callback();
+        if (unmountedRef.current) {
+          cleanup?.();
+        } else {
+          cleanupEvents.once('cleanup', () => cleanup?.());
+        }
+      },
+    );
   }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 
   // call all clean-up functions when unmount
