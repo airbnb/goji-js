@@ -1,10 +1,12 @@
 import { createContext } from 'react';
-import { EventEmitter } from 'events';
-import { UniversalLifecycleName } from '../types';
+import { CachedEventChannel } from '../../utils/eventChannel';
+import { OnLoadOptions } from '../types';
 
-interface UniversalHooksContextType {
-  cache: Map<UniversalLifecycleName, any>;
-  events: EventEmitter;
+export interface UniversalHooksContextType {
+  universalLifecycleChannel: {
+    loadOptions: CachedEventChannel<OnLoadOptions>;
+    visibility: CachedEventChannel<boolean>;
+  };
 }
 
 export const UniversalHooksContext = createContext<UniversalHooksContextType | undefined>(

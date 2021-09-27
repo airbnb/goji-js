@@ -1,8 +1,8 @@
 import { EffectCallback, useEffect, useMemo, useRef } from 'react';
-import { EventEmitter } from 'events';
 import { useImmediatelyEffect } from '../../utils/effects';
 import { useContainer } from '../../components/container';
 import { useEventProxy } from '../../components/eventProxy';
+import { EventChannel } from '../../utils/eventChannel';
 
 /**
  * This hook runs not only the component rendered but also the `setData` callback is done.
@@ -11,7 +11,7 @@ import { useEventProxy } from '../../components/eventProxy';
 export const useRenderedEffect = (callback: EffectCallback, deps?: Array<any>) => {
   const container = useContainer();
   const eventProxyContext = useEventProxy();
-  const cleanupEvents = useMemo(() => new EventEmitter(), []);
+  const cleanupEventChannel = useMemo(() => new EventChannel(), []);
   const currentRenderId = container.getRenderId();
   const unmountedRef = useRef(false);
 
@@ -20,13 +20,13 @@ export const useRenderedEffect = (callback: EffectCallback, deps?: Array<any>) =
       renderId => renderId === Number(currentRenderId),
       () => {
         // run all existing clean-up functions
-        cleanupEvents.emit('cleanup');
+        cleanupEventChannel.emit();
         // then run the new effect
         const cleanup = callback();
         if (unmountedRef.current) {
           cleanup?.();
         } else {
-          cleanupEvents.once('cleanup', () => cleanup?.());
+          cleanupEventChannel.once(() => cleanup?.());
         }
       },
     );
@@ -36,8 +36,8 @@ export const useRenderedEffect = (callback: EffectCallback, deps?: Array<any>) =
   useEffect(
     () => () => {
       unmountedRef.current = true;
-      cleanupEvents.emit('cleanup');
+      cleanupEventChannel.emit();
     },
-    [cleanupEvents],
+    [cleanupEventChannel],
   );
 };

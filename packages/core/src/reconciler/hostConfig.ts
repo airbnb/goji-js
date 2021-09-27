@@ -38,7 +38,10 @@ export const hostConfig: GojiHostConfig<
       } else {
         // if `attached` have not run, we should wait for attach been called
         componentInstance = new Promise(resolve => {
-          events.on(String(subtreeId), () => resolve(subtreeInstances.get(subtreeId)));
+          events.filteredOnce(
+            id => id === String(subtreeId),
+            () => resolve(subtreeInstances.get(subtreeId)),
+          );
         });
       }
 
