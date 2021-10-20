@@ -1,3 +1,4 @@
+import { GojiWebpackPluginRequiredOptions } from '../../types';
 import { GojiBasedWebpackPlugin } from '../based';
 
 class GojiTestWebpackPlugin extends GojiBasedWebpackPlugin {
@@ -29,7 +30,11 @@ let baiduTestPugin: GojiTestWebpackPlugin;
 
 describe('GojiBasedWebpackPlugin', () => {
   beforeAll(() => {
-    const commonOptions = { maxDepth: 5, minimize: false };
+    const commonOptions: Omit<GojiWebpackPluginRequiredOptions, 'target'> = {
+      maxDepth: 5,
+      minimize: false,
+      nohoist: { enable: true, maxPackages: 1, test: () => false },
+    };
     wechatTestPugin = new GojiTestWebpackPlugin({ ...commonOptions, target: 'wechat' });
     alipayTestPugin = new GojiTestWebpackPlugin({ ...commonOptions, target: 'alipay' });
     baiduTestPugin = new GojiTestWebpackPlugin({ ...commonOptions, target: 'baidu' });

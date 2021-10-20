@@ -3,6 +3,7 @@ import path from 'path';
 import { ConcatSource } from 'webpack-sources';
 import { GojiBasedWebpackPlugin } from './based';
 import { safeUrlToRequest } from '../utils/path';
+import { COMMON_CHUNK_NAME, RUNTIME_FILE_NAME } from '../constants/paths';
 
 type RuntimePluginExt = '.js' | '.wxss';
 
@@ -38,11 +39,11 @@ const RUNTIME_METAS: Array<{ ext: RuntimePluginExt; ignoreEmptyAsset: boolean }>
  *
  * Although we can always add prefix for all pages, we still need to consider not to add useless code.
  * Here are some cases that should or should not add prefix code. `a -> b` means `a` requires `b`
- *   pages in main package -> `commons.*` or `runtime.js` : change `app.*` is enough, because `app.*` auto applies for all pages
- *   pages in a sub-package -> `commons.*` or `runtime.js` : change `app.*` is enough
- *   pages in a sub-package -> `sub-packages/commons.*` : change the page files
- *   pages in a independent package -> `independent-package/commons.*` : change the page files
- *   pages in a independent package -> `independent-package/runtime.js` : change the page files
+ *   pages in main package -> `_goji_commons.*` or `_goji_runtime.js` : change `app.*` is enough, because `app.*` auto applies for all pages
+ *   pages in a sub-package -> `_goji_commons.*` or `_goji_runtime.js` : change `app.*` is enough
+ *   pages in a sub-package -> `sub-packages/_goji_commons.*` : change the page files
+ *   pages in a independent package -> `independent-package/_goji_commons.*` : change the page files
+ *   pages in a independent package -> `independent-package/_goji_runtime.js` : change the page files
  * All in all, we can hoist the root common/runtime chunk to `app.*`. The reasons are:
  *   1. More clean code for output files
  *   2. On Alipay, the dev tool always bundle common chunks into a sub-package that cause each sub-package
@@ -73,14 +74,14 @@ export class GojiRuntimePlugin extends GojiBasedWebpackPlugin {
         // Add root common chunk for `app.*` even if it doesn't depends on the root common chunk, this
         // ensures the hoist works as expected.
         // No need to check `runtime` because it must be already included
-        if (entryChunk.name === 'app' && !dependentChunkNames.includes('commons')) {
-          dependentChunkNames.push('commons');
+        if (entryChunk.name === 'app' && !dependentChunkNames.includes(COMMON_CHUNK_NAME)) {
+          dependentChunkNames.push(COMMON_CHUNK_NAME);
         }
 
         // This line try to fix the wrong order in CSS files
         // For example, the `sub/pages/index.wxss` correct order should be:
-        //   @import '../../commons.wxss';
-        //   @import '../commons.wxss';
+        //   @import '../../_goji_commons.wxss';
+        //   @import '../_goji_commons.wxss';
         // This issue might be related to the `priority` in `cacheGroup.ts`
         dependentChunkNames.reverse();
 
@@ -94,11 +95,11 @@ export class GojiRuntimePlugin extends GojiBasedWebpackPlugin {
           const existedDependentChunkNames = dependentChunkNames.filter(
             chunkName => compilation.assets[chunkName + transformedExt],
           );
-          // FIXME: ignore `@import 'commons.wxss'` in integration mode to reduce the main/full package size
-          // in this case you should import `commons.wxss` manually in `app.mina`
+          // FIXME: ignore `@import '_goji_commons.wxss'` in integration mode to reduce the main/full package size
+          // in this case you should import `_goji_commons.wxss` manually in `app.mina`
 
           const filteredDependentChunkNames = existedDependentChunkNames.filter(chunkName => {
-            if (chunkName === 'commons' || chunkName === 'runtime') {
+            if (chunkName === COMMON_CHUNK_NAME || chunkName === RUNTIME_FILE_NAME) {
               // remove root common/runtime chunk for pages
               if (entryChunk.name !== 'app') {
                 return false;

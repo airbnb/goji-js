@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import resolve from 'resolve';
 import path from 'path';
+import { GojiWebpackPluginOptions } from '@goji/webpack-plugin';
 import { getWebpackConfig } from './config/webpack.config';
 import { parseArgv, CliConfig } from './argv';
 
@@ -10,6 +11,7 @@ interface GojiConfig {
   configureWebpack?: (config: webpack.Configuration, webpackInGoji: typeof webpack) => undefined;
   configureBabel?: (config: any) => any;
   progress?: boolean;
+  nohoist?: GojiWebpackPluginOptions['nohoist'];
 }
 
 const GOJI_CONFIG_FILE_NAME = 'goji.config';
@@ -43,27 +45,22 @@ const main = async () => {
   if (gojiConfig.configureBabel) {
     gojiConfig.configureBabel(babelConfig);
   }
+  // watch mode
+  const watch = cliConfig.watch ?? gojiConfig.watch ?? !cliConfig.production;
   const webpackConfig = getWebpackConfig({
     basedir,
     outputPath: gojiConfig.outputPath,
     target: cliConfig.target,
     nodeEnv: cliConfig.production ? 'production' : 'development',
     babelConfig,
+    watch,
+    progress: gojiConfig.progress ?? cliConfig.progress ?? true,
+    nohoist: gojiConfig?.nohoist,
   });
 
   // apply goji.config.js configureWebpack
   if (gojiConfig.configureWebpack) {
     gojiConfig.configureWebpack(webpackConfig, webpack);
-  }
-
-  // watch mode
-  const watch = cliConfig.watch ?? gojiConfig.watch ?? !cliConfig.production;
-  // must reset `watch` option for correct `compiler.options.watch`
-  webpackConfig.watch = watch;
-
-  // show progress
-  if (gojiConfig.progress ?? cliConfig.progress ?? true) {
-    webpackConfig.plugins!.push(new webpack.ProgressPlugin());
   }
 
   // create compiler

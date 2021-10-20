@@ -14764,6 +14764,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
+ripgrep-bin@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/ripgrep-bin/-/ripgrep-bin-13.0.0.tgz#69c5559300a37431eb025b0326026fd0fffecdbf"
+  integrity sha512-lwFAmnB4ssW3H0RYApOHcViuIfuPiEp2S4vRvpdyKdidfGLrjfESvz8XuIGaFzS24KY+6c8NMmEXgoNdSm8uzw==
+
 rollup-pluginutils@^2.4.1:
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-2.8.2.tgz#72f2af0748b592364dbd3389e600e5a9444a351e"

@@ -2,25 +2,41 @@ import webpack from 'webpack';
 import { GojiBridgeWebpackPlugin } from './plugins/bridge';
 import { GojiEntryWebpackPlugin } from './plugins/entry';
 import { GojiRuntimePlugin } from './plugins/runtime';
-import { GojiWebpackPluginOptions } from './types';
-import { DEFAULT_OPTIONS } from './constants';
+import { GojiWebpackPluginOptions, GojiWebpackPluginRequiredOptions } from './types';
 import { GojiSingletonRuntimeWebpackPlugin } from './plugins/singleton';
-import { GojiChunksWebpackPlugin } from './plugins/chunks';
 import { GojiShimPlugin } from './plugins/shim';
 import { getPoll } from './utils/polling';
 import { GojiProjectConfigPlugin } from './plugins/projectConfig';
 import { GojiCollectUsedComponentsWebpackPlugin } from './plugins/collectUsedComponents';
 import { getWrappedComponents } from './constants/components';
 import { registerPluginComponent } from './utils/pluginComponent';
+import { GojiSplitChunksWebpackPlugin } from './plugins/chunks/split';
+import { GojiRuntimeChunksWebpackPlugin } from './plugins/chunks/runtime';
+import { GojiNohoistWebpackPlugin } from './plugins/nohoist';
 
 export class GojiWebpackPlugin implements webpack.Plugin {
-  private options: GojiWebpackPluginOptions;
+  public static normalizeOptions(
+    options: GojiWebpackPluginOptions,
+  ): GojiWebpackPluginRequiredOptions {
+    const nodeEnv = process.env.NODE_ENV;
+    const isProd = nodeEnv === 'production';
 
-  public constructor(options: Partial<GojiWebpackPluginOptions> = {}) {
-    this.options = {
-      ...DEFAULT_OPTIONS,
-      ...options,
+    return {
+      target: options.target,
+      maxDepth: options.maxDepth ?? 5,
+      minimize: options.minimize ?? nodeEnv !== 'development',
+      nohoist: {
+        enable: options?.nohoist?.enable ?? isProd,
+        maxPackages: options?.nohoist?.maxPackages ?? 1,
+        test: options?.nohoist?.test,
+      },
     };
+  }
+
+  private options: GojiWebpackPluginRequiredOptions;
+
+  public constructor(options: GojiWebpackPluginOptions) {
+    this.options = GojiWebpackPlugin.normalizeOptions(options);
   }
 
   public apply(compiler: webpack.Compiler) {
@@ -34,7 +50,9 @@ export class GojiWebpackPlugin implements webpack.Plugin {
     new GojiCollectUsedComponentsWebpackPlugin(options).apply(compiler);
     new GojiBridgeWebpackPlugin(options).apply(compiler);
     new GojiEntryWebpackPlugin(options).apply(compiler);
-    new GojiChunksWebpackPlugin(options).apply(compiler);
+    new GojiSplitChunksWebpackPlugin(options).apply(compiler);
+    new GojiRuntimeChunksWebpackPlugin(options).apply(compiler);
+    new GojiNohoistWebpackPlugin(options).apply(compiler);
     new GojiRuntimePlugin(options).apply(compiler);
     new GojiSingletonRuntimeWebpackPlugin(options).apply(compiler);
     new GojiShimPlugin(options).apply(compiler);
@@ -46,3 +64,5 @@ export class GojiWebpackPlugin implements webpack.Plugin {
   // eslint-disable-next-line camelcase
   public static internal_registerPluginComponent = registerPluginComponent;
 }
+
+export { GojiWebpackPluginOptions };

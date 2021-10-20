@@ -37,6 +37,22 @@ export const getSubpackagesInfo = (config: AppConfig) => {
 export const isBelongsTo = (pagePath: string, subPackage: string) =>
   pagePath.startsWith(`${subPackage}/`);
 
-// TODO: how to improve this performance
-export const findBelongingSubPackage = (pagePath: string, subPackages: Array<string>) =>
-  subPackages.find(subPackage => isBelongsTo(pagePath, subPackage));
+export const MAIN_PACKAGE = Symbol('MAIN_PACKAGE');
+
+export const findBelongingSubPackage = (
+  pagePath: string,
+  subPackages: Array<string>,
+): string | typeof MAIN_PACKAGE =>
+  subPackages.find(subPackage => isBelongsTo(pagePath, subPackage)) ?? MAIN_PACKAGE;
+
+export const findBelongingSubPackages = (
+  pagePaths: Array<string>,
+  subPackages: Array<string>,
+): Set<string | typeof MAIN_PACKAGE> => {
+  const result = new Set<string | typeof MAIN_PACKAGE>();
+  for (const pagePath of pagePaths) {
+    const belongingSubPackage = findBelongingSubPackage(pagePath, subPackages);
+    result.add(belongingSubPackage);
+  }
+  return result;
+};

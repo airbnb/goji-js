@@ -2,7 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import { GojiTarget } from '@goji/core';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { GojiWebpackPlugin } from '@goji/webpack-plugin/dist/cjs';
+import { GojiWebpackPluginOptions, GojiWebpackPlugin } from '@goji/webpack-plugin';
 import resolve from 'resolve';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import findCacheDir from 'find-cache-dir';
@@ -45,12 +45,18 @@ export const getWebpackConfig = ({
   target,
   nodeEnv,
   babelConfig,
+  watch,
+  progress,
+  nohoist,
 }: {
   basedir: string;
   outputPath?: string;
   target: GojiTarget;
   nodeEnv: string;
   babelConfig: any;
+  watch: boolean;
+  progress: boolean;
+  nohoist?: GojiWebpackPluginOptions['nohoist'];
 }): webpack.Configuration => {
   const cacheLoaders = getCacheLoader(nodeEnv === 'production', nodeEnv, target);
   const threadLoaders = getThreadLoader();
@@ -87,6 +93,8 @@ export const getWebpackConfig = ({
       runtimeChunk: false,
       splitChunks: false,
     },
+    // must reset `watch` option for correct `compiler.options.watch`
+    watch,
     watchOptions: {
       poll: GojiWebpackPlugin.getPoll(),
     },
@@ -246,8 +254,7 @@ export const getWebpackConfig = ({
       }),
       new GojiWebpackPlugin({
         target,
-        maxDepth: 5,
-        minimize: nodeEnv !== 'development',
+        nohoist,
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(nodeEnv),
@@ -256,6 +263,8 @@ export const getWebpackConfig = ({
         // FIXME: doesn't work in watch mode
         cleanStaleWebpackAssets: nodeEnv === 'production',
       }),
-    ],
+      // show progress
+      progress && new webpack.ProgressPlugin(),
+    ].filter(Boolean),
   };
 };
