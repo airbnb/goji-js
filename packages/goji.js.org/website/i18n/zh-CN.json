@@ -57,6 +57,10 @@
         "title": "安装",
         "sidebar_label": "安装"
       },
+      "sub-packages": {
+        "title": "分包加载",
+        "sidebar_label": "分包加载"
+      },
       "testing": {
         "title": "测试库",
         "sidebar_label": "测试"
