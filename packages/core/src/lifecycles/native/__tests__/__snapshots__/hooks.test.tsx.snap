@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`native lifecycles onLoad works 1`] = `
+Array [
+  <view
+    className="text"
+  >
+    hello, world!
+  </view>,
+  <view>
+    value is 
+    0
+  </view>,
+]
+`;
+
+exports[`native lifecycles onLoad works 2`] = `
+Array [
+  <view
+    className="text"
+  >
+    hello, world!
+  </view>,
+  <view>
+    value is 
+    1024
+  </view>,
+]
+`;

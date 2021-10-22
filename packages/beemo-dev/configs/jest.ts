@@ -6,7 +6,6 @@ const config: JestConfig = {
   cacheDirectory: '/tmp/.cache/jest',
   collectCoverage: true,
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: [path.resolve(__dirname, '../utils/setupTests.js')],
   transform: {
     // https://github.com/facebook/jest/issues/7359#issuecomment-471509996
     '^.+\\.(ts|js|tsx|jsx)$': path.resolve(__dirname, '../utils/jestBabelTransform.js'),

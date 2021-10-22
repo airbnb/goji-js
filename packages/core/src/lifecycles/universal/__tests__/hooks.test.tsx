@@ -1,6 +1,5 @@
 import React, { useState, useReducer } from 'react';
-import { mount } from 'enzyme';
-import { act } from 'react-dom/test-utils';
+import { act, create } from 'react-test-renderer';
 import { TestingAdaptor } from '../../../__tests__/helpers/adaptor';
 import { View, useLoadOptions, useRenderedEffect, setGojiBlockingMode } from '../../..';
 import { GojiProvider } from '../../../components';
@@ -26,7 +25,7 @@ describe('universal lifecycles', () => {
       return showComp ? <Comp /> : null;
     };
     const eventProxy = createEventProxy();
-    const wrapper = mount(
+    create(
       <GojiProvider container={{ eventProxy } as any}>
         <App />
       </GojiProvider>,
@@ -42,13 +41,11 @@ describe('universal lifecycles', () => {
 
     // click button to mount the `Comp`
     act(() => showCompCallback());
-    wrapper.update();
     expect(useLoadOptionsCallback).toBeCalledWith({ key: 'haha' });
     useLoadOptionsCallback.mockReset();
 
     // force re-render should not call loadOptions callback
     act(() => forceRerenderCallback());
-    wrapper.update();
     expect(useLoadOptionsCallback).not.toBeCalled();
     useLoadOptionsCallback.mockReset();
   });
