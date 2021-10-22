@@ -1,16 +1,16 @@
 import path from 'path';
 import { getRelativePathToBridge, safeUrlToRequest } from '../path';
-import { BRIDGE_OUTPUT_PATH } from '../../constants';
+import { BRIDGE_OUTPUT_DIR } from '../../constants/paths';
 
 describe('getRelativePathToBridge', () => {
   test('get correct relative path', () => {
-    expect(getRelativePathToBridge('a/b/c', '.')).toBe(`../../${BRIDGE_OUTPUT_PATH}`);
-    expect(getRelativePathToBridge('a/b', '.')).toBe(`../${BRIDGE_OUTPUT_PATH}`);
+    expect(getRelativePathToBridge('a/b/c', '.')).toBe(`../../${BRIDGE_OUTPUT_DIR}`);
+    expect(getRelativePathToBridge('a/b', '.')).toBe(`../${BRIDGE_OUTPUT_DIR}`);
   });
 
   test('get correct relative path in independent package', () => {
-    expect(getRelativePathToBridge('a/b/c', './a')).toBe(`../${BRIDGE_OUTPUT_PATH}`);
-    expect(getRelativePathToBridge('a/b', './a')).toBe(`./${BRIDGE_OUTPUT_PATH}`);
+    expect(getRelativePathToBridge('a/b/c', './a')).toBe(`../${BRIDGE_OUTPUT_DIR}`);
+    expect(getRelativePathToBridge('a/b', './a')).toBe(`./${BRIDGE_OUTPUT_DIR}`);
   });
 
   test('relative path resovled to bridge path', () => {
@@ -19,9 +19,9 @@ describe('getRelativePathToBridge', () => {
       return path.join(path.dirname(pathname), relativePathToBridge);
     };
 
-    expect(resolveBridgePath('a/b/c')).toBe(BRIDGE_OUTPUT_PATH);
-    expect(resolveBridgePath('a/b')).toBe(BRIDGE_OUTPUT_PATH);
-    expect(resolveBridgePath('a')).toBe(BRIDGE_OUTPUT_PATH);
+    expect(resolveBridgePath('a/b/c')).toBe(BRIDGE_OUTPUT_DIR);
+    expect(resolveBridgePath('a/b')).toBe(BRIDGE_OUTPUT_DIR);
+    expect(resolveBridgePath('a')).toBe(BRIDGE_OUTPUT_DIR);
   });
 
   test('throw if absolute path', () => {

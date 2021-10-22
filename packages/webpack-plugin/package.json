@@ -2,7 +2,7 @@
   "name": "@goji/webpack-plugin",
   "version": "0.11.4",
   "description": "GojiJS Webpack Plugin",
-  "main": "dist/cjs/cjs.js",
+  "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "scripts": {
     "prebuild": "npm run clean",
@@ -25,7 +25,9 @@
     "@types/webpack": "^4.41.13",
     "@types/webpack-sources": "^0.1.7",
     "babel-jest": "^27.0.6",
+    "find-cache-dir": "^3.3.1",
     "rimraf": "^3.0.0",
+    "ripgrep-bin": "^13.0.0",
     "typescript": "^4.3.5",
     "webpack": "^4.46.0"
   },

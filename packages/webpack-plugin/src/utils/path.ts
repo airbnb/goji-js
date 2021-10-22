@@ -1,6 +1,6 @@
 import path from 'path';
 import { isUrlRequest, urlToRequest } from 'loader-utils';
-import { BRIDGE_OUTPUT_PATH } from '../constants';
+import { BRIDGE_OUTPUT_DIR } from '../constants/paths';
 
 // ref: https://github.com/webpack/loader-utils#urltorequest
 export const safeUrlToRequest = (url: string) => (isUrlRequest(url) ? urlToRequest(url) : url);
@@ -14,5 +14,5 @@ export const getRelativePathToBridge = (pathname: string, basrdir: string) => {
     throw new Error('`pathname` should not be absolute path');
   }
   const relativePath = path.relative(path.dirname(pathname), basrdir);
-  return safeUrlToRequest(path.join(relativePath, BRIDGE_OUTPUT_PATH));
+  return safeUrlToRequest(path.join(relativePath, BRIDGE_OUTPUT_DIR));
 };

@@ -1,13 +1,14 @@
 import webpack from 'webpack';
+import { RUNTIME_FILE_NAME } from '../constants/paths';
 import { GojiBasedWebpackPlugin } from './based';
 
 /**
- * this plugin is designed to support multi `runtime.js` in mini program.
+ * this plugin is designed to support multi `_goji_runtime.js` in mini program.
  * there are several cases caused multi runtime:
  * 1. independent sub-packages, webpack will copy all necessary chunks into the sub-package.
  * 2. Alipay sub-packages, Alipay auto copy the chunks into the sub-package and this bug(feature)
  *   can only reproduce on physical devices rather than dev tool simulator.
- * this plugin hacks the `runtime.js` to ensure there is always a singleton local variables, including
+ * this plugin hacks the `_goji_runtime.js` to ensure there is always a singleton local variables, including
  *  the most important `installedChunks`.
  */
 export class GojiSingletonRuntimeWebpackPlugin extends GojiBasedWebpackPlugin {
@@ -24,7 +25,7 @@ export class GojiSingletonRuntimeWebpackPlugin extends GojiBasedWebpackPlugin {
       compilation.mainTemplate.hooks.localVars.tap(
         'GojiSingletonRuntimeWebpackPlugin',
         (source, chunk) => {
-          if (!chunk.name.endsWith('runtime')) {
+          if (!chunk.name.endsWith(RUNTIME_FILE_NAME)) {
             return source;
           }
           const { globalObject } = compilation.mainTemplate.outputOptions;

@@ -57,6 +57,10 @@
         "title": "Setup",
         "sidebar_label": "Setup"
       },
+      "sub-packages": {
+        "title": "Sub Packages",
+        "sidebar_label": "Sub Packages"
+      },
       "testing": {
         "title": "Testing Library",
         "sidebar_label": "Testing"
