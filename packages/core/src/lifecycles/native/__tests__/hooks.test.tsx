@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { mount } from 'enzyme';
-import { act } from 'react-dom/test-utils';
+import { act, create } from 'react-test-renderer';
 import { View } from '../../..';
 import { useOnPageScroll } from '../hooks';
 import { GojiProvider } from '../../../components';
@@ -18,15 +17,14 @@ describe('native lifecycles', () => {
       return <View>value is {value}</View>;
     };
     const eventProxy = createEventProxy();
-    const wrapper = mount(
+    const wrapper = create(
       <GojiProvider container={{ eventProxy } as any}>
         <View className="text">hello, world!</View>
         <App />
       </GojiProvider>,
     );
 
-    expect(wrapper.text()).toContain('hello, world!');
-    expect(wrapper.text()).toContain('value is 0');
+    expect(wrapper.toJSON()).toMatchSnapshot();
 
     // trigger onLoad
     const mockOnPageScroll = { scrollTop: 1024 };
@@ -35,6 +33,6 @@ describe('native lifecycles', () => {
     });
 
     expect(onPageScrollOptions).toEqual(mockOnPageScroll);
-    expect(wrapper.text()).toContain('value is 1024');
+    expect(wrapper.toJSON()).toMatchSnapshot();
   });
 });
