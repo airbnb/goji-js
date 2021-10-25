@@ -28,7 +28,7 @@
     "@goji/core": "^0.11.4",
     "@goji/webpack-plugin": "^0.11.4",
     "@types/babel-plugin-macros": "^2.8.5",
-    "react": "^16.13.1"
+    "react": "^17.0.2"
   },
   "peerDependencies": {
     "@babel/core": "*",

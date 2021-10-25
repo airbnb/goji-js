@@ -15,7 +15,7 @@
     "@goji/core": "^<%= version %>",
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
-    "react": "^16.13.1"
+    "react": "^17.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
