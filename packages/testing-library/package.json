@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "lodash": "^4.17.15",
-    "pretty-format": "^27.0.6",
-    "react-test-renderer": "^16.13.1",
-    "tslib": "^2.3.0",
+    "pretty-format": "^26.0.1",
+    "react-test-renderer": "^17.0.2",
+    "tslib": "^2.0.3",
     "wait-for-expect": "^3.0.2"
   },
   "peerDependencies": {
@@ -26,8 +26,8 @@
   "devDependencies": {
     "@goji/core": "^0.11.4",
     "@types/lodash": "^4.14.172",
-    "@types/react-test-renderer": "^16.9.2",
-    "react": "^16.13.1"
+    "@types/react-test-renderer": "^17.0.1",
+    "react": "^17.0.2"
   },
   "repository": {
     "type": "git",

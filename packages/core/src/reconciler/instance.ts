@@ -230,6 +230,7 @@ export class ElementInstance extends BaseInstance {
   }
 
   public removeChild(child: ElementInstance | TextInstance) {
+    child.unregisterEventHandler();
     const index = this.children.indexOf(child);
     this.children.splice(index, 1);
     child.setParent(undefined);
@@ -263,6 +264,12 @@ export class ElementInstance extends BaseInstance {
     this.children.splice(index, 0, child);
     child.setParent(this);
     this.hasChildrenUpdate = true;
+  }
+
+  public clear() {
+    for (const child of this.children) {
+      this.removeChild(child);
+    }
   }
 
   private pureProps() {
