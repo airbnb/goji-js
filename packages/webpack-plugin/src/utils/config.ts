@@ -12,7 +12,7 @@ export const readPathsFromAppConfig = (config: AppConfig): Array<string> => {
     }
     if (subPackage.root && subPackage.pages) {
       for (const subPage of subPackage.pages) {
-        paths.push(path.join(subPackage.root, subPage));
+        paths.push(path.posix.join(subPackage.root, subPage));
       }
     }
   }
