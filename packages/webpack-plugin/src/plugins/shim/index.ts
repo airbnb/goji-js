@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import path from 'path';
+import escapeStringRegexp from 'escape-string-regexp';
 import { GojiBasedWebpackPlugin } from '../based';
 import { PatchedProvidePlugin as ProvidePlugin } from './providePlugin';
 import * as meta from './meta';
@@ -31,7 +32,7 @@ export class GojiShimPlugin extends GojiBasedWebpackPlugin {
           // this is not a standard usage so I forked the `ProvidePlugin`
           exclude: [
             // exclude all patches
-            new RegExp(`${path.resolve(__dirname, './patches')}`),
+            new RegExp(escapeStringRegexp(path.join(__dirname, 'patches'))),
           ],
         };
       }
