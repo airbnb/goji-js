@@ -35,14 +35,14 @@ export const UniversalHooksProvider = ({ children }: React.PropsWithChildren<{}>
   // useVisibility
   useImmediatelyEffect(
     () =>
-      eventProxyContext.lifecycleChannel.onLoad.on(() =>
+      eventProxyContext.lifecycleChannel.onShow.on(() =>
         universalLifecycleChannel.visibility.emit(true),
       ),
     [universalLifecycleChannel, eventProxyContext],
   );
   useImmediatelyEffect(
     () =>
-      eventProxyContext.lifecycleChannel.onLoad.on(() =>
+      eventProxyContext.lifecycleChannel.onHide.on(() =>
         universalLifecycleChannel.visibility.emit(false),
       ),
     [universalLifecycleChannel, eventProxyContext],
