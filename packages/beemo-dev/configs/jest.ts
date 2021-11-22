@@ -1,9 +1,10 @@
 import { JestConfig } from '@beemo/driver-jest';
 import path from 'path';
+import os from 'os';
 
 const config: JestConfig = {
   verbose: true,
-  cacheDirectory: '/tmp/.cache/jest',
+  cacheDirectory: path.join(os.tmpdir(), '.cache', 'jest'),
   collectCoverage: true,
   testEnvironment: 'jsdom',
   transform: {

@@ -4,7 +4,7 @@ const config: LernaConfig = {
   packages: ['packages/*', 'packages/goji.js.org/*'],
   npmClient: 'yarn',
   useWorkspaces: true,
-  version: '0.11.4',
+  version: '0.12.0',
 };
 
 export default config;

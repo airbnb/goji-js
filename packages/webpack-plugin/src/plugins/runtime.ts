@@ -111,7 +111,7 @@ export class GojiRuntimePlugin extends GojiBasedWebpackPlugin {
             meta.ext,
             transformedExt,
             filteredDependentChunkNames.map(chunkName =>
-              path.relative(path.dirname(entryChunk.name), chunkName),
+              path.posix.relative(path.posix.dirname(entryChunk.name), chunkName),
             ),
           );
           compilation.assets[file] = new ConcatSource(prefix, compilation.assets[file] || '');

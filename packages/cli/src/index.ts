@@ -29,7 +29,7 @@ const requireGojiConfig = (basedir: string): GojiConfig => {
 };
 
 const main = async () => {
-  const basedir = process.env.PWD!;
+  const basedir = process.cwd();
   let cliConfig: CliConfig;
   try {
     cliConfig = await parseArgv(process.argv.slice(2));

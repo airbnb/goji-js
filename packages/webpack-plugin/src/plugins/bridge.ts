@@ -55,7 +55,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   ) {
     const formattedAssetPath = this.transformExtForPath(assetPath);
     let content = renderTemplate({ target: this.options.target }, component);
-    const type = path.extname(assetPath).replace(/^\./, '');
+    const type = path.posix.extname(assetPath).replace(/^\./, '');
     content = await transformTemplate(content, this.options.target, type);
     if (!merge && compilation.assets[formattedAssetPath] !== undefined) {
       console.warn('skip existing asset', formattedAssetPath);
@@ -64,7 +64,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       content = merge(content, compilation.assets[formattedAssetPath].source());
     }
     if (this.options.minimize) {
-      content = await minimize(content, path.extname(assetPath));
+      content = await minimize(content, path.posix.extname(assetPath));
     }
     compilation.assets[formattedAssetPath] = new RawSource(content);
   }
@@ -75,7 +75,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     for (let depth = 0; depth < maxDepth; depth += 1) {
       await this.renderTemplateComponentToAsset(
         compilation,
-        path.join(basedir, `${BRIDGE_OUTPUT_DIR}/children${depth}.wxml`),
+        path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `children${depth}.wxml`),
         () =>
           childrenWxml({
             maxDepth,
@@ -84,7 +84,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       );
       await this.renderTemplateComponentToAsset(
         compilation,
-        path.join(basedir, `${BRIDGE_OUTPUT_DIR}/components${depth}.wxml`),
+        path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `components${depth}.wxml`),
         () =>
           componentWxml({
             depth,
@@ -100,7 +100,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     const components = this.getRenderedComponents(compilation);
     await this.renderTemplateComponentToAsset(
       compilation,
-      path.join(basedir, `${BRIDGE_OUTPUT_DIR}/leaf-components.wxml`),
+      path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `leaf-components.wxml`),
       () =>
         leafComponentWxml({
           components: components.filter(c => c.isLeaf),
@@ -114,12 +114,12 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   ) {
     await this.renderTemplateComponentToAsset(
       compilation,
-      path.join(basedir, `${BRIDGE_OUTPUT_DIR}/subtree.js`),
+      path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `subtree.js`),
       () => subtreeJs(),
     );
     await this.renderTemplateComponentToAsset(
       compilation,
-      path.join(basedir, `${BRIDGE_OUTPUT_DIR}/subtree.json`),
+      path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `subtree.json`),
       () =>
         subtreeJson({
           relativePathToBridge: '.',
@@ -128,7 +128,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     );
     await this.renderTemplateComponentToAsset(
       compilation,
-      path.join(basedir, `${BRIDGE_OUTPUT_DIR}/subtree.wxml`),
+      path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `subtree.wxml`),
       () => subtreeWxml(),
     );
   }
@@ -140,7 +140,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     const components = this.getRenderedComponents(compilation);
     await this.renderTemplateComponentToAsset(
       compilation,
-      path.join(basedir, `${BRIDGE_OUTPUT_DIR}/components0.wxml`),
+      path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `components0.wxml`),
       () =>
         componentWxml({
           depth: 0,
@@ -157,7 +157,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   ) {
     await this.renderTemplateComponentToAsset(
       compilation,
-      path.join(basedir, `${BRIDGE_OUTPUT_DIR}/children0.wxml`),
+      path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `children0.wxml`),
       () =>
         childrenWxml({
           maxDepth: Infinity,
@@ -175,12 +175,12 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       if (component.isWrapped) {
         await this.renderTemplateComponentToAsset(
           compilation,
-          path.join(basedir, `${BRIDGE_OUTPUT_DIR}/components/${component.name}.wxml`),
+          path.posix.join(basedir, BRIDGE_OUTPUT_DIR, 'components', `${component.name}.wxml`),
           () => wrappedWxml({ component }),
         );
         await this.renderTemplateComponentToAsset(
           compilation,
-          path.join(basedir, `${BRIDGE_OUTPUT_DIR}/components/${component.name}.json`),
+          path.posix.join(basedir, BRIDGE_OUTPUT_DIR, 'components', `${component.name}.json`),
           () =>
             wrappedJson({
               relativePathToBridge: '..',
@@ -190,7 +190,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
         );
         await this.renderTemplateComponentToAsset(
           compilation,
-          path.join(basedir, `${BRIDGE_OUTPUT_DIR}/components/${component.name}.js`),
+          path.posix.join(basedir, BRIDGE_OUTPUT_DIR, 'components', `${component.name}.js`),
           () =>
             wrappedJs({
               component,

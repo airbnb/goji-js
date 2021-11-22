@@ -1,8 +1,8 @@
 import webpack from 'webpack';
 import path from 'path';
-import replaceExt from 'replace-ext';
-import { transformExtension } from '../utils/transformExtension';
 import { GojiWebpackPluginRequiredOptions } from '../types';
+import { transformExtension } from '../utils/transformExtension';
+import { replaceExtPosix } from '../utils/path';
 
 export abstract class GojiBasedWebpackPlugin implements webpack.Plugin {
   public constructor(protected options: GojiWebpackPluginRequiredOptions) {}
@@ -17,8 +17,8 @@ export abstract class GojiBasedWebpackPlugin implements webpack.Plugin {
   }
 
   protected transformExtForPath(pathname: string) {
-    const ext = path.extname(pathname);
-    return replaceExt(pathname, this.transformExt(ext));
+    const ext = path.posix.extname(pathname);
+    return replaceExtPosix(pathname, this.transformExt(ext));
   }
 
   protected isJsExt(ext: string) {
