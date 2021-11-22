@@ -25,7 +25,6 @@
     "@types/webpack-sources": "^0.1.7",
     "find-cache-dir": "^3.3.1",
     "rimraf": "^3.0.0",
-    "ripgrep-bin": "^13.0.0",
     "typescript": "^4.3.5",
     "vscode-ripgrep": "^1.12.1",
     "webpack": "^4.46.0"

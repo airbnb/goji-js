@@ -29,7 +29,7 @@ export class GojiNohoistWebpackPlugin extends GojiBasedWebpackPlugin {
               for (const chunkGroup of chunkGroups) {
                 for (const chunk of [...chunkGroup.chunks]) {
                   if (isNohoistTempFile(chunk.name)) {
-                    const nohoistTempFileName = path.basename(chunk.name);
+                    const nohoistTempFileName = path.posix.basename(chunk.name);
                     // @ts-ignore
                     const subPackageName = chunkGroup.options.name.split('/')[0];
                     const distNohoistFileName = `${subPackageName}/${NO_HOIST_PREFIX}${nohoistTempFileName}`;

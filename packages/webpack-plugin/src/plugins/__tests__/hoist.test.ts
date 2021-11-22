@@ -5,7 +5,7 @@ import path from 'path';
 import findCacheDir from 'find-cache-dir';
 import webpack from 'webpack';
 import { execFile } from 'child_process';
-import ripgrepBin from 'ripgrep-bin';
+import { rgPath } from 'vscode-ripgrep';
 
 jest.setTimeout(60 * 1000);
 // use source code
@@ -50,7 +50,7 @@ describe('hoist', () => {
     // checks
     const findAllFiles = (content: string) =>
       new Promise<Array<string>>((resolve, reject) => {
-        execFile(ripgrepBin, ['-l', content, '.'], { cwd: outputPath }, (err, stdout) => {
+        execFile(rgPath, ['-l', content, '.'], { cwd: outputPath }, (err, stdout) => {
           if (err) {
             reject(err);
           }
