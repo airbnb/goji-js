@@ -59,31 +59,35 @@ describe('hoist', () => {
               .trim()
               .split('\n')
               .filter(_ => _.endsWith('.js'))
-              .sort(),
+              .sort()
+              // remove leading `./` or `.\\`
+              .map(_ => path.join(_)),
           );
         });
       });
 
     // internal
-    expect(await findAllFiles('this is internalA')).toEqual(['./packageA/_goji_commons.js']);
+    expect(await findAllFiles('this is internalA')).toEqual([
+      path.join('packageA', '_goji_commons.js'),
+    ]);
 
     // independent should works
     expect(await findAllFiles('this is sharedTop')).toEqual([
-      './_goji_commons.js',
-      './packageIndependent/_goji_commons.js',
+      path.join('_goji_commons.js'),
+      path.join('packageIndependent', '_goji_commons.js'),
     ]);
 
     // can nohoist
     expect(await findAllFiles('this is sharedA')).toEqual([
-      './packageA/_goji_nohoist_ef694a33ef79da4db885e0bae648d1b0.js',
-      './packageB/_goji_nohoist_ef694a33ef79da4db885e0bae648d1b0.js',
+      path.join('packageA', '_goji_nohoist_ef694a33ef79da4db885e0bae648d1b0.js'),
+      path.join('packageB', '_goji_nohoist_ef694a33ef79da4db885e0bae648d1b0.js'),
     ]);
 
     // nohoist can work with independent
     expect(await findAllFiles('this is sharedB')).toEqual([
-      './packageA/_goji_nohoist_d1f973b3a1e95adb52e3162147042c71.js',
-      './packageB/_goji_nohoist_d1f973b3a1e95adb52e3162147042c71.js',
-      './packageIndependent/_goji_nohoist_d1f973b3a1e95adb52e3162147042c71.js',
+      path.join('packageA', '_goji_nohoist_d1f973b3a1e95adb52e3162147042c71.js'),
+      path.join('packageB', '_goji_nohoist_d1f973b3a1e95adb52e3162147042c71.js'),
+      path.join('packageIndependent', '_goji_nohoist_d1f973b3a1e95adb52e3162147042c71.js'),
     ]);
   });
 });
