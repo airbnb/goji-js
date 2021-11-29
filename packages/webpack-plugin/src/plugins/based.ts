@@ -4,7 +4,7 @@ import { GojiWebpackPluginRequiredOptions } from '../types';
 import { transformExtension } from '../utils/transformExtension';
 import { replaceExtPosix } from '../utils/path';
 
-export abstract class GojiBasedWebpackPlugin implements webpack.Plugin {
+export abstract class GojiBasedWebpackPlugin implements webpack.WebpackPluginInstance {
   public constructor(protected options: GojiWebpackPluginRequiredOptions) {}
 
   public abstract apply(compiler: webpack.Compiler): void;

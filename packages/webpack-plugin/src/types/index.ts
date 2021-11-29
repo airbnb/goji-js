@@ -11,10 +11,7 @@ export interface GojiWebpackPluginRequiredOptions {
   nohoist: {
     enable: boolean;
     maxPackages: number;
-    test?:
-      | string
-      | RegExp
-      | ((module: webpack.compilation.Module, chunks: Array<webpack.compilation.Chunk>) => boolean);
+    test?: string | RegExp | ((module: webpack.Module, chunks: Array<webpack.Chunk>) => boolean);
   };
 }
 
@@ -28,10 +25,7 @@ export interface GojiWebpackPluginOptions {
   nohoist?: {
     enable?: boolean;
     maxPackages?: number;
-    test?:
-      | string
-      | RegExp
-      | ((module: webpack.compilation.Module, chunks: Array<webpack.compilation.Chunk>) => boolean);
+    test?: string | RegExp | ((module: webpack.Module, chunks: Array<webpack.Chunk>) => boolean);
   };
 }
 

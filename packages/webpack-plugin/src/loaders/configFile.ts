@@ -1,26 +1,25 @@
 import { GojiTarget } from '@goji/core';
 import webpack from 'webpack';
-import loaderUtils from 'loader-utils';
-import { promisify } from 'util';
+import path from 'path';
 import {
-  exec,
   loadConfigSourceByChildCompiler,
   evalConfigSource,
   resolveConfigPath,
 } from '../utils/loadConfig';
 
-const loadAsset = async (context: webpack.loader.LoaderContext, assetPath: string) => {
-  const source = await promisify(context.loadModule.bind(context))(
-    // FIXME: should reuse `file-loader` rule from `webpack.config.js` ?
-    `!${require.resolve(
-      'file-loader',
-    )}?esModule=false&name=assets/[name].[hash:6].[ext]&publicPath=/!${assetPath}`,
-  );
-  return exec(source, assetPath, context.context);
-};
+interface ConfigFileLoaderOptions {
+  target: GojiTarget;
+  entry: string;
+}
+
+const loadAsset = async (
+  context: webpack.LoaderContext<ConfigFileLoaderOptions>,
+  assetPath: string,
+): Promise<string> =>
+  context.importModule(`${path.basename(assetPath)}.webpack[asset/resource]!=!${assetPath}`);
 
 // emit image assets from tab bar list
-const emitAssets = async (context: webpack.loader.LoaderContext, config: any) => {
+const emitAssets = async (context: webpack.LoaderContext<ConfigFileLoaderOptions>, config: any) => {
   // support both `list` and `items`
   const tabBarList = config?.tabBar?.list ?? config?.tabBar?.items ?? [];
   for (const item of tabBarList) {
@@ -41,17 +40,14 @@ const emitAssets = async (context: webpack.loader.LoaderContext, config: any) =>
   return config;
 };
 
-const emitConfigFile = async (context: webpack.loader.LoaderContext) => {
+const emitConfigFile = async (context: webpack.LoaderContext<ConfigFileLoaderOptions>) => {
   const { rootContext } = context;
-  const { target, entry } = loaderUtils.getOptions(context) as {
-    target: GojiTarget;
-    entry: string;
-  };
+  const { target, entry } = context.getOptions();
   const configInputPath = await resolveConfigPath(
     entry,
     rootContext,
     // eslint-disable-next-line no-underscore-dangle
-    context._compiler.options.resolve?.extensions,
+    context._compiler?.options?.resolve?.extensions,
   );
   if (!configInputPath) {
     // `.config.js` doesn't exist
@@ -63,7 +59,7 @@ const emitConfigFile = async (context: webpack.loader.LoaderContext) => {
     configInputPath,
     context.context,
     // eslint-disable-next-line no-underscore-dangle
-    context._compilation,
+    context._compilation!,
   );
   const configOutput = evalConfigSource(configInputPath, configSource, target);
 
@@ -72,7 +68,7 @@ const emitConfigFile = async (context: webpack.loader.LoaderContext) => {
 };
 
 module.exports = async function GojiConfigFileLoader(
-  this: webpack.loader.LoaderContext,
+  this: webpack.LoaderContext<ConfigFileLoaderOptions>,
   source: string | Buffer,
 ) {
   if (this.cacheable) {

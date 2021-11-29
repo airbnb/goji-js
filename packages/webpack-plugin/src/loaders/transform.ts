@@ -1,6 +1,5 @@
-import { loader } from 'webpack';
-import loaderUtils from 'loader-utils';
 import { GojiTarget } from '@goji/core';
+import webpack from 'webpack';
 import { transformTemplate } from '../utils/render';
 
 interface TransformLoaderOptions {
@@ -9,14 +8,14 @@ interface TransformLoaderOptions {
 }
 
 module.exports = async function GojiTransformLoader(
-  this: loader.LoaderContext,
+  this: webpack.LoaderContext<TransformLoaderOptions>,
   source: string | Buffer,
 ) {
   if (this.cacheable) {
     this.cacheable();
   }
   const callback = this.async();
-  const options: TransformLoaderOptions = loaderUtils.getOptions(this);
+  const options = this.getOptions();
   const { target = process.env.GOJI_TARGET as GojiTarget, type } = options;
   if (!target) {
     throw new Error("loader's query param `target` expected but not found");

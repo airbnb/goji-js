@@ -4,7 +4,6 @@ const config: PrettierConfig = {
   ignore: [
     '**/dist/*',
     '**/node_modules/*',
-    '**/.cache-loader/*',
     '**/coverage/*',
     '**/.eslintrc.js',
     '**/.eslintrc.js',

@@ -1,4 +1,4 @@
-import { loader } from 'webpack';
+import webpack from 'webpack';
 import babelLoader from 'babel-loader';
 import { RawSourceMap } from 'source-map';
 
@@ -10,7 +10,7 @@ const testMacrosRegex = v => macrosRegex.test(v);
  * this loader is designed to only support `babel-plugin-macros`, don't use any other plugins
  */
 module.exports = function GojiTransformLoader(
-  this: loader.LoaderContext,
+  this: webpack.LoaderContext<{}>,
   source: string | Buffer,
   inputSourceMap: RawSourceMap,
 ) {

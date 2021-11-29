@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import crypto from 'crypto';
+import type { NonUndefined } from 'utility-types';
 import { GojiBasedWebpackPlugin } from '../based';
 import { appConfigMap } from '../../shared';
 import {
@@ -10,23 +11,30 @@ import {
 } from '../../utils/config';
 import { AppConfig, GojiWebpackPluginRequiredOptions } from '../../types';
 import { COMMON_CHUNK_NAME, NO_HOIST_TEMP_DIR } from '../../constants/paths';
+import { normalizeCacheGroups } from '../../forked/splitChunksPlugin';
 
-interface WebpackCacheGroups {
-  [key: string]: webpack.Options.CacheGroupsOptions | false;
-}
+type WebpackCacheGroups = NonUndefined<
+  Exclude<
+    NonUndefined<webpack.Configuration['optimization']>['splitChunks'],
+    false | undefined
+  >['cacheGroups']
+>;
+
+type WebpackCacheGroupsContext = Parameters<
+  webpack.optimize.SplitChunksPlugin['options']['getCacheGroups']
+>[1];
 
 const checkTest = (
   test:
     | undefined
     | string
     | RegExp
-    | ((module: webpack.compilation.Module, chunks: Array<webpack.compilation.Chunk>) => boolean),
-  module: webpack.compilation.Module,
-  chunks: Array<webpack.compilation.Chunk>,
+    | ((module: webpack.Module, chunks: Array<webpack.Chunk>) => boolean),
+  module: webpack.Module,
+  chunks: Array<webpack.Chunk>,
   defaultResult: boolean,
 ) => {
-  // @ts-ignore
-  const moduleName: string | undefined = module.nameForCondition?.();
+  const moduleName: string | undefined = module.nameForCondition?.() ?? undefined;
   switch (typeof test) {
     case 'undefined':
       return defaultResult;
@@ -46,31 +54,30 @@ const checkTest = (
 const getNohoistModules = (
   options: GojiWebpackPluginRequiredOptions['nohoist'],
   appConfig: AppConfig,
-  modules: Array<webpack.compilation.Module>,
+  modules: Array<webpack.Module>,
+  chunkGraph: webpack.ChunkGraph,
 ) => {
   const [subPackages] = getSubpackagesInfo(appConfig);
   const subPackageRoots = subPackages.map(_ => _.root).filter(Boolean) as Array<string>;
-  const nohoistModules = new Map<string, Set<webpack.compilation.Module>>();
+  const nohoistModules = new Map<string, Set<webpack.Module>>();
   for (const module of modules) {
+    const chunks = chunkGraph.getModuleChunks(module);
     const belongingSubPackages = findBelongingSubPackages(
-      module.getChunks().map(chunk => chunk.name),
+      chunks.map(chunk => chunk.name),
       subPackageRoots,
     );
     const canNohoist = belongingSubPackages.size > 1 && !belongingSubPackages.has(MAIN_PACKAGE);
-    const forceNohoist = checkTest(options.test, module, module.getChunks(), false);
+    const forceNohoist = checkTest(options.test, module, chunks, false);
     // should only nohoist if size between [2, N] where N is `nohoist.maxPackages`
     if (canNohoist && (forceNohoist || belongingSubPackages.size <= options.maxPackages)) {
       const hash = crypto.createHash('md4');
-      for (const chunkName of module
-        .getChunks()
-        .map(chunk => chunk.name)
-        .sort()) {
+      for (const chunkName of chunks.map(chunk => chunk.name).sort()) {
         hash.update(chunkName);
       }
       const chunksHash = hash.digest('hex');
       nohoistModules.set(
         chunksHash,
-        (nohoistModules.get(chunksHash) ?? new Set<webpack.compilation.Module>()).add(module),
+        (nohoistModules.get(chunksHash) ?? new Set<webpack.Module>()).add(module),
       );
     }
   }
@@ -80,9 +87,10 @@ const getNohoistModules = (
 const getCacheGroups = (
   options: GojiWebpackPluginRequiredOptions['nohoist'],
   appConfig: AppConfig,
-  modules: Array<webpack.compilation.Module>,
+  modules: Array<webpack.Module>,
+  chunkGraph: webpack.ChunkGraph,
 ) => {
-  const nohoistModules = getNohoistModules(options, appConfig, modules);
+  const nohoistModules = getNohoistModules(options, appConfig, modules, chunkGraph);
   const [subPackages, independents] = getSubpackagesInfo(appConfig);
   const cacheGroups: WebpackCacheGroups = {};
   cacheGroups[COMMON_CHUNK_NAME] = {
@@ -106,32 +114,38 @@ const getCacheGroups = (
     }
     cacheGroups[subPackage] = {
       name: `${subPackage}/${COMMON_CHUNK_NAME}`,
-      test: (_module, chunks: Array<webpack.compilation.Chunk>) => {
+      test: (module: webpack.Module, context: WebpackCacheGroupsContext) => {
         if (independent) {
           return true;
         }
-        return chunks.every(item => isBelongsTo(item.name, subPackage));
+
+        return context.chunkGraph
+          .getModuleChunks(module)
+          .every(item => isBelongsTo(item.name, subPackage));
       },
       chunks: chunk => isBelongsTo(chunk.name, subPackage),
     };
   }
-  for (const [chunksHash, chunkNohoistModules] of nohoistModules.entries()) {
-    cacheGroups[`${NO_HOIST_TEMP_DIR}/${chunksHash}`] = {
-      name: `${NO_HOIST_TEMP_DIR}/${chunksHash}`,
-      test: module => chunkNohoistModules.has(module),
-      // no need to check independent because all nohoist chunks will be copied to each sub-packages in GojiNohoistWebpackPlugin
-      chunks: () => true,
-    };
+  if (options.enable) {
+    for (const [chunksHash, chunkNohoistModules] of nohoistModules.entries()) {
+      cacheGroups[`${NO_HOIST_TEMP_DIR}/${chunksHash}`] = {
+        name: `${NO_HOIST_TEMP_DIR}/${chunksHash}`,
+        test: (module: webpack.Module) => chunkNohoistModules.has(module),
+        // no need to check independent because all nohoist chunks will be copied to each sub-packages in GojiNohoistWebpackPlugin
+        chunks: () => true,
+      };
+    }
   }
 
   return cacheGroups;
 };
 
-const BASE_SPLIT_CHUNKS_OPTIONS = {
+const DEFAULT_SPLIT_CHUNKS_OPTIONS = {
   minChunks: 2,
   minSize: 0,
   maxAsyncRequests: Infinity,
   maxInitialRequests: Infinity,
+  cacheGroups: {},
 };
 
 /**
@@ -201,23 +215,21 @@ export class GojiSplitChunksWebpackPlugin extends GojiBasedWebpackPlugin {
       if (!appConfig) {
         throw new Error('`appConfig` not found. This might be an internal error in GojiJS.');
       }
-      // @ts-ignore
-      const splitChunkInstance = new webpack.optimize.SplitChunksPlugin({
-        ...BASE_SPLIT_CHUNKS_OPTIONS,
-        cacheGroups: {},
-      });
+      const splitChunkInstance = new webpack.optimize.SplitChunksPlugin(
+        DEFAULT_SPLIT_CHUNKS_OPTIONS,
+      );
       splitChunkInstance.apply(compiler);
 
       // update options manually
       compiler.hooks.thisCompilation.tap(
         'GojiSplitChunksWebpackPlugin',
-        (compilation: webpack.compilation.Compilation) => {
+        (compilation: webpack.Compilation) => {
+          // use `afterOptimizeModules` to make sure this plugin is executed before `SplitChunksPlugin`
           compilation.hooks.afterOptimizeModules.tap('GojiSplitChunksWebpackPlugin', modules => {
-            // @ts-ignore
-            splitChunkInstance.options = webpack.optimize.SplitChunksPlugin.normalizeOptions({
-              ...BASE_SPLIT_CHUNKS_OPTIONS,
-              cacheGroups: getCacheGroups(this.options.nohoist, appConfig, modules),
-            });
+            splitChunkInstance.options.getCacheGroups = normalizeCacheGroups(
+              getCacheGroups(this.options.nohoist, appConfig, [...modules], compilation.chunkGraph),
+              ['javascript', 'unknown'],
+            );
           });
         },
       );

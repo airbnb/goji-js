@@ -1,16 +1,18 @@
 import path from 'path';
 import webpack from 'webpack';
+import TerserPlugin from 'terser-webpack-plugin';
 import { GojiTarget } from '@goji/core';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import type { NonUndefined } from 'utility-types';
 import { GojiWebpackPluginOptions, GojiWebpackPlugin } from '@goji/webpack-plugin';
+import nodeLibsBrowser from 'node-libs-browser';
 import resolve from 'resolve';
-import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import findCacheDir from 'find-cache-dir';
 import { version as babelCoreVersion } from '@babel/core/package.json';
 import { version as babelLoaderVersion } from 'babel-loader/package.json';
-import { preprocessLoader, getThreadLoader, getCacheLoader } from './loaders';
+import { preprocessLoader, getThreadLoader } from './loaders';
 
-const getSourceMap = (nodeEnv: string, target: GojiTarget) => {
+const getSourceMap = (nodeEnv: string, target: GojiTarget): webpack.Configuration['devtool'] => {
   // enable source map in development mode
   if (nodeEnv === 'development') {
     return 'cheap-source-map';
@@ -23,17 +25,17 @@ const getSourceMap = (nodeEnv: string, target: GojiTarget) => {
   return false;
 };
 
-// webpack@4 stats config
-const getStats = () => ({
-  // copied from `'minimal'` https://github.com/webpack/webpack/blob/009e47c8f76ae702857f3493f1133946e33881d0/lib/Stats.js#L1636
-  all: false,
-  modules: true,
-  maxModules: 0,
-  errors: true,
-  warnings: true,
-  // @ts-ignore
-  logging: 'warn',
-  // copied end
+const getNodeLibsFallback = () => {
+  const alias: NonUndefined<webpack.Configuration['resolve']>['fallback'] = {};
+  for (const key of Object.keys(nodeLibsBrowser)) {
+    alias[key] = nodeLibsBrowser[key] ?? false;
+  }
+
+  return alias;
+};
+
+const getStats = (): webpack.Configuration['stats'] => ({
+  preset: 'minimal',
   errorDetails: true,
   builtAt: true,
   colors: true,
@@ -58,8 +60,7 @@ export const getWebpackConfig = ({
   progress: boolean;
   nohoist?: GojiWebpackPluginOptions['nohoist'];
 }): webpack.Configuration => {
-  const cacheLoaders = getCacheLoader(nodeEnv === 'production', nodeEnv, target);
-  const threadLoaders = getThreadLoader();
+  const threadLoaders = getThreadLoader(nodeEnv);
 
   const CSS_FILE_EXT = {
     wechat: 'wxss',
@@ -78,16 +79,35 @@ export const getWebpackConfig = ({
       alias: {
         'react-native$': resolve.sync('@goji/core/dist/esm', { basedir }),
       },
+      fallback: getNodeLibsFallback(),
       extensions: ['.native.js', '.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
     },
     output: {
       path: outputPath ?? path.join(basedir, 'dist', target),
       filename: '[name].js',
+      assetModuleFilename: 'assets/[name].[hash:6][ext]',
       publicPath: '/',
       globalObject: 'Object',
+      clean: true,
     },
     optimization: {
       minimize: nodeEnv === 'production',
+      // default options from https://github.com/webpack/webpack/blob/81f6c5b61cac5b8b5fdab1316933b0b824b1afcb/lib/config/defaults.js#L1067-L1081
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            format: {
+              // remove `LICENSE.txt` files to reduce bundle size
+              // https://github.com/webpack-contrib/terser-webpack-plugin/tree/f84a1498a279c13f3ce0d49ef537dddc8af5daef#remove-comments
+              comments: false,
+            },
+            compress: {
+              passes: 2,
+            },
+          },
+          extractComments: false,
+        }),
+      ],
       // set `optimization.splitChunks` and `optimization.splitChunks` to `false`
       // to disable built-in plugins and then we can load `GojiChunksWebpackPlugin` manually.
       runtimeChunk: false,
@@ -98,12 +118,23 @@ export const getWebpackConfig = ({
     watchOptions: {
       poll: GojiWebpackPlugin.getPoll(),
     },
+    cache: {
+      type: 'filesystem',
+      idleTimeout: 0,
+      idleTimeoutForInitialStore: 0,
+    },
     stats: getStats(),
     performance: {
       hints: false,
     },
     module: {
       rules: [
+        {
+          test: /\.m?js$/,
+          resolve: {
+            fullySpecified: false, // disable the behaviour
+          },
+        },
         {
           test: /\.(js|jsx|ts|tsx)$/,
           // compile node_modules in production mode
@@ -119,7 +150,6 @@ export const getWebpackConfig = ({
                 plugins: [[require.resolve('babel-plugin-macros'), { gojiMacro: { target } }]],
               },
             },
-            ...cacheLoaders,
             ...threadLoaders,
             {
               loader: require.resolve('babel-loader'),
@@ -161,7 +191,6 @@ export const getWebpackConfig = ({
           exclude: /\.linaria\.css$/,
           use: [
             MiniCssExtractPlugin.loader,
-            ...cacheLoaders,
             {
               loader: require.resolve('css-loader'),
               options: {
@@ -185,8 +214,9 @@ export const getWebpackConfig = ({
             {
               loader: require.resolve('postcss-loader'),
               options: {
-                config: {
-                  path: __dirname,
+                implementation: require.resolve('postcss'),
+                postcssOptions: {
+                  config: path.join(__dirname, 'postcss.config.js'),
                 },
               },
             },
@@ -194,8 +224,11 @@ export const getWebpackConfig = ({
             {
               loader: require.resolve('postcss-loader'),
               options: {
-                // eslint-disable-next-line global-require
-                plugins: [require('postcss-import')({})],
+                implementation: require.resolve('postcss'),
+                postcssOptions: {
+                  // eslint-disable-next-line global-require
+                  plugins: [require('postcss-import')({})],
+                },
               },
             },
           ],
@@ -204,7 +237,6 @@ export const getWebpackConfig = ({
           test: /\.linaria\.css$/,
           use: [
             MiniCssExtractPlugin.loader,
-            ...cacheLoaders,
             {
               loader: require.resolve('css-loader'),
             },
@@ -218,8 +250,9 @@ export const getWebpackConfig = ({
             {
               loader: require.resolve('postcss-loader'),
               options: {
-                config: {
-                  path: __dirname,
+                implementation: require.resolve('postcss'),
+                postcssOptions: {
+                  config: path.join(__dirname, 'postcss.config.js'),
                 },
               },
             },
@@ -227,22 +260,18 @@ export const getWebpackConfig = ({
             {
               loader: require.resolve('postcss-loader'),
               options: {
-                // eslint-disable-next-line global-require
-                plugins: [require('postcss-import')({})],
+                implementation: require.resolve('postcss'),
+                postcssOptions: {
+                  // eslint-disable-next-line global-require
+                  plugins: [require('postcss-import')({})],
+                },
               },
             },
           ],
         },
         {
           test: /\.(png|jpg|jpeg|gif)$/,
-          use: [
-            {
-              loader: require.resolve('file-loader'),
-              options: {
-                name: 'assets/[name].[hash:6].[ext]',
-              },
-            },
-          ],
+          type: 'asset/resource',
         },
       ],
     },
@@ -259,9 +288,8 @@ export const getWebpackConfig = ({
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(nodeEnv),
       }),
-      new CleanWebpackPlugin({
-        // FIXME: doesn't work in watch mode
-        cleanStaleWebpackAssets: nodeEnv === 'production',
+      new webpack.ProvidePlugin({
+        process: nodeLibsBrowser.process,
       }),
       // show progress
       progress && new webpack.ProgressPlugin(),
