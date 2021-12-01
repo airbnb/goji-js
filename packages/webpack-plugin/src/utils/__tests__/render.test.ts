@@ -22,21 +22,21 @@ describe('transformTemplate', () => {
     });
 
     test('for loop', async () => {
-      const source = '<view wx:for="arr">{{item}}</view>';
+      const source = '<view wx:for="{{arr}}">{{item}}</view>';
       expect(await transformTemplate(source, 'wechat', 'wxml')).toBe(
-        '<view wx:for="arr">{{item}}</view>',
+        '<view wx:for="{{arr}}">{{item}}</view>',
       );
       expect(await transformTemplate(source, 'baidu', 'wxml')).toBe(
         '<view s-for="item, index in arr">{{item}}</view>',
       );
       expect(await transformTemplate(source, 'alipay', 'wxml')).toBe(
-        '<view a:for="arr">{{item}}</view>',
+        '<view a:for="{{arr}}">{{item}}</view>',
       );
       expect(await transformTemplate(source, 'toutiao', 'wxml')).toBe(
-        '<view tt:for="arr">{{item}}</view>',
+        '<view tt:for="{{arr}}">{{item}}</view>',
       );
       expect(await transformTemplate(source, 'qq', 'wxml')).toBe(
-        '<view wx:for="arr">{{item}}</view>',
+        '<view wx:for="{{arr}}">{{item}}</view>',
       );
     });
 

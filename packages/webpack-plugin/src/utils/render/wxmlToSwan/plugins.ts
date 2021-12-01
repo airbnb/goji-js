@@ -1,7 +1,7 @@
 import posthtml from 'posthtml';
 import { replaceExtPosix } from '../../path';
 
-export const transformConditionDirective = (): posthtml.Plugin<never> => tree => {
+export const removeDirectiveBrackets = (): posthtml.Plugin<never> => tree => {
   const removeBrackets = (value: string) => {
     const trimed = value.trim();
     if (/^{{.*}}$/.test(trimed)) {
@@ -13,10 +13,23 @@ export const transformConditionDirective = (): posthtml.Plugin<never> => tree =>
   tree.walk(node => {
     if (node.attrs) {
       for (const [name, value] of Object.entries(node.attrs)) {
+        if (name.startsWith('wx:') && value) {
+          node.attrs[name] = removeBrackets(value);
+        }
+      }
+    }
+    return node;
+  });
+};
+
+export const transformConditionDirective = (): posthtml.Plugin<never> => tree => {
+  tree.walk(node => {
+    if (node.attrs) {
+      for (const [name, value] of Object.entries(node.attrs)) {
         if (['wx:if', 'wx:else', 'wx:elif'].includes(name) && value) {
           const newName = name.replace(/^wx:/, 's-');
           delete node.attrs[name];
-          node.attrs[newName] = removeBrackets(value);
+          node.attrs[newName] = value;
         }
       }
     }

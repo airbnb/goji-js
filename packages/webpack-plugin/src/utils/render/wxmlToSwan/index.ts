@@ -4,6 +4,7 @@ import { getBuiltInComponents } from '../../../constants/components';
 import {
   addBracketsToTemplateData,
   includeAndImportSrcExt,
+  removeDirectiveBrackets,
   transformConditionDirective,
   transformLoopDirective,
 } from './plugins';
@@ -18,6 +19,7 @@ const singleTags = [
 
 export const wxmlToSwan = async (source: string) => {
   const { html } = await posthtml([
+    removeDirectiveBrackets(),
     transformConditionDirective(),
     transformLoopDirective(),
     includeAndImportSrcExt(),
