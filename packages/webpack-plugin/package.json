@@ -41,7 +41,7 @@
     "loader-utils": "^2.0.0",
     "lodash": "^4.17.15",
     "posthtml": "^0.16.5",
-    "posthtml-render": "^3.0.0",
+    "posthtml-parser": "^0.10.1",
     "terser": "^5.7.1",
     "tslib": "^2.3.0",
     "webpack-sources": "^1.4.3"

@@ -13667,7 +13667,7 @@ postcss@^8.2.10:
     nanoid "^3.1.22"
     source-map "^0.6.1"
 
-posthtml-parser@^0.10.0:
+posthtml-parser@^0.10.0, posthtml-parser@^0.10.1:
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/posthtml-parser/-/posthtml-parser-0.10.1.tgz#63c41931a9339cc2c32aba14f06286d98f107abf"
   integrity sha512-i7w2QEHqiGtsvNNPty0Mt/+ERch7wkgnFh3+JnBI2VgDbGlBqKW9eDVd3ENUhE1ujGFe3e3E/odf7eKhvLUyDg==

@@ -26,7 +26,7 @@ export const transformConditionDirective = (): posthtml.Plugin<never> => tree =>
   tree.walk(node => {
     if (node.attrs) {
       for (const [name, value] of Object.entries(node.attrs)) {
-        if (['wx:if', 'wx:else', 'wx:elif'].includes(name) && value) {
+        if (['wx:if', 'wx:else', 'wx:elif'].includes(name)) {
           const newName = name.replace(/^wx:/, 's-');
           delete node.attrs[name];
           node.attrs[newName] = value;

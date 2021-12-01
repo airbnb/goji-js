@@ -1,6 +1,5 @@
 import posthtml from 'posthtml';
-import { closingSingleTagOptionEnum, render } from 'posthtml-render';
-import { getBuiltInComponents } from '../../../constants/components';
+import { parser } from 'posthtml-parser';
 import {
   addBracketsToTemplateData,
   includeAndImportSrcExt,
@@ -8,14 +7,7 @@ import {
   transformConditionDirective,
   transformLoopDirective,
 } from './plugins';
-
-const singleTags = [
-  ...getBuiltInComponents('baidu')
-    .filter(component => component.isLeaf)
-    .map(component => component.name),
-  'include',
-  'template',
-];
+import { render } from './render';
 
 export const wxmlToSwan = async (source: string) => {
   const { html } = await posthtml([
@@ -25,12 +17,8 @@ export const wxmlToSwan = async (source: string) => {
     includeAndImportSrcExt(),
     addBracketsToTemplateData(),
   ]).process(source, {
-    render: (tree: Parameters<typeof render>[0]) =>
-      render(tree, {
-        singleTags,
-        closingSingleTag: closingSingleTagOptionEnum.slash,
-        replaceQuote: false,
-      }),
+    parser: (node: Parameters<typeof parser>[0]) => parser(node, { xmlMode: true }),
+    render,
   });
 
   return html;
