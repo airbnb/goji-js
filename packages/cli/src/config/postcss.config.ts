@@ -9,11 +9,6 @@ module.exports = () => ({
     require('postcss-preset-env')({
       stage: 0,
       preserve: false, // for reducing file size
-      features: {
-        'color-mod-function': {
-          unresolved: 'warn',
-        },
-      },
       insertAfter: {
         // postcss-calc must run before autoprefixer
         'environment-variables': require('postcss-calc')(),
