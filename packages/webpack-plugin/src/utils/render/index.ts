@@ -1,13 +1,6 @@
 import JSON5 from 'json5';
-import unified from 'unified';
-import parse from 'wx2swan/dist/src/view/plugins/parse';
-import wxmlToSwan from 'wx2swan/dist/src/view//plugins/wxml-to-swan';
-import stringify from 'wx2swan/dist/src/view/plugins/stringify';
-import utils from 'wx2swan/dist/src/util';
-import wx2swanApi from 'wx2swan/dist/src/api';
-import wx2swanConfigApi from 'wx2swan/dist/config/wxmp2swan/api';
 import { GojiWebpackPluginOptions } from '../../types';
-import { handleTrackBy } from './baiduTrackBy';
+import { wxmlToSwan } from './wxmlToSwan';
 
 export const transformTemplate = async (
   source: string,
@@ -26,35 +19,10 @@ export const transformTemplate = async (
     case 'baidu': {
       switch (type) {
         case 'wxml': {
-          const pathname = 'baidu.wxml';
-          const context = {
-            type: 'wxmp2swan',
-            src: '',
-            dist: '',
-            log: '',
-            logs: [],
-            data: { swanToRenamedComponents: {} },
-          };
-          const result = await unified()
-            .use(parse)
-            .use(wxmlToSwan, { context })
-            .use(handleTrackBy as any)
-            .use(stringify)
-            .process(utils.toVFile(pathname, source));
-          const contents = result.contents.toString();
-          return contents;
+          return wxmlToSwan(source);
         }
         case 'js': {
-          const pathname = 'baidu.js';
-          return wx2swanApi.transformApiContent(
-            source,
-            wx2swanConfigApi,
-            'wx',
-            {
-              wx: 'swan',
-            },
-            pathname,
-          );
+          return source;
         }
         default:
           return source;
