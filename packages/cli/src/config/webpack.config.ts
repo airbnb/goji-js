@@ -122,6 +122,8 @@ export const getWebpackConfig = ({
       type: 'filesystem',
       idleTimeout: 0,
       idleTimeoutForInitialStore: 0,
+      // prevent re-using cache for different target
+      version: target,
     },
     stats: getStats(),
     performance: {
@@ -144,8 +146,7 @@ export const getWebpackConfig = ({
           use: [
             // support `@goji/macro`
             {
-              // loader: require.resolve('babel-loader'),
-              loader: require.resolve('./fasterBabelLoaderForMacro'),
+              loader: require.resolve('./fixBabelLoaderForMacro'),
               options: {
                 plugins: [[require.resolve('babel-plugin-macros'), { gojiMacro: { target } }]],
               },

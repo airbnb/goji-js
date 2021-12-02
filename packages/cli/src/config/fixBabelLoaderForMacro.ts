@@ -7,19 +7,22 @@ const macrosRegex = /[./]macro(\.c?js)?['"]/;
 const testMacrosRegex = v => macrosRegex.test(v);
 
 /**
- * this loader is designed to only support `babel-plugin-macros`, don't use any other plugins
+ * this loader is designed to for these reasons:
+ * 1. only load `babel-loader` and `babel-plugin-macros` if source code contains a macro dependency
+ * 2. disable Webpack cache to trigger macro compilation on every build
  */
-module.exports = function GojiTransformLoader(
+module.exports = function FixBabelLoaderForMacro(
   this: webpack.LoaderContext<{}>,
   source: string | Buffer,
   inputSourceMap: RawSourceMap,
 ) {
   const callback = this.async();
-  if (this.cacheable) {
-    this.cacheable();
-  }
 
   if (testMacrosRegex(source.toString())) {
+    // disable cache to prevent missing call of `registerPluginComponent`
+    if (this.cacheable) {
+      this.cacheable(false);
+    }
     babelLoader.call(this, source, inputSourceMap);
     return;
   }
