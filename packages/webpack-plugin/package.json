@@ -1,6 +1,6 @@
 {
   "name": "@goji/webpack-plugin",
-  "version": "1.0.0-alpha.13",
+  "version": "1.0.0-alpha.14",
   "description": "GojiJS Webpack Plugin",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -14,7 +14,7 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@goji/core": "^1.0.0-alpha.13",
+    "@goji/core": "^1.0.0-alpha.14",
     "@types/common-tags": "^1.8.1",
     "@types/enhanced-resolve": "^3.0.7",
     "@types/find-cache-dir": "^3.2.1",
