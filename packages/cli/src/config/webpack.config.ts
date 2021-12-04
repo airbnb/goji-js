@@ -34,13 +34,6 @@ const getNodeLibsFallback = () => {
   return alias;
 };
 
-const getStats = (): webpack.Configuration['stats'] => ({
-  preset: 'minimal',
-  errorDetails: true,
-  builtAt: true,
-  colors: true,
-});
-
 export const getWebpackConfig = ({
   basedir,
   outputPath,
@@ -125,7 +118,12 @@ export const getWebpackConfig = ({
       // prevent re-using cache for different target
       version: target,
     },
-    stats: getStats(),
+    stats: {
+      preset: 'minimal',
+      errorDetails: true,
+      builtAt: true,
+      colors: true,
+    },
     performance: {
       hints: false,
     },

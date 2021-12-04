@@ -15,7 +15,7 @@ export class GojiNohoistWebpackPlugin extends GojiBasedWebpackPlugin {
       compiler.hooks.thisCompilation.tap(
         'GojiNohoistWebpackPlugin',
         (compilation: webpack.Compilation) => {
-          compilation.hooks.afterOptimizeChunks.tap(
+          compilation.hooks.afterOptimizeChunkModules.tap(
             'GojiNohoistWebpackPlugin',
             // @ts-ignore
             (chunks: Set<webpack.Chunk>) => {
@@ -32,12 +32,11 @@ export class GojiNohoistWebpackPlugin extends GojiBasedWebpackPlugin {
                 for (const chunkGroup of chunkGroups) {
                   const subPackageName = chunkGroup.options.name?.split('/')[0];
                   const distNohoistFileName = `${subPackageName}/${NO_HOIST_PREFIX}${nohoistTempFileName}`;
+                  // fork the chunk to new chunk
                   const newChunk: webpack.Chunk = compilation.addChunk(distNohoistFileName);
+                  newChunk.runtime = chunk.runtime;
+                  newChunk.idNameHints.add(distNohoistFileName);
                   for (const module of modules) {
-                    // FIXME: not known why moduleId is missing, these two lines are temporary solutions
-                    const id = module.identifier();
-                    chunkGraph.setModuleId(module, id);
-                    // FIXME: end
                     chunkGraph.connectChunkAndModule(newChunk, module);
                   }
                   chunkGroup.replaceChunk(chunk, newChunk);
