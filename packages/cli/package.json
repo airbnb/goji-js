@@ -1,6 +1,6 @@
 {
   "name": "@goji/cli",
-  "version": "1.0.0-alpha.15",
+  "version": "1.0.0-alpha.16",
   "description": "GojiJS CLI",
   "main": "dist/cjs/index.js",
   "bin": {
@@ -18,7 +18,7 @@
   "repository": "git+https://github.com/airbnb/goji.git",
   "license": "MIT",
   "dependencies": {
-    "@goji/webpack-plugin": "^1.0.0-alpha.15",
+    "@goji/webpack-plugin": "^1.0.0-alpha.16",
     "babel-loader": "^8.2.1",
     "css-loader": "^6.5.1",
     "cssnano": "^5.0.11",
@@ -44,7 +44,7 @@
     "yargs": "^17.1.0"
   },
   "devDependencies": {
-    "@goji/core": "^1.0.0-alpha.15",
+    "@goji/core": "^1.0.0-alpha.16",
     "@types/yargs": "^17.0.2"
   },
   "peerDependencies": {
