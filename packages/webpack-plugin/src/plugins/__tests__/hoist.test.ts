@@ -34,18 +34,21 @@ describe('hoist', () => {
       },
     });
     const compiler = webpack(webpackConfig);
-    await new Promise<webpack.Stats>((resolve, reject) => {
-      compiler.run((err: Error, stats: webpack.Stats) => {
+    await new Promise<webpack.Stats | undefined>((resolve, reject) => {
+      compiler.run((err, stats) => {
         if (err) {
           reject(err);
           return;
         }
-        if (stats.hasErrors()) {
+        if (stats?.hasErrors()) {
           reject(new Error(stats.compilation.errors[0].toString()));
           return;
         }
         resolve(stats);
       });
+    });
+    await new Promise<undefined>(resolve => {
+      compiler.close(() => resolve(undefined));
     });
     // checks
     const findAllFiles = (content: string) =>

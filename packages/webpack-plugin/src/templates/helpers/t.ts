@@ -22,10 +22,10 @@ const runFunctionSubstitutions = (): TemplateTransformer => {
 };
 
 const trimEndSubstitutions = (): TemplateTransformer => ({
-    onSubstitution(sub) {
-      return sub.toString().replace(/\n+\s*$/, '');
-    },
-  });
+  onSubstitution(sub) {
+    return sub.toString().replace(/\n+\s*$/, '');
+  },
+});
 
 // @ts-ignore
 export const t = createTag(

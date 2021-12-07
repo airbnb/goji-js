@@ -1,5 +1,4 @@
 import { GojiTarget } from '@goji/core';
-import resolve from 'resolve';
 import webpack from 'webpack';
 import os from 'os';
 
@@ -12,7 +11,7 @@ export const preprocessLoader = (
   type: string,
   nodeEnv: string,
   target: GojiTarget,
-): webpack.RuleSetUseItem => {
+): webpack.RuleSetRule => {
   const options = { ...getEnvForPreprocess(nodeEnv, target), ppOptions: { type } };
 
   // here is a bug in preprocess-loader that remove the `options.ppOptions` unexpectly
@@ -26,7 +25,7 @@ export const preprocessLoader = (
   });
 
   const loaderConfig = {
-    loader: resolve.sync('preprocess-loader', { basedir: __dirname }),
+    loader: require.resolve('preprocess-loader'),
     options: readonlyOptions,
   };
 
@@ -35,7 +34,10 @@ export const preprocessLoader = (
 
 // `thread-loader` enable multi-thread compiling for Webpack
 const MOST_ECONOMICAL_WORKER_COUNT = 3;
-export const getThreadLoader = (): Array<webpack.RuleSetUseItem> => {
+
+// FIXME: cannot use `thread-loader`'s `warmup` because of this issue
+// https://github.com/webpack-contrib/thread-loader/issues/122
+export const getThreadLoader = (nodeEnv: string): Array<webpack.RuleSetRule> => {
   // disable `thread-loader` on CI
   if (process.env.CI === 'true') {
     return [];
@@ -45,31 +47,16 @@ export const getThreadLoader = (): Array<webpack.RuleSetUseItem> => {
   // so we use `max(1, min(core_count - 1, MOST_ECONOMICAL_WORKER_COUNT))` as worker count
   const threadCount = os.cpus()?.length ?? 1;
   const workerCount = Math.max(1, Math.min(threadCount - 1, MOST_ECONOMICAL_WORKER_COUNT));
+  const options = {
+    workers: workerCount,
+    // no need to kill the worker in dev mode for better re-build performance
+    poolTimeout: nodeEnv === 'production' ? 2000 : Infinity,
+  };
 
   return [
     {
-      loader: resolve.sync('thread-loader', { basedir: __dirname }),
-      options: { workers: workerCount },
+      loader: require.resolve('thread-loader'),
+      options,
     },
   ];
 };
-
-export const getCacheLoader = (
-  isProduction: boolean,
-  nodeEnv: string,
-  target: GojiTarget,
-): Array<webpack.RuleSetUseItem> =>
-  // disable cache-loader for production
-  isProduction
-    ? []
-    : [
-        {
-          loader: resolve.sync('cache-loader', { basedir: __dirname }),
-          options: {
-            cacheIdentifier: `cache-loader:${
-              // eslint-disable-next-line global-require
-              require('cache-loader/package.json').version
-            } ${nodeEnv} ${target}`,
-          },
-        },
-      ];

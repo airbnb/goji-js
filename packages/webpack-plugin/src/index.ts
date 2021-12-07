@@ -14,7 +14,7 @@ import { GojiSplitChunksWebpackPlugin } from './plugins/chunks/split';
 import { GojiRuntimeChunksWebpackPlugin } from './plugins/chunks/runtime';
 import { GojiNohoistWebpackPlugin } from './plugins/nohoist';
 
-export class GojiWebpackPlugin implements webpack.Plugin {
+export class GojiWebpackPlugin implements webpack.WebpackPluginInstance {
   public static normalizeOptions(
     options: GojiWebpackPluginOptions,
   ): GojiWebpackPluginRequiredOptions {

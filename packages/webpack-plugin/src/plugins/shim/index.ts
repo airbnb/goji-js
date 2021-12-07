@@ -2,7 +2,7 @@ import webpack from 'webpack';
 import path from 'path';
 import escapeStringRegexp from 'escape-string-regexp';
 import { GojiBasedWebpackPlugin } from '../based';
-import { PatchedProvidePlugin as ProvidePlugin } from './providePlugin';
+import { PatchedProvidePlugin as ProvidePlugin } from '../../forked/providePlugin';
 import * as meta from './meta';
 import { getApiVariableDefinitions } from './variable';
 

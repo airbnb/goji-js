@@ -4,7 +4,6 @@ const config: ESLintConfig = {
   ignore: [
     '**/dist/*',
     '**/node_modules/*',
-    '**/.cache-loader/*',
     '**/coverage/*',
     'packages/goji.js.org/website/**/*',
     'lerna.json',

@@ -11,11 +11,11 @@
  */
 
 const originalGetCurrentPages =
-  // @ts-ignore
   // eslint-disable-next-line no-undef
   typeof getCurrentPages !== 'undefined' ? getCurrentPages : undefined;
 
-const patchGetCurrentPages = () => function getCurrentPages(): any {
+const patchGetCurrentPages = () =>
+  function getCurrentPages(): any {
     const pages = originalGetCurrentPages!();
     if (pages) {
       return pages.map((page: any) => {

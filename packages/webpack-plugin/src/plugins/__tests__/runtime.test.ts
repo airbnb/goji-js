@@ -18,7 +18,7 @@ describe('generateDependenciesSource', () => {
   });
 
   test('check type', () => {
-    // @ts-ignore
+    // @ts-expect-error
     expect(() => generateDependenciesSource('md', '.md', dependencies)).toThrow();
   });
 });

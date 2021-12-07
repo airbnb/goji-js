@@ -3,7 +3,7 @@ import { isUrlRequest, urlToRequest } from 'loader-utils';
 import { BRIDGE_OUTPUT_DIR } from '../constants/paths';
 
 // ref: https://github.com/webpack/loader-utils#urltorequest
-export const safeUrlToRequest = (url: string) => (isUrlRequest(url) ? urlToRequest(url) : url);
+export const safeUrlToRequest = (url: string) => (isUrlRequest(url) ? urlToRequest(url, '') : url);
 
 /**
  * @param pathname like `a/b/c`
