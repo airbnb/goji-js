@@ -33,7 +33,6 @@
     "postcss-loader": "^6.2.0",
     "postcss-nested": "^5.0.6",
     "postcss-preset-env": "^7.0.1",
-    "postcss-px2units": "^0.2.0",
     "postcss-reporter": "^7.0.4",
     "preprocess-loader": "^0.3.0",
     "resolve": "^1.19.0",

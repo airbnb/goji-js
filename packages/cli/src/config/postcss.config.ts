@@ -15,7 +15,7 @@ module.exports = () => ({
       },
     }),
     // use postcss-px2units because some plugins, like postcss-calc, don't support `rpx` unit
-    require('postcss-px2units')({
+    require('./postcssPx2units')({
       multiple: 2,
       targetUnits: 'rpx',
     }),
