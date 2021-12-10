@@ -34,7 +34,7 @@ const main = async () => {
   let cliConfig: CliConfig;
   try {
     cliConfig = await parseArgv(process.argv.slice(2));
-  } catch (error) {
+  } catch (error: any) {
     console.error(error.message);
     return;
   }

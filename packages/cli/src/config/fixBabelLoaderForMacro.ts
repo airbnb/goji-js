@@ -1,6 +1,5 @@
 import webpack from 'webpack';
 import babelLoader from 'babel-loader';
-import { RawSourceMap } from 'source-map';
 
 // inspired from https://github.com/kentcdodds/babel-plugin-macros/blob/18d79d3ac3c2975565e7897d2233cf498f15ffb5/src/index.js#L5
 const macrosRegex = /[./]macro(\.c?js)?['"]/;
@@ -11,21 +10,20 @@ const testMacrosRegex = v => macrosRegex.test(v);
  * 1. only load `babel-loader` and `babel-plugin-macros` if source code contains a macro dependency
  * 2. disable Webpack cache to trigger macro compilation on every build
  */
-module.exports = function FixBabelLoaderForMacro(
-  this: webpack.LoaderContext<{}>,
-  source: string | Buffer,
-  inputSourceMap: RawSourceMap,
-) {
-  const callback = this.async();
+const FixBabelLoaderForMacro: webpack.LoaderDefinitionFunction<{}> =
+  function FixBabelLoaderForMacro(source, inputSourceMap) {
+    const callback = this.async();
 
-  if (testMacrosRegex(source.toString())) {
-    // disable cache to prevent missing call of `registerPluginComponent`
-    if (this.cacheable) {
-      this.cacheable(false);
+    if (testMacrosRegex(source.toString())) {
+      // disable cache to prevent missing call of `registerPluginComponent`
+      if (this.cacheable) {
+        this.cacheable(false);
+      }
+      babelLoader.call(this, source, inputSourceMap);
+      return;
     }
-    babelLoader.call(this, source, inputSourceMap);
-    return;
-  }
 
-  callback!(null, source);
-};
+    callback!(null, source);
+  };
+
+module.exports = FixBabelLoaderForMacro;

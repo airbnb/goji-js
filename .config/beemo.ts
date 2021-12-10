@@ -1,7 +1,8 @@
-import { BeemoConfig } from '@beemo/core';
+import type { BeemoConfig } from '@beemo/core';
+import path from 'path';
 
 const config: BeemoConfig = {
-  module: '@goji/beemo-dev',
+  module: path.join(__dirname, '../packages/beemo-dev'),
   drivers: {
     eslint: {
       args: ['--color', '--ext', '.js,.ts,.jsx,.tsx'],

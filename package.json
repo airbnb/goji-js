@@ -7,12 +7,12 @@
     "packages/goji.js.org/*"
   ],
   "scripts": {
-    "postinstall": "yarn create-config && lerna run prepublishOnly",
+    "postinstall": "yarn create-config && pnpm run -r  prepublishOnly",
     "lint": "eslint --color --ext .js,.ts,.jsx,.tsx .",
     "prettier": "prettier --list-different \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
     "prettier:fix": "prettier --write \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
-    "create-config": "yarn beemo create-config",
-    "build": "lerna run build",
+    "create-config": "./packages/beemo-dev/node_modules/.bin/beemo create-config",
+    "build": "pnpm run -r build",
     "test": "jest"
   },
   "repository": {

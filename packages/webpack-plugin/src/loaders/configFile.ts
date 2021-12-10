@@ -78,7 +78,7 @@ module.exports = async function GojiConfigFileLoader(
 
   try {
     await emitConfigFile(this);
-  } catch (err) {
+  } catch (err: any) {
     if (callback) {
       callback(err);
     }

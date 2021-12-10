@@ -28,7 +28,8 @@
     "@goji/core": "^1.0.0-alpha.16",
     "@goji/webpack-plugin": "^1.0.0-alpha.16",
     "@types/babel-plugin-macros": "^2.8.5",
-    "react": "^17.0.2"
+    "react": "^17.0.2",
+    "rimraf": "^3.0.2"
   },
   "peerDependencies": {
     "@babel/core": "*",

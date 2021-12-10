@@ -109,7 +109,7 @@ export const evalConfigSource = (
       );
     }
     return defaultObject;
-  } catch (e) {
+  } catch (e: any) {
     if (
       e.name === 'TypeError' &&
       e.message === `Cannot assign to read only property 'exports' of object '#<Object>'`

@@ -39,7 +39,7 @@ export const processRegisterPluginComponent = (
     let theArguments: Array<any>;
     try {
       theArguments = callExpressionNode.arguments.map(transformObjectASTToObject);
-    } catch (e) {
+    } catch (e: any) {
       throw new Error(`Failed to parse the arguments of \`registerPluginComponent\`. ${e.message}`);
     }
     if (theArguments.length < 3) {
@@ -74,6 +74,6 @@ export const processRegisterPluginComponent = (
       );
     }
     // TODO: provide more info here, like returning a new component with readable `displayName`
-    node.parentPath.replaceWith(t.stringLiteral(componentName));
+    node.parentPath?.replaceWith(t.stringLiteral(componentName));
   }
 };

@@ -32,7 +32,7 @@ function flushWorkAndMicroTasks(onDone: (err?: Error) => void) {
         onDone();
       }
     });
-  } catch (err) {
+  } catch (err: any) {
     onDone(err);
   }
 }

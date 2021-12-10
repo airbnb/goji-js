@@ -8,6 +8,8 @@ import { GojiWebpackPluginOptions, GojiWebpackPlugin } from '@goji/webpack-plugi
 import nodeLibsBrowser from 'node-libs-browser';
 import resolve from 'resolve';
 import findCacheDir from 'find-cache-dir';
+// @ts-ignore
+// eslint-disable-next-line import/no-unresolved
 import { version as babelCoreVersion } from '@babel/core/package.json';
 import { version as babelLoaderVersion } from 'babel-loader/package.json';
 import { preprocessLoader, getThreadLoader } from './loaders';

@@ -27,7 +27,8 @@
     "@goji/core": "^1.0.0-alpha.16",
     "@types/lodash": "^4.14.172",
     "@types/react-test-renderer": "^17.0.1",
-    "react": "^17.0.2"
+    "react": "^17.0.2",
+    "rimraf": "^3.0.2"
   },
   "repository": {
     "type": "git",
