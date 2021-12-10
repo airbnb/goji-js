@@ -34,19 +34,24 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.20.3
+
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: pnpm install
 
       - name: Run `lint`
-        run: yarn lint
+        run: pnpm run lint
 
       - name: Run `test`
-        run: yarn test
+        run: pnpm run test
 
       - name: Run `build`
-        run: yarn build
+        run: pnpm run build
