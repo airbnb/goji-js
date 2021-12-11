@@ -67,25 +67,17 @@ const emitConfigFile = async (context: webpack.LoaderContext<ConfigFileLoaderOpt
   context.emitFile(`${entry}.json`, JSON.stringify(configOutput), undefined);
 };
 
-module.exports = async function GojiConfigFileLoader(
-  this: webpack.LoaderContext<ConfigFileLoaderOptions>,
-  source: string | Buffer,
-) {
-  if (this.cacheable) {
-    this.cacheable();
-  }
-  const callback = this.async();
+const GojiConfigFileLoader: webpack.LoaderDefinition<ConfigFileLoaderOptions> =
+  function GojiConfigFileLoader(source) {
+    (async () => {
+      const callback = this.async();
+      try {
+        await emitConfigFile(this);
+        callback?.(null, source);
+      } catch (err) {
+        callback?.(err);
+      }
+    })();
+  };
 
-  try {
-    await emitConfigFile(this);
-  } catch (err) {
-    if (callback) {
-      callback(err);
-    }
-    return;
-  }
-
-  if (callback) {
-    callback(null, source);
-  }
-};
+module.exports = GojiConfigFileLoader;
