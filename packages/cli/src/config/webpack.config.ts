@@ -10,6 +10,7 @@ import resolve from 'resolve';
 import findCacheDir from 'find-cache-dir';
 import { version as babelCoreVersion } from '@babel/core/package.json';
 import { version as babelLoaderVersion } from 'babel-loader/package.json';
+import postcssConfig from './postcssConfig';
 import { preprocessLoader, getThreadLoader } from './loaders';
 
 const getSourceMap = (nodeEnv: string, target: GojiTarget): webpack.Configuration['devtool'] => {
@@ -215,7 +216,8 @@ export const getWebpackConfig = ({
               options: {
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
-                  config: path.join(__dirname, 'postcss.config.js'),
+                  config: false,
+                  ...postcssConfig,
                 },
               },
             },
@@ -225,6 +227,7 @@ export const getWebpackConfig = ({
               options: {
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
+                  config: false,
                   // eslint-disable-next-line global-require
                   plugins: [require('postcss-import')({})],
                 },
@@ -251,7 +254,8 @@ export const getWebpackConfig = ({
               options: {
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
-                  config: path.join(__dirname, 'postcss.config.js'),
+                  config: false,
+                  ...postcssConfig,
                 },
               },
             },
@@ -261,6 +265,7 @@ export const getWebpackConfig = ({
               options: {
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
+                  config: false,
                   // eslint-disable-next-line global-require
                   plugins: [require('postcss-import')({})],
                 },

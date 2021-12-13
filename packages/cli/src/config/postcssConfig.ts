@@ -1,5 +1,9 @@
 /* eslint-disable global-require */
-module.exports = () => ({
+
+// to improve PostCSS performance, we should always use `require(name)(options)` rather than `[name, options]`
+// also we should set `postcssOptions.config` to `false` to avoid loading any `postcss.config.js`
+// TODO: hope PostCSS could fix this issue https://github.com/csstools/postcss-preset-env/issues/232#issuecomment-992263741
+export default {
   plugins: [
     require('postcss-each')(),
     // TODO: `postcss-nesting` from `postcss-preset-env` output `:is` pseudo-class that
@@ -22,4 +26,4 @@ module.exports = () => ({
     require('cssnano')({ preset: 'default' }),
     require('postcss-reporter')({ clearReportedMessages: true }),
   ],
-});
+};
