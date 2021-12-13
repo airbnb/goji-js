@@ -1,0 +1,15 @@
+.DS_Store
+node_modules
+*.tgz
+.grunt
+dist/
+*.log*
+chrome-user-data
+*.sublime-project
+*.sublime-workspace
+.idea
+*.iml
+.vscode/
+*.swp
+*.swo
+.npm/
