@@ -7,31 +7,6 @@ export const getEnvForPreprocess = (nodeEnv: string, target: GojiTarget) => ({
   TARGET: target,
 });
 
-export const preprocessLoader = (
-  type: string,
-  nodeEnv: string,
-  target: GojiTarget,
-): webpack.RuleSetRule => {
-  const options = { ...getEnvForPreprocess(nodeEnv, target), ppOptions: { type } };
-
-  // here is a bug in preprocess-loader that remove the `options.ppOptions` unexpectly
-  // https://github.com/dearrrfish/preprocess-loader/issues/13
-  // we use Proxy to prevent delete action
-  const readonlyOptions = new Proxy(options, {
-    deleteProperty() {
-      // don't remove fields
-      return true;
-    },
-  });
-
-  const loaderConfig = {
-    loader: require.resolve('preprocess-loader'),
-    options: readonlyOptions,
-  };
-
-  return loaderConfig;
-};
-
 // `thread-loader` enable multi-thread compiling for Webpack
 const MOST_ECONOMICAL_WORKER_COUNT = 3;
 
