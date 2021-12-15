@@ -11,7 +11,7 @@ import findCacheDir from 'find-cache-dir';
 import { version as babelCoreVersion } from '@babel/core/package.json';
 import { version as babelLoaderVersion } from 'babel-loader/package.json';
 import postcssConfig from './postcssConfig';
-import { preprocessLoader, getThreadLoader } from './loaders';
+import { getThreadLoader } from './loaders';
 
 const getSourceMap = (nodeEnv: string, target: GojiTarget): webpack.Configuration['devtool'] => {
   // enable source map in development mode
@@ -183,7 +183,6 @@ export const getWebpackConfig = ({
                 },
               },
             },
-            preprocessLoader('js', nodeEnv, target),
           ],
         },
         {
@@ -221,7 +220,6 @@ export const getWebpackConfig = ({
                 },
               },
             },
-            preprocessLoader('js', nodeEnv, target),
             {
               loader: require.resolve('postcss-loader'),
               options: {
@@ -259,7 +257,6 @@ export const getWebpackConfig = ({
                 },
               },
             },
-            preprocessLoader('js', nodeEnv, target),
             {
               loader: require.resolve('postcss-loader'),
               options: {
