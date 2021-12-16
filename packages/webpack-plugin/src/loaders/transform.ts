@@ -23,7 +23,7 @@ const GojiTransformLoader: webpack.LoaderDefinition<TransformLoaderOptions> =
         const output = await transformTemplate(source.toString(), target, type);
         callback?.(null, output);
       } catch (e) {
-        callback?.(e);
+        callback?.(e as Error);
       }
     })();
   };

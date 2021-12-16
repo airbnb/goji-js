@@ -1,7 +1,8 @@
 import waitForExpect from 'wait-for-expect';
 import { act } from '.';
 
-export const waitFor = (callback = () => {}, { timeout = 4500, interval = 50 } = {}) => act(async () => {
+export const waitFor = (callback = () => {}, { timeout = 4500, interval = 50 } = {}) =>
+  act(async () => {
     await waitForExpect(callback, timeout, interval);
   });
 
@@ -34,7 +35,7 @@ export function waitForElement<T>(
         if (result) {
           onDone(null, result);
         }
-      } catch (error) {
+      } catch (error: any) {
         lastError = error;
         observer = setTimeout(onMutation, interval);
       }
