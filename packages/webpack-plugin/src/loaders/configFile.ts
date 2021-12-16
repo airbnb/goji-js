@@ -75,7 +75,7 @@ const GojiConfigFileLoader: webpack.LoaderDefinition<ConfigFileLoaderOptions> =
         await emitConfigFile(this);
         callback?.(null, source);
       } catch (err) {
-        callback?.(err);
+        callback?.(err as Error);
       }
     })();
   };

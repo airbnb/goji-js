@@ -40,7 +40,9 @@ export const processRegisterPluginComponent = (
     try {
       theArguments = callExpressionNode.arguments.map(transformObjectASTToObject);
     } catch (e) {
-      throw new Error(`Failed to parse the arguments of \`registerPluginComponent\`. ${e.message}`);
+      throw new Error(
+        `Failed to parse the arguments of \`registerPluginComponent\`. ${(e as Error).message}`,
+      );
     }
     if (theArguments.length < 3) {
       throw new Error('Wrong usage of `registerPluginComponent`');

@@ -34,8 +34,8 @@ const main = async () => {
   let cliConfig: CliConfig;
   try {
     cliConfig = await parseArgv(process.argv.slice(2));
-  } catch (error) {
-    console.error(error.message);
+  } catch (error: any) {
+    console.error((error as Error).message);
     return;
   }
   // re-patch NODE_ENV for `babel.config.ts`
