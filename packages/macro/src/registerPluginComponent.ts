@@ -76,6 +76,6 @@ export const processRegisterPluginComponent = (
       );
     }
     // TODO: provide more info here, like returning a new component with readable `displayName`
-    node.parentPath.replaceWith(t.stringLiteral(componentName));
+    node.parentPath?.replaceWith(t.stringLiteral(componentName));
   }
 };
