@@ -1,3 +1,4 @@
+/* eslint-disable import/no-import-module-exports */
 // this plugin is inspired from https://github.com/yingye/postcss-px2units
 // and refactored to support PostCSS 8
 import type { PluginCreator } from 'postcss';

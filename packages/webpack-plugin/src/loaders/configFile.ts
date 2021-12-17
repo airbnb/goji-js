@@ -1,3 +1,4 @@
+/* eslint-disable import/no-import-module-exports */
 import { GojiTarget } from '@goji/core';
 import webpack from 'webpack';
 import path from 'path';

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-import-module-exports */
 import React from 'react';
 import { GojiTarget } from '@goji/core';
 import { createMacro } from 'babel-plugin-macros';

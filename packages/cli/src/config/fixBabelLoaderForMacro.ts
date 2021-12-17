@@ -1,3 +1,4 @@
+/* eslint-disable import/no-import-module-exports */
 import webpack from 'webpack';
 import babelLoader from 'babel-loader';
 
