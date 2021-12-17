@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Button, Text, Input } from '@goji/core';
 import { fireEvent, render, waitFor } from '..';
 
-function Example() {
+const Example = () => {
   const [name, setUser] = React.useState('');
   const [show, setShow] = React.useState(false);
 
@@ -23,7 +23,7 @@ function Example() {
       {show && <Text testID="printed-username">{name}</Text>}
     </View>
   );
-}
+};
 
 test('examples of some things', async () => {
   jest.setTimeout(10000);

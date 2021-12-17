@@ -1,5 +1,5 @@
 import { kebabCase } from 'lodash';
-import { GojiTarget } from '../../../../core/dist/cjs';
+import { GojiTarget } from '@goji/core';
 import { getBuiltInComponents } from '../components';
 
 const builtInComponents = getBuiltInComponents('wechat');

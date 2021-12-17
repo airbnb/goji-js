@@ -7,7 +7,7 @@ export * from './common';
 export const createAdaptor = (
   type: AdaptorType,
   target: GojiTarget,
-  exportMeta: ExportComponentMeta = {},
+  exportMeta: ExportComponentMeta,
   disablePageSharing: boolean,
 ): Adaptor => {
   switch (target) {

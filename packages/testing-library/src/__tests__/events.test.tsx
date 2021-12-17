@@ -5,11 +5,7 @@ import { render, fireEvent } from '..';
 describe('fireEvent', () => {
   test('tap', () => {
     const buttonHandler = jest.fn();
-    const App = () => (
-        <>
-          <Button onTap={buttonHandler}>click me</Button>
-        </>
-      );
+    const App = () => <Button onTap={buttonHandler}>click me</Button>;
     const wrapper = render(<App />);
     fireEvent.tap(wrapper.getByText('click me'));
     expect(buttonHandler).toHaveBeenCalledTimes(1);
@@ -23,14 +19,12 @@ describe('fireEvent', () => {
     });
     const buttonHandler = jest.fn();
     const App = () => (
-        <>
-          <View onTap={viewHandler}>
-            <Text onTap={textHandler}>
-              <Button onTap={buttonHandler}>click me</Button>
-            </Text>
-          </View>
-        </>
-      );
+      <View onTap={viewHandler}>
+        <Text onTap={textHandler}>
+          <Button onTap={buttonHandler}>click me</Button>
+        </Text>
+      </View>
+    );
     const wrapper = render(<App />);
     fireEvent.tap(wrapper.getByText('click me'));
     expect(viewHandler).toHaveBeenCalledTimes(0);
