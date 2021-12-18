@@ -32,7 +32,7 @@
     "eslint-plugin-react-hooks": "^4.1.2",
     "jest": "^27.0.6",
     "lerna": "^4.0.0",
-    "linaria": "^2.1.0",
+    "linaria": "^2.3.0",
     "prettier": "^2.3.2"
   }
 }
