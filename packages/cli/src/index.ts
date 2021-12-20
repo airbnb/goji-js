@@ -38,8 +38,11 @@ const main = async () => {
     console.error((error as Error).message);
     return;
   }
-  // re-patch NODE_ENV for `babel.config.ts`
+
+  // re-patch NODE_ENVs for config files
   process.env.NODE_ENV = cliConfig.production ? 'production' : 'development';
+  process.env.GOJI_TARGET = cliConfig.target;
+
   const gojiConfig = requireGojiConfig(basedir);
   // eslint-disable-next-line global-require
   const babelConfig = require('./config/babel.config');

@@ -31,6 +31,7 @@
     "find-cache-dir": "^3.3.1",
     "lodash": "^4.17.15",
     "mini-css-extract-plugin": "^2.4.5",
+    "mkdirp": "^1.0.4",
     "node-libs-browser": "^2.2.1",
     "postcss": "^8.3.11",
     "postcss-calc": "^8.0.0",

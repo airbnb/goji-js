@@ -7,7 +7,6 @@ import type { NonUndefined } from 'utility-types';
 import { GojiWebpackPluginOptions, GojiWebpackPlugin } from '@goji/webpack-plugin';
 import nodeLibsBrowser from 'node-libs-browser';
 import resolve from 'resolve';
-import findCacheDir from 'find-cache-dir';
 import { version as babelCoreVersion } from '@babel/core/package.json';
 import { version as babelLoaderVersion } from 'babel-loader/package.json';
 import postcssConfig from './postcssConfig';
@@ -171,12 +170,7 @@ export const getWebpackConfig = ({
               options: {
                 configFile: require.resolve('./linaria.config'),
                 sourceMap: true,
-                // Linaria defaults to use `.linaria-cache` folder rather than standard `node_modules/.cache`
-                // also we should use different folders based on `nodeEnv` and `target` to prevent wrong cache result
-                cacheDirectory: findCacheDir({
-                  name: `linaria-${nodeEnv}-${target}`,
-                  cwd: basedir,
-                }),
+                cacheProvider: require.resolve('./linariaFileCache'),
                 babelOptions: {
                   // always use internal babel.config.js file
                   configFile: require.resolve('./babel.config'),
