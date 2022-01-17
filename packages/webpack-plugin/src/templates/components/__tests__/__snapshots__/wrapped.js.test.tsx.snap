@@ -538,6 +538,18 @@ exports[`wrapped.js snapshot works: textarea 1`] = `
     adjustPosition: {
       type: Boolean,
     },
+    holdKeyboard: {
+      type: Boolean,
+    },
+    disableDefaultPadding: {
+      type: Boolean,
+    },
+    confirmType: {
+      type: String,
+    },
+    confirmHold: {
+      type: Boolean,
+    },
   },
   lifetimes: {
     attached() {
@@ -645,6 +657,18 @@ exports[`wrapped.js snapshot works: textarea 2`] = `
       type: Number,
     },
     adjustPosition: {
+      type: Boolean,
+    },
+    holdKeyboard: {
+      type: Boolean,
+    },
+    disableDefaultPadding: {
+      type: Boolean,
+    },
+    confirmType: {
+      type: String,
+    },
+    confirmHold: {
       type: Boolean,
     },
   },
