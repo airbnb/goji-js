@@ -1028,6 +1028,26 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
             type: 'Boolean',
             required: false,
           },
+          'hold-keyboard': {
+            defaultValue: false,
+            type: 'Boolean',
+            required: false,
+          },
+          'disable-default-padding': {
+            defaultValue: false,
+            type: 'Boolean',
+            required: false,
+          },
+          'confirm-type': {
+            defaultValue: 'return',
+            type: 'String',
+            required: false,
+          },
+          'confirm-hold': {
+            defaultValue: false,
+            type: 'Boolean',
+            required: false,
+          },
         },
         events: ['focus', 'blur', 'linechange', 'input', 'confirm', 'keyboardheightchange'],
         isLeaf: true,

@@ -456,8 +456,7 @@ interface RichTextElementWithAttr {
 
 type RichTextElementAttrMap = {
   [T in SetDifference<RichTextElementName, keyof RichTextElementWithAttr>]: never;
-} &
-  RichTextElementWithAttr;
+} & RichTextElementWithAttr;
 
 interface EmptyObject extends Object {}
 
@@ -769,6 +768,10 @@ export interface TextareaProps extends BaseProps {
   selectionStart?: number;
   selectionEnd?: number;
   adjustPosition?: boolean;
+  holdKeyboard?: boolean;
+  disableDefaultPadding?: boolean;
+  confirmType?: string;
+  confirmHold?: boolean;
   onFocus?: (e: any) => void;
   onBlur?: (e: any) => void;
   onLinechange?: (e: any) => void;
