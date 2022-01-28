@@ -205,34 +205,31 @@ const DEFAULT_SPLIT_CHUNKS_OPTIONS = {
  */
 export class GojiSplitChunksWebpackPlugin extends GojiBasedWebpackPlugin {
   public apply(compiler: webpack.Compiler) {
-    compiler.hooks.compile.tap('GojiSplitChunksWebpackPlugin', () => {
-      if (compiler.options.optimization?.splitChunks !== false) {
-        throw new Error(
-          'To enable `GojiSplitChunksWebpackPlugin`, the `optimization.splitChunks` in webpack config file must be `false`.',
-        );
-      }
-      const appConfig = appConfigMap.get(compiler);
-      if (!appConfig) {
-        throw new Error('`appConfig` not found. This might be an internal error in GojiJS.');
-      }
-      const splitChunkInstance = new webpack.optimize.SplitChunksPlugin(
-        DEFAULT_SPLIT_CHUNKS_OPTIONS,
-      );
-      splitChunkInstance.apply(compiler);
+    const splitChunkInstance = new webpack.optimize.SplitChunksPlugin(DEFAULT_SPLIT_CHUNKS_OPTIONS);
+    splitChunkInstance.apply(compiler);
 
-      // update options manually
-      compiler.hooks.thisCompilation.tap(
-        'GojiSplitChunksWebpackPlugin',
-        (compilation: webpack.Compilation) => {
-          // use `afterOptimizeModules` to make sure this plugin is executed before `SplitChunksPlugin`
-          compilation.hooks.afterOptimizeModules.tap('GojiSplitChunksWebpackPlugin', modules => {
-            splitChunkInstance.options.getCacheGroups = normalizeCacheGroups(
-              getCacheGroups(this.options.nohoist, appConfig, [...modules], compilation.chunkGraph),
-              ['javascript', 'unknown'],
-            );
-          });
-        },
-      );
-    });
+    // update options manually
+    compiler.hooks.thisCompilation.tap(
+      'GojiSplitChunksWebpackPlugin',
+      (compilation: webpack.Compilation) => {
+        if (compiler.options.optimization?.splitChunks !== false) {
+          throw new Error(
+            'To enable `GojiSplitChunksWebpackPlugin`, the `optimization.splitChunks` in webpack config file must be `false`.',
+          );
+        }
+        const appConfig = appConfigMap.get(compiler);
+        if (!appConfig) {
+          throw new Error('`appConfig` not found. This might be an internal error in GojiJS.');
+        }
+
+        // use `afterOptimizeModules` to make sure this plugin is executed before `SplitChunksPlugin`
+        compilation.hooks.afterOptimizeModules.tap('GojiSplitChunksWebpackPlugin', modules => {
+          splitChunkInstance.options.getCacheGroups = normalizeCacheGroups(
+            getCacheGroups(this.options.nohoist, appConfig, [...modules], compilation.chunkGraph),
+            ['javascript', 'unknown'],
+          );
+        });
+      },
+    );
   }
 }
