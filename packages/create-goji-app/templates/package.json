@@ -22,6 +22,7 @@
     "@types/classnames": "^2.2.10",
     "@types/css-modules": "^1.0.0",
     "@types/react": "^16.9.35",
+    "@types/weixin-app": "^2.9.3",
     "typescript": "^4.0.3"
   }
 }
