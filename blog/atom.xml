@@ -2,12 +2,23 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://goji.js.org/blog</id>
     <title>GojiJS Blog</title>
-    <updated>2020-09-23T06:00:00.000Z</updated>
+    <updated>2022-02-22T06:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://goji.js.org/blog"/>
     <subtitle>The best place to stay up-to-date with the latest GojiJS news and events.</subtitle>
     <logo>https://goji.js.org/undefined</logo>
-    <rights>© 2021 Airbnb, Inc. All rights reserved.</rights>
+    <rights>© 2022 Airbnb, Inc. All rights reserved.</rights>
+    <entry>
+        <title type="html"><![CDATA[GojiJS v1.0 发布]]></title>
+        <id>https://goji.js.org/blog/2022/02/22/gojijs-v1.html</id>
+        <link href="https://goji.js.org/blog/2022/02/22/gojijs-v1.html"/>
+        <updated>2022-02-22T06:00:00.000Z</updated>
+        <summary type="html"><![CDATA[<p>GojiJS 是由 Airbnb（爱彼迎）开发的小程序前端框架，于 2020 年 06 月开源。经过了近一年半的迭代和测试各 项功能日趋稳定，因此决定发布 GojiJS v1.0 版本。</p> <h1><a class="anchor" aria-hidden="true" id="主要变化"></a><a href="#主要变化" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"/></svg></a>主要变化</h1> <p>GojiJS 提供了对最新前端生态的支持，包括：</p> <h2><a class="anchor" aria-hidden="true" id="支持-react-17-框架"></a><a href="#支持-react-17-框架" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"/></svg></a>支持 React 17 框架</h2> <p>GojiJS 支持使用最新的 React 17 进行开发，GojiJS 推荐使用 <a href="https://reactjs.org/docs/hooks-intro.html">Hooks</a> 和函数式组件开发。</p> <blockquote> <p>暂不支持实验中的<a href="https://zh-hans.reactjs.org/docs/concurrent-mode-intro.html">concurrent mode</a>。</p> </blockquote> <h2><a class="anchor" aria-hidden="true" id="使用基于-webpack-5-的构建工具"></a><a href="#使用基于-webpack-5-的构建工具" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewbox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"/></svg></a>使用基于 Webpack 5 的构建工具</h2> <p>GojiJS...</p>]]></summary>
+        <author>
+            <name>Chong Ma</name>
+            <uri>http://github.com/malash</uri>
+        </author>
+    </entry>
     <entry>
         <title type="html"><![CDATA[GojiJS——来自Airbnb的小程序跨平台解决方案]]></title>
         <id>https://goji.js.org/blog/2020/09/23/gojijs-from-airbnb.html</id>

@@ -1,0 +1,118 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>分包加载 · GojiJS</title><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="generator" content="Docusaurus"/><meta name="description" content="分包加载是小程序平台的常见概念，用来优化加载性能和代码结构。 它可以被看作Web开发中的代码分割。"/><meta name="docsearch:language" content="zh-CN"/><meta property="og:title" content="分包加载 · GojiJS"/><meta property="og:type" content="website"/><meta property="og:url" content="https://goji.js.org/"/><meta property="og:description" content="分包加载是小程序平台的常见概念，用来优化加载性能和代码结构。 它可以被看作Web开发中的代码分割。"/><meta property="og:image" content="https://goji.js.org/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://goji.js.org/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/undefined"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://goji.js.org/blog/atom.xml" title="GojiJS Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://goji.js.org/blog/feed.xml" title="GojiJS Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="https://unpkg.com/vanilla-back-to-top@7.1.14/dist/vanilla-back-to-top.min.js"></script><script>
+        document.addEventListener('DOMContentLoaded', function() {
+          addBackToTop(
+            {"zIndex":100}
+          )
+        });
+        </script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-CN"><h2 class="headerTitle">GojiJS</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/zh-CN/introduction" target="_self">文档</a></li><li class=""><a href="/blog/" target="_self">博客</a></li><li class=""><a href="https://github.com/airbnb/goji-js" target="_self">GitHub</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>简体中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/sub-packages">English</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>高级</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">入门</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/introduction">介绍</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/setup">安装</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/preparation">准备工作</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">教程</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/app">入口</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/page">页面</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/hooks">钩子</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/lifecycle">生命周期</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/refs">Refs</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/cross-platform">跨平台</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">高级</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/css">样式</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/css-in-js">CSS-in-JS</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/plugins">使用插件</a></li><li class="navListItem"><a class="navItem" href="/docs/zh-CN/testing">测试</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/zh-CN/sub-packages">分包加载</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">常见问题</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/zh-CN/faq">常见问题</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/airbnb/goji-js/tree/master/packages/goji.js.org/docs/sub-packages.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 id="__docusaurus" class="postHeaderTitle">分包加载</h1></header><article><div><span><p>分包加载是小程序平台的常见概念，用来优化加载性能和代码结构。 它可以被看作Web开发中的代码分割。</p>
+<p>这里是一些有用的官方文档链接。</p>
+<ul>
+<li><p><a href="https://developers.weixin.qq.com/miniprogram/dev/framework/subpackages/basic.html">微信分包加载</a></p></li>
+<li><p><a href="https://q.qq.com/wiki/develop/miniprogram/frame/basic_ability/basic_pack.html">QQ 分包加载</a></p></li>
+<li><p><a href="https://opendocs.alipay.com/mini/framework/subpackages">支付宝分包加载</a></p></li>
+<li><p><a href="https://smartprogram.baidu.com/docs/develop/framework/subpackages/">百度分包加载</a></p></li>
+<li><p><a href="https://microapp.bytedance.com/docs/zh-CN/mini-app/develop/framework/subpackages/introduction">头条分包加载</a></p></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="问题"></a><a href="#问题" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>问题</h2>
+<p>原始的基于子包的代码分割设计导致了一些限制。 一个子包不能依赖（<code>require</code>）任何在主包和其他子包中的模块。</p>
+<p>开发者必须手动将共享的代码放在主包中，否则小程序开发者工具将反馈一个编译 错误。 另一方面，如果模块只被一个子包依赖。 开发者应该将它移动到子包里，以减少主包的体积。</p>
+<h2><a class="anchor" aria-hidden="true" id="hoist-和-nohoist"></a><a href="#hoist-和-nohoist" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Hoist 和 nohoist</h2>
+<p>在 GojiJS 中，我们使用 <a href="https://webpack.js.org/">Webpack</a> 分析模块依赖关系并打包代码。 使用<a href="https://webpack.js.org/guides/code-splitting/">代码拆分</a>我们可以在子包里从任何地方导入依赖， 比如主包、node_modules、甚至 其他子包。 GojiJS 可以把共享的代码 ** 提升（hoist）**到主包的公共文件（一般是 <code>_goji_commons.js</code>）。</p>
+<p>这里是一个例子，它有五个页面，一个在主包里，其他的在两个子包里 ( <code>packageA</code> 和 <code>packageB</code>)。</p>
+<p><img src="https://user-images.githubusercontent.com/1812118/138204963-4829b600-ac1a-4273-89ab-cf36d5cd03da.png" alt="子包示例"></p>
+<p>GojiJS 把模块提升到了根目录的公共文件。 这样做之后，就可以满足小程序分包加载的依赖限制了。</p>
+<p><img src="https://user-images.githubusercontent.com/1812118/138205488-dddaf015-f752-4720-90ec-b216d6f7dc27.png" alt="hoist示例"></p>
+<h3><a class="anchor" aria-hidden="true" id="nohoistenable"></a><a href="#nohoistenable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>nohoist.enable</code></h3>
+<p><code>boolean = true</code> 仅当生产模式，否则为 <code>false</code>。</p>
+<p>在上面的例子里， <code>redux</code> 和 <code>date-fns</code> 不是共享代码，因此他们可以被移动到子包里，以减少主包的大小。 我们将这种优化叫做 ** nohoist **。</p>
+<p>您可以更改<code>goji.config.js</code> 中的 <code>nohoist.enable</code> 选项来开启/关闭此功能。</p>
+<blockquote>
+<p><code>nohoist.enable</code> 在开发模式中设置为 false，以加速代码打包。</p>
+</blockquote>
+<p><img src="https://user-images.githubusercontent.com/1812118/138205001-0ea82de4-81b1-494c-9e30-f48d462611be.png" alt="nohoist.enable 示例"></p>
+<h3><a class="anchor" aria-hidden="true" id="nohoistmaxpackages"></a><a href="#nohoistmaxpackages" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>nohoist.maxPackages</code></h3>
+<p><code>number = 1</code></p>
+<p>某些模块——比如例子里的 <code>lodash</code> 只被子包内共享。 是有可能将它们复制到各个子包里的。 虽然会增大总包的体积，但的确减少了主包的体积。</p>
+<p>要启用此功能，您可以将 <code>nohoist.maxPackages</code> 设置为大于 1 的数字 N 。 如果一个模块被小于等于 N个子包依赖，它将被复制到 <code>packageName/_goji_nohoist_[contenthash].js</code> 中。</p>
+<p><img src="https://user-images.githubusercontent.com/1812118/138208851-2c0c7fe3-6e55-4744-b4af-b74fca59228a.png" alt="nohoist.maxPackages 示例"></p>
+<p>虽然代码被复制，但它的运行时闭包仍然是一个单例。 了解更多细节，请查看 <a href="#independent-packages">独立分包</a>。</p>
+<blockquote>
+<p>请注意此功能可能会因为生成更多重复的代码而损害用户加载时间。 您应当只在主包大小超出或即将超过时使用它。</p>
+</blockquote>
+<h3><a class="anchor" aria-hidden="true" id="nohoisttest"></a><a href="#nohoisttest" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>nohoist.test</code></h3>
+<p><code>function (module, chunks) =&gt; boolean</code> <code>RegRex</code> <code>string</code></p>
+<p>您可以使用此字段提升特定的模块。</p>
+<h2><a class="anchor" aria-hidden="true" id="独立分包"></a><a href="#独立分包" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>独立分包</h2>
+<p>独立分饱是一种特殊的子包。 只有 <a href="https://developers.weixin.qq.com/miniprogram/dev/framework/subpackages/independent.html">微信</a>、 <a href="https://q.qq.com/wiki/develop/miniprogram/frame/basic_ability/basic_pack.html#%E7%8B%AC%E7%AB%8B%E5%88%86%E5%8C%85">QQ</a> 和 <a href="https://smartprogram.baidu.com/docs/develop/framework/subpackages_independent/">百度</a> 小程序支持此功能。</p>
+<p>GojiJS 支持此功能，方法类似于 nohoist 。</p>
+<p>首先，GojiJS 将依赖的模块复制到 <code>packageName/_goji_commons.js</code>里，然后生成新的 <code>packageName/_goji_runtime.js</code> 以在独立分包中运行这些代码，并确保每个模块应该有一致的运行时闭包。</p>
+<p>若要创建一个独立分包，您需要在 <code>app.config.ts</code> 的<code>subPackages</code> 字段中添加 <code>independent: true</code> 。</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 10/21/2021</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/zh-CN/testing"><span class="arrow-prev">← </span><span>测试</span></a><a class="docs-next button" href="/docs/zh-CN/faq"><span>常见问题</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#问题">问题</a></li><li><a href="#hoist-和-nohoist">Hoist 和 nohoist</a><ul class="toc-headings"><li><a href="#nohoistenable"><code>nohoist.enable</code></a></li><li><a href="#nohoistmaxpackages"><code>nohoist.maxPackages</code></a></li><li><a href="#nohoisttest"><code>nohoist.test</code></a></li></ul></li><li><a href="#独立分包">独立分包</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/zh-CN/introduction.html">Get Started</a><a href="/docs/zh-CN/app.html">Guide</a><a href="/docs/zh-CN/faq.html">FAQ</a></div><div><h5>Community</h5><a href="https://github.com/airbnb/goji-js/issues">GitHub Issues</a></div><div><h5>More</h5><a href="https://github.com/airbnb/goji-js">GitHub</a></div></section><section class="copyright">© 2022 Airbnb, Inc. All rights reserved.</section></footer></div></body></html>
