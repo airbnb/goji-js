@@ -1,6 +1,6 @@
 {
   "name": "create-goji-app",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.0",
   "description": "Create GojiJS App",
   "main": "index.js",
   "repository": "https://github.com/airbnb/goji-js",
