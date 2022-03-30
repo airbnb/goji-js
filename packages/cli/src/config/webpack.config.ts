@@ -282,6 +282,9 @@ export const getWebpackConfig = ({
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(nodeEnv),
+        // React Native specific global variable
+        // https://reactnative.dev/docs/javascript-environment#specific
+        __DEV__: JSON.stringify(nodeEnv !== 'production'),
       }),
       // because Webpack 5 removed `node.*` support, we have to add them back manually
       // from https://github.com/webpack/webpack/blob/3956274f1eada621e105208dcab4608883cdfdb2/lib/WebpackOptionsDefaulter.js#L168-L181
