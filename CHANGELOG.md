@@ -1,5 +1,12 @@
 # Change Log
 
+# v1.0.1 (2022-04-13)
+
+- **cli:** Support React Native's global variable `__DEV__`
+  [#157](https://github.com/airbnb/goji-js/pull/157)
+
+- **webpack-plugin:** Fix toutiao calc issue [#161](https://github.com/airbnb/goji-js/pull/161)
+
 # v1.0.0 (2022-02-22)
 
 ### Features
