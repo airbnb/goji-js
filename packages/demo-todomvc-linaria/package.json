@@ -1,6 +1,6 @@
 {
   "name": "demo-todomvc-linaria",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GojiJS Linaria Example",
   "main": "index.js",
   "repository": "git+https://github.com/airbnb/goji.git",
@@ -13,7 +13,7 @@
     "build": "goji build"
   },
   "dependencies": {
-    "@goji/core": "^1.0.0",
+    "@goji/core": "^1.0.1",
     "classnames": "^2.2.6",
     "core-js": "^3.16.0",
     "linaria": "^2.3.0",
@@ -23,8 +23,8 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@goji/cli": "^1.0.0",
-    "@goji/testing-library": "^1.0.0",
+    "@goji/cli": "^1.0.1",
+    "@goji/testing-library": "^1.0.1",
     "@types/classnames": "^2.2.10",
     "@types/css-modules": "^1.0.0",
     "@types/react": "^17.0.31",
