@@ -15,7 +15,6 @@
     "checkInvalidKey": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.7.3",
   "appid": "testappid",
   "projectname": "<%= projectName %>",
   "debugOptions": {

@@ -10,11 +10,5 @@
   "projectname": "test",
   "setting": {
     "urlCheck": false
-  },
-  "swan": {
-    "baiduboxapp": {
-      "extensionJsVersion": "100.14.255",
-      "swanJsVersion": "3.190.255-rc"
-    }
   }
 }
