@@ -634,7 +634,7 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       },
       {
         name: 'input',
-        isWrapped: ['wechat', 'qq'].includes(target),
+        isWrapped: ['wechat', 'qq', 'baidu'].includes(target),
         props: {
           value: {
             required: true,
@@ -949,7 +949,7 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       },
       {
         name: 'textarea',
-        isWrapped: ['wechat', 'qq'].includes(target),
+        isWrapped: ['wechat', 'qq', 'baidu'].includes(target),
         props: {
           value: {
             required: false,
