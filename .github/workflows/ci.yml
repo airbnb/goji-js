@@ -23,7 +23,6 @@ jobs:
         node-version:
           - 16
           - 14
-          - 12
         os:
           - ubuntu-latest
           - macos-latest
@@ -38,6 +37,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+          cache: yarn
 
       - name: Install dependencies
         run: yarn --frozen-lockfile

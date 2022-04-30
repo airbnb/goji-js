@@ -5,7 +5,7 @@ const config: ESLintConfig = {
     '**/dist/*',
     '**/node_modules/*',
     '**/coverage/*',
-    'packages/goji.js.org/website/**/*',
+    'packages/goji.js.org/src/**/*',
     'lerna.json',
     'babel.config.js',
     'jest.config.js',
