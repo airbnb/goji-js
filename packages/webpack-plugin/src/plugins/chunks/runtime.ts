@@ -21,7 +21,11 @@ const getRuntimeNameCallback = (appConfig: AppConfig) => (entrypoint: WebpackEnt
 
 export class GojiRuntimeChunksWebpackPlugin extends GojiBasedWebpackPlugin {
   public apply(compiler: webpack.Compiler) {
-    compiler.hooks.compile.tap('GojiRuntimeChunksWebpackPlugin', () => {
+    const runtimeChunkInstance = new webpack.optimize.RuntimeChunkPlugin();
+    runtimeChunkInstance.apply(compiler);
+
+    // update options manually
+    compiler.hooks.thisCompilation.tap('GojiRuntimeChunksWebpackPlugin', () => {
       if (compiler.options.optimization?.runtimeChunk !== false) {
         throw new Error(
           'To enable `GojiRuntimeChunksWebpackPlugin`, the `optimization.runtimeChunk` in webpack config file must be `false`.',
@@ -31,11 +35,7 @@ export class GojiRuntimeChunksWebpackPlugin extends GojiBasedWebpackPlugin {
       if (!appConfig) {
         throw new Error('`appConfig` not found. This might be an internal error in GojiJS.');
       }
-      const name = getRuntimeNameCallback(appConfig);
-      // @ts-ignore
-      new webpack.optimize.RuntimeChunkPlugin({
-        name,
-      }).apply(compiler);
+      runtimeChunkInstance.options.name = getRuntimeNameCallback(appConfig);
     });
   }
 }

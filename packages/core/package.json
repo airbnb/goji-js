@@ -1,6 +1,6 @@
 {
   "name": "@goji/core",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.1",
   "description": "GojiJS Core",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -27,7 +27,7 @@
   "homepage": "https://github.com/airbnb/goji#readme",
   "devDependencies": {
     "@testing-library/react-hooks": "^7.0.2",
-    "@types/jest": "^26.0.15",
+    "@types/jest": "^27.0.3",
     "@types/lodash": "^4.14.172",
     "@types/react": "^17.0.31",
     "@types/react-is": "^17.0.3",

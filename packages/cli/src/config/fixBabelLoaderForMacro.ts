@@ -1,3 +1,4 @@
+/* eslint-disable import/no-import-module-exports */
 import webpack from 'webpack';
 import babelLoader from 'babel-loader';
 
@@ -10,20 +11,21 @@ const testMacrosRegex = v => macrosRegex.test(v);
  * 1. only load `babel-loader` and `babel-plugin-macros` if source code contains a macro dependency
  * 2. disable Webpack cache to trigger macro compilation on every build
  */
-const FixBabelLoaderForMacro: webpack.LoaderDefinitionFunction<{}> =
-  function FixBabelLoaderForMacro(source, inputSourceMap) {
-    const callback = this.async();
-
-    if (testMacrosRegex(source.toString())) {
-      // disable cache to prevent missing call of `registerPluginComponent`
-      if (this.cacheable) {
-        this.cacheable(false);
-      }
-      babelLoader.call(this, source, inputSourceMap);
-      return;
+const FixBabelLoaderForMacro: webpack.LoaderDefinition<{}> = function FixBabelLoaderForMacro(
+  source,
+  inputSourceMap,
+) {
+  if (testMacrosRegex(source.toString())) {
+    // disable cache to prevent missing call of `registerPluginComponent`
+    if (this.cacheable) {
+      this.cacheable(false);
     }
+    babelLoader.call(this, source, inputSourceMap);
+    return;
+  }
 
-    callback!(null, source);
-  };
+  const callback = this.async();
+  callback!(null, source);
+};
 
 module.exports = FixBabelLoaderForMacro;

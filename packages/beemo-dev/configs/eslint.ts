@@ -74,6 +74,7 @@ const config: ESLintConfig = {
     'react/state-in-constructor': 'off',
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
+    'react/function-component-definition': ['error', { namedComponents: 'arrow-function' }],
     'class-methods-use-this': 'off',
     'no-await-in-loop': 'warn',
     'no-continue': 'off',

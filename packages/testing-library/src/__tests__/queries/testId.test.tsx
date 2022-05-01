@@ -4,11 +4,7 @@ import { render } from '../..';
 
 describe('ByTestId', () => {
   test('getByTestId', () => {
-    const App = () => (
-        <>
-          <View testID="a">hello, world!</View>
-        </>
-      );
+    const App = () => <View testID="a">hello, world!</View>;
     const wrapper = render(<App />);
     const view = wrapper.getByTestId('a');
     expect(view).toBeTruthy();

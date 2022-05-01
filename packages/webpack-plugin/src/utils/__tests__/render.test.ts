@@ -128,7 +128,7 @@ describe('transformTemplate', () => {
   });
 
   describe('wxss', () => {
-    test('toutiao !important', async () => {
+    test('fix toutiao issue #160', async () => {
       expect(await transformTemplate('height:200px!important', 'toutiao', 'wxss')).toBe(
         'height:200px !important',
       );
@@ -138,6 +138,15 @@ describe('transformTemplate', () => {
       // ignore if not uglified
       expect(await transformTemplate('height: 200px !important', 'toutiao', 'wxss')).toBe(
         'height: 200px !important',
+      );
+    });
+
+    test('fix toutiao issue #159', async () => {
+      expect(await transformTemplate('height:calc(100rpx*10)', 'toutiao', 'wxss')).toBe(
+        'height:calc(100rpx *10)',
+      );
+      expect(await transformTemplate('height:calc(100rpx/ 10)', 'toutiao', 'wxss')).toBe(
+        'height:calc(100rpx / 10)',
       );
     });
   });

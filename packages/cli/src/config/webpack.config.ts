@@ -7,12 +7,10 @@ import type { NonUndefined } from 'utility-types';
 import { GojiWebpackPluginOptions, GojiWebpackPlugin } from '@goji/webpack-plugin';
 import nodeLibsBrowser from 'node-libs-browser';
 import resolve from 'resolve';
-import findCacheDir from 'find-cache-dir';
-// @ts-ignore
-// eslint-disable-next-line import/no-unresolved
 import { version as babelCoreVersion } from '@babel/core/package.json';
 import { version as babelLoaderVersion } from 'babel-loader/package.json';
-import { preprocessLoader, getThreadLoader } from './loaders';
+import postcssConfig from './postcssConfig';
+import { getThreadLoader } from './loaders';
 
 const getSourceMap = (nodeEnv: string, target: GojiTarget): webpack.Configuration['devtool'] => {
   // enable source map in development mode
@@ -172,19 +170,13 @@ export const getWebpackConfig = ({
               options: {
                 configFile: require.resolve('./linaria.config'),
                 sourceMap: true,
-                // Linaria defaults to use `.linaria-cache` folder rather than standard `node_modules/.cache`
-                // also we should use different folders based on `nodeEnv` and `target` to prevent wrong cache result
-                cacheDirectory: findCacheDir({
-                  name: `linaria-${nodeEnv}-${target}`,
-                  cwd: basedir,
-                }),
+                cacheProvider: require.resolve('./linariaFileCache'),
                 babelOptions: {
                   // always use internal babel.config.js file
                   configFile: require.resolve('./babel.config'),
                 },
               },
             },
-            preprocessLoader('js', nodeEnv, target),
           ],
         },
         {
@@ -217,16 +209,17 @@ export const getWebpackConfig = ({
               options: {
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
-                  config: path.join(__dirname, 'postcss.config.js'),
+                  config: false,
+                  ...postcssConfig,
                 },
               },
             },
-            preprocessLoader('js', nodeEnv, target),
             {
               loader: require.resolve('postcss-loader'),
               options: {
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
+                  config: false,
                   // eslint-disable-next-line global-require
                   plugins: [require('postcss-import')({})],
                 },
@@ -253,16 +246,17 @@ export const getWebpackConfig = ({
               options: {
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
-                  config: path.join(__dirname, 'postcss.config.js'),
+                  config: false,
+                  ...postcssConfig,
                 },
               },
             },
-            preprocessLoader('js', nodeEnv, target),
             {
               loader: require.resolve('postcss-loader'),
               options: {
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
+                  config: false,
                   // eslint-disable-next-line global-require
                   plugins: [require('postcss-import')({})],
                 },
@@ -288,9 +282,16 @@ export const getWebpackConfig = ({
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(nodeEnv),
+        // React Native specific global variable
+        // https://reactnative.dev/docs/javascript-environment#specific
+        __DEV__: JSON.stringify(nodeEnv !== 'production'),
       }),
+      // because Webpack 5 removed `node.*` support, we have to add them back manually
+      // from https://github.com/webpack/webpack/blob/3956274f1eada621e105208dcab4608883cdfdb2/lib/WebpackOptionsDefaulter.js#L168-L181
       new webpack.ProvidePlugin({
         process: nodeLibsBrowser.process,
+        Buffer: [nodeLibsBrowser.buffer, 'Buffer'],
+        // `global` will be shimmed by GojiShimPlugin and `setImmediate` is supported natively
       }),
       // show progress
       progress && new webpack.ProgressPlugin(),

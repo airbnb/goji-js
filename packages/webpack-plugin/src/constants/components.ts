@@ -634,7 +634,7 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       },
       {
         name: 'input',
-        isWrapped: ['wechat', 'qq'].includes(target),
+        isWrapped: ['wechat', 'qq', 'baidu'].includes(target),
         props: {
           value: {
             required: true,
@@ -949,7 +949,7 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       },
       {
         name: 'textarea',
-        isWrapped: ['wechat', 'qq'].includes(target),
+        isWrapped: ['wechat', 'qq', 'baidu'].includes(target),
         props: {
           value: {
             required: false,
@@ -1025,6 +1025,26 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
           },
           'adjust-position': {
             defaultValue: true,
+            type: 'Boolean',
+            required: false,
+          },
+          'hold-keyboard': {
+            defaultValue: false,
+            type: 'Boolean',
+            required: false,
+          },
+          'disable-default-padding': {
+            defaultValue: false,
+            type: 'Boolean',
+            required: false,
+          },
+          'confirm-type': {
+            defaultValue: 'return',
+            type: 'String',
+            required: false,
+          },
+          'confirm-hold': {
+            defaultValue: false,
             type: 'Boolean',
             required: false,
           },

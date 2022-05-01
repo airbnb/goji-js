@@ -1,6 +1,6 @@
 {
   "name": "@goji/cli",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.1",
   "description": "GojiJS CLI",
   "main": "dist/cjs/index.js",
   "bin": {
@@ -18,13 +18,20 @@
   "repository": "git+https://github.com/airbnb/goji.git",
   "license": "MIT",
   "dependencies": {
-    "@goji/webpack-plugin": "^1.0.0-alpha.16",
+    "@babel/core": "^7.16.5",
+    "@babel/plugin-transform-runtime": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-react": "^7.16.5",
+    "@babel/preset-typescript": "^7.16.5",
+    "@goji/webpack-plugin": "^1.0.1",
     "babel-loader": "^8.2.1",
+    "babel-plugin-macros": "^3.1.0",
     "css-loader": "^6.5.1",
     "cssnano": "^5.0.11",
     "find-cache-dir": "^3.3.1",
     "lodash": "^4.17.15",
     "mini-css-extract-plugin": "^2.4.5",
+    "mkdirp": "^1.0.4",
     "node-libs-browser": "^2.2.1",
     "postcss": "^8.3.11",
     "postcss-calc": "^8.0.0",
@@ -32,29 +39,21 @@
     "postcss-import": "^14.0.2",
     "postcss-loader": "^6.2.0",
     "postcss-nested": "^5.0.6",
-    "postcss-preset-env": "^7.0.1",
+    "postcss-preset-env": "^7.0.2",
     "postcss-reporter": "^7.0.4",
-    "preprocess-loader": "^0.3.0",
     "resolve": "^1.19.0",
-    "terser-webpack-plugin": "^5.2.5",
+    "terser-webpack-plugin": "^5.3.0",
     "thread-loader": "^3.0.4",
     "tslib": "^2.3.0",
     "webpack": "^5.64.4",
     "yargs": "^17.1.0"
   },
   "devDependencies": {
-    "@goji/core": "^1.0.0-alpha.16",
+    "@goji/core": "^1.0.1",
     "@types/yargs": "^17.0.2",
     "rimraf": "^3.0.2"
   },
   "peerDependencies": {
-    "@babel/core": "*",
-    "@babel/plugin-transform-runtime": "*",
-    "@babel/preset-env": "*",
-    "@babel/preset-react": "*",
-    "@babel/preset-typescript": "*",
-    "@goji/core": "*",
-    "babel-plugin-macros": "*",
-    "source-map": "*"
+    "@goji/core": "*"
   }
 }
