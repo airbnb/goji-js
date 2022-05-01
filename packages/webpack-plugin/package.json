@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "common-tags": "^2.0.0-alpha.1",
-    "copy-webpack-plugin": "^9.1.0",
+    "copy-webpack-plugin": "^10.2.4",
     "deepmerge": "^4.2.2",
     "enhanced-resolve": "^5.9.3",
     "escape-string-regexp": "^4.0.0",
@@ -42,7 +42,7 @@
     "loader-utils": "^3.2.0",
     "lodash": "^4.17.15",
     "posthtml": "^0.16.6",
-    "posthtml-parser": "^0.10.2",
+    "posthtml-parser": "^0.11.0",
     "terser": "^5.13.1",
     "tslib": "^2.4.0"
   },

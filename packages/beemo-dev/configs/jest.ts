@@ -16,7 +16,7 @@ const config: JestConfig = {
   moduleFileExtensions: ['ts', 'js', 'tsx', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     // https://jestjs.io/docs/en/webpack.html#mocking-css-modules
-    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+    '\\.(css|less|sass|scss)$': require.resolve('identity-obj-proxy'),
     '\\.(gif|ttf|eot|svg)$': path.resolve(__dirname, '../utils/jestFileMock.js'),
   },
   coverageDirectory: 'coverage',

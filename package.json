@@ -25,5 +25,10 @@
   "bugs": {
     "url": "https://github.com/airbnb/goji/issues"
   },
-  "homepage": "https://github.com/airbnb/goji#readme"
+  "homepage": "https://github.com/airbnb/goji#readme",
+  "devDependencies": {
+    "@babel/runtime": "^7.17.9",
+    "jest": "^27.5.1",
+    "jest-environment-jsdom": "^27.5.1"
+  }
 }

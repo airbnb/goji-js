@@ -82,6 +82,7 @@ export class GojiProjectConfigPlugin extends GojiBasedWebpackPlugin {
 
     if (patterns.length) {
       new CopyWebpackPlugin({
+        // @ts-ignore FIXME:
         patterns: patterns.map(pattern => ({ ...pattern, noErrorOnMissing: true })),
       }).apply(compiler);
     }

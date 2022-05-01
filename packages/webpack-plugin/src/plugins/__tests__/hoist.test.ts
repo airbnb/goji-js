@@ -9,7 +9,7 @@ import { rgPath } from 'vscode-ripgrep';
 
 jest.setTimeout(60 * 1000);
 // use source code
-jest.mock('@goji/webpack-plugin', () => jest.requireActual('../../index.ts'));
+jest.mock('../../../dist/cjs/index.js', () => jest.requireActual('../../index.ts'));
 
 describe('hoist', () => {
   test('full project', async () => {
@@ -19,9 +19,9 @@ describe('hoist', () => {
       cwd: __dirname,
     });
     // eslint-disable-next-line import/no-extraneous-dependencies, global-require
-    const { getWebpackConfig } = require('@goji/cli/dist/cjs/config/webpack.config');
+    const { getWebpackConfig } = require('../../../../cli/dist/cjs/config/webpack.config');
     // eslint-disable-next-line import/no-extraneous-dependencies, global-require
-    const babelConfig = require('@goji/cli/dist/cjs/config/babel.config');
+    const babelConfig = require('../../../../cli/dist/cjs/config/babel.config');
     const webpackConfig = getWebpackConfig({
       basedir,
       outputPath,

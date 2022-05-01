@@ -270,6 +270,7 @@ export const getWebpackConfig = ({
         },
       ],
     },
+    // @ts-ignore FIXME:
     plugins: [
       new MiniCssExtractPlugin({
         filename: `[name].${CSS_FILE_EXT[target] ?? 'wxss'}`,

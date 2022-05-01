@@ -7,7 +7,7 @@ const config: BabelConfig & { assumptions: Record<string, boolean> } = {
   },
   presets: [
     [
-      '@babel/preset-env',
+      require.resolve('@babel/preset-env'),
       {
         targets: {
           node: 'current',
@@ -16,11 +16,11 @@ const config: BabelConfig & { assumptions: Record<string, boolean> } = {
         corejs: 3,
       },
     ],
-    '@babel/preset-typescript',
-    '@babel/preset-react',
-    'linaria/babel',
+    require.resolve('@babel/preset-typescript'),
+    require.resolve('@babel/preset-react'),
+    require.resolve('linaria/babel'),
   ],
-  plugins: ['@babel/plugin-transform-runtime'],
+  plugins: [require.resolve('@babel/plugin-transform-runtime')],
   // https://github.com/webpack/webpack/issues/4039#issuecomment-419284940
   // https://babeljs.io/docs/en/options#sourcetype
   // https://github.com/babel/babel/issues/8900
