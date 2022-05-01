@@ -50,8 +50,11 @@
   },
   "devDependencies": {
     "@goji/core": "^1.0.1",
+    "@types/jest": "^27.0.3",
     "@types/yargs": "^17.0.2",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "typescript": "^4.3.5",
+    "utility-types": "^3.10.0"
   },
   "peerDependencies": {
     "@goji/core": "*"
