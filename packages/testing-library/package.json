@@ -14,10 +14,10 @@
   },
   "dependencies": {
     "lodash": "^4.17.15",
-    "pretty-format": "^27.4.2",
+    "pretty-format": "^27.5.1",
     "react-test-renderer": "^17.0.2",
-    "tslib": "^2.0.3",
-    "typescript": "^4.3.5",
+    "tslib": "^2.4.0",
+    "typescript": "^4.6.4",
     "wait-for-expect": "^3.0.2"
   },
   "peerDependencies": {
@@ -27,9 +27,9 @@
   "devDependencies": {
     "@goji/core": "^1.0.1",
     "@types/jest": "^27.0.3",
-    "@types/lodash": "^4.14.172",
+    "@types/lodash": "^4.14.182",
     "@types/node": "^17.0.0",
-    "@types/react-test-renderer": "^17.0.1",
+    "@types/react-test-renderer": "^17.0.2",
     "react": "^17.0.2",
     "rimraf": "^3.0.2"
   },
