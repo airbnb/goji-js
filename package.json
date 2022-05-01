@@ -7,7 +7,7 @@
     "packages/goji.js.org/*"
   ],
   "scripts": {
-    "postinstall": "pnpm run create-config && pnpm run -r  prepublishOnly",
+    "postinstall": "pnpm run create-config && pnpm run -r prepublishOnly",
     "lint": "eslint --color --ext .js,.ts,.jsx,.tsx .",
     "prettier": "prettier --list-different \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
     "prettier:fix": "prettier --write \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
