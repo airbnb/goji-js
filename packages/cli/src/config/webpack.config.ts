@@ -294,7 +294,7 @@ export const getWebpackConfig = ({
         // `global` will be shimmed by GojiShimPlugin and `setImmediate` is supported natively
       }),
       // show progress
-      progress && new webpack.ProgressPlugin(),
-    ].filter(Boolean),
+      ...(progress ? [new webpack.ProgressPlugin()] : []),
+    ],
   };
 };
