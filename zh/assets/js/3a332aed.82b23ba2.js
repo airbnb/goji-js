@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkgoji_js_org=self.webpackChunkgoji_js_org||[]).push([[800],{9567:e=>{e.exports=JSON.parse('{"permalink":"/zh/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":2,"blogDescription":"\u535a\u5ba2","blogTitle":"\u535a\u5ba2"}')}}]);
