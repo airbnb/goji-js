@@ -9,7 +9,10 @@ import { GojiBasedWebpackPlugin } from './based';
 type CopyPluginPatterns = Array<{
   from: string;
   to: string;
-  transform?: (content: Buffer, path: string) => string | Buffer | Promise<string | Buffer>;
+  transform?: (
+    content: Buffer,
+    path: string,
+  ) => string | Buffer | Promise<string> | Promise<Buffer>;
 }>;
 
 export class GojiProjectConfigPlugin extends GojiBasedWebpackPlugin {
