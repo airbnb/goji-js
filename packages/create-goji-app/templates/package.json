@@ -23,6 +23,7 @@
     "@types/css-modules": "^1.0.0",
     "@types/react": "^16.9.35",
     "@types/weixin-app": "^2.9.3",
+    "linaria": "^2.3.0",
     "typescript": "^4.0.3"
   }
 }
