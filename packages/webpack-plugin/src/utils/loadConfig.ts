@@ -8,10 +8,10 @@ import { safeUrlToRequest } from './path';
 export const exec = (code: string, filename: string, context: string) => {
   /* eslint-disable no-underscore-dangle */
   const module = new Module(filename, undefined);
-  // @ts-ignore
+  // @ts-expect-error
   module.paths = Module._nodeModulePaths(context);
   module.filename = filename;
-  // @ts-ignore
+  // @ts-expect-error
   module._compile(code, filename);
 
   return module.exports;

@@ -22,17 +22,17 @@ describe('AdaptorInstance', () => {
     act(() => {
       render(<App />);
     });
-    // @ts-ignore
+    // @ts-expect-error
     expect(renderedCount).toBe(0);
-    // @ts-ignore
+    // @ts-expect-error
     expect(effectCount).toBe(0);
     act(() => {
       renderedSetCount(10);
       renderedSetCount(20);
     });
-    // @ts-ignore
+    // @ts-expect-error
     expect(renderedCount).toBe(20);
-    // @ts-ignore
+    // @ts-expect-error
     expect(effectCount).toBe(20);
   });
 });

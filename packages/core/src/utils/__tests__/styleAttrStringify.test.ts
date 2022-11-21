@@ -4,7 +4,7 @@ describe('styleAttrStringify', () => {
   test('invalid values', () => {
     expect(styleAttrStringify(undefined)).toBe('');
     expect(styleAttrStringify({})).toBe('');
-    // @ts-ignore
+    // @ts-expect-error
     expect(styleAttrStringify({ width: null, height: undefined, top: 0 })).toBe('top:0;');
   });
 

@@ -40,11 +40,11 @@ const unpatchedGlobalVariables = {
 
   // error objects
   Error: typeof Error === 'undefined' ? undefined : Error,
-  // @ts-ignore
+  // @ts-expect-error
   // eslint-disable-next-line no-undef
   AggregateError: typeof AggregateError === 'undefined' ? undefined : AggregateError,
   EvalError: typeof EvalError === 'undefined' ? undefined : EvalError,
-  // @ts-ignore
+  // @ts-expect-error
   // eslint-disable-next-line no-undef
   InternalError: typeof InternalError === 'undefined' ? undefined : InternalError,
   RangeError: typeof RangeError === 'undefined' ? undefined : RangeError,

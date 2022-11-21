@@ -54,14 +54,14 @@ describe('patch `Array`', () => {
   });
 
   it('patch prototype method', () => {
-    // @ts-ignore
+    // @ts-expect-error
     PatchedArray.prototype.myMethod = function myMethod() {
       return `${this.length} test`;
     };
     const array = new PatchedArray(3);
-    // @ts-ignore
+    // @ts-expect-error
     expect(typeof array.myMethod).toBe('function');
-    // @ts-ignore
+    // @ts-expect-error
     expect(array.myMethod()).toBe('3 test');
   });
 

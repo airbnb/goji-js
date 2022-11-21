@@ -16,7 +16,7 @@ export class GojiNohoistWebpackPlugin extends GojiBasedWebpackPlugin {
       (compilation: webpack.Compilation) => {
         compilation.hooks.afterOptimizeChunkModules.tap(
           'GojiNohoistWebpackPlugin',
-          // @ts-ignore
+          // @ts-expect-error
           (chunks: Set<webpack.Chunk>) => {
             const { chunkGraph } = compilation;
             // clean up useless chunks to prevent these temp files to be emitted

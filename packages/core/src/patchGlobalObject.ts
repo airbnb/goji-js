@@ -18,5 +18,5 @@ class ObjectE {
   }
 }
 
-// @ts-ignore
+// @ts-expect-error
 Object.e = new ObjectE();

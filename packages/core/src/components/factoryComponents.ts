@@ -11,11 +11,9 @@ const factoryComponent = <
 ) => {
   const displayName = pascalCase(component);
   // FIXME: Not all components have `children`. We should fix the type later.
-  const comp = (props: P, ref: React.Ref<PublicInstance>) => 
-    // @ts-ignore
-     createElement(component, { ...props, ref })
-  ;
-
+  const comp = (props: P, ref: React.Ref<PublicInstance>) =>
+    // @ts-expect-error
+    createElement(component, { ...props, ref });
   const compWithRef = forwardRef<PublicInstance, P>(comp);
   compWithRef.displayName = displayName;
 

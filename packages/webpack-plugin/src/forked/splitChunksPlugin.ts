@@ -91,7 +91,7 @@ export const normalizeCacheGroups = (cacheGroups, defaultSizeTypes) => {
       }
       if (typeof option === 'string' || option instanceof RegExp) {
         const source = createCacheGroupSource({}, key, defaultSizeTypes);
-        // @ts-ignore
+        // @ts-expect-error
         handlers.push((module, context, results) => {
           if (checkTest(option, module, context)) {
             results.push(source);
@@ -99,7 +99,7 @@ export const normalizeCacheGroups = (cacheGroups, defaultSizeTypes) => {
         });
       } else if (typeof option === 'function') {
         const cache = new WeakMap();
-        // @ts-ignore
+        // @ts-expect-error
         handlers.push((module, context, results) => {
           const result = option(module);
           if (result) {
@@ -118,7 +118,7 @@ export const normalizeCacheGroups = (cacheGroups, defaultSizeTypes) => {
         });
       } else {
         const source = createCacheGroupSource(option, key, defaultSizeTypes);
-        // @ts-ignore
+        // @ts-expect-error
         handlers.push((module, context, results) => {
           if (
             checkTest(option.test, module, context) &&
@@ -139,7 +139,7 @@ export const normalizeCacheGroups = (cacheGroups, defaultSizeTypes) => {
       /** @type {CacheGroupSource[]} */
       let results = [];
       for (const fn of handlers) {
-        // @ts-ignore
+        // @ts-expect-error
         fn(module, context, results);
       }
       return results;

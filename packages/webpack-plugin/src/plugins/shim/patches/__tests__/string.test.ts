@@ -47,14 +47,14 @@ describe('patch `String`', () => {
   });
 
   it('patch prototype method', () => {
-    // @ts-ignore
+    // @ts-expect-error
     PatchedString.prototype.myMethod = function myMethod() {
       return `${this} test`;
     };
     const string = new PatchedString(value);
-    // @ts-ignore
+    // @ts-expect-error
     expect(typeof string.myMethod).toBe('function');
-    // @ts-ignore
+    // @ts-expect-error
     expect(string.myMethod()).toBe('hello, world! test');
   });
 

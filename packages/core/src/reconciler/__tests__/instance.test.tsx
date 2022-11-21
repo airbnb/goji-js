@@ -52,7 +52,7 @@ describe('ElementInstance', () => {
 
   describe('getSubtreeId', () => {
     beforeAll(() => {
-      // @ts-ignore
+      // @ts-expect-error
       process.env.GOJI_WRAPPED_COMPONENTS = [];
     });
     const view = () =>
@@ -172,13 +172,13 @@ describe('ElementInstance', () => {
     expect(renderCount).toBe(1);
 
     // non batched
-    // @ts-ignore
+    // @ts-expect-error
     callback();
     act(() => {});
     expect(renderCount).toBe(3);
 
     // batched
-    // @ts-ignore
+    // @ts-expect-error
     batchedUpdates(callback);
     act(() => {});
     expect(renderCount).toBe(4);
@@ -255,7 +255,7 @@ describe('ElementInstance', () => {
       return textNodes.map(text => (text as TextNode).text);
     };
     expect(getTextList()).toEqual(['1', '2', '3']);
-    // @ts-ignore
+    // @ts-expect-error
     setItemsCallback([2, 1, 3]);
     expect(getTextList()).toEqual(['2', '1', '3']);
   });

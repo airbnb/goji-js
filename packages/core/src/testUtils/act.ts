@@ -116,7 +116,7 @@ export function act(callback: () => Thenable<unknown> | void) {
           () => {
             if (
               actingUpdatesScopeDepth > 1 ||
-              // @ts-ignore
+              // @ts-expect-error
               (isSchedulerMocked === true && previousIsSomeRendererActing === true)
             ) {
               onDone();

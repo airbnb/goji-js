@@ -8,7 +8,6 @@ describe('updates', () => {
   let adaptor: Adaptor;
 
   beforeAll(() => {
-    // @ts-ignore
     global.Page = function Page(options: WeChatPageConfig) {
       const instance: WeChatInstance = {
         setData(data) {
@@ -22,7 +21,7 @@ describe('updates', () => {
   });
 
   afterAll(() => {
-    // @ts-ignore
+    // @ts-expect-error
     delete global.Page;
   });
 
@@ -79,7 +78,7 @@ describe('updates', () => {
     adaptor.run(<TestComp />);
     diff = null;
 
-    // @ts-ignore
+    // @ts-expect-error
     updater(e => e);
     expect(diff).toEqual(null);
   });
@@ -101,7 +100,7 @@ describe('updates', () => {
     adaptor.run(<TestComp />);
     diff = null;
 
-    // @ts-ignore
+    // @ts-expect-error
     updater(false);
     expect(Object.keys(diff)).toEqual(['c[0].sid']);
   });
