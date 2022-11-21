@@ -111,6 +111,15 @@ const config: ESLintConfig = {
     // https://github.com/typescript-eslint/typescript-eslint/issues/2477
     'no-undef': 'off',
     'no-tabs': 'error',
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      {
+        'ts-expect-error': false,
+        'ts-ignore': true,
+        'ts-nocheck': false,
+        'ts-check': false,
+      },
+    ],
   },
 };
 

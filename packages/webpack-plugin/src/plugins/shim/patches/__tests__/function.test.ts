@@ -34,7 +34,6 @@ describe('patch `Function`', () => {
     const fnPatched = PatchedFunction('global.__shouldNotBeSet = true');
     expect(fnPatched).toBeTruthy();
     fnPatched();
-    // @ts-ignore
     // eslint-disable-next-line no-underscore-dangle
     expect(global.__shouldNotBeSet).not.toBe(true);
   });
@@ -72,12 +71,12 @@ describe('patch `Function`', () => {
   });
 
   it('patch prototype method', () => {
-    // @ts-ignore
+    // @ts-expect-error
     PatchedFunction.prototype.myMethod = () => true;
     const promise = new PatchedFunction('return this');
-    // @ts-ignore
+    // @ts-expect-error
     expect(typeof promise.myMethod).toBe('function');
-    // @ts-ignore
+    // @ts-expect-error
     expect(promise.myMethod()).toBe(true);
   });
 

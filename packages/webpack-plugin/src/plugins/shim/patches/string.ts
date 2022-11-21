@@ -7,7 +7,7 @@ const patchString = () => {
   const PatchedString = function String(this: any, value: any): string {
     let instance: string;
     if (this instanceof PatchedString || this instanceof OriginalString) {
-      // @ts-ignore
+      // @ts-expect-error
       instance = new OriginalString(value);
     } else {
       instance = OriginalString(value);

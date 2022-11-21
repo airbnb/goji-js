@@ -25,7 +25,7 @@ class PatchedProvidePlugin {
    * @param {Record<string, string | string[]>} definitions the provided identifiers
    */
   constructor(definitions) {
-    // @ts-ignore
+    // @ts-expect-error
     this.definitions = definitions;
   }
 
@@ -35,7 +35,7 @@ class PatchedProvidePlugin {
    * @returns {void}
    */
   apply(compiler) {
-    // @ts-ignore
+    // @ts-expect-error
     const definitions = this.definitions;
     compiler.hooks.compilation.tap('ProvidePlugin', (compilation, { normalModuleFactory }) => {
       compilation.dependencyTemplates.set(ConstDependency, new ConstDependency.Template());
@@ -46,7 +46,6 @@ class PatchedProvidePlugin {
           /* patch start */
           // Support `exclude` option
           let provideFile = definitions[name];
-          // @ts-ignore
           let excludeFiles = [];
           if (
             !Array.isArray(provideFile) &&
@@ -76,9 +75,7 @@ class PatchedProvidePlugin {
             /* patch start */
             // exclude files
             const currentFile = parser.state.current.request;
-            // @ts-ignore
             for (let i in excludeFiles) {
-              // @ts-ignore
               if (currentFile.match(excludeFiles[i])) {
                 return false;
               }

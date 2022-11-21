@@ -40,7 +40,7 @@ export class GojiCollectUsedComponentsWebpackPlugin extends GojiBasedWebpackPlug
             if (module.type.startsWith('javascript/')) {
               for (const dependency of module.dependencies) {
                 // only process `@goji/core`
-                // @ts-ignore
+                // @ts-expect-error
                 if (dependency.request !== GOJI_CORE_PACKAGE_NAME) {
                   continue;
                 }
@@ -48,7 +48,7 @@ export class GojiCollectUsedComponentsWebpackPlugin extends GojiBasedWebpackPlug
                   case COMMON_JS_REQUIRE_DEPENDENCY_TYPE: {
                     compilation.warnings.push(
                       new WebpackError(
-                        // @ts-ignore
+                        // @ts-expect-error
                         `[GojiCollectUsedComponentsWebpackPlugin] \nGojiJS strongly recommend to use ES module in ${module.resource} otherwise the bridge file size optimization was disabled`,
                       ),
                     );
@@ -57,17 +57,17 @@ export class GojiCollectUsedComponentsWebpackPlugin extends GojiBasedWebpackPlug
                   case HARMONY_IMPORT_SPECIFIER_DEPENDENCY_TYPE: {
                     // `dependency.ids` would be `[]` if this is a namespace import, which means `import * as xx from 'yy'`
                     // see https://github.com/webpack/webpack/blob/a3bef27457d8936f81525beaa633eb1931382dc0/lib/javascript/JavascriptParser.js#L1750
-                    // @ts-ignore
+                    // @ts-expect-error
                     if (!dependency.ids.length) {
                       compilation.warnings.push(
                         new WebpackError(
-                          // @ts-ignore
+                          // @ts-expect-error
                           `[GojiCollectUsedComponentsWebpackPlugin] \nShould not use \`import * as ${dependency.name} from '@goji/core'\` in ${module.resource}`,
                         ),
                       );
                       return undefined;
                     }
-                    // @ts-ignore
+                    // @ts-expect-error
                     for (const id of dependency.ids) {
                       dependencyNamesSet.add(id);
                     }

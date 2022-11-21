@@ -47,12 +47,12 @@ describe('patch `Promise`', () => {
   });
 
   it('patch prototype method', () => {
-    // @ts-ignore
+    // @ts-expect-error
     PatchedPromise.prototype.myMethod = () => true;
     const promise = new PatchedPromise(executor);
-    // @ts-ignore
+    // @ts-expect-error
     expect(typeof promise.myMethod).toBe('function');
-    // @ts-ignore
+    // @ts-expect-error
     expect(promise.myMethod()).toBe(true);
   });
 

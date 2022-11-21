@@ -20,5 +20,5 @@ export const warningWithoutStack = (
 // only support Node yet
 export const enqueueTask = setImmediate;
 
-// @ts-ignore
+// @ts-expect-error
 export const ReactSharedInternals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED; // eslint-disable-line no-underscore-dangle

@@ -13,14 +13,13 @@ describe('patch `getCurrentPages`', () => {
   Object.setPrototypeOf(mockPage, mockProto);
 
   beforeAll(() => {
-    // @ts-ignore
     global.getCurrentPages = () => [mockPage];
     // eslint-disable-next-line global-require
     patchedGetCurrentPages = require('../getCurrentPages');
   });
 
   afterAll(() => {
-    // @ts-ignore
+    // @ts-expect-error
     delete global.getCurrentPages;
   });
 

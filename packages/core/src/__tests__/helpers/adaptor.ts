@@ -5,7 +5,6 @@ import { applyDiff } from '../../utils/diff';
 export class TestingAdaptorInstance extends AdaptorInstance {
   public data: any = {};
 
-  // @ts-ignore
   // eslint-disable-next-line
   public setData = (val: any) => {};
 

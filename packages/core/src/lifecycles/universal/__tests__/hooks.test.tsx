@@ -71,7 +71,7 @@ describe('universal lifecycles', () => {
     // re-render the component with no UI changed
     wrapper.setManuallyResolvedUpdateCallback(false);
     renderedEffectCallback.mockClear();
-    // @ts-ignore
+    // @ts-expect-error
     forceUpdate();
     expect(renderedEffectCallback).toBeCalled();
   });
@@ -92,9 +92,9 @@ describe('universal lifecycles', () => {
     const wrapper = render(<Page />);
     wrapper.setManuallyResolvedUpdateCallback(true);
     // re-render the component
-    // @ts-ignore
+    // @ts-expect-error
     update();
-    // @ts-ignore
+    // @ts-expect-error
     update();
 
     renderedEffectCallback.mockClear();
@@ -207,7 +207,6 @@ describe('universal lifecycles', () => {
     let mockSetData = jest.fn();
     let update: () => void = () => {};
     let wrapper: RenderResult;
-    // @ts-ignore
     const originalPage = global.Page;
 
     beforeEach(() => {
@@ -233,7 +232,6 @@ describe('universal lifecycles', () => {
     });
 
     afterEach(() => {
-      // @ts-ignore
       global.Page = originalPage;
       setGojiBlockingMode(false);
     });

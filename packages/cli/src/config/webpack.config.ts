@@ -270,7 +270,7 @@ export const getWebpackConfig = ({
         },
       ],
     },
-    // @ts-ignore
+    // @ts-expect-error
     plugins: [
       new MiniCssExtractPlugin({
         filename: `[name].${CSS_FILE_EXT[target] ?? 'wxss'}`,

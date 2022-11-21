@@ -197,14 +197,13 @@ export class WeChatAdaptor extends Adaptor {
     const { type } = this;
     if (type === 'page') {
       const pageConfig: WeChatPageConfig = pageLifecycles;
-      // @ts-ignore FIXME:
+      // @ts-expect-error FIXME:
       Page({
         ...pageConfig,
         ...eventHandler,
       });
     } else if (type === 'component') {
       const componentConfig: WeChatComponentConfig = {
-        // @ts-ignore FIXME:
         methods: { ...pageLifecycles, ...eventHandler },
       };
       Component(componentConfig);

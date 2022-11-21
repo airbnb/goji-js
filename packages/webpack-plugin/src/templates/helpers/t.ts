@@ -4,7 +4,7 @@ import {
   createTag,
   inlineArrayTransformer,
   splitStringTransformer,
-  // @ts-ignore
+  // @ts-expect-error
   removeNonPrintingValuesTransformer,
   trimResultTransformer,
 } from 'common-tags';
@@ -27,7 +27,7 @@ const trimEndSubstitutions = (): TemplateTransformer => ({
   },
 });
 
-// @ts-ignore
+// @ts-expect-error
 export const t = createTag(
   // support function substitutions: ${() => 'hi'}
   runFunctionSubstitutions(),
