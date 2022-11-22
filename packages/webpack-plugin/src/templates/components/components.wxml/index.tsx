@@ -2,7 +2,7 @@ import { ComponentRenderData } from '../../../utils/components';
 import { element, getComponentTagName, getConditionFromSidOrName } from '../../commons/wxmlElement';
 import { CommonContext } from '../../helpers/context';
 import { t } from '../../helpers/t';
-import { FlattenText, FlattenSwiper } from './flatten';
+import { FlattenText, FlattenSwiper, FlattenMovableArea } from './flatten';
 
 export const componentAttribute = ({
   name,
@@ -93,11 +93,13 @@ export const componentItem = ({
 
 export const componentWxml = ({
   depth,
+  useFlattenMovableArea,
   useFlattenSwiper,
   components,
   componentsDepth,
 }: {
   depth: number;
+  useFlattenMovableArea: boolean;
   useFlattenSwiper: boolean;
   components: Array<ComponentRenderData>;
   componentsDepth: number;
@@ -111,6 +113,7 @@ export const componentWxml = ({
         <goji-subtree goji-id="{{id}}" nodes="{{c}}" class="{{props.className}}" style="{{props.style || ''}}"/>
       </block>
       ${useFlattenText && FlattenText()}
+      ${useFlattenMovableArea && FlattenMovableArea()}
       ${useFlattenSwiper && FlattenSwiper()}
       ${components.map(component => componentItem({ component, componentsDepth, depth }))}
       <block wx:else>

@@ -85,3 +85,67 @@ export const FlattenSwiper = () => t`
       </swiper>
     </block>
   `;
+
+export const FlattenMovableArea = () => t`
+  <block wx:elif="{{type === 'movable-area'}}">
+    <movable-area
+      data-goji-id="{{id || -1}}"
+      class="{{props.className}}"
+      id="{{props.id}}"
+      style="{{props.style || ''}}"
+      scale-area="{{props.scaleArea}}"
+      bindtouchstart="e"
+      bindtouchmove="e"
+      bindtouchcancel="e"
+      bindtouchend="e"
+      bindtap="e"
+      bindlongpress="e"
+      bindtransitionend="e"
+      bindanimationstart="e"
+      bindanimationiteration="e"
+      bindanimationend="e"
+      bindtouchforcechange="e"
+    >
+      <block wx:for="{{c}}" wx:key="id">
+        <movable-view
+          data-goji-id="{{item.id || -1}}"
+          class="{{item.props.className}}"
+          id="{{item.props.id}}"
+          style="{{item.props.style || ''}}"
+          direction="{{item.props.direction || 'none'}}"
+          inertia="{{item.props.inertia}}"
+          out-of-bounds="{{item.props.outOfBounds}}"
+          x="{{item.props.x}}"
+          y="{{item.props.y}}"
+          damping="{{item.props.damping === undefined ? 20 : item.props.damping }}"
+          friction="{{item.props.friction === undefined ? 2 : item.props.friction }}"
+          disabled="{{item.props.disabled}}"
+          scale="{{item.props.scale}}"
+          scale-min="{{item.props.scaleMin === undefined ? 0.5 : item.props.scaleMin }}"
+          scale-max="{{item.props.scaleMax === undefined ? 10 : item.props.scaleMax }}"
+          scale-value="{{item.props.scaleValue === undefined ? 1 : item.props.scaleValue }}"
+          animation="{{item.props.animation === undefined ? true : item.props.animation }}"
+          bindchange="e"
+          bindscale="e"
+          bindhtouchmove="e"
+          bindvtouchmove="e"
+          bindtouchstart="e"
+          bindtouchmove="e"
+          bindtouchcancel="e"
+          bindtouchend="e"
+          bindtap="e"
+          bindlongpress="e"
+          bindtransitionend="e"
+          bindanimationstart="e"
+          bindanimationiteration="e"
+          bindanimationend="e"
+          bindtouchforcechange="e"
+        >
+          <block wx:for="{{item.c}}" wx:key="id">
+            <template is="$$GOJI_COMPONENT0" data="{{ ...item }}" />
+          </block>
+        </movable-view>
+      </block>
+    </movable-area>
+  </block>
+`;

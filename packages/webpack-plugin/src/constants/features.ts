@@ -11,6 +11,9 @@ export const getFeatures = (target: GojiTarget) => ({
   // Baidu doesn't support `template` inside `text` so we need to flat text manually
   useFlattenText: target === 'baidu',
 
+  // Baidu has a bug that should use `movable-view` directly inside `movable-area`, no `template` is accepted
+  useFlattenMovableArea: target === 'baidu',
+
   // Alipay has a bug that should use `swiper-item` directly inside `swiper`, no `template` is accepted
   useFlattenSwiper: target === 'alipay',
 });

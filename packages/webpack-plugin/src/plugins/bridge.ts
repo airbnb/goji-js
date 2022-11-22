@@ -89,6 +89,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
             depth,
             componentsDepth: depth + 1,
             components: components.filter(c => !c.isLeaf),
+            useFlattenMovableArea: getFeatures(this.options.target).useFlattenMovableArea,
             useFlattenSwiper: getFeatures(this.options.target).useFlattenSwiper,
           }),
       );
@@ -139,6 +140,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           depth: 0,
           componentsDepth: 0,
           components: components.filter(c => !c.isLeaf),
+          useFlattenMovableArea: getFeatures(this.options.target).useFlattenMovableArea,
           useFlattenSwiper: getFeatures(this.options.target).useFlattenSwiper,
         }),
     );

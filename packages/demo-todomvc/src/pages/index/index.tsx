@@ -1,16 +1,13 @@
 import React from 'react';
-import { render } from '@goji/core';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import { MainSection } from '../../components/MainSection';
-import { todoReducer } from '../../duck/todo';
-
-const store = createStore(todoReducer);
+import { MovableArea, MovableView, render } from '@goji/core';
+import './index.css';
 
 const TodoList = () => (
-  <Provider store={store}>
-    <MainSection />
-  </Provider>
+  <MovableArea>
+    <MovableView direction="all" inertia>
+      text
+    </MovableView>
+  </MovableArea>
 );
 
 render(<TodoList />);
