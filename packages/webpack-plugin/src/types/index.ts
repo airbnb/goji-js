@@ -6,6 +6,7 @@ import webpack from 'webpack';
  */
 export interface GojiWebpackPluginRequiredOptions {
   target: GojiTarget;
+  nodeEnv: string;
   maxDepth: number;
   minimize: boolean;
   nohoist: {
@@ -20,6 +21,7 @@ export interface GojiWebpackPluginRequiredOptions {
  */
 export interface GojiWebpackPluginOptions {
   target: GojiTarget;
+  nodeEnv?: string;
   maxDepth?: number;
   minimize?: boolean;
   nohoist?: {

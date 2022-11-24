@@ -1,3 +1,4 @@
+import { renderTemplate } from '../..';
 import { t } from '../../helpers/t';
 import {
   element,
@@ -8,34 +9,70 @@ import {
 
 describe('getConditionFromSidOrName', () => {
   test('only name', () => {
-    expect(getConditionFromSidOrName({ name: 'view' })).toBe(`type === 'view'`);
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        getConditionFromSidOrName({ name: 'view' }),
+      ),
+    ).toBe(`meta.type === 'view'`);
   });
 
   test('has simplify id', () => {
-    expect(getConditionFromSidOrName({ name: 'view', sid: 100 })).toBe('sid === 100');
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        getConditionFromSidOrName({ name: 'view', sid: 100 }),
+      ),
+    ).toBe('meta.simplifiedId === 100');
   });
 });
 
 describe('getComponentTagName', () => {
   test('simple component', () => {
-    expect(getComponentTagName({ name: 'view' })).toBe('view');
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        getComponentTagName({ name: 'view' }),
+      ),
+    ).toBe('view');
   });
 
   test('wrapped component', () => {
-    expect(getComponentTagName({ name: 'view', isWrapped: true })).toBe('goji-view');
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        getComponentTagName({ name: 'view', isWrapped: true }),
+      ),
+    ).toBe('goji-view');
   });
 });
 
 describe('getEventName', () => {
   test('alipay', () => {
-    expect(getEventName({ target: 'alipay', event: 'touchstart' })).toBe('onTouchstart');
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        getEventName({ target: 'alipay', event: 'touchstart' }),
+      ),
+    ).toBe('onTouchstart');
   });
 
   test('other targets', () => {
-    expect(getEventName({ target: 'wechat', event: 'touchstart' })).toBe('bindtouchstart');
-    expect(getEventName({ target: 'baidu', event: 'touchstart' })).toBe('bindtouchstart');
-    expect(getEventName({ target: 'qq', event: 'touchstart' })).toBe('bindtouchstart');
-    expect(getEventName({ target: 'toutiao', event: 'touchstart' })).toBe('bindtouchstart');
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        getEventName({ target: 'wechat', event: 'touchstart' }),
+      ),
+    ).toBe('bindtouchstart');
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        getEventName({ target: 'baidu', event: 'touchstart' }),
+      ),
+    ).toBe('bindtouchstart');
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        getEventName({ target: 'qq', event: 'touchstart' }),
+      ),
+    ).toBe('bindtouchstart');
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        getEventName({ target: 'toutiao', event: 'touchstart' }),
+      ),
+    ).toBe('bindtouchstart');
   });
 });
 

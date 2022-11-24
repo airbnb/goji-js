@@ -1,6 +1,7 @@
 import { ComponentRenderData } from '../../../utils/components';
 import { element, getComponentTagName, getConditionFromSidOrName } from '../../commons/wxmlElement';
 import { CommonContext } from '../../helpers/context';
+import { getIds } from '../../helpers/ids';
 import { t } from '../../helpers/t';
 import { FlattenText, FlattenSwiper } from './flatten';
 
@@ -13,26 +14,28 @@ export const componentAttribute = ({
   value: string;
   fallback?: any;
 }) => {
+  const ids = getIds();
   switch (typeof fallback) {
     case 'undefined':
-      return t`${name}="{{props.${value}}}"`;
+      return t`${name}="{{${ids.meta}.${ids.props}.${value}}}"`;
     case 'string':
-      return t`${name}="{{props.${value} || '${fallback}'}}"`;
+      return t`${name}="{{${ids.meta}.${ids.props}.${value} || '${fallback}'}}"`;
     default:
-      return t`${name}="{{props.${value} === undefined ? ${JSON.stringify(
+      return t`${name}="{{${ids.meta}.${ids.props}.${value} === undefined ? ${JSON.stringify(
         fallback,
-      )} : props.${value} }}"`;
+      )} : ${ids.meta}.${ids.props}.${value} }}"`;
   }
 };
 
 export const componentAttributes = ({ component }: { component: ComponentRenderData }) => {
+  const ids = getIds();
   const propsArray: Array<string> = [];
   if (component.isWrapped) {
     if (!component.isLeaf) {
-      propsArray.push('nodes="{{c}}"');
+      propsArray.push(`nodes="{{${ids.meta}.${ids.children}}}"`);
     }
     propsArray.push(
-      'goji-id="{{id || -1}}"',
+      `goji-id="{{${ids.meta}.${ids.gojiId} || -1}}"`,
       // use non-keywords to passthrough props to wrapped components
       componentAttribute({ name: 'class-name', value: 'className' }),
       componentAttribute({ name: 'the-id', value: 'id' }),
@@ -40,7 +43,7 @@ export const componentAttributes = ({ component }: { component: ComponentRenderD
     );
   } else {
     propsArray.push(
-      'data-goji-id="{{id || -1}}"',
+      `data-goji-id="{{${ids.meta}.${ids.gojiId} || -1}}"`,
       componentAttribute({ name: 'class', value: 'className' }),
       componentAttribute({ name: 'id', value: 'id' }),
       componentAttribute({ name: 'style', value: 'style', fallback: '' }),
@@ -64,6 +67,7 @@ export const componentItem = ({
   depth: number;
   componentsDepth: number;
 }) => {
+  const ids = getIds();
   const inlineChildrenRender = CommonContext.read().target === 'alipay';
   const tagName = getComponentTagName(component);
   const attributes = componentAttributes({ component });
@@ -73,8 +77,8 @@ export const componentItem = ({
     }
     if (inlineChildrenRender) {
       return t`
-        <block wx:for="{{c}}" wx:key="id">
-          <template is="$$GOJI_COMPONENT${componentsDepth}" data="{{ ...item }}" />
+        <block wx:for="{{${ids.meta}.${ids.children}}}" wx:key="${ids.gojiId}">
+          <template is="$$GOJI_COMPONENT${componentsDepth}" data="{{ ${ids.meta}: item }}" />
         </block>
       `;
     }
@@ -102,13 +106,20 @@ export const componentWxml = ({
   components: Array<ComponentRenderData>;
   componentsDepth: number;
 }) => {
+  const ids = getIds();
   const useFlattenText = CommonContext.read().target === 'baidu';
 
   return t`
     <template name="$$GOJI_COMPONENT${depth}">
-      <block wx:if="{{type === 'GOJI_TYPE_TEXT'}}">{{text}}</block>
-      <block wx:elif="{{type === 'GOJI_TYPE_SUBTREE'}}">
-        <goji-subtree goji-id="{{id}}" nodes="{{c}}" class="{{props.className}}" style="{{props.style || ''}}"/>
+      <block wx:if="{{${ids.meta}.${ids.type} === 'GOJI_TYPE_TEXT'}}">{{${ids.meta}.${
+    ids.text
+  }}}</block>
+      <block wx:elif="{{${ids.meta}.${ids.type} === 'GOJI_TYPE_SUBTREE'}}">
+        <goji-subtree goji-id="{{${ids.meta}.${ids.gojiId}}}" nodes="{{${ids.meta}.${
+    ids.children
+  }}}" class="{{${ids.meta}.${ids.props}.className}}" style="{{${ids.meta}.${
+    ids.props
+  }.style || ''}}"/>
       </block>
       ${useFlattenText && FlattenText()}
       ${useFlattenSwiper && FlattenSwiper()}

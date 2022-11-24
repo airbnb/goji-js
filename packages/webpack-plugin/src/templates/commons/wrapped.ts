@@ -1,10 +1,11 @@
 import { camelCase } from 'lodash';
+import { getIds } from '../helpers/ids';
 import { t } from '../helpers/t';
 
 export interface WrappedConfig {
   memorizedProps?: Array<string>;
   customizedEventHandler?: Record<string, string>;
-  customizedChildren?: string;
+  customizedChildren?: () => string;
 }
 
 export const DEFAULT_WRAPPED_CONFIG: WrappedConfig = {};
@@ -48,19 +49,23 @@ export const WRAPPED_CONFIGS: Record<string, WrappedConfig> = {
     // should manually flat the `swiper-item` here as `swiper` required https://developers.weixin.qq.com/miniprogram/dev/component/swiper.html
     // we assume there won't be any other elements except `swiper-item`
     // don't use style here because WeChat's bug https://developers.weixin.qq.com/community/develop/doc/00064c6c9a4650420e59218ea5ac00
-    customizedChildren: t`
-      <import src="../components1.wxml" />
-      <swiper-item
-        wx:for="{{nodes}}"
-        wx:key="id"
-        class="{{item.props.className}}"
-        item-id="{{item.props.itemId}}"
-        data-goji-id="{{item.id}}"
-      >
-        <block wx:for="{{item.c}}" wx:key="id">
-          <template is="$$GOJI_COMPONENT1" data="{{ ...item }}" />
-        </block>
-      </swiper-item>
-    `,
+    customizedChildren: () => {
+      const ids = getIds();
+
+      return t`
+        <import src="../components1.wxml" />
+        <swiper-item
+          wx:for="{{nodes}}"
+          wx:key="${ids.gojiId}"
+          class="{{item.${ids.props}.className}}"
+          item-id="{{item.${ids.props}.itemId}}"
+          data-goji-id="{{item.${ids.gojiId}}}"
+        >
+          <block wx:for="{{item.${ids.children}}}" wx:key="${ids.gojiId}">
+            <template is="$$GOJI_COMPONENT1" data="{{ ${ids.meta}: item }}" />
+          </block>
+        </swiper-item>
+      `;
+    },
   },
 };

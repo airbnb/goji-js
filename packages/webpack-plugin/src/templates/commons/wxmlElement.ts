@@ -1,9 +1,15 @@
 import { GojiTarget } from '@goji/core';
 import camelCase from 'lodash/camelCase';
+import { getIds } from '../helpers/ids';
 import { t } from '../helpers/t';
 
-export const getConditionFromSidOrName = ({ sid, name }: { sid?: number; name: string }) =>
-  sid === undefined ? t`type === '${name}'` : t`sid === ${sid}`;
+export const getConditionFromSidOrName = ({ sid, name }: { sid?: number; name: string }) => {
+  const ids = getIds();
+
+  return sid === undefined
+    ? t`${ids.meta}.${ids.type} === '${name}'`
+    : t`${ids.meta}.${ids.simplifiedId} === ${sid}`;
+};
 
 export const getComponentTagName = ({ isWrapped, name }: { isWrapped?: boolean; name: string }) =>
   t`${isWrapped && 'goji-'}${name}`;

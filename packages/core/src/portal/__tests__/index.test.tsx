@@ -3,18 +3,21 @@ import { createPortal } from '..';
 import { View } from '../..';
 import { render } from '../../__tests__/helpers';
 import { act } from '../../testUtils';
+import { ElementNodeDevelopment } from '../../reconciler/instance';
 
 describe('createPortal', () => {
   test('works', () => {
     const Content = () => createPortal(<View>Content</View>);
     const App = () => (
-        <View>
-          <View>title</View>
-          <Content />
-        </View>
-      );
+      <View>
+        <View>title</View>
+        <Content />
+      </View>
+    );
     const wrapper = render(<App />);
-    expect(wrapper.getContainer().c.length).toBe(2);
+    expect((wrapper.getContainer() as { meta: ElementNodeDevelopment }).meta.children.length).toBe(
+      2,
+    );
   });
 
   test('works in condition', () => {
@@ -31,13 +34,17 @@ describe('createPortal', () => {
       );
     };
     const wrapper = render(<App />);
-    expect(wrapper.getContainer().c.length).toBe(1);
+    expect((wrapper.getContainer() as { meta: ElementNodeDevelopment }).meta.children.length).toBe(
+      1,
+    );
 
     const spy = jest.spyOn(global.console, 'error');
     act(() => {
       showPortal();
     });
-    expect(wrapper.getContainer().c.length).toBe(2);
+    expect((wrapper.getContainer() as { meta: ElementNodeDevelopment }).meta.children.length).toBe(
+      2,
+    );
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
   });

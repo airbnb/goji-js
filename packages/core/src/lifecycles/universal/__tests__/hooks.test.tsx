@@ -239,13 +239,13 @@ describe('universal lifecycles', () => {
     it('resolve: 0 -> 1 -> 2', () => {
       update();
       wrapper.resolveUpdateCallback('0');
-      expect(mockSetData.mock.calls[0][0]).toEqual({ 'c[0].c[0].text': '1' });
+      expect(mockSetData.mock.calls[0][0]).toEqual({ 'meta.children[0].children[0].text': '1' });
       update();
       update();
       wrapper.resolveUpdateCallback('2');
       wrapper.resolveUpdateCallback('1');
       expect(mockSetData).toBeCalledTimes(2);
-      expect(mockSetData.mock.calls[1][0]).toEqual({ 'c[0].c[0].text': '3' });
+      expect(mockSetData.mock.calls[1][0]).toEqual({ 'meta.children[0].children[0].text': '3' });
     });
 
     it('resolve: 1 -> 0 -> 1', () => {
@@ -256,12 +256,12 @@ describe('universal lifecycles', () => {
       update();
       wrapper.resolveUpdateCallback('0');
       expect(mockSetData).toBeCalledTimes(1);
-      expect(mockSetData.mock.calls[0][0]).toEqual({ 'c[0].c[0].text': '2' });
+      expect(mockSetData.mock.calls[0][0]).toEqual({ 'meta.children[0].children[0].text': '2' });
 
       update();
       wrapper.resolveUpdateCallback('1');
       expect(mockSetData).toBeCalledTimes(2);
-      expect(mockSetData.mock.calls[1][0]).toEqual({ 'c[0].c[0].text': '3' });
+      expect(mockSetData.mock.calls[1][0]).toEqual({ 'meta.children[0].children[0].text': '3' });
     });
 
     it('resolve: 2 -> 0 -> 1 -> 1', () => {
@@ -276,12 +276,12 @@ describe('universal lifecycles', () => {
       wrapper.resolveUpdateCallback('0');
       wrapper.resolveUpdateCallback('1');
       expect(mockSetData).toBeCalledTimes(1);
-      expect(mockSetData.mock.calls[0][0]).toEqual({ 'c[0].c[0].text': '3' });
+      expect(mockSetData.mock.calls[0][0]).toEqual({ 'meta.children[0].children[0].text': '3' });
 
       update();
       wrapper.resolveUpdateCallback('1');
       expect(mockSetData).toBeCalledTimes(2);
-      expect(mockSetData.mock.calls[1][0]).toEqual({ 'c[0].c[0].text': '4' });
+      expect(mockSetData.mock.calls[1][0]).toEqual({ 'meta.children[0].children[0].text': '4' });
     });
   });
 });

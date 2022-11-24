@@ -6,7 +6,7 @@ import { renderIntoContainer } from './render';
 import { ElementInstance } from './reconciler/instance';
 import { createEventProxy } from './components/eventProxy';
 import { GojiProvider } from './components';
-import { GOJI_VIRTUAL_ROOT } from './constants';
+import { getTemplateIds, GOJI_VIRTUAL_ROOT } from './constants';
 
 let gojiBlockingMode = false;
 
@@ -59,7 +59,9 @@ export class Container {
   }
 
   public requestUpdate() {
-    const [data, diff] = this.virtualRootElement.pure('');
+    const ids = getTemplateIds();
+    const [elementNode, diff] = this.virtualRootElement.pure(ids.meta);
+    const data = { [ids.meta]: elementNode };
     if (process.env.NODE_ENV !== 'production') {
       // eslint-disable-next-line global-require
       const { verifyDiff } = require('./utils/diff');

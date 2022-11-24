@@ -28,6 +28,7 @@ export function withContext<T, R>(context: Context<T>, value: T, callback: () =>
 
 export interface CommonContextType {
   target: GojiTarget;
+  nodeEnv: string;
 }
 
 export const CommonContext = createContext<CommonContextType>();

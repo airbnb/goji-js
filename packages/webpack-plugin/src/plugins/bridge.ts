@@ -53,7 +53,10 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
     merge?: (newSource: string, oldSource: string) => string,
   ) {
     const formattedAssetPath = this.transformExtForPath(assetPath);
-    let content = renderTemplate({ target: this.options.target }, component);
+    let content = renderTemplate(
+      { target: this.options.target, nodeEnv: this.options.nodeEnv },
+      component,
+    );
     const type = path.posix.extname(assetPath).replace(/^\./, '');
     content = await transformTemplate(content, this.options.target, type);
     if (!merge && compilation.assets[formattedAssetPath] !== undefined) {
@@ -237,7 +240,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           await this.renderTemplateComponentToAsset(compilation, `${entrypoint}.wxml`, () =>
             itemWxml({
               relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
-              fixBaiduTemplateBug: this.options.target === 'baidu',
             }),
           );
           // generate entry json

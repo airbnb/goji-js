@@ -1,9 +1,14 @@
+import { getIds } from '../helpers/ids';
 import { t } from '../helpers/t';
 
-export const subtreeWxml = () => t`
+export const subtreeWxml = () => {
+  const ids = getIds();
+
+  return t`
     <import src="./components0.wxml" />
 
-    <block wx:for="{{nodes}}" wx:key="id">
-      <template is="$$GOJI_COMPONENT0" data="{{ ...item }}" />
+    <block wx:for="{{nodes}}" wx:key="${ids.gojiId}">
+      <template is="$$GOJI_COMPONENT0" data="{{ ${ids.meta}: item }}" />
     </block>
   `;
+};
