@@ -1,29 +1,38 @@
+import { renderTemplate } from '../..';
 import { ComponentRenderData } from '../../../utils/components';
 import { componentAttribute, componentAttributes } from '../components.wxml';
 
 describe('componentAttribute', () => {
   test('no fallback', () => {
-    expect(componentAttribute({ name: 'class', value: 'className' })).toBe(
-      'class="{{props.className}}"',
-    );
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        componentAttribute({ name: 'class', value: 'className' }),
+      ),
+    ).toBe('class="{{meta.props.className}}"');
   });
 
   test('string fallback', () => {
-    expect(componentAttribute({ name: 'class', value: 'className', fallback: 'default' })).toBe(
-      `class="{{props.className || 'default'}}"`,
-    );
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        componentAttribute({ name: 'class', value: 'className', fallback: 'default' }),
+      ),
+    ).toBe(`class="{{meta.props.className || 'default'}}"`);
   });
 
   test('number fallback', () => {
-    expect(componentAttribute({ name: 'class', value: 'className', fallback: 123 })).toBe(
-      `class="{{props.className === undefined ? 123 : props.className }}"`,
-    );
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        componentAttribute({ name: 'class', value: 'className', fallback: 123 }),
+      ),
+    ).toBe(`class="{{meta.props.className === undefined ? 123 : meta.props.className }}"`);
   });
 
   test('boolean fallback', () => {
-    expect(componentAttribute({ name: 'class', value: 'className', fallback: true })).toBe(
-      `class="{{props.className === undefined ? true : props.className }}"`,
-    );
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        componentAttribute({ name: 'class', value: 'className', fallback: true }),
+      ),
+    ).toBe(`class="{{meta.props.className === undefined ? true : meta.props.className }}"`);
   });
 });
 
@@ -37,10 +46,10 @@ describe('componentAttributes', () => {
 
     expect(componentAttributes({ component })).toEqual(
       expect.arrayContaining([
-        'data-goji-id="{{id || -1}}"',
-        'class="{{props.className}}"',
-        'id="{{props.id}}"',
-        `style="{{props.style || ''}}"`,
+        'data-goji-id="{{meta.gojiId || -1}}"',
+        'class="{{meta.props.className}}"',
+        'id="{{meta.props.id}}"',
+        `style="{{meta.props.style || ''}}"`,
       ]),
     );
   });
@@ -53,13 +62,17 @@ describe('componentAttributes', () => {
       attributes: [],
     };
 
-    expect(componentAttributes({ component })).toEqual(
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        componentAttributes({ component }),
+      ),
+    ).toEqual(
       expect.arrayContaining([
-        'nodes="{{c}}"',
-        'goji-id="{{id || -1}}"',
-        'class-name="{{props.className}}"',
-        'the-id="{{props.id}}"',
-        `the-style="{{props.style || ''}}"`,
+        'nodes="{{meta.children}}"',
+        'goji-id="{{meta.gojiId || -1}}"',
+        'class-name="{{meta.props.className}}"',
+        'the-id="{{meta.props.id}}"',
+        `the-style="{{meta.props.style || ''}}"`,
       ]),
     );
   });
@@ -71,9 +84,11 @@ describe('componentAttributes', () => {
       attributes: [],
     };
 
-    expect(componentAttributes({ component })).toEqual(
-      expect.arrayContaining(['tap="e"', 'change="e"']),
-    );
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        componentAttributes({ component }),
+      ),
+    ).toEqual(expect.arrayContaining(['tap="e"', 'change="e"']));
   });
 
   test('events in wrapped component', () => {
@@ -84,9 +99,11 @@ describe('componentAttributes', () => {
       attributes: [],
     };
 
-    expect(componentAttributes({ component })).not.toEqual(
-      expect.arrayContaining(['tap="e"', 'change="e"']),
-    );
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        componentAttributes({ component }),
+      ),
+    ).not.toEqual(expect.arrayContaining(['tap="e"', 'change="e"']));
   });
 
   test('attributes', () => {
@@ -106,10 +123,14 @@ describe('componentAttributes', () => {
       ],
     };
 
-    expect(componentAttributes({ component })).toEqual(
+    expect(
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        componentAttributes({ component }),
+      ),
+    ).toEqual(
       expect.arrayContaining([
-        'scale-min="{{props.scaleMin}}"',
-        'scale-max="{{props.scaleMax === undefined ? 100 : props.scaleMax }}"',
+        'scale-min="{{meta.props.scaleMin}}"',
+        'scale-max="{{meta.props.scaleMax === undefined ? 100 : meta.props.scaleMax }}"',
       ]),
     );
   });

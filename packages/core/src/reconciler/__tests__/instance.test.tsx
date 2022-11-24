@@ -1,5 +1,5 @@
 import React, { useState, createRef } from 'react';
-import { ElementInstance, ElementNode, TextNode } from '../instance';
+import { ElementInstance, ElementNodeDevelopment, TextNodeDevelopment } from '../instance';
 import { Container } from '../../container';
 import { TYPE_SUBTREE } from '../../constants';
 import { View, gojiEvents } from '../..';
@@ -33,8 +33,8 @@ describe('ElementInstance', () => {
 
   test('pure works', () => {
     const [pured] = instance.pure('');
-    expect(pured.props.className).toBe('wrapper');
-    expect(pured.props.onClick).toBeUndefined();
+    expect((pured as ElementNodeDevelopment).props.className).toBe('wrapper');
+    expect((pured as ElementNodeDevelopment).props.onClick).toBeUndefined();
   });
 
   test('simplify works', () => {
@@ -47,7 +47,7 @@ describe('ElementInstance', () => {
       new Container(new TestingAdaptorInstance()),
     );
     const [pured] = simpleInstance.pure('');
-    expect(pured.sid).not.toBeUndefined();
+    expect((pured as ElementNodeDevelopment).simplifiedId).not.toBeUndefined();
   });
 
   describe('getSubtreeId', () => {
@@ -221,9 +221,12 @@ describe('ElementInstance', () => {
     const { getContainer } = render(<App />);
     const getTextList = () => {
       // FIXME: will implement better debug API for RenderResult
-      const viewNodes = (getContainer().c[0] as ElementNode).c;
-      const textNodes = viewNodes.map(view => (view as ElementNode).c[0]);
-      return textNodes.map(text => (text as TextNode).text);
+      const viewNodes = (
+        (getContainer() as { meta: ElementNodeDevelopment }).meta
+          .children[0] as ElementNodeDevelopment
+      ).children;
+      const textNodes = viewNodes.map(view => (view as ElementNodeDevelopment).children[0]);
+      return textNodes.map(text => (text as TextNodeDevelopment).text);
     };
     expect(getTextList()).toEqual(['1', '2', '3']);
     act(() => {
@@ -250,9 +253,9 @@ describe('ElementInstance', () => {
     const { getContainer } = render(<App />);
     const getTextList = () => {
       // FIXME: will implement better debug API for RenderResult
-      const viewNodes = (getContainer() as ElementNode).c;
-      const textNodes = viewNodes.map(view => (view as ElementNode).c[0]);
-      return textNodes.map(text => (text as TextNode).text);
+      const viewNodes = (getContainer() as { meta: ElementNodeDevelopment }).meta.children;
+      const textNodes = viewNodes.map(view => (view as ElementNodeDevelopment).children[0]);
+      return textNodes.map(text => (text as TextNodeDevelopment).text);
     };
     expect(getTextList()).toEqual(['1', '2', '3']);
     // @ts-expect-error

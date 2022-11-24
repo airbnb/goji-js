@@ -1,5 +1,5 @@
 import { Container } from '../container';
-import { TYPE_TEXT, TYPE_SUBTREE } from '../constants';
+import { TYPE_TEXT, TYPE_SUBTREE, getTemplateIds } from '../constants';
 import { gojiEvents } from '../events';
 import { getNextInstanceId } from '../utils/id';
 import { styleAttrStringify } from '../utils/styleAttrStringify';
@@ -13,20 +13,37 @@ export type PuredValue = undefined | null | boolean | number | string | object |
 export type Updates = Record<string, PuredValue | ElementNode | TextNode>;
 export type InstanceProps = Record<string, any>;
 
-export type ElementNode = {
-  type: string;
-  props: InstanceProps;
-  // short name for children_
+// these fields must keep in sync with `getTemplateIds`
+
+export type ElementNodeProduction = {
+  t: string;
+  p: InstanceProps;
   c: Array<ElementNode | TextNode>;
-  id: number;
-  // short name for simplifyId
-  sid?: number;
+  i: number;
+  s?: number;
 };
 
-export type TextNode = {
+export type ElementNodeDevelopment = {
+  type: string;
+  props: InstanceProps;
+  children: Array<ElementNode | TextNode>;
+  id: number;
+  simplifiedId?: number;
+};
+
+export type ElementNode = ElementNodeProduction | ElementNodeDevelopment;
+
+export type TextNodeProduction = {
+  t: string;
+  x: string;
+};
+
+export type TextNodeDevelopment = {
   type: string;
   text: string;
 };
+
+export type TextNode = TextNodeProduction | TextNodeDevelopment;
 
 export enum UpdateType {
   CREATED,
@@ -131,6 +148,7 @@ export class ElementInstance extends BaseInstance {
   }
 
   public pure(path: string, parentTag?: UpdateType): [ElementNode, Updates] {
+    const ids = getTemplateIds();
     const { type, children, id, props } = this;
     let { tag } = this;
 
@@ -144,28 +162,30 @@ export class ElementInstance extends BaseInstance {
     this.hasChildrenUpdate = false;
     const prefix = path ? `${path}.` : path;
     let updates = {};
-    const c: Array<TextNode | ElementNode> = [];
+    const pureChildren: Array<TextNode | ElementNode> = [];
 
     children.forEach((child, index) => {
-      const [child_, update] = child.pure(`${prefix}c[${index}]`, tag);
+      const [pureChild, update] = child.pure(`${prefix}${ids.children}[${index}]`, tag);
       updates = Object.assign(updates, update);
-      c.push(child_);
+      pureChildren.push(pureChild);
     });
 
+    const pureProps = this.pureProps();
     const node: ElementNode = {
-      type,
-      props: this.pureProps(),
-      c,
-      id,
-    };
+      [ids.type]: type,
+      [ids.props]: pureProps,
+      [ids.children]: pureChildren,
+      [ids.gojiId]: id,
+    } as any;
 
     const simplifyId = findSimplifyId(type, props);
     if (simplifyId !== undefined) {
-      node.sid = simplifyId;
+      node[ids.simplifiedId] = simplifyId;
     }
 
     if (this.previous && simplifyId !== this.previousSimplifyId) {
-      updates[`${path}.sid`] = typeof simplifyId === 'undefined' ? null : simplifyId;
+      updates[`${path}.${ids.simplifiedId}`] =
+        typeof simplifyId === 'undefined' ? null : simplifyId;
     }
 
     this.previousSimplifyId = simplifyId;
@@ -174,8 +194,8 @@ export class ElementInstance extends BaseInstance {
       return [node, updates];
     }
 
-    if (tag === UpdateType.UPDATED && !shallowEqual(this.previous, node.props)) {
-      updates[`${path}.props`] = node.props;
+    if (tag === UpdateType.UPDATED && !shallowEqual(this.previous, pureProps)) {
+      updates[`${path}.${ids.props}`] = pureProps;
     }
 
     if (tag === UpdateType.CREATED) {
@@ -318,14 +338,15 @@ export class TextInstance extends BaseInstance {
   }
 
   public pure(path: string, parentTag?: UpdateType): [TextNode, Updates] {
+    const ids = getTemplateIds();
     const { id, type, text, tag } = this;
     this.tag = undefined;
 
-    const node = {
-      id,
-      type,
-      text,
-    };
+    const node: TextNode = {
+      [ids.gojiId]: id,
+      [ids.type]: type,
+      [ids.text]: text,
+    } as any;
 
     const updates = {};
 
@@ -334,7 +355,7 @@ export class TextInstance extends BaseInstance {
     }
 
     if (tag === UpdateType.UPDATED && this.text !== this.previous) {
-      updates[`${path}.text`] = node.text;
+      updates[`${path}.${ids.text}`] = node[ids.text];
     }
 
     if (tag === UpdateType.CREATED) {

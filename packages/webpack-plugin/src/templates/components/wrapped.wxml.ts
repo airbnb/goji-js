@@ -3,9 +3,11 @@ import { ComponentDesc } from '../../constants/components';
 import { WRAPPED_CONFIGS, DEFAULT_WRAPPED_CONFIG } from '../commons/wrapped';
 import { element, getEventName } from '../commons/wxmlElement';
 import { CommonContext } from '../helpers/context';
+import { getIds } from '../helpers/ids';
 import { t } from '../helpers/t';
 
 export const wrappedWxml = ({ component }: { component: ComponentDesc }) => {
+  const ids = getIds();
   const { target } = CommonContext.read();
   const config = WRAPPED_CONFIGS[component.name] ?? DEFAULT_WRAPPED_CONFIG;
   const attributes: Array<string> = [];
@@ -36,15 +38,15 @@ export const wrappedWxml = ({ component }: { component: ComponentDesc }) => {
 
   const children = (() => {
     if (config.customizedChildren) {
-      return config.customizedChildren;
+      return config.customizedChildren();
     }
     if (component.isLeaf) {
       return '';
     }
     return t`
       <import src="../components0.wxml" />
-      <block wx:for="{{nodes}}" wx:key="id">
-        <template is="$$GOJI_COMPONENT0" data="{{ ...item }}" />
+      <block wx:for="{{nodes}}" wx:key="${ids.gojiId}">
+        <template is="$$GOJI_COMPONENT0" data="{{ ${ids.meta}: item }}" />
       </block>
     `;
   })();

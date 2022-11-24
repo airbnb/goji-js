@@ -1,4 +1,4 @@
-import { CommonContext } from '../helpers/context';
+import { getIds } from '../helpers/ids';
 import { t } from '../helpers/t';
 
 export const childrenWxml = ({
@@ -8,28 +8,20 @@ export const childrenWxml = ({
   componentsDepth: number;
   maxDepth: number;
 }) => {
-  const fixBaiduTemplateBug = CommonContext.read().target === 'baidu';
+  const ids = getIds();
 
   if (componentsDepth < maxDepth) {
     return t`
       <import src="./components${componentsDepth}.wxml" />
-      <block wx:for="{{c}}" wx:key="id">
+      <block wx:for="{{${ids.meta}.${ids.children}}}" wx:key="${ids.gojiId}">
         ${
-          // `item.sid: undefined` on Baidu doesn't work
-          // remember to add all fields which may be undefined
-          // see: swanide://fragment/30ae9e8c97610d93bac049245254dea51576484421939
-          fixBaiduTemplateBug
-            ? t`
-            <template is="$$GOJI_COMPONENT${componentsDepth}" data="{{ ...item, sid: item.sid }}" />
-          `
-            : t`
-          <template is="$$GOJI_COMPONENT${componentsDepth}" data="{{ ...item }}" />
-        `
+          // pass the whole object to prevent this bug https://github.com/airbnb/goji-js/issues/179
+          t`<template is="$$GOJI_COMPONENT${componentsDepth}" data="{{ ${ids.meta}: item }}" />`
         }
       </block>
     `;
   }
   return t`
-    <goji-subtree goji-id="{{id}}" nodes="{{c}}" />
+    <goji-subtree goji-id="{{${ids.meta}.${ids.gojiId}}}" nodes="{{${ids.meta}.${ids.children}}}" />
   `;
 };

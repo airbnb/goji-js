@@ -35,7 +35,7 @@ describe('updates', () => {
 
     adaptor.run(<TestComp />);
     updater(3);
-    expect(diff).toEqual({ 'c[0].c[0].text': '3' });
+    expect(diff).toEqual({ 'meta.children[0].children[0].text': '3' });
   });
 
   it('create or remove instance, re-render the whole sub-tree', () => {
@@ -55,13 +55,13 @@ describe('updates', () => {
     adaptor.run(<TestComp />);
     updater(true);
 
-    expect(Object.keys(diff)).toEqual(['c[0].c[1]']);
-    expect(diff['c[0].c[1]'].c.length).toEqual(1);
+    expect(Object.keys(diff)).toEqual(['meta.children[0].children[1]']);
+    expect(diff['meta.children[0].children[1]'].children.length).toEqual(1);
 
     updater(false);
 
-    expect(Object.keys(diff)).toEqual(['c[0].c[1]']);
-    expect(diff['c[0].c[1]'].c.length).toEqual(0);
+    expect(Object.keys(diff)).toEqual(['meta.children[0].children[1]']);
+    expect(diff['meta.children[0].children[1]'].children.length).toEqual(0);
   });
 
   it('only update events, should not trigger setData', () => {
@@ -102,6 +102,6 @@ describe('updates', () => {
 
     // @ts-expect-error
     updater(false);
-    expect(Object.keys(diff)).toEqual(['c[0].sid']);
+    expect(Object.keys(diff)).toEqual(['meta.children[0].simplifiedId']);
   });
 });

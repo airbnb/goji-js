@@ -34,6 +34,7 @@ describe('GojiBasedWebpackPlugin', () => {
       maxDepth: 5,
       minimize: false,
       nohoist: { enable: true, maxPackages: 1, test: () => false },
+      nodeEnv: 'development',
     };
     wechatTestPugin = new GojiTestWebpackPlugin({ ...commonOptions, target: 'wechat' });
     alipayTestPugin = new GojiTestWebpackPlugin({ ...commonOptions, target: 'alipay' });

@@ -2,14 +2,16 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import set from 'lodash/set';
 import unset from 'lodash/unset';
+import { getTemplateIds } from '../constants';
 import { Container } from '../container';
 
 const dataCache = new WeakMap<Container, object>();
 
 export const applyDiff = (prevData: object, diff: object) => {
+  const ids = getTemplateIds();
   const newData = cloneDeep(prevData);
   for (const path of Object.keys(diff)) {
-    if (path.endsWith('sid') && diff[path] === null) {
+    if (path.endsWith(ids.simplifiedId) && diff[path] === null) {
       unset(newData, path);
     } else {
       set(newData, path, diff[path]);

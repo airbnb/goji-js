@@ -21,7 +21,7 @@ describe('nativeComponentJson', () => {
 
   test('leaf component', () => {
     const json = JSON.parse(
-      renderTemplate({ target: 'wechat' }, () =>
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
         nativeComponentJson({ isLeaf: true, relativePathToBridge: '.', components }),
       ),
     );
@@ -31,7 +31,7 @@ describe('nativeComponentJson', () => {
 
   test('non-leaf component', () => {
     const json = JSON.parse(
-      renderTemplate({ target: 'wechat' }, () =>
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
         nativeComponentJson({ isLeaf: false, relativePathToBridge: '.', components }),
       ),
     );

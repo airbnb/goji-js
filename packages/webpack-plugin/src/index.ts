@@ -18,11 +18,12 @@ export class GojiWebpackPlugin implements webpack.WebpackPluginInstance {
   public static normalizeOptions(
     options: GojiWebpackPluginOptions,
   ): GojiWebpackPluginRequiredOptions {
-    const nodeEnv = process.env.NODE_ENV;
+    const nodeEnv = options.nodeEnv ?? process.env.NODE_ENV ?? 'development';
     const isProd = nodeEnv === 'production';
 
     return {
       target: options.target,
+      nodeEnv,
       maxDepth: options.maxDepth ?? 5,
       minimize: options.minimize ?? nodeEnv !== 'development',
       nohoist: {

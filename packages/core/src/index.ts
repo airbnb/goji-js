@@ -36,6 +36,8 @@ export {
   // eslint-disable-next-line camelcase
   SimplifyComponent as unstable_SimplifyComponent,
   GojiTarget,
+  // eslint-disable-next-line camelcase
+  getTemplateIds as unstable_getTemplateIds,
 } from './constants';
 export { gojiEvents } from './events';
 export { Partial } from './partial';
