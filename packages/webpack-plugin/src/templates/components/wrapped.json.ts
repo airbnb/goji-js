@@ -1,16 +1,22 @@
 import { ComponentDesc } from '../../constants/components';
+import { PluginComponentDesc } from '../../utils/pluginComponent';
 import { nativeComponentJson } from '../commons/nativeComponentJson';
 
 export const wrappedJson = ({
   relativePathToBridge,
   component,
   components,
+  pluginComponents,
 }: {
   relativePathToBridge: string;
-  component: ComponentDesc;
+  component: ComponentDesc | PluginComponentDesc;
   components: ComponentDesc[];
-}) => nativeComponentJson({
+  pluginComponents: PluginComponentDesc[];
+}) =>
+  nativeComponentJson({
+    isComponent: true,
+    isLeaf: component.isLeaf ?? false,
     relativePathToBridge,
     components,
-    isLeaf: component.isLeaf ?? false,
+    pluginComponents,
   });

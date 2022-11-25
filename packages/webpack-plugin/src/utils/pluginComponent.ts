@@ -1,12 +1,20 @@
-import { ComponentDesc, ComponentPropDesc } from '../constants/components';
+import { ComponentPropDesc } from '../constants/components';
 
-export const pluginComponents = new Map<string, ComponentDesc>();
+const pluginComponents = new Map<string, PluginComponentDesc>();
+
+export interface PluginComponentDesc {
+  name: string;
+  props: Record<string, ComponentPropDesc>;
+  // TODO: doesn't support `events` for now
+  nativePath: string;
+  isLeaf?: boolean;
+  // TODO: doesn't support `isWrapped` for now
+}
 
 export const registerPluginComponent = (name: string, nativePath: string, props: Array<string>) => {
   if (pluginComponents.has(name)) {
     return;
   }
-  // TODO: doesn't support events for now
   pluginComponents.set(name, {
     name,
     nativePath,
@@ -15,8 +23,8 @@ export const registerPluginComponent = (name: string, nativePath: string, props:
       (propsDesc, prop) => ({ ...propsDesc, [prop]: { required: false, type: 'String' } }),
       {},
     ),
-    events: [],
     isLeaf: true,
-    isWrapped: false,
   });
 };
+
+export const getPluginComponents = () => [...pluginComponents.values()];

@@ -1,10 +1,20 @@
 import { ComponentDesc } from '../../constants/components';
+import { PluginComponentDesc } from '../../utils/pluginComponent';
 import { nativeComponentJson } from '../commons/nativeComponentJson';
 
 export const subtreeJson = ({
   relativePathToBridge,
   components,
+  pluginComponents,
 }: {
   relativePathToBridge: string;
   components: ComponentDesc[];
-}) => nativeComponentJson({ relativePathToBridge, components, isLeaf: false });
+  pluginComponents: PluginComponentDesc[];
+}) =>
+  nativeComponentJson({
+    isComponent: true,
+    isLeaf: false,
+    relativePathToBridge,
+    components,
+    pluginComponents,
+  });
