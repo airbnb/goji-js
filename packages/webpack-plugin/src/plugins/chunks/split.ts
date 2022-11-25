@@ -70,7 +70,7 @@ const getNohoistModules = (
     const forceNohoist = checkTest(options.test, module, chunks, false);
     // should only nohoist if size between [2, N] where N is `nohoist.maxPackages`
     if (canNohoist && (forceNohoist || belongingSubPackages.size <= options.maxPackages)) {
-      const hash = crypto.createHash('md4');
+      const hash = crypto.createHash('sha256');
       for (const chunkName of chunks.map(chunk => chunk.name).sort()) {
         hash.update(chunkName);
       }

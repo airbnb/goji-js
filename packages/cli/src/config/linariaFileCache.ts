@@ -11,7 +11,7 @@ interface ICache {
 }
 
 const hashFileName = (name: string) => {
-  const hash = crypto.createHash('md4');
+  const hash = crypto.createHash('sha256');
   hash.update(name);
   return hash.digest('hex');
 };
