@@ -66,15 +66,7 @@ describe('componentAttributes', () => {
       renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
         componentAttributes({ component }),
       ),
-    ).toEqual(
-      expect.arrayContaining([
-        'nodes="{{meta.children}}"',
-        'goji-id="{{meta.gojiId || -1}}"',
-        'class-name="{{meta.props.className}}"',
-        'the-id="{{meta.props.id}}"',
-        `the-style="{{meta.props.style || ''}}"`,
-      ]),
-    );
+    ).toEqual(expect.arrayContaining(['meta="{{meta}}"']));
   });
 
   test('events', () => {

@@ -1,103 +1,88 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`wrapped.js process props: attachedInitData 1`] = `
+Array [
+  "internalScale: {
+  value: this.properties.meta.props.scale
+},",
+]
+`;
+
+exports[`wrapped.js process props: data 1`] = `
+Array [
+  "internalScale: {
+  value: 16
+},",
+]
+`;
+
+exports[`wrapped.js process props: properties 1`] = `
+Array [
+  "meta: {
+  type: Object,
+  observer() {
+    var update = {};
+    if (this.properties.meta.props.scale !== this.data.internalScale.value) {
+      update.internalScale = {
+        value: this.properties.meta.props.scale
+      };
+    }
+    if (Object.keys(update)) {
+      this.setData(update);
+    }
+  },
+},",
+]
+`;
+
 exports[`wrapped.js snapshot works: input 1`] = `
 "Component({
   options: {
     addGlobalClass: true,
   },
   data: {
-    internalValue: \\"\\",
-    internalFocus: false,
+    internalValue: {
+      value: \\"\\"
+    },
+    internalFocus: {
+      value: false
+    },
   },
   properties: {
-    theId: {
-      type: String,
-    },
-    className: {
-      type: String,
-    },
-    theStyle: {
-      type: String,
-    },
-    gojiId: {
-      type: Number,
-    },
-    value: {
-      type: String,
+    meta: {
+      type: Object,
       observer() {
-        if (this.properties.value !== this.data.internalValue) {
-          this.setData({
-            internalValue: this.properties.value,
-          });
+        var update = {};
+        if (this.properties.meta.props.value !== this.data.internalValue.value) {
+          update.internalValue = {
+            value: this.properties.meta.props.value
+          };
+        }
+        if (this.properties.meta.props.focus !== this.data.internalFocus.value) {
+          update.internalFocus = {
+            value: this.properties.meta.props.focus
+          };
+        }
+        if (Object.keys(update)) {
+          this.setData(update);
         }
       },
-    },
-    type: {
-      type: String,
-    },
-    password: {
-      type: Boolean,
-    },
-    placeholder: {
-      type: String,
-    },
-    placeholderStyle: {
-      type: String,
-    },
-    placeholderClass: {
-      type: String,
-    },
-    disabled: {
-      type: Boolean,
-    },
-    maxlength: {
-      type: Number,
-    },
-    cursorSpacing: {
-      type: Number,
-    },
-    autoFocus: {
-      type: Boolean,
-    },
-    focus: {
-      type: Boolean,
-      observer() {
-        if (this.properties.focus !== this.data.internalFocus) {
-          this.setData({
-            internalFocus: this.properties.focus,
-          });
-        }
-      },
-    },
-    confirmType: {
-      type: String,
-    },
-    confirmHold: {
-      type: Boolean,
-    },
-    cursor: {
-      type: Number,
-    },
-    selectionStart: {
-      type: Number,
-    },
-    selectionEnd: {
-      type: Number,
-    },
-    adjustPosition: {
-      type: Boolean,
     },
   },
   lifetimes: {
     attached() {
-      Object.e.subtreeAttached(this.properties.gojiId, this);
+      Object.e.subtreeAttached(this.properties.meta.gojiId, this);
       this.setData({
-        internalValue: this.properties.value,
-        internalFocus: this.properties.focus,
+        internalValue: {
+          value: this.properties.meta.props.value
+        },
+        internalFocus: {
+          value: this.properties.meta.props.focus
+        },
       });
     },
     detached() {
-      Object.e.subtreeDetached(this.properties.gojiId);
+      Object.e.subtreeDetached(this.properties.meta.gojiId);
     },
   },
   methods: {
@@ -105,7 +90,7 @@ exports[`wrapped.js snapshot works: input 1`] = `
       Object.e.trigger(evt);
     },
     onInput(evt) {
-      this.data.internalValue = evt.detail.value;
+      this.data.internalValue.value = evt.detail.value;
       this.e(evt);
     },
   },
@@ -118,131 +103,59 @@ exports[`wrapped.js snapshot works: map 1`] = `
     addGlobalClass: true,
   },
   data: {
-    internalLongitude: 0,
-    internalLatitude: 0,
-    internalScale: 16,
+    internalLongitude: {
+      value: 0
+    },
+    internalLatitude: {
+      value: 0
+    },
+    internalScale: {
+      value: 16
+    },
   },
   properties: {
-    theId: {
-      type: String,
-    },
-    className: {
-      type: String,
-    },
-    theStyle: {
-      type: String,
-    },
-    gojiId: {
-      type: Number,
-    },
-    longitude: {
-      type: Number,
+    meta: {
+      type: Object,
       observer() {
-        if (this.properties.longitude !== this.data.internalLongitude) {
-          this.setData({
-            internalLongitude: this.properties.longitude,
-          });
+        var update = {};
+        if (this.properties.meta.props.longitude !== this.data.internalLongitude.value) {
+          update.internalLongitude = {
+            value: this.properties.meta.props.longitude
+          };
+        }
+        if (this.properties.meta.props.latitude !== this.data.internalLatitude.value) {
+          update.internalLatitude = {
+            value: this.properties.meta.props.latitude
+          };
+        }
+        if (this.properties.meta.props.scale !== this.data.internalScale.value) {
+          update.internalScale = {
+            value: this.properties.meta.props.scale
+          };
+        }
+        if (Object.keys(update)) {
+          this.setData(update);
         }
       },
-    },
-    latitude: {
-      type: Number,
-      observer() {
-        if (this.properties.latitude !== this.data.internalLatitude) {
-          this.setData({
-            internalLatitude: this.properties.latitude,
-          });
-        }
-      },
-    },
-    scale: {
-      type: Number,
-      observer() {
-        if (this.properties.scale !== this.data.internalScale) {
-          this.setData({
-            internalScale: this.properties.scale,
-          });
-        }
-      },
-    },
-    markers: {
-      type: Array,
-    },
-    polyline: {
-      type: Array,
-    },
-    circles: {
-      type: Array,
-    },
-    controls: {
-      type: Array,
-    },
-    includePoints: {
-      type: Array,
-    },
-    showLocation: {
-      type: Boolean,
-    },
-    polygons: {
-      type: Array,
-    },
-    subkey: {
-      type: String,
-    },
-    layerStyle: {
-      type: Number,
-    },
-    rotate: {
-      type: Number,
-    },
-    skew: {
-      type: Number,
-    },
-    enable3D: {
-      type: Boolean,
-    },
-    showCompass: {
-      type: Boolean,
-    },
-    showScale: {
-      type: Boolean,
-    },
-    enableOverlooking: {
-      type: Boolean,
-    },
-    enableZoom: {
-      type: Boolean,
-    },
-    enableScroll: {
-      type: Boolean,
-    },
-    enableRotate: {
-      type: Boolean,
-    },
-    enableSatellite: {
-      type: Boolean,
-    },
-    enableTraffic: {
-      type: Boolean,
-    },
-    enablePoi: {
-      type: Boolean,
-    },
-    enableBuilding: {
-      type: Boolean,
     },
   },
   lifetimes: {
     attached() {
-      Object.e.subtreeAttached(this.properties.gojiId, this);
+      Object.e.subtreeAttached(this.properties.meta.gojiId, this);
       this.setData({
-        internalLongitude: this.properties.longitude,
-        internalLatitude: this.properties.latitude,
-        internalScale: this.properties.scale,
+        internalLongitude: {
+          value: this.properties.meta.props.longitude
+        },
+        internalLatitude: {
+          value: this.properties.meta.props.latitude
+        },
+        internalScale: {
+          value: this.properties.meta.props.scale
+        },
       });
     },
     detached() {
-      Object.e.subtreeDetached(this.properties.gojiId);
+      Object.e.subtreeDetached(this.properties.meta.gojiId);
     },
   },
   methods: {
@@ -263,99 +176,65 @@ exports[`wrapped.js snapshot works: scroll-view 1`] = `
     addGlobalClass: true,
   },
   data: {
-    internalScrollTop: \\"\\",
-    internalScrollLeft: \\"\\",
-    internalScrollIntoView: \\"\\",
+    internalScrollTop: {
+      value: \\"\\"
+    },
+    internalScrollLeft: {
+      value: \\"\\"
+    },
+    internalScrollIntoView: {
+      value: \\"\\"
+    },
   },
   properties: {
-    theId: {
-      type: String,
-    },
-    className: {
-      type: String,
-    },
-    theStyle: {
-      type: String,
-    },
-    gojiId: {
-      type: Number,
-    },
-    nodes: {
+    meta: {
       type: Object,
-    },
-    scrollX: {
-      type: Boolean,
-    },
-    scrollY: {
-      type: Boolean,
-    },
-    upperThreshold: {
-      type: Number,
-    },
-    lowerThreshold: {
-      type: Number,
-    },
-    scrollTop: {
-      type: String,
       observer() {
-        if (this.properties.scrollTop !== this.data.internalScrollTop) {
-          this.setData({
-            internalScrollTop: this.properties.scrollTop,
-          });
+        var update = {};
+        if (this.properties.meta.props.scrollTop !== this.data.internalScrollTop.value) {
+          update.internalScrollTop = {
+            value: this.properties.meta.props.scrollTop
+          };
+        }
+        if (this.properties.meta.props.scrollLeft !== this.data.internalScrollLeft.value) {
+          update.internalScrollLeft = {
+            value: this.properties.meta.props.scrollLeft
+          };
+        }
+        if (this.properties.meta.props.scrollIntoView !== this.data.internalScrollIntoView.value) {
+          update.internalScrollIntoView = {
+            value: this.properties.meta.props.scrollIntoView
+          };
+        }
+        if (Object.keys(update)) {
+          this.setData(update);
         }
       },
-    },
-    scrollLeft: {
-      type: String,
-      observer() {
-        if (this.properties.scrollLeft !== this.data.internalScrollLeft) {
-          this.setData({
-            internalScrollLeft: this.properties.scrollLeft,
-          });
-        }
-      },
-    },
-    scrollIntoView: {
-      type: String,
-      observer() {
-        if (this.properties.scrollIntoView !== this.data.internalScrollIntoView) {
-          this.setData({
-            internalScrollIntoView: this.properties.scrollIntoView,
-          });
-        }
-      },
-    },
-    scrollWithAnimation: {
-      type: Boolean,
-    },
-    enableBackToTop: {
-      type: Boolean,
-    },
-    enableFlex: {
-      type: Boolean,
-    },
-    scrollAnchoring: {
-      type: Boolean,
     },
   },
   lifetimes: {
     attached() {
-      Object.e.subtreeAttached(this.properties.gojiId, this);
+      Object.e.subtreeAttached(this.properties.meta.gojiId, this);
       this.setData({
-        internalScrollTop: this.properties.scrollTop,
-        internalScrollLeft: this.properties.scrollLeft,
-        internalScrollIntoView: this.properties.scrollIntoView,
+        internalScrollTop: {
+          value: this.properties.meta.props.scrollTop
+        },
+        internalScrollLeft: {
+          value: this.properties.meta.props.scrollLeft
+        },
+        internalScrollIntoView: {
+          value: this.properties.meta.props.scrollIntoView
+        },
       });
     },
     detached() {
-      Object.e.subtreeDetached(this.properties.gojiId);
+      Object.e.subtreeDetached(this.properties.meta.gojiId);
     },
   },
   methods: {
     e(evt) {
       Object.e.trigger(evt);
     },
-
   },
 });"
 `;
@@ -366,90 +245,43 @@ exports[`wrapped.js snapshot works: swiper 1`] = `
     addGlobalClass: true,
   },
   data: {
-    internalCurrent: 0,
+    internalCurrent: {
+      value: 0
+    },
   },
   properties: {
-    theId: {
-      type: String,
-    },
-    className: {
-      type: String,
-    },
-    theStyle: {
-      type: String,
-    },
-    gojiId: {
-      type: Number,
-    },
-    nodes: {
+    meta: {
       type: Object,
-    },
-    indicatorDots: {
-      type: Boolean,
-    },
-    indicatorColor: {
-      type: String,
-    },
-    indicatorActiveColor: {
-      type: String,
-    },
-    autoplay: {
-      type: Boolean,
-    },
-    current: {
-      type: Number,
       observer() {
-        if (this.properties.current !== this.data.internalCurrent) {
-          this.setData({
-            internalCurrent: this.properties.current,
-          });
+        var update = {};
+        if (this.properties.meta.props.current !== this.data.internalCurrent.value) {
+          update.internalCurrent = {
+            value: this.properties.meta.props.current
+          };
+        }
+        if (Object.keys(update)) {
+          this.setData(update);
         }
       },
-    },
-    interval: {
-      type: Number,
-    },
-    duration: {
-      type: Number,
-    },
-    circular: {
-      type: Boolean,
-    },
-    vertical: {
-      type: Boolean,
-    },
-    previousMargin: {
-      type: String,
-    },
-    nextMargin: {
-      type: String,
-    },
-    displayMultipleItems: {
-      type: Number,
-    },
-    skipHiddenItemLayout: {
-      type: Boolean,
-    },
-    easingFunction: {
-      type: String,
     },
   },
   lifetimes: {
     attached() {
-      Object.e.subtreeAttached(this.properties.gojiId, this);
+      Object.e.subtreeAttached(this.properties.meta.gojiId, this);
       this.setData({
-        internalCurrent: this.properties.current,
+        internalCurrent: {
+          value: this.properties.meta.props.current
+        },
       });
     },
     detached() {
-      Object.e.subtreeDetached(this.properties.gojiId);
+      Object.e.subtreeDetached(this.properties.meta.gojiId);
     },
   },
   methods: {
     e(evt) {
       Object.e.trigger(evt);
     },
-
   },
 });"
 `;
@@ -460,107 +292,48 @@ exports[`wrapped.js snapshot works: textarea 1`] = `
     addGlobalClass: true,
   },
   data: {
-    internalValue: \\"\\",
-    internalFocus: false,
+    internalValue: {
+      value: \\"\\"
+    },
+    internalFocus: {
+      value: false
+    },
   },
   properties: {
-    theId: {
-      type: String,
-    },
-    className: {
-      type: String,
-    },
-    theStyle: {
-      type: String,
-    },
-    gojiId: {
-      type: Number,
-    },
-    value: {
-      type: String,
+    meta: {
+      type: Object,
       observer() {
-        if (this.properties.value !== this.data.internalValue) {
-          this.setData({
-            internalValue: this.properties.value,
-          });
+        var update = {};
+        if (this.properties.meta.props.value !== this.data.internalValue.value) {
+          update.internalValue = {
+            value: this.properties.meta.props.value
+          };
+        }
+        if (this.properties.meta.props.focus !== this.data.internalFocus.value) {
+          update.internalFocus = {
+            value: this.properties.meta.props.focus
+          };
+        }
+        if (Object.keys(update)) {
+          this.setData(update);
         }
       },
-    },
-    placeholder: {
-      type: String,
-    },
-    placeholderStyle: {
-      type: String,
-    },
-    placeholderClass: {
-      type: String,
-    },
-    disabled: {
-      type: Boolean,
-    },
-    maxlength: {
-      type: Number,
-    },
-    autoFocus: {
-      type: Boolean,
-    },
-    focus: {
-      type: Boolean,
-      observer() {
-        if (this.properties.focus !== this.data.internalFocus) {
-          this.setData({
-            internalFocus: this.properties.focus,
-          });
-        }
-      },
-    },
-    autoHeight: {
-      type: Boolean,
-    },
-    fixed: {
-      type: Boolean,
-    },
-    cursorSpacing: {
-      type: Number,
-    },
-    cursor: {
-      type: Number,
-    },
-    showConfirmBar: {
-      type: Boolean,
-    },
-    selectionStart: {
-      type: Number,
-    },
-    selectionEnd: {
-      type: Number,
-    },
-    adjustPosition: {
-      type: Boolean,
-    },
-    holdKeyboard: {
-      type: Boolean,
-    },
-    disableDefaultPadding: {
-      type: Boolean,
-    },
-    confirmType: {
-      type: String,
-    },
-    confirmHold: {
-      type: Boolean,
     },
   },
   lifetimes: {
     attached() {
-      Object.e.subtreeAttached(this.properties.gojiId, this);
+      Object.e.subtreeAttached(this.properties.meta.gojiId, this);
       this.setData({
-        internalValue: this.properties.value,
-        internalFocus: this.properties.focus,
+        internalValue: {
+          value: this.properties.meta.props.value
+        },
+        internalFocus: {
+          value: this.properties.meta.props.focus
+        },
       });
     },
     detached() {
-      Object.e.subtreeDetached(this.properties.gojiId);
+      Object.e.subtreeDetached(this.properties.meta.gojiId);
     },
   },
   methods: {
@@ -568,7 +341,7 @@ exports[`wrapped.js snapshot works: textarea 1`] = `
       Object.e.trigger(evt);
     },
     onInput(evt) {
-      this.data.internalValue = evt.detail.value;
+      this.data.internalValue.value = evt.detail.value;
       this.e(evt);
     },
   },
@@ -581,107 +354,48 @@ exports[`wrapped.js snapshot works: textarea 2`] = `
     addGlobalClass: true,
   },
   data: {
-    internalValue: \\"\\",
-    internalFocus: false,
+    internalValue: {
+      value: \\"\\"
+    },
+    internalFocus: {
+      value: false
+    },
   },
   properties: {
-    theId: {
-      type: String,
-    },
-    className: {
-      type: String,
-    },
-    theStyle: {
-      type: String,
-    },
-    gojiId: {
-      type: Number,
-    },
-    value: {
-      type: String,
+    meta: {
+      type: Object,
       observer() {
-        if (this.properties.value !== this.data.internalValue) {
-          this.setData({
-            internalValue: this.properties.value,
-          });
+        var update = {};
+        if (this.properties.meta.props.value !== this.data.internalValue.value) {
+          update.internalValue = {
+            value: this.properties.meta.props.value
+          };
+        }
+        if (this.properties.meta.props.focus !== this.data.internalFocus.value) {
+          update.internalFocus = {
+            value: this.properties.meta.props.focus
+          };
+        }
+        if (Object.keys(update)) {
+          this.setData(update);
         }
       },
-    },
-    placeholder: {
-      type: String,
-    },
-    placeholderStyle: {
-      type: String,
-    },
-    placeholderClass: {
-      type: String,
-    },
-    disabled: {
-      type: Boolean,
-    },
-    maxlength: {
-      type: Number,
-    },
-    autoFocus: {
-      type: Boolean,
-    },
-    focus: {
-      type: Boolean,
-      observer() {
-        if (this.properties.focus !== this.data.internalFocus) {
-          this.setData({
-            internalFocus: this.properties.focus,
-          });
-        }
-      },
-    },
-    autoHeight: {
-      type: Boolean,
-    },
-    fixed: {
-      type: Boolean,
-    },
-    cursorSpacing: {
-      type: Number,
-    },
-    cursor: {
-      type: Number,
-    },
-    showConfirmBar: {
-      type: Boolean,
-    },
-    selectionStart: {
-      type: Number,
-    },
-    selectionEnd: {
-      type: Number,
-    },
-    adjustPosition: {
-      type: Boolean,
-    },
-    holdKeyboard: {
-      type: Boolean,
-    },
-    disableDefaultPadding: {
-      type: Boolean,
-    },
-    confirmType: {
-      type: String,
-    },
-    confirmHold: {
-      type: Boolean,
     },
   },
   lifetimes: {
     attached() {
-      Object.e.subtreeAttached(this.properties.gojiId, this);
+      Object.e.subtreeAttached(this.properties.meta.gojiId, this);
       this.setData({
-        internalValue: this.properties.value,
-        internalFocus: this.properties.focus,
+        internalValue: {
+          value: this.properties.meta.props.value
+        },
+        internalFocus: {
+          value: this.properties.meta.props.focus
+        },
       });
     },
     detached() {
-      Object.e.subtreeDetached(this.properties.gojiId);
+      Object.e.subtreeDetached(this.properties.meta.gojiId);
     },
   },
   methods: {
@@ -689,7 +403,7 @@ exports[`wrapped.js snapshot works: textarea 2`] = `
       Object.e.trigger(evt);
     },
     onInput(evt) {
-      this.data.internalValue = evt.detail.value;
+      this.data.internalValue.value = evt.detail.value;
       this.e(evt);
     },
   },

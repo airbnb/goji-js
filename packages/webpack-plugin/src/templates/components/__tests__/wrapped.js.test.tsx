@@ -1,3 +1,4 @@
+import { renderTemplate } from '../..';
 import { ComponentDesc, getBuiltInComponents } from '../../../constants/components';
 import { updateInternalValueHandler, WrappedConfig } from '../../commons/wrapped';
 import { t } from '../../helpers/t';
@@ -31,7 +32,7 @@ describe('wrapped.js', () => {
           evt.type = 'regionchange';
           this.e(evt);
         },`,
-      input: updateInternalValueHandler('input'),
+      input: updateInternalValueHandler('input', 'value'),
     },
   };
 
@@ -40,23 +41,9 @@ describe('wrapped.js', () => {
       component: mockMapComponent,
       config: mockConfig,
     });
-    expect(result.data).toEqual(['internalScale: 16,']);
-    expect(result.properties.find(_ => /scale/.test(_))).toEqual(t`
-      scale: {
-        type: Number,
-        observer() {
-          if (this.properties.scale !== this.data.internalScale) {
-            this.setData({
-              internalScale: this.properties.scale,
-            });
-          }
-        },
-      },`);
-    expect(result.properties.find(_ => /nodes/.test(_))).toEqual(t`
-      nodes: {
-        type: Object,
-      },`);
-    expect(result.attachedInitData).toEqual(['internalScale: this.properties.scale,']);
+    expect(result.data).toMatchSnapshot('data');
+    expect(result.properties).toMatchSnapshot('properties');
+    expect(result.attachedInitData).toMatchSnapshot('attachedInitData');
   });
 
   test('process events', () => {
@@ -74,7 +61,7 @@ describe('wrapped.js', () => {
     expect(result.methods.find(_ => /onInput/.test(_))).toBe(
       t`
       onInput(evt) {
-        this.data.internalValue = evt.detail.value;
+        this.data.internalValue.value = evt.detail.value;
         this.e(evt);
       },`,
     );
@@ -83,7 +70,9 @@ describe('wrapped.js', () => {
   test('snapshot works', () => {
     const components = getBuiltInComponents('wechat');
     const getResult = (name: string) =>
-      wrappedJs({ component: components.find(_ => _.name === name)! });
+      renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+        wrappedJs({ component: components.find(_ => _.name === name)! }),
+      );
     expect(getResult('map')).toMatchSnapshot('map');
     expect(getResult('input')).toMatchSnapshot('input');
     expect(getResult('textarea')).toMatchSnapshot('textarea');
