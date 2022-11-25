@@ -106,6 +106,8 @@ export const componentItem = ({
     if (isWrapped(component) || component.isLeaf) {
       return '';
     }
+    // cannot use <include> in <template> on Alipay
+    // https://github.com/airbnb/goji-js/issues/140
     if (inlineChildrenRender) {
       return t`
         <block wx:for="{{${ids.meta}.${ids.children}}}" wx:key="${ids.gojiId}">
