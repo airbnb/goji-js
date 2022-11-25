@@ -19,7 +19,7 @@ describe('getConditionFromSidOrName', () => {
   test('has simplify id', () => {
     expect(
       renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
-        getConditionFromSidOrName({ name: 'view', sid: 100 }),
+        getConditionFromSidOrName({ name: 'view', simplifiedId: 100 }),
       ),
     ).toBe('meta.simplifiedId === 100');
   });

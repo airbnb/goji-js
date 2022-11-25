@@ -1,35 +1,32 @@
 import { unstable_SimplifyComponent as SimplifyComponent, GojiTarget } from '@goji/core';
-import camelCase from 'lodash/camelCase';
 import kebabCase from 'lodash/kebabCase';
 import pickBy from 'lodash/pickBy';
 import { getBuiltInComponents, ComponentDesc } from '../constants/components';
-import { getEventName } from '../templates/commons/wxmlElement';
-import { pluginComponents } from './pluginComponent';
+import { PluginComponentDesc } from './pluginComponent';
 
-export const getWhitelistedComponents = (
+/**
+ * Filter out components that are not in the `usedComponents` array.
+ * This function aims to optimize bundle size by only rendering needed components.
+ */
+export const getUsedComponents = (
   target: GojiTarget,
-  componentWhitelist?: Array<string>,
+  usedComponents?: Array<string>,
 ): ComponentDesc[] => {
   const builtInComponents = getBuiltInComponents(target);
-  return (
-    componentWhitelist
-      ? builtInComponents.filter(comp => componentWhitelist.includes(comp.name))
-      : builtInComponents
-  ).concat(
-    // add plugin components
-    ...pluginComponents.values(),
-  );
+  return usedComponents
+    ? builtInComponents.filter(comp => usedComponents.includes(comp.name))
+    : builtInComponents;
 };
 
 export interface SimplifiedComponentDesc extends ComponentDesc {
-  sid: number;
+  simplifiedId: number;
 }
 
 export const getSimplifiedComponents = (
   components: Array<ComponentDesc>,
   simplifyComponents: Array<SimplifyComponent>,
 ): Array<SimplifiedComponentDesc> => {
-  const simplifiedComponents: Array<ComponentDesc & { sid: number }> = [];
+  const simplifiedComponents: Array<ComponentDesc & { simplifiedId: number }> = [];
   for (const [index, { name, properties, events }] of simplifyComponents.entries()) {
     const matched = components.find(_ => _.name === name);
     if (!matched) {
@@ -42,68 +39,17 @@ export const getSimplifiedComponents = (
     simplifiedComponents.push({
       ...matched,
       events,
-      props: pickBy(matched.props, (_propDesc, propName) => simplifiedProperties.includes(propName)),
-      sid: index,
+      props: pickBy(matched.props, (_propDesc, propName) =>
+        simplifiedProperties.includes(propName),
+      ),
+      simplifiedId: index,
     });
   }
 
   return simplifiedComponents;
 };
 
-export interface ComponentRenderData {
-  name: string;
-  isLeaf?: boolean;
-  isWrapped?: boolean;
-  sid?: number;
-  events: string[];
-  attributes: Array<{
-    name: string;
-    value: string;
-    fallback?: any;
-  }>;
-}
+export type AllComponentDesc = ComponentDesc | SimplifiedComponentDesc | PluginComponentDesc;
 
-// Baidu has a bug that we have to add default value for input's password
-// swanide://fragment/543afd77cf5244addd3f67158948c8b71571973909208
-const forceRenderFallback = (target: GojiTarget, componentName: string, propsName: string) => {
-  if (target === 'baidu' && componentName === 'input' && propsName === 'password') {
-    return true;
-  }
-  return false;
-};
-
-export const getRenderedComponents = (
-  target: GojiTarget,
-  simplifyComponents: Array<SimplifyComponent>,
-  componentWhitelist?: Array<string>,
-): Array<ComponentRenderData> => {
-  const components = getWhitelistedComponents(target, componentWhitelist);
-  const renderedComponents: Array<ComponentDesc | SimplifiedComponentDesc> = [
-    ...getSimplifiedComponents(components, simplifyComponents),
-    ...components,
-  ];
-  return renderedComponents.map((component): ComponentRenderData => ({
-      name: component.name,
-      isLeaf: component.isLeaf,
-      isWrapped: component.isWrapped,
-      sid: (component as SimplifiedComponentDesc).sid,
-      events: component.events.map(event => getEventName({ target, event })),
-      attributes: Object.entries(component.props).map(([name, desc]) => {
-        if (
-          (!desc.required && desc.defaultValue) ||
-          forceRenderFallback(target, component.name, name)
-        ) {
-          return {
-            name,
-            value: camelCase(name),
-            fallback: desc.defaultValue,
-          };
-        }
-
-        return {
-          name,
-          value: camelCase(name),
-        };
-      }),
-    }));
-};
+export const isWrapped = (component: AllComponentDesc): boolean =>
+  'isWrapped' in component && (component.isWrapped ?? true);

@@ -1,5 +1,5 @@
 import { renderTemplate } from '../..';
-import { ComponentRenderData } from '../../../utils/components';
+import { AllComponentDesc } from '../../../utils/components';
 import { componentAttribute, componentAttributes } from '../components.wxml';
 
 describe('componentAttribute', () => {
@@ -38,10 +38,10 @@ describe('componentAttribute', () => {
 
 describe('componentAttributes', () => {
   test('simple component', () => {
-    const component: ComponentRenderData = {
+    const component: AllComponentDesc = {
       name: 'view',
       events: [],
-      attributes: [],
+      props: {},
     };
 
     expect(componentAttributes({ component })).toEqual(
@@ -55,11 +55,11 @@ describe('componentAttributes', () => {
   });
 
   test('wrapped component', () => {
-    const component: ComponentRenderData = {
+    const component: AllComponentDesc = {
       name: 'view',
       isWrapped: true,
       events: [],
-      attributes: [],
+      props: {},
     };
 
     expect(
@@ -78,25 +78,31 @@ describe('componentAttributes', () => {
   });
 
   test('events', () => {
-    const component: ComponentRenderData = {
+    const component: AllComponentDesc = {
       name: 'view',
       events: ['tap', 'change'],
-      attributes: [],
+      props: {},
     };
 
     expect(
       renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
         componentAttributes({ component }),
       ),
-    ).toEqual(expect.arrayContaining(['tap="e"', 'change="e"']));
+    ).toEqual(expect.arrayContaining(['bindtap="e"', 'bindchange="e"']));
+
+    expect(
+      renderTemplate({ target: 'alipay', nodeEnv: 'development' }, () =>
+        componentAttributes({ component }),
+      ),
+    ).toEqual(expect.arrayContaining(['onTap="e"', 'onChange="e"']));
   });
 
   test('events in wrapped component', () => {
-    const component: ComponentRenderData = {
+    const component: AllComponentDesc = {
       name: 'view',
       isWrapped: true,
       events: ['tap', 'change'],
-      attributes: [],
+      props: {},
     };
 
     expect(
@@ -107,20 +113,19 @@ describe('componentAttributes', () => {
   });
 
   test('attributes', () => {
-    const component: ComponentRenderData = {
+    const component: AllComponentDesc = {
       name: 'view',
       events: [],
-      attributes: [
-        {
-          name: 'scale-min',
-          value: 'scaleMin',
+
+      props: {
+        'scale-min': {
+          type: 'String',
         },
-        {
-          name: 'scale-max',
-          value: 'scaleMax',
-          fallback: 100,
+        'scale-max': {
+          type: 'Number',
+          defaultValue: 100,
         },
-      ],
+      },
     };
 
     expect(

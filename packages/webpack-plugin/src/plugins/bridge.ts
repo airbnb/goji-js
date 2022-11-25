@@ -4,7 +4,7 @@ import path from 'path';
 import { unstable_SIMPLIFY_COMPONENTS as SIMPLIFY_COMPONENTS } from '@goji/core';
 import deepmerge from 'deepmerge';
 import { urlToRequest } from 'loader-utils';
-import { getWhitelistedComponents, getRenderedComponents } from '../utils/components';
+import { getUsedComponents, isWrapped, getSimplifiedComponents } from '../utils/components';
 import { transformTemplate } from '../utils/render';
 import { getRelativePathToBridge } from '../utils/path';
 import { BRIDGE_OUTPUT_DIR } from '../constants/paths';
@@ -25,25 +25,23 @@ import { wrappedJson } from '../templates/components/wrapped.json';
 import { getFeatures } from '../constants/features';
 import { wrappedWxml } from '../templates/components/wrapped.wxml';
 import { wrappedJs } from '../templates/components/wrapped.js';
+import { getPluginComponents } from '../utils/pluginComponent';
 
 /**
  * render bridge files and page/components entry files
  */
 export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
-  private getWhitelistedComponents(compilation: webpack.Compilation) {
+  private getUsedComponents(compilation: webpack.Compilation) {
     if (!usedComponentsMap.has(compilation)) {
       throw new Error('`usedComponents` not found, This might be an internal error in GojiJS.');
     }
     const usedComponents = usedComponentsMap.get(compilation);
-    return getWhitelistedComponents(this.options.target, usedComponents);
+    return getUsedComponents(this.options.target, usedComponents);
   }
 
-  private getRenderedComponents(compilation: webpack.Compilation) {
-    if (!usedComponentsMap.has(compilation)) {
-      throw new Error('`usedComponents` not found, This might be an internal error in GojiJS.');
-    }
-    const usedComponents = usedComponentsMap.get(compilation);
-    return getRenderedComponents(this.options.target, SIMPLIFY_COMPONENTS, usedComponents);
+  private getSimplifiedComponents(compilation: webpack.Compilation) {
+    const usedComponents = this.getUsedComponents(compilation);
+    return getSimplifiedComponents(usedComponents, SIMPLIFY_COMPONENTS);
   }
 
   private async renderTemplateComponentToAsset(
@@ -72,7 +70,9 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   }
 
   private async renderSubtreeBridge(compilation: webpack.Compilation, basedir: string) {
-    const components = this.getRenderedComponents(compilation);
+    const components = this.getUsedComponents(compilation);
+    const simplifiedComponents = this.getSimplifiedComponents(compilation);
+    const pluginComponents = getPluginComponents();
     const { maxDepth } = this.options;
     for (let depth = 0; depth < maxDepth; depth += 1) {
       await this.renderTemplateComponentToAsset(
@@ -91,7 +91,9 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           componentWxml({
             depth,
             componentsDepth: depth + 1,
-            components: components.filter(c => !c.isLeaf),
+            components,
+            simplifiedComponents,
+            pluginComponents,
             useFlattenSwiper: getFeatures(this.options.target).useFlattenSwiper,
           }),
       );
@@ -99,13 +101,17 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   }
 
   private async renderLeafTemplate(compilation: webpack.Compilation, basedir: string) {
-    const components = this.getRenderedComponents(compilation);
+    const components = this.getUsedComponents(compilation);
+    const simplifiedComponents = this.getSimplifiedComponents(compilation);
+    const pluginComponents = getPluginComponents();
     await this.renderTemplateComponentToAsset(
       compilation,
       path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `leaf-components.wxml`),
       () =>
         leafComponentWxml({
-          components: components.filter(c => c.isLeaf),
+          components,
+          simplifiedComponents,
+          pluginComponents,
         }),
     );
   }
@@ -122,7 +128,8 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       () =>
         subtreeJson({
           relativePathToBridge: '.',
-          components: this.getWhitelistedComponents(compilation),
+          components: this.getUsedComponents(compilation),
+          pluginComponents: getPluginComponents(),
         }),
     );
     await this.renderTemplateComponentToAsset(
@@ -133,7 +140,9 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   }
 
   private async renderComponentTemplate(compilation: webpack.Compilation, basedir: string) {
-    const components = this.getRenderedComponents(compilation);
+    const components = this.getUsedComponents(compilation);
+    const simplifiedComponents = this.getSimplifiedComponents(compilation);
+    const pluginComponents = getPluginComponents();
     await this.renderTemplateComponentToAsset(
       compilation,
       path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `components0.wxml`),
@@ -141,7 +150,9 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
         componentWxml({
           depth: 0,
           componentsDepth: 0,
-          components: components.filter(c => !c.isLeaf),
+          components,
+          simplifiedComponents,
+          pluginComponents,
           useFlattenSwiper: getFeatures(this.options.target).useFlattenSwiper,
         }),
     );
@@ -160,9 +171,10 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
   }
 
   private async renderWrappedComponents(compilation: webpack.Compilation, basedir: string) {
-    const components = this.getWhitelistedComponents(compilation);
-    for (const component of components) {
-      if (component.isWrapped) {
+    const components = this.getUsedComponents(compilation);
+    const pluginComponents = getPluginComponents();
+    for (const component of [...components, ...pluginComponents]) {
+      if (isWrapped(component)) {
         await this.renderTemplateComponentToAsset(
           compilation,
           path.posix.join(basedir, BRIDGE_OUTPUT_DIR, 'components', `${component.name}.wxml`),
@@ -175,7 +187,8 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
             wrappedJson({
               relativePathToBridge: '..',
               component,
-              components: this.getWhitelistedComponents(compilation),
+              components,
+              pluginComponents: getPluginComponents(),
             }),
         );
         await this.renderTemplateComponentToAsset(
@@ -249,7 +262,8 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
             () =>
               itemJson({
                 relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
-                components: this.getWhitelistedComponents(compilation),
+                components: this.getUsedComponents(compilation),
+                pluginComponents: getPluginComponents(),
               }),
             (newSource, oldSource) =>
               JSON.stringify(deepmerge(JSON.parse(oldSource), JSON.parse(newSource)), null, 2),

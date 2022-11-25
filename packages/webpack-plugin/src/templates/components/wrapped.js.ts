@@ -1,5 +1,6 @@
 import camelCase from 'lodash/camelCase';
 import { ComponentDesc, ComponentPropDesc } from '../../constants/components';
+import { PluginComponentDesc } from '../../utils/pluginComponent';
 import { WRAPPED_CONFIGS, DEFAULT_WRAPPED_CONFIG, WrappedConfig } from '../commons/wrapped';
 import { t } from '../helpers/t';
 
@@ -15,7 +16,7 @@ export const processWrappedProps = ({
   component,
   config,
 }: {
-  component: ComponentDesc;
+  component: ComponentDesc | PluginComponentDesc;
   config: WrappedConfig;
 }) => {
   const data: Array<string> = [];
@@ -87,21 +88,23 @@ export const processWrappedEvents = ({
   component,
   config,
 }: {
-  component: ComponentDesc;
+  component: ComponentDesc | PluginComponentDesc;
   config: WrappedConfig;
 }) => {
   // add events
   const methods: Array<string> = [];
-  for (const event of component.events) {
-    if (config.customizedEventHandler?.[event]) {
-      methods.push(config.customizedEventHandler[event]);
+  if ('events' in component) {
+    for (const event of component.events) {
+      if (config.customizedEventHandler?.[event]) {
+        methods.push(config.customizedEventHandler[event]);
+      }
     }
   }
 
   return { methods };
 };
 
-export const wrappedJs = ({ component }: { component: ComponentDesc }) => {
+export const wrappedJs = ({ component }: { component: ComponentDesc | PluginComponentDesc }) => {
   const config = WRAPPED_CONFIGS[component.name] ?? DEFAULT_WRAPPED_CONFIG;
   const { data, properties, attachedInitData } = processWrappedProps({ config, component });
   const { methods } = processWrappedEvents({ config, component });

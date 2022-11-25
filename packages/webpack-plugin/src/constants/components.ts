@@ -54,7 +54,6 @@ export type ComponentDesc = {
   name: string;
   props: Record<string, ComponentPropDesc>;
   events: string[];
-  nativePath?: string;
   isLeaf?: boolean;
   isWrapped?: boolean;
 };

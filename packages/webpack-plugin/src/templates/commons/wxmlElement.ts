@@ -3,12 +3,18 @@ import camelCase from 'lodash/camelCase';
 import { getIds } from '../helpers/ids';
 import { t } from '../helpers/t';
 
-export const getConditionFromSidOrName = ({ sid, name }: { sid?: number; name: string }) => {
+export const getConditionFromSidOrName = ({
+  simplifiedId,
+  name,
+}: {
+  simplifiedId?: number;
+  name: string;
+}) => {
   const ids = getIds();
 
-  return sid === undefined
+  return simplifiedId === undefined
     ? t`${ids.meta}.${ids.type} === '${name}'`
-    : t`${ids.meta}.${ids.simplifiedId} === ${sid}`;
+    : t`${ids.meta}.${ids.simplifiedId} === ${simplifiedId}`;
 };
 
 export const getComponentTagName = ({ isWrapped, name }: { isWrapped?: boolean; name: string }) =>
