@@ -82,15 +82,30 @@ describe('hoist', () => {
 
     // can nohoist
     expect(await findAllFiles('this is sharedA')).toEqual([
-      path.join('packageA', '_goji_nohoist_ef694a33ef79da4db885e0bae648d1b0.js'),
-      path.join('packageB', '_goji_nohoist_ef694a33ef79da4db885e0bae648d1b0.js'),
+      path.join(
+        'packageA',
+        '_goji_nohoist_ff2643de53ea9d153b61aebfbc33bf898fc70525cd1a310d1b77e91f2e3c7ebd.js',
+      ),
+      path.join(
+        'packageB',
+        '_goji_nohoist_ff2643de53ea9d153b61aebfbc33bf898fc70525cd1a310d1b77e91f2e3c7ebd.js',
+      ),
     ]);
 
     // nohoist can work with independent
     expect(await findAllFiles('this is sharedB')).toEqual([
-      path.join('packageA', '_goji_nohoist_d1f973b3a1e95adb52e3162147042c71.js'),
-      path.join('packageB', '_goji_nohoist_d1f973b3a1e95adb52e3162147042c71.js'),
-      path.join('packageIndependent', '_goji_nohoist_d1f973b3a1e95adb52e3162147042c71.js'),
+      path.join(
+        'packageA',
+        '_goji_nohoist_422804a4264f180279c5d813fe9ea6b0a1040c3908aa7da7ff5339f69063411f.js',
+      ),
+      path.join(
+        'packageB',
+        '_goji_nohoist_422804a4264f180279c5d813fe9ea6b0a1040c3908aa7da7ff5339f69063411f.js',
+      ),
+      path.join(
+        'packageIndependent',
+        '_goji_nohoist_422804a4264f180279c5d813fe9ea6b0a1040c3908aa7da7ff5339f69063411f.js',
+      ),
     ]);
   });
 });
