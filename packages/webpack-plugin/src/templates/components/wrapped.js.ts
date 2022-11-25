@@ -1,7 +1,9 @@
+import { getTemplateIds } from '@goji/core/dist/cjs/constants';
 import camelCase from 'lodash/camelCase';
 import { ComponentDesc, ComponentPropDesc } from '../../constants/components';
 import { PluginComponentDesc } from '../../utils/pluginComponent';
 import { WRAPPED_CONFIGS, DEFAULT_WRAPPED_CONFIG, WrappedConfig } from '../commons/wrapped';
+import { getIds } from '../helpers/ids';
 import { t } from '../helpers/t';
 
 const DEFAULT_VALUE_FROM_TYPE: Record<ComponentPropDesc['type'], any> = {
@@ -12,6 +14,12 @@ const DEFAULT_VALUE_FROM_TYPE: Record<ComponentPropDesc['type'], any> = {
   Array: [],
 };
 
+/**
+ * There are 2 types of props of a wrapped component:
+ * 1. Most of props can be used directly in the wrapped component, e.g. `className`, `style`, `id`.
+ * 2. Some props cause unexpected behaviors when re-rendering, e.g. the `current` prop of `swiper`.
+ * For case 2, we need to memorize the value of the prop and update it only if it's really changed.
+ */
 export const processWrappedProps = ({
   component,
   config,
@@ -19,67 +27,54 @@ export const processWrappedProps = ({
   component: ComponentDesc | PluginComponentDesc;
   config: WrappedConfig;
 }) => {
+  const ids = getTemplateIds();
   const data: Array<string> = [];
-  const properties: Array<string> = [
-    t`
-    theId: {
-      type: String,
-    },
-    `,
-    t`
-    className: {
-      type: String,
-    },
-    `,
-    t`
-    theStyle: {
-      type: String,
-    },
-    `,
-    t`
-    gojiId: {
-      type: Number,
-    },
-    `,
-  ];
-  if (!component.isLeaf) {
-    properties.push(t`
-      nodes: {
-        type: Object,
-      },
-    `);
-  }
+  const metaObserverChecks: Array<string> = [];
   const attachedInitData: Array<string> = [];
 
   for (const [propName, propDesc] of Object.entries(component.props)) {
-    const propertyFields = [t`type: ${propDesc.type},`];
-    const camelCasePropName = camelCase(propName);
     if (config.memorizedProps?.includes(propName)) {
+      const camelCasePropName = camelCase(propName);
       const camelCaseInternalPropName = camelCase(`internal-${propName}`);
-      data.push(
-        t`${camelCaseInternalPropName}: ${JSON.stringify(
-          propDesc.defaultValue ?? DEFAULT_VALUE_FROM_TYPE[propDesc.type],
-        )},`,
+      const defaultValue = JSON.stringify(
+        propDesc.defaultValue ?? DEFAULT_VALUE_FROM_TYPE[propDesc.type],
       );
-      propertyFields.push(t`
-        observer() {
-          if (this.properties.${camelCasePropName} !== this.data.${camelCaseInternalPropName}) {
-            this.setData({
-              ${camelCaseInternalPropName}: this.properties.${camelCasePropName},
-            });
-          }
+      // we use `{ prop: { value: 'the value' } }` instead of `{ prop: 'the value' }` because
+      // `setData` will fail if any field of the object is `undefined`.
+      data.push(t`
+        ${camelCaseInternalPropName}: {
+          value: ${defaultValue}
         },
       `);
       attachedInitData.push(t`
-        ${camelCaseInternalPropName}: this.properties.${camelCasePropName},
+        ${camelCaseInternalPropName}: {
+          value: this.properties.${ids.meta}.${ids.props}.${camelCasePropName}
+        },
+      `);
+      metaObserverChecks.push(t`
+        if (this.properties.${ids.meta}.${ids.props}.${camelCasePropName} !== this.data.${camelCaseInternalPropName}.value) {
+          update.${camelCaseInternalPropName} = {
+            value: this.properties.${ids.meta}.${ids.props}.${camelCasePropName}
+          };
+        }
       `);
     }
-    properties.push(t`
-      ${camelCasePropName}: {
-        ${propertyFields}
-      },
-    `);
   }
+
+  const properties: Array<string> = [
+    t`
+      ${ids.meta}: {
+        type: Object,
+        observer() {
+          var update = {};
+          ${metaObserverChecks}
+          if (Object.keys(update)) {
+            this.setData(update);
+          }
+        },
+      },
+    `,
+  ];
 
   return { data, properties, attachedInitData };
 };
@@ -91,8 +86,14 @@ export const processWrappedEvents = ({
   component: ComponentDesc | PluginComponentDesc;
   config: WrappedConfig;
 }) => {
-  // add events
-  const methods: Array<string> = [];
+  // add custom event handlers
+  const methods: Array<string> = [
+    t`
+      e(evt) {
+        Object.e.trigger(evt);
+      },
+    `,
+  ];
   if ('events' in component) {
     for (const event of component.events) {
       if (config.customizedEventHandler?.[event]) {
@@ -105,6 +106,7 @@ export const processWrappedEvents = ({
 };
 
 export const wrappedJs = ({ component }: { component: ComponentDesc | PluginComponentDesc }) => {
+  const ids = getIds();
   const config = WRAPPED_CONFIGS[component.name] ?? DEFAULT_WRAPPED_CONFIG;
   const { data, properties, attachedInitData } = processWrappedProps({ config, component });
   const { methods } = processWrappedEvents({ config, component });
@@ -122,7 +124,7 @@ export const wrappedJs = ({ component }: { component: ComponentDesc | PluginComp
       },
       lifetimes: {
         attached() {
-          Object.e.subtreeAttached(this.properties.gojiId, this);
+          Object.e.subtreeAttached(this.properties.${ids.meta}.${ids.gojiId}, this);
           ${
             attachedInitData.length > 0 &&
             t`
@@ -133,13 +135,10 @@ export const wrappedJs = ({ component }: { component: ComponentDesc | PluginComp
           }
         },
         detached() {
-          Object.e.subtreeDetached(this.properties.gojiId);
+          Object.e.subtreeDetached(this.properties.${ids.meta}.${ids.gojiId});
         },
       },
       methods: {
-        e(evt) {
-          Object.e.trigger(evt);
-        },
         ${methods}
       },
     });

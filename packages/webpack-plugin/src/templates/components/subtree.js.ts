@@ -1,15 +1,16 @@
+import { getIds } from '../helpers/ids';
 import { t } from '../helpers/t';
 
-export const subtreeJs = () => t`
+export const subtreeJs = () => {
+  const ids = getIds();
+
+  return t`
     Component({
       options: {
         addGlobalClass: true,
       },
       properties: {
-        gojiId: {
-          type: Number,
-        },
-        nodes: {
+        ${ids.meta}: {
           type: Object,
         },
       },
@@ -20,11 +21,12 @@ export const subtreeJs = () => t`
       },
       lifetimes: {
         attached() {
-          Object.e.subtreeAttached(this.properties.gojiId, this);
+          Object.e.subtreeAttached(this.properties.${ids.meta}.${ids.gojiId}, this);
         },
         detached() {
-          Object.e.subtreeDetached(this.properties.gojiId);
+          Object.e.subtreeDetached(this.properties.${ids.meta}.${ids.gojiId});
         },
       },
     });
   `;
+};

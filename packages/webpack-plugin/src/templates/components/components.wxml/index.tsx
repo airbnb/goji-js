@@ -45,7 +45,7 @@ const forceRenderFallback = (target: GojiTarget, componentName: string, propsNam
   return false;
 };
 
-const mapComponentPropsToAttributes = (component: AllComponentDesc) => {
+export const mapComponentPropsToAttributes = (component: AllComponentDesc) => {
   const { target } = CommonContext.read();
   return Object.entries(component.props).map(([name, desc]) => {
     if (
@@ -69,33 +69,24 @@ const mapComponentPropsToAttributes = (component: AllComponentDesc) => {
 export const componentAttributes = ({ component }: { component: AllComponentDesc }) => {
   const ids = getIds();
   const { target } = CommonContext.read();
-  const propsArray: Array<string> = [];
+  // all attributes should be handle inside the wrapped component
   if (isWrapped(component)) {
-    if (!component.isLeaf) {
-      propsArray.push(`nodes="{{${ids.meta}.${ids.children}}}"`);
-    }
-    propsArray.push(
-      `goji-id="{{${ids.meta}.${ids.gojiId} || -1}}"`,
-      // use non-keywords to passthrough props to wrapped components
-      componentAttribute({ name: 'class-name', value: 'className' }),
-      componentAttribute({ name: 'the-id', value: 'id' }),
-      componentAttribute({ name: 'the-style', value: 'style', fallback: '' }),
-    );
-  } else {
-    propsArray.push(
-      `data-goji-id="{{${ids.meta}.${ids.gojiId} || -1}}"`,
-      componentAttribute({ name: 'class', value: 'className' }),
-      componentAttribute({ name: 'id', value: 'id' }),
-      componentAttribute({ name: 'style', value: 'style', fallback: '' }),
-    );
-  }
-  propsArray.push(...mapComponentPropsToAttributes(component).map(componentAttribute));
-  if (!isWrapped(component) && 'events' in component) {
-    // wrapped components will handle event inside themselves
-    propsArray.push(...component.events.map(event => t`${getEventName({ target, event })}="e"`));
+    return [`${ids.meta}="{{${ids.meta}}}"`];
   }
 
-  return propsArray;
+  return [
+    `data-goji-id="{{${ids.meta}.${ids.gojiId} || -1}}"`,
+    // common attributes
+    componentAttribute({ name: 'class', value: 'className' }),
+    componentAttribute({ name: 'id', value: 'id' }),
+    componentAttribute({ name: 'style', value: 'style', fallback: '' }),
+    // element attributes
+    ...mapComponentPropsToAttributes(component).map(componentAttribute),
+    // event event handlers
+    ...('events' in component
+      ? component.events.map(event => t`${getEventName({ target, event })}="e"`)
+      : []),
+  ];
 };
 
 export const componentItem = ({
@@ -159,11 +150,9 @@ export const componentWxml = ({
     ids.text
   }}}</block>
       <block wx:elif="{{${ids.meta}.${ids.type} === 'GOJI_TYPE_SUBTREE'}}">
-        <goji-subtree goji-id="{{${ids.meta}.${ids.gojiId}}}" nodes="{{${ids.meta}.${
-    ids.children
-  }}}" class="{{${ids.meta}.${ids.props}.className}}" style="{{${ids.meta}.${
+        <goji-subtree ${ids.meta}="{{${ids.meta}}}" class="{{${ids.meta}.${
     ids.props
-  }.style || ''}}"/>
+  }.className}}" style="{{${ids.meta}.${ids.props}.style || ''}}"/>
       </block>
       ${useFlattenText && FlattenText()}
       ${useFlattenSwiper && FlattenSwiper()}

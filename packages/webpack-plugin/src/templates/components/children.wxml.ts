@@ -22,6 +22,6 @@ export const childrenWxml = ({
     `;
   }
   return t`
-    <goji-subtree goji-id="{{${ids.meta}.${ids.gojiId}}}" nodes="{{${ids.meta}.${ids.children}}}" />
+    <goji-subtree ${ids.meta}="{{${ids.meta}}}" />
   `;
 };

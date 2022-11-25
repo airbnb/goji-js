@@ -10,9 +10,15 @@ export interface WrappedConfig {
 
 export const DEFAULT_WRAPPED_CONFIG: WrappedConfig = {};
 
-export const updateInternalValueHandler = (event: string) => t`
-  ${camelCase(`on-${event}`)}(evt) {
-    this.data.internalValue = evt.detail.value;
+/**
+ * This function is designed fro convert an uncontrolled component to a controlled component.
+ * E.g. when input on an `<input>` it always re-render and then emit the `bindinput` event, in this
+ * case there is no need to re-render the component again. So we can update `this.data` directly and
+ * `observer` would not update the data anymore.
+ */
+export const updateInternalValueHandler = (eventName: string, propName: string) => t`
+  ${camelCase(`on-${eventName}`)}(evt) {
+    this.data.${camelCase(`internal-${propName}`)}.value = evt.detail.value;
     this.e(evt);
   },`;
 
@@ -20,7 +26,7 @@ export const WRAPPED_CONFIGS: Record<string, WrappedConfig> = {
   input: {
     memorizedProps: ['value', 'focus'],
     customizedEventHandler: {
-      input: updateInternalValueHandler('input'),
+      input: updateInternalValueHandler('input', 'value'),
     },
   },
   map: {
@@ -41,7 +47,7 @@ export const WRAPPED_CONFIGS: Record<string, WrappedConfig> = {
   textarea: {
     memorizedProps: ['value', 'focus'],
     customizedEventHandler: {
-      input: updateInternalValueHandler('input'),
+      input: updateInternalValueHandler('input', 'value'),
     },
   },
   swiper: {
@@ -55,7 +61,7 @@ export const WRAPPED_CONFIGS: Record<string, WrappedConfig> = {
       return t`
         <import src="../components1.wxml" />
         <swiper-item
-          wx:for="{{nodes}}"
+          wx:for="{{${ids.meta}.${ids.children}}}"
           wx:key="${ids.gojiId}"
           class="{{item.${ids.props}.className}}"
           item-id="{{item.${ids.props}.itemId}}"
