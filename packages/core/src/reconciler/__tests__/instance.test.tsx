@@ -1,7 +1,6 @@
 import React, { useState, createRef } from 'react';
 import { ElementInstance, ElementNodeDevelopment, TextNodeDevelopment } from '../instance';
 import { Container } from '../../container';
-import { TYPE_SUBTREE } from '../../constants';
 import { View, gojiEvents } from '../..';
 import { act } from '../../testUtils';
 import { batchedUpdates } from '..';
@@ -9,12 +8,12 @@ import { PublicInstance } from '../publicInstance';
 import { render } from '../../__tests__/helpers';
 import { TestingAdaptorInstance } from '../../__tests__/helpers/adaptor';
 
-jest.mock('../../../src/components/subtree', () => ({
-  useSubtree: true,
-  subtreeMaxDepth: 5,
-}));
-
 describe('ElementInstance', () => {
+  beforeAll(() => {
+    // @ts-expect-error
+    process.env.GOJI_WRAPPED_COMPONENTS = [];
+  });
+
   const instance = new ElementInstance(
     'view',
     {
@@ -48,101 +47,6 @@ describe('ElementInstance', () => {
     );
     const [pured] = simpleInstance.pure('');
     expect((pured as ElementNodeDevelopment).simplifiedId).not.toBeUndefined();
-  });
-
-  describe('getSubtreeId', () => {
-    beforeAll(() => {
-      // @ts-expect-error
-      process.env.GOJI_WRAPPED_COMPONENTS = [];
-    });
-    const view = () =>
-      new ElementInstance('view', {}, [], new Container(new TestingAdaptorInstance()));
-    const subtree = () =>
-      new ElementInstance(TYPE_SUBTREE, {}, [], new Container(new TestingAdaptorInstance()));
-    /**
-     * linkElements
-     * call `setParent` and `children.push` for given elements
-     * [a, b, c] => a <- b <- c
-     */
-    const linkElements = (elements: Array<ElementInstance>) => {
-      const mockContainer = new Container(new TestingAdaptorInstance());
-      elements[0].setParent(mockContainer);
-      for (let i = 0; i < elements.length - 1; i += 1) {
-        elements[i].appendChild(elements[i + 1]);
-      }
-    };
-
-    describe('wechat', () => {
-      beforeAll(() => {
-        process.env.GOJI_TARGET = 'wechat';
-      });
-
-      test('container works', () => {
-        let leaf: ElementInstance;
-        const elements = [view(), view(), (leaf = view())];
-        linkElements(elements);
-        expect(leaf.getSubtreeId()).toBe(undefined);
-      });
-
-      test('auto subtree works', () => {
-        let leaf: ElementInstance;
-        let sub: ElementInstance;
-        const elements = [view(), view(), view(), view(), (sub = view()), view(), (leaf = view())];
-        linkElements(elements);
-        expect(leaf.getSubtreeId()).toBe(sub.id);
-      });
-
-      test('manual subtree works', () => {
-        let leaf: ElementInstance;
-        let sub: ElementInstance;
-        const elements = [view(), view(), (sub = subtree()), view(), (leaf = view())];
-        linkElements(elements);
-        expect(leaf.getSubtreeId()).toBe(sub.id);
-      });
-
-      test('auto subtree inside manual subtree works', () => {
-        let leaf: ElementInstance;
-        let sub: ElementInstance;
-        const elements = [
-          view(),
-          view(),
-          subtree(),
-          view(),
-          view(),
-          view(),
-          view(),
-          (sub = view()),
-          view(),
-          (leaf = view()),
-        ];
-        linkElements(elements);
-        expect(leaf.getSubtreeId()).toBe(sub.id);
-      });
-    });
-
-    describe('non-wechat', () => {
-      beforeAll(() => {
-        process.env.GOJI_TARGET = 'baidu';
-      });
-
-      test('subtree id should be always undefined', () => {
-        let leaf: ElementInstance;
-        const elements = [
-          view(),
-          view(),
-          subtree(),
-          view(),
-          view(),
-          view(),
-          view(),
-          view(),
-          view(),
-          (leaf = view()),
-        ];
-        linkElements(elements);
-        expect(leaf.getSubtreeId()).toBe(undefined);
-      });
-    });
   });
 
   test('batched event handler', () => {

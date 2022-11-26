@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import './patchGlobalObject';
 import { createAdaptor, AdaptorType, ExportComponentMeta } from './adaptor';
-import { GOJI_TARGET } from './constants';
+import { GojiTarget } from './constants';
 import { batchedUpdates } from './reconciler';
 
 interface RenderOptions {
@@ -21,7 +21,12 @@ export const render = (element: ReactNode, options: Partial<RenderOptions> = {})
     ...DEFAULT_RENDER_OPTIONS,
     ...options,
   };
-  const adaptor = createAdaptor(type, GOJI_TARGET, exportMeta, disablePageSharing);
+  const adaptor = createAdaptor(
+    type,
+    process.env.GOJI_TARGET as GojiTarget,
+    exportMeta,
+    disablePageSharing,
+  );
   return adaptor.run(element);
 };
 

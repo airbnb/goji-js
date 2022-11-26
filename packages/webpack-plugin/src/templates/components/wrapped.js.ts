@@ -1,4 +1,3 @@
-import { getTemplateIds } from '@goji/core/dist/cjs/constants';
 import camelCase from 'lodash/camelCase';
 import { ComponentDesc, ComponentPropDesc } from '../../constants/components';
 import { PluginComponentDesc } from '../../utils/pluginComponent';
@@ -27,7 +26,7 @@ export const processWrappedProps = ({
   component: ComponentDesc | PluginComponentDesc;
   config: WrappedConfig;
 }) => {
-  const ids = getTemplateIds();
+  const ids = getIds();
   const data: Array<string> = [];
   const metaObserverChecks: Array<string> = [];
   const attachedInitData: Array<string> = [];
