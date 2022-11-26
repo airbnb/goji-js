@@ -59,17 +59,15 @@ export const WRAPPED_CONFIGS: Record<string, WrappedConfig> = {
       const ids = getIds();
 
       return t`
-        <import src="../components1.wxml" />
         <swiper-item
           wx:for="{{${ids.meta}.${ids.children}}}"
           wx:key="${ids.gojiId}"
-          class="{{item.${ids.props}.className}}"
-          item-id="{{item.${ids.props}.itemId}}"
-          data-goji-id="{{item.${ids.gojiId}}}"
+          wx:for-item="${ids.meta}"
+          class="{{${ids.meta}.${ids.props}.className}}"
+          item-id="{{${ids.meta}.${ids.props}.itemId}}"
+          data-goji-id="{{${ids.meta}.${ids.gojiId}}}"
         >
-          <block wx:for="{{item.${ids.children}}}" wx:key="${ids.gojiId}">
-            <template is="$$GOJI_COMPONENT1" data="{{ ${ids.meta}: item }}" />
-          </block>
+          <include src="../children1.wxml" />
         </swiper-item>
       `;
     },

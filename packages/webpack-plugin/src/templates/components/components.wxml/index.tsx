@@ -1,6 +1,7 @@
 import { GojiTarget } from '@goji/core';
 import camelCase from 'lodash/camelCase';
 import { ComponentDesc } from '../../../constants/components';
+import { getFeatures } from '../../../constants/features';
 import { AllComponentDesc, isWrapped, SimplifiedComponentDesc } from '../../../utils/components';
 import { PluginComponentDesc } from '../../../utils/pluginComponent';
 import {
@@ -12,6 +13,7 @@ import {
 import { CommonContext } from '../../helpers/context';
 import { getIds } from '../../helpers/ids';
 import { t } from '../../helpers/t';
+import { childrenWxml, noNeedImport } from '../children.wxml';
 import { FlattenText, FlattenSwiper } from './flatten';
 
 export const componentAttribute = ({
@@ -89,17 +91,19 @@ export const componentAttributes = ({ component }: { component: AllComponentDesc
   ];
 };
 
+export const useSubtreeAsChildren = Symbol('use subtree instead of children template');
+
 export const componentItem = ({
   component,
-  depth,
-  componentsDepth,
+  componentDepth,
+  childrenDepth,
 }: {
   component: AllComponentDesc;
-  depth: number;
-  componentsDepth: number;
+  componentDepth: number;
+  childrenDepth: number | typeof useSubtreeAsChildren;
 }) => {
   const ids = getIds();
-  const inlineChildrenRender = CommonContext.read().target === 'alipay';
+  const { useInlineChildrenInComponent } = getFeatures(CommonContext.read().target);
   const tagName = getComponentTagName(component);
   const attributes = componentAttributes({ component });
   const children = ((): string => {
@@ -108,16 +112,21 @@ export const componentItem = ({
     }
     // cannot use <include> in <template> on Alipay
     // https://github.com/airbnb/goji-js/issues/140
-    if (inlineChildrenRender) {
+    if (useInlineChildrenInComponent) {
+      return childrenWxml({
+        relativePathToBridge: noNeedImport,
+        componentDepth,
+      });
+    }
+
+    if (childrenDepth === useSubtreeAsChildren) {
       return t`
-        <block wx:for="{{${ids.meta}.${ids.children}}}" wx:key="${ids.gojiId}">
-          <template is="$$GOJI_COMPONENT${componentsDepth}" data="{{ ${ids.meta}: item }}" />
-        </block>
+        <goji-subtree ${ids.meta}="{{${ids.meta}}}" />
       `;
     }
 
     return t`
-      <include src="./children${depth}.wxml" />
+      <include src="./children${childrenDepth}.wxml" />
     `;
   })();
 
@@ -129,25 +138,25 @@ export const componentItem = ({
 };
 
 export const componentWxml = ({
-  depth,
+  componentDepth,
+  childrenDepth,
   useFlattenSwiper,
   components,
   simplifiedComponents,
   pluginComponents,
-  componentsDepth,
 }: {
-  depth: number;
+  componentDepth: number;
+  childrenDepth: number | typeof useSubtreeAsChildren;
   useFlattenSwiper: boolean;
   components: Array<ComponentDesc>;
   simplifiedComponents: Array<SimplifiedComponentDesc>;
   pluginComponents: Array<PluginComponentDesc>;
-  componentsDepth: number;
 }) => {
   const ids = getIds();
-  const useFlattenText = CommonContext.read().target === 'baidu';
+  const { useFlattenText } = getFeatures(CommonContext.read().target);
 
   return t`
-    <template name="$$GOJI_COMPONENT${depth}">
+    <template name="$$GOJI_COMPONENT${componentDepth}">
       <block wx:if="{{${ids.meta}.${ids.type} === 'GOJI_TYPE_TEXT'}}">{{${ids.meta}.${
     ids.text
   }}}</block>
@@ -162,7 +171,7 @@ export const componentWxml = ({
         // render simplified components first for better performance
         [...simplifiedComponents, ...components, ...pluginComponents]
           .filter(_ => !_.isLeaf)
-          .map(component => componentItem({ component, componentsDepth, depth }))
+          .map(component => componentItem({ component, componentDepth, childrenDepth }))
       }
       <block wx:else>
         <include src="./leaf-components.wxml" />

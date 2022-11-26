@@ -1,11 +1,13 @@
 import camelCase from 'lodash/camelCase';
 import { ComponentDesc } from '../../constants/components';
+import { getFeatures } from '../../constants/features';
 import { PluginComponentDesc } from '../../utils/pluginComponent';
 import { WRAPPED_CONFIGS, DEFAULT_WRAPPED_CONFIG } from '../commons/wrapped';
 import { element, getEventName } from '../commons/wxmlElement';
 import { CommonContext } from '../helpers/context';
 import { getIds } from '../helpers/ids';
 import { t } from '../helpers/t';
+import { childrenWxml } from './children.wxml';
 import { mapComponentPropsToAttributes, componentAttribute } from './components.wxml';
 
 export const wrappedWxml = ({ component }: { component: ComponentDesc | PluginComponentDesc }) => {
@@ -46,11 +48,15 @@ export const wrappedWxml = ({ component }: { component: ComponentDesc | PluginCo
     if (component.isLeaf) {
       return '';
     }
+    const { useInlineChildrenInItem } = getFeatures(CommonContext.read().target);
+    if (useInlineChildrenInItem) {
+      return childrenWxml({
+        relativePathToBridge: '..',
+        componentDepth: 0,
+      });
+    }
     return t`
-      <import src="../components0.wxml" />
-      <block wx:for="{{${ids.meta}.${ids.children}}}" wx:key="${ids.gojiId}">
-        <template is="$$GOJI_COMPONENT0" data="{{ ${ids.meta}: item }}" />
-      </block>
+      <include src="../children0.wxml" />
     `;
   })();
 

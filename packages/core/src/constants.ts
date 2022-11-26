@@ -4,8 +4,6 @@ export const TYPE_SUBTREE = 'GOJI_TYPE_SUBTREE';
 
 export type GojiTarget = 'wechat' | 'baidu' | 'alipay' | 'toutiao' | 'qq' | 'toutiao';
 
-export const GOJI_TARGET: GojiTarget = (process.env.GOJI_TARGET as GojiTarget) || 'wechat';
-
 export interface SimplifyComponent {
   name: string;
   properties: Array<string>;

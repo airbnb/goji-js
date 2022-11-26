@@ -1,11 +1,11 @@
 import { Container } from '../container';
-import { TYPE_TEXT, TYPE_SUBTREE, getTemplateIds } from '../constants';
+import { TYPE_TEXT, TYPE_SUBTREE, getTemplateIds, GOJI_VIRTUAL_ROOT } from '../constants';
 import { gojiEvents } from '../events';
 import { getNextInstanceId } from '../utils/id';
 import { styleAttrStringify } from '../utils/styleAttrStringify';
 import { findSimplifyId } from '../utils/simplify';
 import { shallowEqual } from '../utils/shallowEqual';
-import { subtreeMaxDepth } from '../components/subtree';
+import { getSubtreeMaxDepthFromConfig, useSubtree } from '../components/subtree';
 import { batchedUpdates } from '.';
 
 // prop types from ComponentDesc
@@ -59,9 +59,9 @@ export abstract class BaseInstance {
 
   public id: number;
 
-  protected parent?: Container | ElementInstance;
+  protected parent?: ElementInstance;
 
-  public setParent(parent: Container | ElementInstance | undefined) {
+  public setParent(parent: ElementInstance | undefined) {
     this.parent = parent;
   }
 
@@ -83,9 +83,6 @@ const removeChildrenFromProps = (props: InstanceProps) => {
   return props;
 };
 
-const shouldUseSubtree = () =>
-  process.env.GOJI_TARGET === 'wechat' || process.env.GOJI_TARGET === 'qq';
-
 export class ElementInstance extends BaseInstance {
   public constructor(
     public override type: string,
@@ -106,11 +103,8 @@ export class ElementInstance extends BaseInstance {
   public subtreeDepth?: number;
 
   public getSubtreeId(): number | undefined {
-    // FIXME: For now, only WeChat and QQ have subtree while other platforms render all elements in one page
-    // We should consider enabling non-WeChat-like subtree/wrapped components support
-    if (!shouldUseSubtree()) {
-      return undefined;
-    }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const subtreeMaxDepth = useSubtree ? getSubtreeMaxDepthFromConfig : Infinity;
     // wrapped component should return its wrapper as subtree id
     // `process.env.GOJI_WRAPPED_COMPONENTS` is generated from `@goji/webpack-plugin` to tell which
     // components are wrapped as custom components
@@ -119,11 +113,11 @@ export class ElementInstance extends BaseInstance {
       return this.id;
     }
     const ancestors: Array<ElementInstance> = [];
-    let cursor: ElementInstance | Container | undefined = this.parent;
+    let cursor: ElementInstance | undefined = this.parent;
     // topGojiId === undefined : no <Subtree> from this element to container
     // topGojiId === cursor.id : the id of closest <Subtree>
     let topGojiId: number | undefined;
-    while (!(cursor instanceof Container)) {
+    while (cursor?.type !== GOJI_VIRTUAL_ROOT) {
       if (!cursor) {
         console.warn(
           'Cannot find parent in ElementInstance. This might be an internal error in GojiJS.',
@@ -131,20 +125,25 @@ export class ElementInstance extends BaseInstance {
         return undefined;
       }
       // wrapped component creates a new subtree
-      if (cursor.type === TYPE_SUBTREE || wrappedComponentsFromWebpack.includes(cursor.type)) {
+      if (
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        (useSubtree && cursor.type === TYPE_SUBTREE) ||
+        wrappedComponentsFromWebpack.includes(cursor.type)
+      ) {
         topGojiId = cursor.id;
         break;
       }
       ancestors.unshift(cursor);
       cursor = cursor.parent;
     }
+    // find the closest subtree from this element to root
     const subtreePosition = ancestors.length - (ancestors.length % subtreeMaxDepth) - 1;
     const subtreeElement = ancestors[subtreePosition];
-    if (!subtreeElement) {
-      return topGojiId;
+    if (subtreeElement) {
+      return subtreeElement.id;
     }
 
-    return subtreeElement.id;
+    return topGojiId;
   }
 
   public pure(path: string, parentTag?: UpdateType): [ElementNode, Updates] {

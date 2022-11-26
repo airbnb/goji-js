@@ -1,14 +1,19 @@
-import { getIds } from '../helpers/ids';
+import { getFeatures } from '../../constants/features';
+import { CommonContext } from '../helpers/context';
 import { t } from '../helpers/t';
+import { childrenWxml } from './children.wxml';
 
 export const subtreeWxml = () => {
-  const ids = getIds();
+  const { useInlineChildrenInItem } = getFeatures(CommonContext.read().target);
+
+  if (useInlineChildrenInItem) {
+    return childrenWxml({
+      relativePathToBridge: '.',
+      componentDepth: 0,
+    });
+  }
 
   return t`
-    <import src="./components0.wxml" />
-
-    <block wx:for="{{${ids.meta}.${ids.children}}}" wx:key="${ids.gojiId}">
-      <template is="$$GOJI_COMPONENT0" data="{{ ${ids.meta}: item }}" />
-    </block>
+    <include src="./children0.wxml" />
   `;
 };

@@ -1,8 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`children.wxml reach max depth 1`] = `"<goji-subtree meta=\\"{{meta}}\\" />"`;
-
-exports[`children.wxml works on wechat 1`] = `
+exports[`children.wxml works 1`] = `
 "<import src=\\"./components1.wxml\\" />
 <block wx:for=\\"{{meta.children}}\\" wx:key=\\"gojiId\\">
   <template is=\\"$$GOJI_COMPONENT1\\" data=\\"{{ meta: item }}\\" />

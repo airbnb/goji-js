@@ -37,10 +37,12 @@ describe('wrapped.js', () => {
   };
 
   test('process props', () => {
-    const result = processWrappedProps({
-      component: mockMapComponent,
-      config: mockConfig,
-    });
+    const result = renderTemplate({ target: 'wechat', nodeEnv: 'development' }, () =>
+      processWrappedProps({
+        component: mockMapComponent,
+        config: mockConfig,
+      }),
+    );
     expect(result.data).toMatchSnapshot('data');
     expect(result.properties).toMatchSnapshot('properties');
     expect(result.attachedInitData).toMatchSnapshot('attachedInitData');

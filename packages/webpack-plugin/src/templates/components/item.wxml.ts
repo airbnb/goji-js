@@ -1,16 +1,19 @@
-import { getIds } from '../helpers/ids';
+import { getFeatures } from '../../constants/features';
+import { CommonContext } from '../helpers/context';
 import { t } from '../helpers/t';
+import { childrenWxml } from './children.wxml';
 
 export const itemWxml = ({ relativePathToBridge }: { relativePathToBridge: string }) => {
-  const ids = getIds();
-  // pass the whole object to prevent this bug https://github.com/airbnb/goji-js/issues/179
-  const children = t`<template is="$$GOJI_COMPONENT0" data="{{ ${ids.meta}: item }}" />`;
+  const { useInlineChildrenInItem } = getFeatures(CommonContext.read().target);
+
+  if (useInlineChildrenInItem) {
+    return childrenWxml({
+      relativePathToBridge,
+      componentDepth: 0,
+    });
+  }
 
   return t`
-    <import src="${relativePathToBridge}/components0.wxml"/>
-
-    <block wx:for="{{${ids.meta}.${ids.children}}}" wx:key="${ids.gojiId}">
-      ${children}
-    </block>
+    <include src="${relativePathToBridge}/children0.wxml" />
   `;
 };

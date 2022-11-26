@@ -13,7 +13,7 @@ import { GojiBasedWebpackPlugin } from './based';
 import { minimize } from '../utils/minimize';
 import { getSubpackagesInfo, findBelongingSubPackage, MAIN_PACKAGE } from '../utils/config';
 import { renderTemplate } from '../templates';
-import { componentWxml } from '../templates/components/components.wxml';
+import { componentWxml, useSubtreeAsChildren } from '../templates/components/components.wxml';
 import { childrenWxml } from '../templates/components/children.wxml';
 import { leafComponentWxml } from '../templates/components/leaf-components.wxml';
 import { itemWxml } from '../templates/components/item.wxml';
@@ -80,8 +80,8 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
         path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `children${depth}.wxml`),
         () =>
           childrenWxml({
-            maxDepth,
-            componentsDepth: depth + 1,
+            relativePathToBridge: '.',
+            componentDepth: depth,
           }),
       );
       await this.renderTemplateComponentToAsset(
@@ -89,8 +89,8 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
         path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `components${depth}.wxml`),
         () =>
           componentWxml({
-            depth,
-            componentsDepth: depth + 1,
+            componentDepth: depth,
+            childrenDepth: depth + 1 === maxDepth ? useSubtreeAsChildren : depth + 1,
             components,
             simplifiedComponents,
             pluginComponents,
@@ -148,8 +148,8 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `components0.wxml`),
       () =>
         componentWxml({
-          depth: 0,
-          componentsDepth: 0,
+          componentDepth: 0,
+          childrenDepth: 0,
           components,
           simplifiedComponents,
           pluginComponents,
@@ -164,8 +164,8 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
       path.posix.join(basedir, BRIDGE_OUTPUT_DIR, `children0.wxml`),
       () =>
         childrenWxml({
-          maxDepth: Infinity,
-          componentsDepth: 0,
+          relativePathToBridge: '.',
+          componentDepth: 0,
         }),
     );
   }
@@ -223,9 +223,6 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
             await this.renderSubtreeBridge(compilation, bridgeBasedirs);
             // render subtree component
             await this.renderChildrenRenderComponent(compilation, bridgeBasedirs);
-          } else if (getFeatures(this.options.target).useInlineChildren) {
-            // render component0 with inlined children0
-            await this.renderComponentTemplate(compilation, bridgeBasedirs);
           } else {
             // render component0
             await this.renderComponentTemplate(compilation, bridgeBasedirs);

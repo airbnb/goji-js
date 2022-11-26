@@ -1,18 +1,13 @@
 import React, { useState, createRef } from 'react';
 import { ElementInstance, ElementNodeDevelopment, TextNodeDevelopment } from '../instance';
 import { Container } from '../../container';
-import { TYPE_SUBTREE } from '../../constants';
+import { GOJI_VIRTUAL_ROOT, TYPE_SUBTREE } from '../../constants';
 import { View, gojiEvents } from '../..';
 import { act } from '../../testUtils';
 import { batchedUpdates } from '..';
 import { PublicInstance } from '../publicInstance';
 import { render } from '../../__tests__/helpers';
 import { TestingAdaptorInstance } from '../../__tests__/helpers/adaptor';
-
-jest.mock('../../../src/components/subtree', () => ({
-  useSubtree: true,
-  subtreeMaxDepth: 5,
-}));
 
 describe('ElementInstance', () => {
   const instance = new ElementInstance(
@@ -66,7 +61,8 @@ describe('ElementInstance', () => {
      */
     const linkElements = (elements: Array<ElementInstance>) => {
       const mockContainer = new Container(new TestingAdaptorInstance());
-      elements[0].setParent(mockContainer);
+      const mockRoot = new ElementInstance(GOJI_VIRTUAL_ROOT, {}, [], mockContainer);
+      elements[0].setParent(mockRoot);
       for (let i = 0; i < elements.length - 1; i += 1) {
         elements[i].appendChild(elements[i + 1]);
       }
@@ -75,6 +71,7 @@ describe('ElementInstance', () => {
     describe('wechat', () => {
       beforeAll(() => {
         process.env.GOJI_TARGET = 'wechat';
+        process.env.GOJI_MAX_DEPTH = 5 as any;
       });
 
       test('container works', () => {
@@ -123,9 +120,10 @@ describe('ElementInstance', () => {
     describe('non-wechat', () => {
       beforeAll(() => {
         process.env.GOJI_TARGET = 'baidu';
+        process.env.GOJI_MAX_DEPTH = 5 as any;
       });
 
-      test('subtree id should be always undefined', () => {
+      test.only('subtree id should be always undefined', () => {
         let leaf: ElementInstance;
         const elements = [
           view(),
