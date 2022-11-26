@@ -3,7 +3,7 @@ import { TYPE_SUBTREE } from '../constants';
 
 export const useSubtree = process.env.GOJI_TARGET === 'wechat' || process.env.GOJI_TARGET === 'qq';
 
-export const getSubtreeMaxDepthFromConfig = (process.env.GOJI_MAX_DEPTH as any as number) ?? 10;
+export const subtreeMaxDepthFromConfig = (process.env.GOJI_MAX_DEPTH as any as number) ?? 10;
 
 export const Subtree = ({
   unsafe_className: className,

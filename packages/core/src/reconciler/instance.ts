@@ -5,7 +5,7 @@ import { getNextInstanceId } from '../utils/id';
 import { styleAttrStringify } from '../utils/styleAttrStringify';
 import { findSimplifyId } from '../utils/simplify';
 import { shallowEqual } from '../utils/shallowEqual';
-import { getSubtreeMaxDepthFromConfig, useSubtree } from '../components/subtree';
+import { subtreeMaxDepthFromConfig, useSubtree } from '../components/subtree';
 import { batchedUpdates } from '.';
 
 // prop types from ComponentDesc
@@ -103,8 +103,7 @@ export class ElementInstance extends BaseInstance {
   public subtreeDepth?: number;
 
   public getSubtreeId(): number | undefined {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const subtreeMaxDepth = useSubtree ? getSubtreeMaxDepthFromConfig : Infinity;
+    const subtreeMaxDepth = useSubtree ? subtreeMaxDepthFromConfig : Infinity;
     // wrapped component should return its wrapper as subtree id
     // `process.env.GOJI_WRAPPED_COMPONENTS` is generated from `@goji/webpack-plugin` to tell which
     // components are wrapped as custom components
@@ -126,7 +125,6 @@ export class ElementInstance extends BaseInstance {
       }
       // wrapped component creates a new subtree
       if (
-        // eslint-disable-next-line react-hooks/rules-of-hooks
         (useSubtree && cursor.type === TYPE_SUBTREE) ||
         wrappedComponentsFromWebpack.includes(cursor.type)
       ) {
