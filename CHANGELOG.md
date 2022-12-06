@@ -1,5 +1,39 @@
 # Change Log
 
+# v1.1.0 (2022-12-06)
+
+### Features
+
+- **webpack-plugin:** Enable wrapped input/textarea for baidu
+  [\#165](https://github.com/airbnb/goji-js/pull/165)
+
+- **webpack-plugin:** Refactored the data structure in template and `setData` JSON data.
+  [\#180](https://github.com/airbnb/goji-js/pull/180)
+
+- **webpack-plugin:** Refactor ComponentDesc [\#181](https://github.com/airbnb/goji-js/pull/181)
+
+- **webpack-plugin:** Refactor wrapped component with `meta`
+  [\#182](https://github.com/airbnb/goji-js/pull/182)
+
+- **core:** Support NodeJS 18 [\#184](https://github.com/airbnb/goji-js/pull/184)
+
+- **webpack-plugin:** Refactor template reuse & fix `getSubtreeId`
+  [\#186](https://github.com/airbnb/goji-js/pull/186)
+
+### Bugfixes
+
+- **create-goji-app:** Remove default `libVersion` fields in `project.config.json`
+  [\#164](https://github.com/airbnb/goji-js/pull/164)
+
+- **cli:** Upgrade deps & fix missing linaria issue in create CLI template
+  [\#175](https://github.com/airbnb/goji-js/pull/175)
+
+### Misc.
+
+- **docs:** Upgrade docs to docusaurus v2 [\#166](https://github.com/airbnb/goji-js/pull/166)
+
+- **docs:** Add missing CNAME file for docs [\#170](https://github.com/airbnb/goji-js/pull/170)
+
 # v1.0.1 (2022-04-13)
 
 ### Features
