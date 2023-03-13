@@ -134,9 +134,27 @@ export interface ScrollViewProps extends BasePropsWithChildren {
   enableBackToTop?: boolean;
   enableFlex?: boolean;
   scrollAnchoring?: boolean;
+  enablePassive?: boolean;
+  refresherEnabled?: boolean;
+  refresherThreshold?: number;
+  refresherDefaultStyle?: string;
+  refresherBackground?: string;
+  refresherTriggered?: boolean;
+  enhanced?: boolean;
+  bounces?: boolean;
+  showScrollbar?: boolean;
+  pagingEnabled?: boolean;
+  fastDeceleration?: boolean;
+  onDragstart?: (e: any) => void;
+  onDragging?: (e: any) => void;
+  onDragend?: (e: any) => void;
   onScrolltoupper?: (e: any) => void;
   onScrolltolower?: (e: any) => void;
   onScroll?: (e: any) => void;
+  onRefresherpulling?: (e: any) => void;
+  onRefresherrefresh?: (e: any) => void;
+  onRefresherrestore?: (e: any) => void;
+  onRefresherabort?: (e: any) => void;
 }
 
 type InputType = 'text' | 'number' | 'idcard' | 'digit';
