@@ -13,44 +13,30 @@ const processingEventBeforeDispatch = (e: any) => {
 export class GojiEvent {
   private instanceMap = new Map<number, ElementInstance>();
 
-  private stoppedPropagation = new Map<number, Map<string, number>>();
-
   public registerEventHandler(id: number, instance: ElementInstance) {
     this.instanceMap.set(id, instance);
   }
 
   public unregisterEventHandler(id: number) {
     this.instanceMap.delete(id);
-    this.stoppedPropagation.delete(id);
   }
 
   public triggerEvent(e: any) {
     processingEventBeforeDispatch(e);
-    const { target, currentTarget, timeStamp } = e;
-
+    const { currentTarget, timeStamp } = e;
     const id = currentTarget.dataset.gojiId;
-    const sourceId = target.dataset.gojiId;
-
     const type = camelCase(`on-${(e.type || '').toLowerCase()}`);
+
     const instance = this.instanceMap.get(id);
     if (!instance) {
       return;
     }
 
-    let stoppedPropagation = this.stoppedPropagation.get(sourceId);
-    if (stoppedPropagation && stoppedPropagation.get(type) === timeStamp) {
-      return;
-    }
-
     e.stopPropagation = () => {
-      if (!stoppedPropagation) {
-        stoppedPropagation = new Map<string, number>();
-        this.stoppedPropagation.set(sourceId, stoppedPropagation);
-      }
-      stoppedPropagation.set(type, timeStamp);
+      instance.stopPropagation(type, timeStamp ?? undefined);
     };
 
-    instance.triggerEvent(type, e);
+    instance.triggerEvent(type, timeStamp ?? undefined, e);
   }
 }
 
