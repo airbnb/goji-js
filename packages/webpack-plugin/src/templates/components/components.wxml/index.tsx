@@ -174,7 +174,7 @@ export const componentWxml = ({
           .map(component => componentItem({ component, componentDepth, childrenDepth }))
       }
       <block wx:else>
-        <include src="./leaf-components.wxml" />
+        <include src="./leaf-components.wxml.ts" />
       </block>
     </template>
   `;
