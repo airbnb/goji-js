@@ -166,4 +166,82 @@ describe('ElementInstance', () => {
     setItemsCallback([2, 1, 3]);
     expect(getTextList()).toEqual(['2', '1', '3']);
   });
+
+  test.each([[true], [false]])('stopPropagation = %s', shouldStopPropagation => {
+    const onRootTap = jest.fn();
+    const onLeafTap = jest.fn();
+    const rootRef = createRef<PublicInstance>();
+    const leafRef = createRef<PublicInstance>();
+    const App = () => (
+      <View onTap={onRootTap} ref={rootRef}>
+        <View>
+          <View>
+            <View>
+              <View>
+                <View
+                  onTap={e => {
+                    if (shouldStopPropagation) {
+                      e.stopPropagation();
+                    }
+                    onLeafTap();
+                  }}
+                  ref={leafRef}
+                >
+                  Click
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+    const { getContainer } = render(<App />);
+    const rootNode = (getContainer() as { meta: ElementNodeDevelopment }).meta;
+    let leafNode: ElementNodeDevelopment;
+    for (
+      leafNode = rootNode;
+      leafNode.children?.length;
+      leafNode = leafNode.children[0] as ElementNodeDevelopment
+    ) {
+      // do nothing
+    }
+
+    const timeStamp = Date.now();
+    // trigger event on leaf
+    gojiEvents.triggerEvent({
+      type: 'tap',
+      timeStamp,
+      currentTarget: {
+        dataset: {
+          gojiId: leafRef.current!.unsafe_gojiId,
+        },
+      },
+      target: {
+        dataset: {
+          gojiId: leafRef.current!.unsafe_gojiId,
+        },
+      },
+    });
+    act(() => {});
+    expect(onLeafTap).toBeCalledTimes(1);
+    expect(onRootTap).toBeCalledTimes(0);
+    // trigger event on root
+    gojiEvents.triggerEvent({
+      type: 'tap',
+      timeStamp,
+      currentTarget: {
+        dataset: {
+          gojiId: rootRef.current!.unsafe_gojiId,
+        },
+      },
+      target: {
+        dataset: {
+          gojiId: leafRef.current!.unsafe_gojiId,
+        },
+      },
+    });
+    act(() => {});
+    expect(onLeafTap).toBeCalledTimes(1);
+    expect(onRootTap).toBeCalledTimes(shouldStopPropagation ? 0 : 1);
+  });
 });

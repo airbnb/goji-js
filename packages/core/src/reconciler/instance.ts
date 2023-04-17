@@ -102,6 +102,8 @@ export class ElementInstance extends BaseInstance {
 
   public subtreeDepth?: number;
 
+  private stoppedPropagation: Map<string, number> = new Map();
+
   public getSubtreeId(): number | undefined {
     const subtreeMaxDepth = useSubtree ? subtreeMaxDepthFromConfig : Infinity;
     // wrapped component should return its wrapper as subtree id
@@ -224,19 +226,47 @@ export class ElementInstance extends BaseInstance {
     }
   }
 
-  public triggerEvent(propKey: string, data: any) {
-    const listener = this.props[propKey];
+  public triggerEvent(type: string, timeStamp: number | undefined, data: any) {
+    if (timeStamp === undefined) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(
+          '`triggerEvent` should be called with a `timeStamp`, otherwise it will trigger all events. This might be an internal error in GojiJS',
+        );
+      }
+      return;
+    }
+    // prevent triggering if the event has been stopped by `stopPropagation`
+    if (this.stoppedPropagation.get(type) === timeStamp) {
+      return;
+    }
+    const listener = this.props[type];
     if (listener) {
       if (typeof listener !== 'function') {
         if (process.env.NODE_ENV !== 'production') {
           console.warn(
-            `Expected \`${propKey}\` listener to be a function, instead got a value of \`${typeof listener}\` type.`,
+            `Expected \`${type}\` listener to be a function, instead got a value of \`${typeof listener}\` type.`,
           );
         }
         return;
       }
       // batch all event handler
       batchedUpdates(() => listener(data));
+    }
+  }
+
+  public stopPropagation(type: string, timeStamp: number | undefined) {
+    if (timeStamp === undefined) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(
+          '`stopPropagation` should be called with a `timeStamp`, otherwise it will stop all events. This might be an internal error in GojiJS.',
+        );
+      }
+      return;
+    }
+    // traverse all ancestors and mark as stopped manually instead of using `e.target.dataset.gojiId` because of this bug:
+    // https://github.com/airbnb/goji-js/issues/198
+    for (let cursor: ElementInstance | undefined = this; cursor; cursor = cursor.parent) {
+      cursor.stoppedPropagation.set(type, timeStamp);
     }
   }
 
