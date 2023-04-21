@@ -1,5 +1,16 @@
 # Change Log
 
+# v1.1.1 (2023-04-22)
+
+### Bugfixes
+
+- Fix an issue of Baidu flatten text template that cause missing text on production mode
+  [\#192](https://github.com/airbnb/goji-js/pull/192)
+
+- Update props of \<scroll-view\> [\#199](https://github.com/airbnb/goji-js/pull/199)
+
+- Refactor `stopPropagation` to fix \#198 [\#202](https://github.com/airbnb/goji-js/pull/202)
+
 # v1.1.0 (2022-12-06)
 
 ### Features
