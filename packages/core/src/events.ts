@@ -23,7 +23,12 @@ export class GojiEvent {
 
   public triggerEvent(e: any) {
     processingEventBeforeDispatch(e);
-    const { currentTarget, timeStamp } = e;
+    const { currentTarget, timeStamp, timestamp } = e;
+
+    // some events, like 'input' of `textarea`, use `timestamp` instead of `timeStamp`
+    // https://github.com/airbnb/goji-js/issues/208
+    const fixedTimeStamp = timeStamp ?? timestamp ?? undefined;
+
     const id = currentTarget.dataset.gojiId;
     const type = camelCase(`on-${(e.type || '').toLowerCase()}`);
 
@@ -33,10 +38,10 @@ export class GojiEvent {
     }
 
     e.stopPropagation = () => {
-      instance.stopPropagation(type, timeStamp ?? undefined);
+      instance.stopPropagation(type, fixedTimeStamp);
     };
 
-    instance.triggerEvent(type, timeStamp ?? undefined, e);
+    instance.triggerEvent(type, fixedTimeStamp, e);
   }
 }
 
