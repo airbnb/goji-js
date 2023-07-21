@@ -44,10 +44,6 @@ export const transformTemplate = async (
         case 'wxss':
           return (
             source
-              // on Toutiao, after uglifying the `!important` doesn't work in some situations
-              // for example `height:200px!important` and `color:red!important` fail
-              // see https://github.com/airbnb/goji-js/issues/160
-              .replace(/([^ ])!important/g, '$1 !important')
               // on Toutiao, the whitespace around `*` and `/` in `calc` must be reserved
               // see https://github.com/airbnb/goji-js/issues/159
               .replace(/rpx([*/]{1})/g, 'rpx $1')

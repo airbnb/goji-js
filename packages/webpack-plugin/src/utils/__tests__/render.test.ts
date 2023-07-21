@@ -128,19 +128,6 @@ describe('transformTemplate', () => {
   });
 
   describe('wxss', () => {
-    test('fix toutiao issue #160', async () => {
-      expect(await transformTemplate('height:200px!important', 'toutiao', 'wxss')).toBe(
-        'height:200px !important',
-      );
-      expect(await transformTemplate('color:red!important', 'toutiao', 'wxss')).toBe(
-        'color:red !important',
-      );
-      // ignore if not uglified
-      expect(await transformTemplate('height: 200px !important', 'toutiao', 'wxss')).toBe(
-        'height: 200px !important',
-      );
-    });
-
     test('fix toutiao issue #159', async () => {
       expect(await transformTemplate('height:calc(100rpx*10)', 'toutiao', 'wxss')).toBe(
         'height:calc(100rpx *10)',
