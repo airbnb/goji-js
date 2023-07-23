@@ -175,7 +175,7 @@ export const getBuiltInComponents = (target: GojiTarget): ComponentDesc[] =>
       },
       {
         name: 'scroll-view',
-        isWrapped: ['wechat', 'qq'].includes(target),
+        isWrapped: ['wechat', 'qq', 'baidu'].includes(target),
         props: {
           'scroll-x': {
             defaultValue: false,
