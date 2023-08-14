@@ -94,6 +94,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
             components,
             simplifiedComponents,
             pluginComponents,
+            useInlineLeafComponents: getFeatures(this.options.target).useInlineLeafComponents,
             useFlattenSwiper: getFeatures(this.options.target).useFlattenSwiper,
           }),
       );
@@ -153,6 +154,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           components,
           simplifiedComponents,
           pluginComponents,
+          useInlineLeafComponents: getFeatures(this.options.target).useInlineLeafComponents,
           useFlattenSwiper: getFeatures(this.options.target).useFlattenSwiper,
         }),
     );
@@ -231,7 +233,9 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
           }
 
           // render leaf-components
-          await this.renderLeafTemplate(compilation, bridgeBasedirs);
+          if (!getFeatures(this.options.target).useInlineLeafComponents) {
+            await this.renderLeafTemplate(compilation, bridgeBasedirs);
+          }
           // render wrapped components
           await this.renderWrappedComponents(compilation, bridgeBasedirs);
         }

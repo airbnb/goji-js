@@ -4,7 +4,7 @@ import { PluginComponentDesc } from '../../utils/pluginComponent';
 import { t } from '../helpers/t';
 import { componentItem } from './components.wxml';
 
-export const leafComponentWxml = ({
+export const leafComponentItems = ({
   components,
   simplifiedComponents,
   pluginComponents,
@@ -13,7 +13,6 @@ export const leafComponentWxml = ({
   simplifiedComponents: Array<SimplifiedComponentDesc>;
   pluginComponents: Array<PluginComponentDesc>;
 }) => t`
-    <block wx:if="{{false}}"></block>
     ${
       // render simplified components first for better performance
       [...simplifiedComponents, ...components, ...pluginComponents]
@@ -27,4 +26,21 @@ export const leafComponentWxml = ({
           }),
         )
     }
+  `;
+
+export const leafComponentWxml = ({
+  components,
+  simplifiedComponents,
+  pluginComponents,
+}: {
+  components: Array<ComponentDesc>;
+  simplifiedComponents: Array<SimplifiedComponentDesc>;
+  pluginComponents: Array<PluginComponentDesc>;
+}) => t`
+    <block wx:if="{{false}}"></block>
+    ${leafComponentItems({
+      components,
+      simplifiedComponents,
+      pluginComponents,
+    })}
   `;

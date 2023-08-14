@@ -13,6 +13,11 @@ export const getFeatures = (target: GojiTarget) => ({
     // https://smartprogram.baidu.com/docs/develop/devtools/beta-notify#_5-%E6%A8%A1%E6%9D%BF-import-%E8%AF%AD%E6%B3%95%E4%B8%8D%E5%85%81%E8%AE%B8%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8%E3%80%82
     target === 'baidu',
 
+  // Alipay doesn't support <include> in <template> if Lib v2.0 is enabled.
+  // Unfortunately, it has been forced to enable since mid-year 2023.
+  // https://github.com/airbnb/goji-js/issues/140
+  useInlineLeafComponents: target === 'alipay',
+
   // Baidu fails to render if an outside same `<include>` exists
   // https://github.com/airbnb/goji-js/issues/185
   useInlineChildrenInItem: target === 'baidu',
