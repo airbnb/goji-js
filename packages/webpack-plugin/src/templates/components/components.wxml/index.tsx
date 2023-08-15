@@ -15,6 +15,7 @@ import { getIds } from '../../helpers/ids';
 import { t } from '../../helpers/t';
 import { childrenWxml, noNeedImport } from '../children.wxml';
 import { FlattenText, FlattenSwiper } from './flatten';
+import { leafComponentItems } from '../leaf-components.wxml';
 
 export const componentAttribute = ({
   name,
@@ -140,6 +141,7 @@ export const componentItem = ({
 export const componentWxml = ({
   componentDepth,
   childrenDepth,
+  useInlineLeafComponents,
   useFlattenSwiper,
   components,
   simplifiedComponents,
@@ -147,6 +149,7 @@ export const componentWxml = ({
 }: {
   componentDepth: number;
   childrenDepth: number | typeof useSubtreeAsChildren;
+  useInlineLeafComponents: boolean;
   useFlattenSwiper: boolean;
   components: Array<ComponentDesc>;
   simplifiedComponents: Array<SimplifiedComponentDesc>;
@@ -173,9 +176,19 @@ export const componentWxml = ({
           .filter(_ => !_.isLeaf)
           .map(component => componentItem({ component, componentDepth, childrenDepth }))
       }
-      <block wx:else>
-        <include src="./leaf-components.wxml" />
-      </block>
+      ${
+        useInlineLeafComponents
+          ? leafComponentItems({
+              components,
+              simplifiedComponents,
+              pluginComponents,
+            })
+          : t`
+            <block wx:else>
+              <include src="./leaf-components.wxml" />
+            </block>
+          `
+      }
     </template>
   `;
 };
