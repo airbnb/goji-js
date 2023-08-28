@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, View, Text, Input } from '@goji/core';
+import { Button, View, Text, Input, Image } from '@goji/core';
 import { render, fireEvent } from '..';
 
 describe('fireEvent', () => {
@@ -42,5 +42,30 @@ describe('fireEvent', () => {
     expect(wrapper.getByTestId('input').props.value).toBe('hello');
     fireEvent.input(wrapper.getByTestId('input'), 'world');
     expect(wrapper.getByTestId('input').props.value).toBe('world');
+  });
+
+  test('load and error', () => {
+    let state = 'hello';
+
+    const App = ({ callback }: { callback: (s: string) => void }) => (
+      <Image
+        testID="image"
+        src="test.jpg"
+        onLoad={() => callback('ok')}
+        onError={() => callback('error')}
+      />
+    );
+    const wrapper = render(
+      <App
+        callback={v => {
+          state = v;
+        }}
+      />,
+    );
+    expect(state).toBe('hello');
+    fireEvent.load(wrapper.getByTestId('image'));
+    expect(state).toBe('ok');
+    fireEvent.error(wrapper.getByTestId('image'));
+    expect(state).toBe('error');
   });
 });
