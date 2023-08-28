@@ -1,7 +1,12 @@
 import { ReactTestInstance, act } from 'react-test-renderer';
 import { validComponentFilter } from './utils/queryHelpers';
 
-const buildTargetInfo = (node: ReactTestInstance) => ({ offsetLeft: 0, offsetTop: 0, id: node.props.id, dataset: {} });
+const buildTargetInfo = (node: ReactTestInstance) => ({
+  offsetLeft: 0,
+  offsetTop: 0,
+  id: node.props.id,
+  dataset: {},
+});
 
 const fireEventOnInstance = ({
   node,
@@ -68,6 +73,26 @@ class FireEvent {
       node,
       type: 'confirm',
       eventName: 'onConfirm',
+      detail: { value: node.props.value },
+      bubble: false,
+    });
+  }
+
+  public static load(node: ReactTestInstance) {
+    fireEventOnInstance({
+      node,
+      type: 'load',
+      eventName: 'onLoad',
+      detail: { value: node.props.value },
+      bubble: false,
+    });
+  }
+
+  public static error(node: ReactTestInstance) {
+    fireEventOnInstance({
+      node,
+      type: 'error',
+      eventName: 'onError',
       detail: { value: node.props.value },
       bubble: false,
     });
