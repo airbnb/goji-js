@@ -9,7 +9,7 @@
     "autoAudits": false,
     "nodeModules": false,
     "uploadWithSourceMap": true,
-    "uglifyFileName": true,
+    "uglifyFileName": false,
     "remoteDebugLogEnable": false,
     "prefetch": false
   },
