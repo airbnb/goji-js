@@ -83,6 +83,13 @@ export class GojiProjectConfigPlugin extends GojiBasedWebpackPlugin {
       });
     }
 
+    if (target === 'red') {
+      patterns.push({
+        from: 'project.red.json',
+        to: 'project.config.json',
+      });
+    }
+
     if (patterns.length) {
       new CopyWebpackPlugin({
         patterns: patterns.map(pattern => ({ ...pattern, noErrorOnMissing: true })),

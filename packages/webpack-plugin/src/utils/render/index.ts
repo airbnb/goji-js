@@ -51,6 +51,15 @@ export const transformTemplate = async (
         default:
           return source;
       }
+    case 'red':
+      switch (type) {
+        case 'wxml':
+          return source.replace(/wx:/g, 'xhs:').replace(/\.wxml/g, '.xhsml');
+        case 'js':
+          return source;
+        default:
+          return source;
+      }
     default:
       return source;
   }
