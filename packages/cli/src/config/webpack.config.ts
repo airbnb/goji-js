@@ -61,6 +61,7 @@ export const getWebpackConfig = ({
     baidu: 'css',
     alipay: 'acss',
     toutiao: 'ttss',
+    red: 'css',
   };
 
   return {

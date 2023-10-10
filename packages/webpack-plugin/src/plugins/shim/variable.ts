@@ -6,6 +6,7 @@ const API_VARIABLE_NAME: Record<GojiTarget, string> = {
   alipay: 'my',
   qq: 'qq',
   toutiao: 'tt',
+  red: 'xhs',
 };
 
 export const getApiVariableDefinitions = (target: GojiTarget) => {

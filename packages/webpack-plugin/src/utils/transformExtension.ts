@@ -46,6 +46,15 @@ export const transformExtension = ({
         default:
           return extension;
       }
+    case 'red':
+      switch (extension) {
+        case '.wxml':
+          return '.xhsml';
+        case '.wxss':
+          return '.css';
+        default:
+          return extension;
+      }
     default:
       return extension;
   }
