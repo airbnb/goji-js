@@ -19,7 +19,6 @@ export class GojiWebpackPlugin implements webpack.WebpackPluginInstance {
     options: GojiWebpackPluginOptions,
   ): GojiWebpackPluginRequiredOptions {
     const nodeEnv = options.nodeEnv ?? process.env.NODE_ENV ?? 'development';
-    const isProd = nodeEnv === 'production';
 
     return {
       target: options.target,
@@ -27,7 +26,7 @@ export class GojiWebpackPlugin implements webpack.WebpackPluginInstance {
       maxDepth: options.maxDepth ?? 5,
       minimize: options.minimize ?? nodeEnv !== 'development',
       nohoist: {
-        enable: options?.nohoist?.enable ?? isProd,
+        enable: options?.nohoist?.enable ?? true,
         maxPackages: options?.nohoist?.maxPackages ?? 1,
         test: options?.nohoist?.test,
       },
