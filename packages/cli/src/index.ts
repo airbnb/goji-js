@@ -13,6 +13,12 @@ interface GojiConfig {
   configureBabel?: (config: any) => any;
   progress?: boolean;
   nohoist?: GojiWebpackPluginOptions['nohoist'];
+  parallel?:
+    | {
+        minimize?: number;
+        loader?: number;
+      }
+    | number;
 }
 
 const GOJI_CONFIG_FILE_NAME = 'goji.config';
@@ -60,6 +66,10 @@ const main = async () => {
     watch,
     progress: gojiConfig.progress ?? cliConfig.progress ?? true,
     nohoist: gojiConfig?.nohoist,
+    parallel:
+      typeof gojiConfig.parallel === 'number'
+        ? { loader: gojiConfig.parallel, minimize: gojiConfig.parallel }
+        : gojiConfig.parallel,
   });
 
   // apply goji.config.js configureWebpack
