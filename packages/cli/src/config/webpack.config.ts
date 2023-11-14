@@ -43,6 +43,7 @@ export const getWebpackConfig = ({
   watch,
   progress,
   nohoist,
+  parallel,
 }: {
   basedir: string;
   outputPath?: string;
@@ -52,8 +53,12 @@ export const getWebpackConfig = ({
   watch: boolean;
   progress: boolean;
   nohoist?: GojiWebpackPluginOptions['nohoist'];
+  parallel?: {
+    minimize?: number;
+    loader?: number;
+  };
 }): webpack.Configuration => {
-  const threadLoaders = getThreadLoader(nodeEnv);
+  const threadLoaders = getThreadLoader(nodeEnv, parallel?.loader);
 
   const CSS_FILE_EXT = {
     wechat: 'wxss',
@@ -99,6 +104,7 @@ export const getWebpackConfig = ({
             },
           },
           extractComments: false,
+          parallel: parallel?.minimize,
         }),
       ],
       // set `optimization.splitChunks` and `optimization.splitChunks` to `false`
