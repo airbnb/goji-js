@@ -1,5 +1,34 @@
 # Change Log
 
+# v.1.3.0 (2023-11-14)
+
+### Bugfixes
+
+- **core:** Use `event.timestamp` as an alist for `event.timeStamp`
+  [\#209](https://github.com/airbnb/goji-js/pull/209)
+
+- **webpack-plugin:** Remove bugfix for \#160 [\#211](https://github.com/airbnb/goji-js/pull/211)
+
+- **webpack-plugin:** Enable wrapper for \<scroll-view\> on Baidu
+  [\#212](https://github.com/airbnb/goji-js/pull/212)
+
+- **webpack-plugin:** Prevent using `<include>` in `<template>` to fix \#140 on Alipay
+  [\#213](https://github.com/airbnb/goji-js/pull/213)
+
+- **create-goji-app** Disable code protect option for wechat and qq
+  [\#217](https://github.com/airbnb/goji-js/pull/217)
+
+### Features
+
+- **testing-library** support fire load and error event in test library
+  [\#214](https://github.com/airbnb/goji-js/pull/214) ([race604](https://github.com/race604))
+
+- **webpack-plugin:** Enable `nohoist` by default
+  [\#223](https://github.com/airbnb/goji-js/pull/223)
+
+- **webpack-plugin:** Add `parallel` option in goji.config.js
+  [\#224](https://github.com/airbnb/goji-js/pull/224)
+
 # v.1.2.0 (2023-07-11)
 
 ### Bugfixes
