@@ -9,6 +9,7 @@ import {
 } from '../utils/loadConfig';
 import { AppConfig } from '../types';
 import { readPathsFromAppConfig } from '../utils/config';
+import { getChunkName } from '../utils/chunkName';
 
 /**
  * resolve `app.json` to generate dynamic entries
@@ -68,7 +69,9 @@ export class GojiEntryWebpackPlugin extends GojiBasedWebpackPlugin {
   // FIXME: remove the main entry which content is `app.json`
   // is there any better way to avoid this chunk being generated ?
   private removeMainEntry(compilation: webpack.Compilation) {
-    const mainChunk = [...compilation.chunks].find((chunk: webpack.Chunk) => chunk.name === 'main');
+    const mainChunk = [...compilation.chunks].find(
+      (chunk: webpack.Chunk) => getChunkName(chunk) === 'main',
+    );
     if (!mainChunk) {
       console.warn('main chunk not found');
       return;

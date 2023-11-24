@@ -2,6 +2,7 @@ import webpack, { ChunkGraph } from 'webpack';
 import path from 'path';
 import { GojiBasedWebpackPlugin } from './based';
 import { NO_HOIST_PREFIX, NO_HOIST_TEMP_DIR } from '../constants/paths';
+import { getChunkName } from '../utils/chunkName';
 
 const isNohoistTempFile = (filePath: string) => filePath.startsWith(`${NO_HOIST_TEMP_DIR}/`);
 
@@ -21,10 +22,10 @@ export class GojiNohoistWebpackPlugin extends GojiBasedWebpackPlugin {
             const { chunkGraph } = compilation;
             // clean up useless chunks to prevent these temp files to be emitted
             for (const chunk of chunks) {
-              if (!isNohoistTempFile(chunk.name)) {
+              if (!isNohoistTempFile(getChunkName(chunk))) {
                 continue;
               }
-              const nohoistTempFileName = path.posix.basename(chunk.name);
+              const nohoistTempFileName = path.posix.basename(getChunkName(chunk));
               const chunkGroups = chunk.groupsIterable;
               const modules = chunkGraph.getChunkModules(chunk);
               // move chunk into each chunkGroups(sub packages)
@@ -45,7 +46,7 @@ export class GojiNohoistWebpackPlugin extends GojiBasedWebpackPlugin {
               }
               // this line also clean up modules and groups
               chunkGraph.disconnectChunk(chunk);
-              compilation.namedChunks.delete(chunk.name);
+              compilation.namedChunks.delete(getChunkName(chunk));
               chunks.delete(chunk);
               // TODO: remove in webpack 6
               ChunkGraph.clearChunkGraphForChunk(chunk);

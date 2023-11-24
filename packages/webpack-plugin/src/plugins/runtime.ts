@@ -3,6 +3,7 @@ import path from 'path';
 import { GojiBasedWebpackPlugin } from './based';
 import { safeUrlToRequest } from '../utils/path';
 import { COMMON_CHUNK_NAME, RUNTIME_FILE_NAME } from '../constants/paths';
+import { getChunkName } from '../utils/chunkName';
 
 type RuntimePluginExt = '.js' | '.wxss';
 
@@ -64,11 +65,11 @@ export class GojiRuntimePlugin extends GojiBasedWebpackPlugin {
               if (chunk === entryChunk) {
                 continue;
               }
-              // assume output.filename is chunk.name here
-              const depentChunkName = chunk.name;
+              // assume output.filename is getChunkName(chunk) here
+              const dependentChunkName = getChunkName(chunk);
               // uniq
-              if (!dependentChunkNames.includes(depentChunkName)) {
-                dependentChunkNames.push(chunk.name);
+              if (!dependentChunkNames.includes(dependentChunkName)) {
+                dependentChunkNames.push(dependentChunkName);
               }
             }
           }
@@ -99,7 +100,7 @@ export class GojiRuntimePlugin extends GojiBasedWebpackPlugin {
             const filteredDependentChunkNames = existedDependentChunkNames.filter(chunkName => {
               if (chunkName === COMMON_CHUNK_NAME || chunkName === RUNTIME_FILE_NAME) {
                 // remove root common/runtime chunk for pages
-                if (entryChunk.name !== 'app') {
+                if (getChunkName(entryChunk) !== 'app') {
                   return false;
                 }
               }
@@ -109,7 +110,7 @@ export class GojiRuntimePlugin extends GojiBasedWebpackPlugin {
               meta.ext,
               transformedExt,
               filteredDependentChunkNames.map(chunkName =>
-                path.posix.relative(path.posix.dirname(entryChunk.name), chunkName),
+                path.posix.relative(path.posix.dirname(getChunkName(entryChunk)), chunkName),
               ),
             );
             compilation.assets[file] = new webpack.sources.ConcatSource(

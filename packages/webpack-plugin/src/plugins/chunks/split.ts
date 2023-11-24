@@ -12,6 +12,7 @@ import {
 import { AppConfig, GojiWebpackPluginRequiredOptions } from '../../types';
 import { COMMON_CHUNK_NAME, NO_HOIST_TEMP_DIR } from '../../constants/paths';
 import { normalizeCacheGroups } from '../../forked/splitChunksPlugin';
+import { getChunkName } from '../../utils/chunkName';
 
 type WebpackCacheGroups = NonUndefined<
   Exclude<
@@ -63,7 +64,7 @@ const getNohoistModules = (
   for (const module of modules) {
     const chunks = chunkGraph.getModuleChunks(module);
     const belongingSubPackages = findBelongingSubPackages(
-      chunks.map(chunk => chunk.name),
+      chunks.map(chunk => getChunkName(chunk)),
       subPackageRoots,
     );
     const canNohoist = belongingSubPackages.size > 1 && !belongingSubPackages.has(MAIN_PACKAGE);
@@ -71,7 +72,7 @@ const getNohoistModules = (
     // should only nohoist if size between [2, N] where N is `nohoist.maxPackages`
     if (canNohoist && (forceNohoist || belongingSubPackages.size <= options.maxPackages)) {
       const hash = crypto.createHash('sha256');
-      for (const chunkName of chunks.map(chunk => chunk.name).sort()) {
+      for (const chunkName of chunks.map(chunk => getChunkName(chunk)).sort()) {
         hash.update(chunkName);
       }
       const chunksHash = hash.digest('hex');
@@ -97,7 +98,7 @@ const getCacheGroups = (
     name: COMMON_CHUNK_NAME,
     priority: -5,
     chunks: chunk => {
-      if (independents.find(item => isBelongsTo(chunk.name, item.root ?? ''))) {
+      if (independents.find(item => isBelongsTo(getChunkName(chunk), item.root ?? ''))) {
         return false;
       }
 
@@ -121,9 +122,9 @@ const getCacheGroups = (
 
         return context.chunkGraph
           .getModuleChunks(module)
-          .every(item => isBelongsTo(item.name, subPackage));
+          .every(item => isBelongsTo(getChunkName(item), subPackage));
       },
-      chunks: chunk => isBelongsTo(chunk.name, subPackage),
+      chunks: chunk => isBelongsTo(getChunkName(chunk), subPackage),
     };
   }
   if (options.enable) {
