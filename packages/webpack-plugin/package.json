@@ -27,7 +27,7 @@
     "typescript": "^4.3.5",
     "utility-types": "^3.10.0",
     "vscode-ripgrep": "^1.12.1",
-    "webpack": "^5.76.0"
+    "webpack": "^5.89.0"
   },
   "dependencies": {
     "common-tags": "^2.0.0-alpha.1",

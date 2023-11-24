@@ -1,6 +1,7 @@
 import webpack, { Template } from 'webpack';
 import { RUNTIME_FILE_NAME } from '../constants/paths';
 import { GojiBasedWebpackPlugin } from './based';
+import { getChunkName } from '../utils/chunkName';
 
 const SOURCE_NAME = '';
 
@@ -22,7 +23,7 @@ export class GojiSingletonRuntimeWebpackPlugin extends GojiBasedWebpackPlugin {
       webpack.javascript.JavascriptModulesPlugin.getCompilationHooks(compilation).renderMain.tap(
         'GojiSingletonRuntimeWebpackPlugin',
         (source, context) => {
-          if (!context.chunk.name.endsWith('runtime')) {
+          if (!getChunkName(context.chunk).endsWith('runtime')) {
             return source;
           }
           const { globalObject } = compilation.outputOptions;
@@ -56,7 +57,7 @@ export class GojiSingletonRuntimeWebpackPlugin extends GojiBasedWebpackPlugin {
       webpack.javascript.JavascriptModulesPlugin.getCompilationHooks(compilation).renderMain.tap(
         'GojiFixIndependentRuntimePlugin',
         (source, context) => {
-          if (!context.chunk.name.endsWith(RUNTIME_FILE_NAME)) {
+          if (!getChunkName(context.chunk).endsWith(RUNTIME_FILE_NAME)) {
             return source;
           }
 
@@ -67,7 +68,7 @@ export class GojiSingletonRuntimeWebpackPlugin extends GojiBasedWebpackPlugin {
             new webpack.sources.PrefixSource(
               '/*goji*/ ',
               Template.asString([
-                `var _chunkPath = ${JSON.stringify(context.chunk.name)};`,
+                `var _chunkPath = ${JSON.stringify(getChunkName(context.chunk))};`,
                 `if (!${globalObject}.__gojiFixIndependentRuntime) {`,
                 Template.indent([
                   `Object.defineProperty(${globalObject}, '__gojiFixIndependentRuntime', {`,
