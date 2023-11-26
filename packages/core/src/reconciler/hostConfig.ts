@@ -97,18 +97,15 @@ export const hostConfig: GojiHostConfig<
   },
 
   createInstance(type, newProps, rootContainerInstance) {
-    const instance = new ElementInstance(type, newProps, [], rootContainerInstance);
-    instance.registerEventHandler();
-
-    return instance;
+    return new ElementInstance(type, newProps, [], rootContainerInstance);
   },
 
   createTextInstance(text, rootContainerInstance) {
     return new TextInstance(text, rootContainerInstance);
   },
 
-  commitMount() {
-    // do nothing
+  commitMount(instance) {
+    instance.registerEventHandler();
   },
 
   commitUpdate(targetIns, updatePayload, type, oldProps, newProps) {
@@ -131,7 +128,7 @@ export const hostConfig: GojiHostConfig<
     container.virtualRootElement.insertBefore(child, beforeChild);
   },
 
-  finalizeInitialChildren: () => false,
+  finalizeInitialChildren: () => true,
 
   appendChildToContainer(container, child) {
     container.virtualRootElement.appendChild(child);
