@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createPortal } from '..';
 import { View } from '../..';
 import { render } from '../../__tests__/helpers';
-import { act } from '../../testUtils';
+import { act } from '../../__tests__/testUtils/act';
 import { ElementNodeDevelopment } from '../../reconciler/instance';
 
 describe('createPortal', () => {

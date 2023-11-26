@@ -2,7 +2,7 @@ import React, { useState, createRef } from 'react';
 import { ElementInstance, ElementNodeDevelopment, TextNodeDevelopment } from '../instance';
 import { Container } from '../../container';
 import { View, gojiEvents } from '../..';
-import { act } from '../../testUtils';
+import { act } from '../../__tests__/testUtils/act';
 import { batchedUpdates } from '..';
 import { PublicInstance } from '../publicInstance';
 import { render } from '../../__tests__/helpers';

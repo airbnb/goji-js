@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from 'react';
 import { View } from '../..';
-import { act } from '../../testUtils';
+import { act } from '../../__tests__/testUtils/act';
 import { createEventProxy, useEventProxy } from '../eventProxy';
 import { render } from '../../__tests__/helpers';
 import { ContainerProvider } from '../container';
