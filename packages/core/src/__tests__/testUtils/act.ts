@@ -2,7 +2,7 @@
 // https://github.com/facebook/react/blob/a1dbb852c29d23d5d0b76a0171eb59df4bebf684/packages/react-test-renderer/src/ReactTestRendererAct.js
 
 import { Thenable } from 'react-reconciler';
-import { reconciler } from '../reconciler';
+import { reconciler } from '../../reconciler';
 import { ReactSharedInternals, enqueueTask, __DEV__, warningWithoutStack } from './forks';
 
 const { batchedUpdates, flushPassiveEffects, IsThisRendererActing } = reconciler as any;

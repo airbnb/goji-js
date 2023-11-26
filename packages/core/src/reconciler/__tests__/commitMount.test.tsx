@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View } from '../../components/factoryComponents';
 import { gojiEvents } from '../../events';
 import { render, RenderResult } from '../../__tests__/helpers';
-import { act } from '../../testUtils';
+import { act } from '../../__tests__/testUtils/act';
 
 jest.useFakeTimers();
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View } from '..';
-import { act } from '../testUtils';
+import { act } from './testUtils/act';
 import { render } from './helpers';
 
 describe('AdaptorInstance', () => {
