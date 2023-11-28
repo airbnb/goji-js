@@ -32,6 +32,7 @@ describe('hoist', () => {
         enable: true,
         maxPackages: Infinity,
       },
+      cssUnit: 'to-px',
     });
     const compiler = webpack(webpackConfig);
     await new Promise<webpack.Stats | undefined>((resolve, reject) => {

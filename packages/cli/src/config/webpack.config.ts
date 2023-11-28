@@ -11,7 +11,7 @@ import resolve from 'resolve';
 import { version as gojiCliVersion } from '@goji/cli/package.json';
 import { version as babelCoreVersion } from '@babel/core/package.json';
 import { version as babelLoaderVersion } from 'babel-loader/package.json';
-import postcssConfig from './postcssConfig';
+import postcssConfig, { TransformUnit } from './postcssConfig';
 import { getThreadLoader } from './loaders';
 
 const getSourceMap = (nodeEnv: string, target: GojiTarget): webpack.Configuration['devtool'] => {
@@ -46,6 +46,7 @@ export const getWebpackConfig = ({
   watch,
   progress,
   nohoist,
+  cssUnit,
   parallel,
 }: {
   basedir: string;
@@ -57,6 +58,7 @@ export const getWebpackConfig = ({
   watch: boolean;
   progress: boolean;
   nohoist?: GojiWebpackPluginOptions['nohoist'];
+  cssUnit: TransformUnit;
   parallel?: {
     minimize?: number;
     loader?: number;
@@ -230,7 +232,7 @@ export const getWebpackConfig = ({
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
                   config: false,
-                  ...postcssConfig,
+                  ...postcssConfig({ unit: cssUnit }),
                 },
               },
             },
@@ -267,7 +269,7 @@ export const getWebpackConfig = ({
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
                   config: false,
-                  ...postcssConfig,
+                  ...postcssConfig({ unit: cssUnit }),
                 },
               },
             },

@@ -7,7 +7,8 @@ interface Options {
   divisor: number;
   multiple: number;
   decimalPlaces: number;
-  targetUnits: string;
+  sourceUnit: string;
+  targetUnit: string;
   comment: string;
 }
 
@@ -15,11 +16,12 @@ const DEFAULT_OPTIONS: Options = {
   divisor: 1,
   multiple: 1,
   decimalPlaces: 2,
-  targetUnits: 'rpx',
+  sourceUnit: 'px',
+  targetUnit: 'rpx',
   comment: 'no',
 };
 
-const postcssPx2units: PluginCreator<Partial<Options>> = (options = {}) => {
+const postcssTransformUnit: PluginCreator<Partial<Options>> = (options = {}) => {
   const mergedOptions = { ...DEFAULT_OPTIONS, ...options };
 
   const replacePx = (str: string) => {
@@ -27,16 +29,19 @@ const postcssPx2units: PluginCreator<Partial<Options>> = (options = {}) => {
       return '';
     }
 
-    return str.replace(/\b(\d+(\.\d+)?)px\b/gi, (match, x) => {
-      const size = (x * mergedOptions.multiple) / mergedOptions.divisor;
-      return size % 1 === 0
-        ? size + mergedOptions.targetUnits
-        : size.toFixed(mergedOptions.decimalPlaces) + mergedOptions.targetUnits;
-    });
+    return str.replace(
+      new RegExp(`\\b(\\d+(\\.\\d+)?)${mergedOptions.sourceUnit}\\b`, 'g'),
+      (_match, x) => {
+        const size = (x * mergedOptions.multiple) / mergedOptions.divisor;
+        return size % 1 === 0
+          ? size + mergedOptions.targetUnit
+          : size.toFixed(mergedOptions.decimalPlaces) + mergedOptions.targetUnit;
+      },
+    );
   };
 
   return {
-    postcssPlugin: 'postcss-px2units',
+    postcssPlugin: 'postcss-transform-unit',
     Declaration(declaration) {
       const nextNode = declaration.next();
       if (nextNode?.type === 'comment' && nextNode.text === mergedOptions.comment) {
@@ -48,6 +53,6 @@ const postcssPx2units: PluginCreator<Partial<Options>> = (options = {}) => {
   };
 };
 
-postcssPx2units.postcss = true;
+postcssTransformUnit.postcss = true;
 
-module.exports = postcssPx2units;
+module.exports = postcssTransformUnit;
