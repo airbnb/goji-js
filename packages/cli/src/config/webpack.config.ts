@@ -7,6 +7,8 @@ import type { NonUndefined } from 'utility-types';
 import { GojiWebpackPluginOptions, GojiWebpackPlugin } from '@goji/webpack-plugin';
 import nodeLibsBrowser from 'node-libs-browser';
 import resolve from 'resolve';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { version as gojiCliVersion } from '@goji/cli/package.json';
 import { version as babelCoreVersion } from '@babel/core/package.json';
 import { version as babelLoaderVersion } from 'babel-loader/package.json';
 import postcssConfig from './postcssConfig';
@@ -36,6 +38,7 @@ const getNodeLibsFallback = () => {
 
 export const getWebpackConfig = ({
   basedir,
+  gojiConfigFile,
   outputPath,
   target,
   nodeEnv,
@@ -46,6 +49,7 @@ export const getWebpackConfig = ({
   parallel,
 }: {
   basedir: string;
+  gojiConfigFile?: string;
   outputPath?: string;
   target: GojiTarget;
   nodeEnv: string;
@@ -121,8 +125,18 @@ export const getWebpackConfig = ({
       type: 'filesystem',
       idleTimeout: 0,
       idleTimeoutForInitialStore: 0,
-      // prevent re-using cache for different target
-      version: target,
+      // prevent re-using cache for different target / GojiJS versions
+      version: [target, gojiCliVersion].join('-'),
+      buildDependencies: {
+        config: [
+          // `webpack.config.js` should be included
+          // https://webpack.js.org/configuration/cache/#cachebuilddependencies
+          // https://github.com/webpack/webpack-cli/blob/ef09fee7185e5c80efd3de1c98260e61f1e63ba0/packages/webpack-cli/src/webpack-cli.ts#L2279-L2300
+          __filename,
+          // `goji.config.js` should be included if exists
+          ...(gojiConfigFile ? [gojiConfigFile] : []),
+        ],
+      },
     },
     stats: {
       preset: 'minimal',

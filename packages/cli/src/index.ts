@@ -22,17 +22,17 @@ interface GojiConfig {
 }
 
 const GOJI_CONFIG_FILE_NAME = 'goji.config';
-const requireGojiConfig = (basedir: string): GojiConfig => {
+const requireGojiConfig = (basedir: string): [string | undefined, GojiConfig] => {
   let resolvedPath: string;
   try {
     resolvedPath = resolve.sync(path.join(basedir, GOJI_CONFIG_FILE_NAME));
   } catch (error) {
     console.info(`\`goji.config.js\` not found in folder ${basedir}, using default config.`);
-    return {};
+    return [undefined, {}];
   }
 
   // eslint-disable-next-line global-require, import/no-dynamic-require
-  return require(resolvedPath);
+  return [resolvedPath, require(resolvedPath)];
 };
 
 const main = async () => {
@@ -49,7 +49,7 @@ const main = async () => {
   process.env.NODE_ENV = cliConfig.production ? 'production' : 'development';
   process.env.GOJI_TARGET = cliConfig.target;
 
-  const gojiConfig = requireGojiConfig(basedir);
+  const [gojiConfigFile, gojiConfig] = requireGojiConfig(basedir);
   // eslint-disable-next-line global-require
   const babelConfig = require('./config/babel.config');
   if (gojiConfig.configureBabel) {
@@ -59,6 +59,7 @@ const main = async () => {
   const watch = cliConfig.watch ?? gojiConfig.watch ?? !cliConfig.production;
   const webpackConfig = getWebpackConfig({
     basedir,
+    gojiConfigFile,
     outputPath: gojiConfig.outputPath,
     target: cliConfig.target,
     nodeEnv: cliConfig.production ? 'production' : 'development',
