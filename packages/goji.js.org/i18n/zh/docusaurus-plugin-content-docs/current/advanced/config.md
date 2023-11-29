@@ -187,3 +187,23 @@ module.exports = {
 - 默认值: `undefined`
 
 您可以使用此选项来取消特定模块的提升。
+
+### `css`
+
+该选项可配置 CSS 的处理过程。
+
+### `css.unit`
+
+- 类型: `undefined | 'keep' | 'to-px' | 'to-rpx'`
+
+- 默认值: `'to-rpx'`
+
+GojiJS 有一个内置的 PostCSS 插件叫做 [postcss-transform-unit](https://github.com/airbnb/goji-js/pull/231)，它可用来转换所有文件中的 CSS 单位。 在某些情况下，您可能想要将 px`的用法转换为`rpx\` ，反之亦然。 您可以使用此选项。
+
+- `keep`: 不转换任何 CSS 单位。
+
+- `to-px`: 将 `rpx` 转换为 `px` 。 `2rpx`等于`1px`。
+
+- `to-rpx`: 将 `px` 转换为 `rpx` 。 `1px`等于`2rpx`。
+
+> 默认值将在将来更改为 "keep"

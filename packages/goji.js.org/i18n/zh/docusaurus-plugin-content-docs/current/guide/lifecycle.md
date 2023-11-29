@@ -45,7 +45,6 @@ const MyComp = ({ id }: { id: string }) => {
   }, [id]);
 
   return data ? data : 'loading';
-}; data : 'loading';
 };
 ```
 
