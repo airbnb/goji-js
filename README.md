@@ -6,9 +6,9 @@
 
 React ❤️ Mini Program
 
-[中文文档](https://goji.js.org/docs/zh-CN/introduction.html)
+[中文文档](https://goji.js.org/zh/docs/get-started/introduction)
 
-[English](https://goji.js.org/docs/en/introduction)
+[English Documentation](https://goji.js.org/docs/get-started/introduction)
 
 ## Visions
 
@@ -30,8 +30,6 @@ For now, GojiJS supports these platforms:
 - Alipay
 - QQ
 - Toutiao
-- Kuai App ( TBD )
-- Web ( TBD )
 
 ## Demo
 
@@ -55,4 +53,4 @@ const App = () => {
 render(App);
 ```
 
-For more details, see [GojiJS official documentation website](https://goji.js.org/en/).
+For more details, see [GojiJS official documentation website](https://goji.js.org/).
