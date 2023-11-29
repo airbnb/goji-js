@@ -5,6 +5,7 @@ import { GojiWebpackPluginOptions } from '@goji/webpack-plugin';
 import { getWebpackConfig } from './config/webpack.config';
 import { parseArgv, CliConfig } from './argv';
 import './utils/fixSerializationWarning';
+import { TransformUnit } from './config/postcssConfig';
 
 interface GojiConfig {
   watch?: boolean;
@@ -13,6 +14,9 @@ interface GojiConfig {
   configureBabel?: (config: any) => any;
   progress?: boolean;
   nohoist?: GojiWebpackPluginOptions['nohoist'];
+  css?: {
+    unit?: TransformUnit;
+  };
   parallel?:
     | {
         minimize?: number;
@@ -67,6 +71,7 @@ const main = async () => {
     watch,
     progress: gojiConfig.progress ?? cliConfig.progress ?? true,
     nohoist: gojiConfig?.nohoist,
+    cssUnit: gojiConfig?.css?.unit ?? 'to-rpx',
     parallel:
       typeof gojiConfig.parallel === 'number'
         ? { loader: gojiConfig.parallel, minimize: gojiConfig.parallel }

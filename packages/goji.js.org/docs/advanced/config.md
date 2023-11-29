@@ -210,3 +210,26 @@ This feature also works with
 - Default: `undefined`
 
 You can use this options to nohoist specific modules.
+
+### `css`
+
+Options to configure the processing of styles.
+
+### `css.unit`
+
+- Type: `undefined | 'keep' | 'to-px' | 'to-rpx'`
+
+- Default: `'to-rpx'`
+
+There is a built-in PostCSS plugin called
+[postcss-transform-unit](https://github.com/airbnb/goji-js/pull/231) that can be used to transform
+CSS units in all files. In some cases, you may want to convert the usage of `px` to `rpx` or vice
+versa. You can use this option.
+
+- `keep`: Do not transform any CSS unit.
+
+- `to-px`: Transform `rpx` to `px`. `2rpx` equals to `1px`.
+
+- `to-rpx`: Transform `px` to `rpx`. `1px` equals to `2rpx`.
+
+> The default will be changed to `keep` in the future.

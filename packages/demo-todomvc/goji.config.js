@@ -1,1 +1,5 @@
-module.exports = {};
+module.exports = {
+  css: {
+    unit: 'to-px',
+  },
+};
