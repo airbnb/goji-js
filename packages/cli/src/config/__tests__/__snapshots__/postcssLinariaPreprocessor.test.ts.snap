@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`postcss-linaria-preprocessor :global() selector 1`] = `
+"
+      .a {
+        color: red
+      }
+          page {
+            width: 50vw;
+          }
+    "
+`;
+
+exports[`postcss-linaria-preprocessor escape breaking control characters 1`] = `
+"
+      .a {
+        content: '\\\\feff';
+      }
+    "
+`;
+
+exports[`postcss-linaria-preprocessor keyframes rename 1`] = `
+"
+      .a {
+        animation: 1s ease 1 backwards normal zoomIn-a;
+        @keyframes zoomIn-a {
+          from {
+            opacity: 0;
+            transform: scale(0.94);
+          }
+
+          50% {
+            opacity: var(--opacity);
+          }
+
+          to {
+            transform: scale(var(--scale));
+          }
+        }
+      }
+    "
+`;

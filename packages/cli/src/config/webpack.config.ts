@@ -193,6 +193,7 @@ export const getWebpackConfig = ({
                 configFile: require.resolve('./linaria.config'),
                 sourceMap: true,
                 cacheProvider: require.resolve('./linariaFileCache'),
+                preprocessor: 'none',
                 babelOptions: {
                   // always use internal babel.config.js file
                   configFile: require.resolve('./babel.config'),
@@ -232,7 +233,7 @@ export const getWebpackConfig = ({
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
                   config: false,
-                  ...postcssConfig({ unit: cssUnit }),
+                  ...postcssConfig({ unit: cssUnit, linaria: false }),
                 },
               },
             },
@@ -269,7 +270,7 @@ export const getWebpackConfig = ({
                 implementation: require.resolve('postcss'),
                 postcssOptions: {
                   config: false,
-                  ...postcssConfig({ unit: cssUnit }),
+                  ...postcssConfig({ unit: cssUnit, linaria: true }),
                 },
               },
             },
