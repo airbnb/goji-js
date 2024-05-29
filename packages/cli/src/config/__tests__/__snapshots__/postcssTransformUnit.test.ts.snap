@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`postcss-transform-unit px to rpx 1`] = `
+"
+      .a {
+        width: 20rpx;
+        height: 20rpx;
+        font-size: 30px;
+      }
+    "
+`;
+
+exports[`postcss-transform-unit rpx to px 1`] = `
+"
+      .a {
+        width: 10px;
+        height: 10px;
+        font-size: 30rpx;
+      }
+    "
+`;

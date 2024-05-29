@@ -33,12 +33,13 @@ const getTransformUnitsPlugin = (unit: TransformUnit) => {
 // to improve PostCSS performance, we should always use `require(name)(options)` rather than `[name, options]`
 // also we should set `postcssOptions.config` to `false` to avoid loading any `postcss.config.js`
 // TODO: hope PostCSS could fix this issue https://github.com/csstools/postcss-preset-env/issues/232#issuecomment-992263741
-export default ({ unit }: { unit: TransformUnit }) => {
+export default ({ unit, linaria }: { unit: TransformUnit; linaria: boolean }) => {
   const transformUnitPlugin = getTransformUnitsPlugin(unit);
 
   return {
     plugins: [
       require('postcss-each')(),
+      ...(linaria ? [require('./postcssLinariaPreprocessor')()] : []),
       // TODO: `postcss-nesting` from `postcss-preset-env` output `:is` pseudo-class that Mini Programs don't support.
       // We have to use `postcss-nested` manually before them to prevent `:is` being created.
       require('postcss-nested')(),

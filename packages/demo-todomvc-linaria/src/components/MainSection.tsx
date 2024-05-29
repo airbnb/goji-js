@@ -16,7 +16,7 @@ const main = css`
 const todosHeader = css`
   padding: 10px 0;
   width: 100%;
-  font-size: 100px;
+  font-size: 203rpx;
   font-weight: 100;
   text-align: center;
   color: rgba(175, 47, 47, 0.15);
