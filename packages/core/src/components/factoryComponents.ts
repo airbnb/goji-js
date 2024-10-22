@@ -41,6 +41,7 @@ export const Input = factoryComponent('input');
 export const Label = factoryComponent('label');
 export const Picker = factoryComponent('picker');
 export const PickerView = factoryComponent('picker-view');
+export const PickerViewColumn = factoryComponent('picker-view-column');
 export const RadioGroup = factoryComponent('radio-group');
 export const Radio = factoryComponent('radio');
 export const Slider = factoryComponent('slider');
