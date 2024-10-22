@@ -1,5 +1,25 @@
 # Change Log
 
+# v.1.3.1 (2024-10-22)
+
+### Bugfixes
+
+- **cli:** Replace Linaria preprocessor with postcss to fix an error of postcss-transform-unit
+  [\#241](https://github.com/airbnb/goji-js/pull/241)
+- **cli:** Fix Webpack cache invalidation [\#230](https://github.com/airbnb/goji-js/pull/230)
+- **core:** Move `instance.registerEventHandler` from `createInstance` to `commitMount` in the React
+  reconciler host config [\#229](https://github.com/airbnb/goji-js/pull/229)
+- **docs:** Add documentation for `goji.config.js`
+  [\#228](https://github.com/airbnb/goji-js/pull/228)
+- **webpack-plugin:** Upgrade latest webpack@5.89.0
+  [\#227](https://github.com/airbnb/goji-js/pull/227)
+
+### Features
+
+- **core:** Support picker-view-column component [\#250](https://github.com/airbnb/goji-js/pull/250)
+- **webpack-plugin:** Refactor CSS unit transforming
+  [\#231](https://github.com/airbnb/goji-js/pull/231)
+
 # v.1.3.0 (2023-11-14)
 
 ### Bugfixes
