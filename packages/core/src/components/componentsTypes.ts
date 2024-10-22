@@ -246,9 +246,14 @@ export interface PickerViewProps extends BaseProps {
   indicatorClass?: string;
   maskStyle?: string;
   maskClass?: string;
+  children?: React.ReactNode;
   onChange?: (e: any) => void;
   onPickstart?: (e: any) => void;
   onPickend?: (e: any) => void;
+}
+
+export interface PickerViewColumnProps extends BaseProps {
+  children?: React.ReactNode;
 }
 
 type ImageMode =
@@ -873,6 +878,7 @@ export interface BuildInComponentsProps {
   label: LabelProps;
   picker: PickerProps;
   'picker-view': PickerViewProps;
+  'picker-view-column': PickerViewColumnProps;
   'radio-group': RadioGroupProps;
   radio: RadioProps;
   slider: SliderProps;
