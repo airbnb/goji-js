@@ -193,7 +193,7 @@ interface PickerBaseProps extends BasePropsWithChildren {
 
 export interface PickerSelectorProps extends PickerBaseProps {
   mode: 'selector';
-  range?: Array<any>;
+  range?: any[];
   rangeKey?: string;
   value?: number;
   onChange?: (e: any) => void;
@@ -201,9 +201,9 @@ export interface PickerSelectorProps extends PickerBaseProps {
 
 export interface PickerMultiSelector extends PickerBaseProps {
   mode: 'multiSelector';
-  range?: Array<any>;
+  range?: any[][];
   rangeKey?: string;
-  value?: number;
+  value?: number[];
   onChange?: (e: any) => void;
   onColumnchange?: (e: any) => void;
 }
@@ -242,9 +242,9 @@ export type PickerProps =
 
 export interface PickerViewProps extends BaseProps {
   value?: Array<number>;
-  indicatorStyle?: string;
+  indicatorStyle?: CSSProperties;
   indicatorClass?: string;
-  maskStyle?: string;
+  maskStyle?: CSSProperties;
   maskClass?: string;
   children?: React.ReactNode;
   onChange?: (e: any) => void;
