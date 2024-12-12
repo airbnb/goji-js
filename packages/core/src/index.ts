@@ -45,7 +45,6 @@ export {
   getTemplateIds as unstable_getTemplateIds,
 } from './constants';
 export { gojiEvents } from './events';
-export { Partial } from './partial';
 // eslint-disable-next-line camelcase
 export { batchedUpdates as unstable_batchedUpdates };
 export { PublicInstance as GojiPublicInstance } from './reconciler/publicInstance';
