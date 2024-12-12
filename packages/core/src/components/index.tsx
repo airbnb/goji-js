@@ -3,7 +3,6 @@ import { UniversalHooksProvider } from '../lifecycles/universal/provider';
 import { PortalProvider } from '../portal';
 import { Container } from '../container';
 import { ContainerProvider } from './container';
-import { PartialProvider } from '../partial';
 
 export const GojiProvider = ({
   children,
@@ -13,9 +12,7 @@ export const GojiProvider = ({
 }>) => (
   <ContainerProvider container={container}>
     <UniversalHooksProvider>
-      <PortalProvider>
-        <PartialProvider>{children}</PartialProvider>
-      </PortalProvider>
+      <PortalProvider>{children}</PortalProvider>
     </UniversalHooksProvider>
   </ContainerProvider>
 );
