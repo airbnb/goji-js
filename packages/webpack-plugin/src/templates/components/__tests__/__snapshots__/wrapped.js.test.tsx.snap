@@ -47,6 +47,9 @@ exports[`wrapped.js snapshot works: input 1`] = `
     internalFocus: {
       value: false
     },
+    internalCursor: {
+      value: 0
+    },
   },
   properties: {
     meta: {
@@ -61,6 +64,11 @@ exports[`wrapped.js snapshot works: input 1`] = `
         if (this.properties.meta.props.focus !== this.data.internalFocus.value) {
           update.internalFocus = {
             value: this.properties.meta.props.focus
+          };
+        }
+        if (this.properties.meta.props.cursor !== this.data.internalCursor.value) {
+          update.internalCursor = {
+            value: this.properties.meta.props.cursor
           };
         }
         if (Object.keys(update)) {
@@ -78,6 +86,9 @@ exports[`wrapped.js snapshot works: input 1`] = `
         },
         internalFocus: {
           value: this.properties.meta.props.focus
+        },
+        internalCursor: {
+          value: this.properties.meta.props.cursor
         },
       });
     },
