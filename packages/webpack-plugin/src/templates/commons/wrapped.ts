@@ -24,7 +24,7 @@ export const updateInternalValueHandler = (eventName: string, propName: string) 
 
 export const WRAPPED_CONFIGS: Record<string, WrappedConfig> = {
   input: {
-    memorizedProps: ['value', 'focus'],
+    memorizedProps: ['value', 'focus', 'cursor'],
     customizedEventHandler: {
       input: updateInternalValueHandler('input', 'value'),
     },
