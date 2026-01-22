@@ -38,7 +38,7 @@
     "html-minifier": "^4.0.0",
     "json5": "^2.2.2",
     "loader-utils": "^3.2.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.23",
     "posthtml": "^0.16.5",
     "posthtml-parser": "^0.10.1",
     "terser": "^5.14.2",
