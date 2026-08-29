@@ -1,5 +1,20 @@
 import set from 'lodash/set';
 
+// `prefix` is considered an ancestor of (or equal to) `target` only if the match
+// ends on a real path boundary (`.` or `[`), otherwise sibling keys that merely
+// share a string prefix (e.g. `props.title` vs `props.titleColor`) would be
+// mistaken for a parent/child relationship.
+const isPathPrefix = (prefix: string, target: string) => {
+  if (prefix === target) {
+    return true;
+  }
+  if (!target.startsWith(prefix)) {
+    return false;
+  }
+  const boundaryChar = target[prefix.length];
+  return boundaryChar === '.' || boundaryChar === '[';
+};
+
 export const merge = (merged: Record<string, any>, diff: Record<string, any>) => {
   let before: Record<string, any> | null = null;
   if (process.env.NODE_ENV === 'development') {
@@ -11,11 +26,11 @@ export const merge = (merged: Record<string, any>, diff: Record<string, any>) =>
   for (const newKey of diffKeys) {
     let matched = false;
     for (const oldKey of existingKeys) {
-      if (oldKey.startsWith(newKey)) {
+      if (isPathPrefix(newKey, oldKey)) {
         delete merged[oldKey];
         merged[newKey] = diff[newKey];
         matched = true;
-      } else if (newKey.startsWith(oldKey)) {
+      } else if (isPathPrefix(oldKey, newKey)) {
         let val = merged[oldKey] as Record<string, any>;
         let subpath = newKey.substring(oldKey.length);
         if (subpath.startsWith('.')) {

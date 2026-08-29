@@ -80,4 +80,31 @@ describe('mergeDiff', () => {
       children: [],
     });
   });
+
+  it('does not confuse sibling keys sharing a string prefix', () => {
+    const existing = {
+      'meta.children[0].props.titleColor': 'red',
+    };
+    const diff = {
+      'meta.children[0].props.title': 'hello',
+    };
+
+    expect(merge(existing, diff)).toEqual({
+      'meta.children[0].props.titleColor': 'red',
+      'meta.children[0].props.title': 'hello',
+    });
+  });
+
+  it('still treats a real path boundary as a parent/child relationship', () => {
+    const existing = {
+      'children[0].text': 'bula',
+    };
+    const diff = {
+      'children[0]': { text: '233' },
+    };
+
+    expect(merge(existing, diff)).toEqual({
+      'children[0]': { text: '233' },
+    });
+  });
 });
