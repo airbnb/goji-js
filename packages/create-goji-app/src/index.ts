@@ -14,7 +14,7 @@ const shouldUseYarn = () => {
   }
 };
 
-const TARGETS = ['wechat', 'baidu', 'alipay', 'toutiao', 'qq', 'toutiao'];
+const TARGETS = ['wechat', 'baidu', 'alipay', 'toutiao', 'qq'];
 
 const main = async () => {
   const argv = process.argv.slice(2);

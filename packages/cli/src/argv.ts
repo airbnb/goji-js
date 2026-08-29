@@ -8,7 +8,7 @@ export interface CliConfig {
   progress?: boolean;
 }
 
-const GOJI_TARGETS: Array<GojiTarget> = ['wechat', 'baidu', 'alipay', 'toutiao', 'qq', 'toutiao'];
+const GOJI_TARGETS: Array<GojiTarget> = ['wechat', 'baidu', 'alipay', 'toutiao', 'qq'];
 
 export const parseArgv = (arg: Array<string>) => new Promise<CliConfig>((resolve, reject) => {
     const yargsConfig = yargs
