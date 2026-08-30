@@ -80,4 +80,18 @@ describe('mergeDiff', () => {
       children: [],
     });
   });
+
+  it('does not confuse sibling keys sharing a string prefix', () => {
+    const existing = {
+      'meta.children[0].props.titleColor': 'red',
+    };
+    const diff = {
+      'meta.children[0].props.title': 'hello',
+    };
+
+    expect(merge(existing, diff)).toEqual({
+      'meta.children[0].props.titleColor': 'red',
+      'meta.children[0].props.title': 'hello',
+    });
+  });
 });

@@ -1,5 +1,8 @@
 import set from 'lodash/set';
 
+const isPathPrefix = (prefix: string, target: string) =>
+  target === prefix || target.startsWith(`${prefix}.`) || target.startsWith(`${prefix}[`);
+
 export const merge = (merged: Record<string, any>, diff: Record<string, any>) => {
   let before: Record<string, any> | null = null;
   if (process.env.NODE_ENV === 'development') {
@@ -11,11 +14,11 @@ export const merge = (merged: Record<string, any>, diff: Record<string, any>) =>
   for (const newKey of diffKeys) {
     let matched = false;
     for (const oldKey of existingKeys) {
-      if (oldKey.startsWith(newKey)) {
+      if (isPathPrefix(newKey, oldKey)) {
         delete merged[oldKey];
         merged[newKey] = diff[newKey];
         matched = true;
-      } else if (newKey.startsWith(oldKey)) {
+      } else if (isPathPrefix(oldKey, newKey)) {
         let val = merged[oldKey] as Record<string, any>;
         let subpath = newKey.substring(oldKey.length);
         if (subpath.startsWith('.')) {
