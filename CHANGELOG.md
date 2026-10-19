@@ -1,5 +1,17 @@
 # Change Log
 
+# v.1.4.0 (2026-10-19)
+
+### Bugfixes
+
+- **core:** Fix sibling key prefix collision in `merge()`
+  [\#316](https://github.com/airbnb/goji-js/pull/316)
+
+- **core:** Fix Picker types (`range`, `value`, `indicatorStyle`, `maskStyle`)
+  [\#253](https://github.com/airbnb/goji-js/pull/253)
+
+- **webpack-plugin:** Fix `<input>` cursor issue [\#261](https://github.com/airbnb/goji-js/pull/261)
+
 # v.1.3.1 (2024-10-22)
 
 ### Bugfixes
