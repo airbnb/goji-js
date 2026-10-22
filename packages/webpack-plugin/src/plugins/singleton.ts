@@ -29,11 +29,18 @@ export class GojiSingletonRuntimeWebpackPlugin extends GojiBasedWebpackPlugin {
           const { globalObject } = compilation.outputOptions;
           const sourceString = source.source().toString();
           const output = new webpack.sources.ReplaceSource(source, SOURCE_NAME);
-          const ORIGINAL_CODE = 'var __webpack_module_cache__ = {};';
+          const ORIGINAL_CODE = `${context.runtimeTemplate.renderConst()} __webpack_module_cache__ = {};`;
           const findPosition = sourceString.indexOf(ORIGINAL_CODE);
+          if (findPosition === -1) {
+            throw new Error(
+              `Webpack module cache declaration not found in chunk "${getChunkName(
+                context.chunk,
+              )}". This might be an internal error in GojiJS.`,
+            );
+          }
           output.replace(
             findPosition,
-            findPosition + ORIGINAL_CODE.length,
+            findPosition + ORIGINAL_CODE.length - 1,
             Template.prefix(
               Template.asString([
                 `if (!${globalObject}.__gojiWebpackModuleCache) {`,

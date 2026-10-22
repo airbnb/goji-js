@@ -205,6 +205,7 @@ export const getWebpackConfig = ({
         {
           test: /\.css$/,
           exclude: /\.linaria\.css$/,
+          sideEffects: true,
           use: [
             MiniCssExtractPlugin.loader,
             {
@@ -252,6 +253,7 @@ export const getWebpackConfig = ({
         },
         {
           test: /\.linaria\.css$/,
+          sideEffects: true,
           use: [
             MiniCssExtractPlugin.loader,
             {

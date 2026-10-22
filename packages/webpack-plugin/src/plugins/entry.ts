@@ -28,7 +28,7 @@ export class GojiEntryWebpackPlugin extends GojiBasedWebpackPlugin {
     }
     // because no compilation was created while `compiler.run` or `compiler.watchRun`
     // we have to create a fake one to call `createChildCompiler`
-    const fakeCompilation = compiler.createCompilation();
+    const fakeCompilation = compiler.createCompilation(compiler.newCompilationParams());
     const appConfigPath = await resolveConfigPath(
       entry,
       context,

@@ -84,7 +84,7 @@ const main = async () => {
   }
 
   // create compiler
-  const compilerCallback = (err?: Error, stats?: webpack.Stats) => {
+  const compilerCallback = (err: Error | null, stats?: webpack.Stats) => {
     // docs: https://webpack.js.org/api/cli/#exit-codes-and-their-meanings
     // inspired from: https://github.com/webpack/webpack-cli/blob/64deca258e993501c8f2053a8063b6189028caf9/packages/webpack-cli/lib/webpack-cli.js#L2244-L2251
     if (err) {
