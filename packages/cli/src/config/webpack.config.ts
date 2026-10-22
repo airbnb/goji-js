@@ -158,7 +158,7 @@ export const getWebpackConfig = ({
           },
         },
         {
-          test: /\.(js|jsx|ts|tsx)$/,
+          test: /\.(m?js|jsx|ts|tsx)$/,
           // compile node_modules in production mode
           // don't compile @babel/runtime otherwise the stack overflow error will be raised
           // https://github.com/babel/babel/issues/9764#issuecomment-476971266
