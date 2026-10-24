@@ -15,7 +15,7 @@
 */
 
 const ConstDependency = require('webpack/lib/dependencies/ConstDependency');
-const ProvidedDependency = require('webpack/lib/dependencies/ProvidedDependency');
+const ProvidedDependency = require('webpack/lib/provide/ProvidedDependency');
 const { approve } = require('webpack/lib/javascript/JavascriptParserHelpers');
 
 /** @typedef {import("./Compiler")} Compiler */
@@ -91,7 +91,7 @@ class PatchedProvidePlugin {
               request.slice(1),
               expr.range,
             );
-            dep.loc = expr.loc;
+            dep.loc = parser.getLocation(expr);
             parser.state.module.addDependency(dep);
             return true;
           });

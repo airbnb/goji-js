@@ -25,5 +25,11 @@
   "bugs": {
     "url": "https://github.com/airbnb/goji/issues"
   },
-  "homepage": "https://github.com/airbnb/goji#readme"
+  "homepage": "https://github.com/airbnb/goji#readme",
+  "devDependencies": {
+    "webpack": "^5.112.2"
+  },
+  "resolutions": {
+    "**/goji-js-org/**/webpack": "^5.89.0 <5.111.1"
+  }
 }
