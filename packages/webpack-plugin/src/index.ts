@@ -13,6 +13,7 @@ import { registerPluginComponent } from './utils/pluginComponent';
 import { GojiSplitChunksWebpackPlugin } from './plugins/chunks/split';
 import { GojiRuntimeChunksWebpackPlugin } from './plugins/chunks/runtime';
 import { GojiNohoistWebpackPlugin } from './plugins/nohoist';
+import { GojiPrintStatsWebpackPlugin } from './plugins/printStats';
 
 export class GojiWebpackPlugin implements webpack.WebpackPluginInstance {
   public static normalizeOptions(
@@ -57,6 +58,7 @@ export class GojiWebpackPlugin implements webpack.WebpackPluginInstance {
     new GojiSingletonRuntimeWebpackPlugin(options).apply(compiler);
     new GojiShimPlugin(options).apply(compiler);
     new GojiProjectConfigPlugin(options).apply(compiler);
+    new GojiPrintStatsWebpackPlugin(options).apply(compiler);
   }
 
   public static getPoll = getPoll;

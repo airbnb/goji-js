@@ -94,9 +94,6 @@ const main = async () => {
     if (stats?.hasErrors()) {
       process.exitCode = 1;
     }
-    const outputOptions = webpackConfig.stats;
-    const printedStats = stats!.toString(outputOptions);
-    console.log(printedStats);
   };
   if (watch) {
     console.log('Start GojiJS in development mode.');
