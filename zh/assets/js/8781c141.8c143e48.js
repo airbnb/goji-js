@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkgoji_js_org=self.webpackChunkgoji_js_org||[]).push([[155],{7053:s=>{s.exports=JSON.parse('{"label":"goji","permalink":"/zh/blog/tags/goji","allTagsPath":"/zh/blog/tags","count":2}')}}]);
