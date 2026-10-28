@@ -17,7 +17,7 @@ GojiJS 提供了在 React 代码中导入和使用插件/动态库的能力。
 
 ## 导入插件
 
-首先，你需要在 `app.config.ts` 文件中添加一些元数据。 你可以使用 `target` 参数来检测平台。
+首先，你需要在 `app.config.ts` 文件中添加一些元数据。你可以使用 `target` 参数来检测平台。
 
 这是一个例子，展示了如何在同一个 GojiJS 应用中启用不同的插件。
 
@@ -65,10 +65,10 @@ function registerPluginComponent(
 ): React.FunctionComponent<any>;
 ```
 
-- `target`：此组件应当在哪个平台上运行。 在其他平台上将渲染一个空组件.
+- `target`：此组件应当在哪个平台上运行。在其他平台上将渲染一个空组件.
 - `name`：生成到 `usingComponents`里的组件名，应该是唯一的，不能与任何内置组件相同。 例如 `<my-component-name>` 是合法的, `<view>` 是不合法的。
 - `path`：生成到 `usingComponents`里的组件路径，应以 `plugin://` 或 `dynamicLib://` 开头。
-- `props`：在使用组件前需要手动定义属性。 例如， `props: ['a', ['b', { defaultValue: '100' }]]` 会让 GojiJS 生成类似于这样的组件 `<my-component-name a="{{props.a}}" b="{{props.b === undefined ? 100 : props.b}}">`.
+- `props`：在使用组件前需要手动定义属性。例如， `props: ['a', ['b', { defaultValue: '100' }]]` 会让 GojiJS 生成类似于这样的组件 `<my-component-name a="{{props.a}}" b="{{props.b === undefined ? 100 : props.b}}">`.
 
 `registerPluginComponent` 返回一个可以正常使用的React组件。
 

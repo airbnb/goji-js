@@ -4,13 +4,13 @@ sidebar_position: 3
 
 # CSS-in-JS
 
-CSS-in-JS 是一种组织 React 样式代码的方法，它允许开发者在同一个文件中混合编写 CSS 和 JS。 它通常被认为是 CSS Module 的替代品。
+CSS-in-JS 是一种组织 React 样式代码的方法，它允许开发者在同一个文件中混合编写 CSS 和 JS。它通常被认为是 CSS Module 的替代品。
 
 ## 为什么是 Linaria
 
 CSS-in-JS 不仅提供了比 CSS Module 更强大的灵活性，同时也带来了更复杂的问题。
 
-举个例子 [styled-components](https://github.com/styled-components/styled-components) 在运行时会创建 `<style>` 标签，但在小程序里没有任何办法动态插入 CSS 代码。 理论上来讲，styled-components 是不兼容 GojiJS 的。
+举个例子 [styled-components](https://github.com/styled-components/styled-components) 在运行时会创建 `<style>` 标签，但在小程序里没有任何办法动态插入 CSS 代码。理论上来讲，styled-components 是不兼容 GojiJS 的。
 
 在研究之后，我们发现只有少数几个库对 GojiJS 来说是可行的。 [Linaria](https://github.com/callstack/linaria) 可能是最合适的选择。
 
@@ -40,7 +40,7 @@ yarn add linaria
 
 > GojiJS 现在支持 Linaria version 2
 
-您不必创建任何配置文件，因为GojiJS CLI 已经完成了这些工作。 所以让我们直接开始 Linaria 的第一个例子。
+您不必创建任何配置文件，因为GojiJS CLI 已经完成了这些工作。所以让我们直接开始 Linaria 的第一个例子。
 
 ## 用法
 
@@ -61,7 +61,7 @@ const Heading = () => {
 
 `css` 标签是 Linaria 中最重要的部分，你通常需要把CSS 代码写在里面。
 
-Linaria 静态代码分析器可以将样式提取为独立的 `.css` 文件， 同时`css`语句将被哈希字符串替换。 就像这样：
+Linaria 静态代码分析器可以将样式提取为独立的 `.css` 文件， 同时`css`语句将被哈希字符串替换。就像这样：
 
 ```css
 .title_m01a5h {
@@ -78,7 +78,7 @@ const Heading = () => {
 };
 ```
 
-`css` 标签也支持嵌套、伪元素和伪选择器。 例如：
+`css` 标签也支持嵌套、伪元素和伪选择器。例如：
 
 ```tsx
 const button = css`
@@ -103,7 +103,7 @@ const button = css`
 
 ### `styled`
 
-Linaria 在 `linaria/react` 中提供了一个叫 `styled`的API，它应该是参考了_styled-components_。 它可以用来创建一个带样式的组件。
+Linaria 在 `linaria/react` 中提供了一个叫 `styled`的API，它应该是参考了_styled-components_。它可以用来创建一个带样式的组件。
 
 ```tsx
 const Heading = styled(View)<{ color?: string }>`

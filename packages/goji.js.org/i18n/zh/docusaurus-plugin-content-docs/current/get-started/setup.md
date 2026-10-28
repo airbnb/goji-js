@@ -74,16 +74,16 @@ my-goji-app/
 
 2. 打开 [微信开发者工具](https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html)， 并扫描二维码登录。
 
-3. 导入位于 `my-goji-app/dist/wechat` 的项目。 您应该根据真实项目修改 `appid` ，或者直接使用 [测试账户](https://developers.weixin.qq.com/miniprogram/dev/devtools/sandbox.html)。
+3. 导入位于 `my-goji-app/dist/wechat` 的项目。您应该根据真实项目修改 `appid` ，或者直接使用 [测试账户](https://developers.weixin.qq.com/miniprogram/dev/devtools/sandbox.html)。
 
 ![image](https://user-images.githubusercontent.com/1812118/86796292-05ee6a80-c0a1-11ea-9c4c-f302c70f5d17.png)
 
-4. 你应该可以看到示例项目。 如果源代码被修改，开发者工具会自动重新加载。
+4. 你应该可以看到示例项目。如果源代码被修改，开发者工具会自动重新加载。
 
 ![image](https://user-images.githubusercontent.com/1812118/86796712-739a9680-c0a1-11ea-95fd-14178361fff6.png)
 
-在代码开发完成后， 您可以运行 `npm run build wechat` 来打包代码，然后预览或 上传小程序。 请注意上传代码需要真实的 `appid` 而不是测试帐户。
+在代码开发完成后， 您可以运行 `npm run build wechat` 来打包代码，然后预览或 上传小程序。请注意上传代码需要真实的 `appid` 而不是测试帐户。
 
 ## 其他小程序
 
-基本上步骤与微信小程序相同。 您应该从官方网站下载不同的开发者工具。
+基本上步骤与微信小程序相同。您应该从官方网站下载不同的开发者工具。
