@@ -5,9 +5,7 @@
   "main": "index.js",
   "repository": "https://github.com/airbnb/goji-js",
   "license": "MIT",
-  "bin": {
-    "create-goji-app": "./bin/create-goji-app.js"
-  },
+  "bin": "./bin/create-goji-app.js",
   "scripts": {
     "prebuild": "npm run clean",
     "clean": "rimraf dist",
@@ -26,6 +24,7 @@
   },
   "devDependencies": {
     "@types/rimraf": "^3.0.2",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "typescript": "^4.3.5"
   }
 }
