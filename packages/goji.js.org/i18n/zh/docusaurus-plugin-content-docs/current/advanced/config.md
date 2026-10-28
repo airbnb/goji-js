@@ -51,7 +51,7 @@ module.exports = {
 
 - 默认值: `[basedir]/dist/[target]`
 
-GojiJS CLI 的输出路径。 默认的文件结构像这样：
+GojiJS CLI 的输出路径。默认的文件结构像这样：
 
 ```
 .
@@ -70,7 +70,7 @@ GojiJS CLI 的输出路径。 默认的文件结构像这样：
 
 - 默认值: `undefined`
 
-一个数字或对象用于启用、禁用 GojiJS CLI 的并行模式。 你可以使用 `number` 来指定并行任务的数量。 你也可以使用一个对象来指定每个阶段的并行数量。
+一个数字或对象用于启用、禁用 GojiJS CLI 的并行模式。你可以使用 `number` 来指定并行任务的数量。你也可以使用一个对象来指定每个阶段的并行数量。
 
 ### `parallel.loader`
 
@@ -80,7 +80,7 @@ GojiJS CLI 的输出路径。 默认的文件结构像这样：
 
 等于 [thread-loader](https://webpack.js.org/loaders/thread-loader/) 的 `workers` 选项的数量加 `1`。
 
-> 请注意，过多的并行任务可能会消耗过多的资源，甚至会降低性能。 参见
+> 请注意，过多的并行任务可能会消耗过多的资源，甚至会降低性能。参见
 > [阿姆达尔定律](https://zh.wikipedia.org/wiki/%E9%98%BF%E5%A7%86%E8%BE%BE%E5%B0%94%E5%AE%9A%E5%BE%8B)。
 
 > 因此，如果 `parallel.loader` 是 `undefined`， `workers` 的最大值为 3。
@@ -125,7 +125,7 @@ module.exports = {
 };
 ```
 
-`webpackInGoji` 参数是 Webpack 的实例。 在某些情况下，您可能希望使用它的字段和方法。
+`webpackInGoji` 参数是 Webpack 的实例。在某些情况下，您可能希望使用它的字段和方法。
 
 ```js
 module.exports = {
@@ -143,13 +143,13 @@ module.exports = {
 
 ### `nohoist`
 
-在 GojiJS 中，我们利用 [Webpack](https://webpack.js.org/) 来分析模块依赖并打包代码。 通过 [代码分割](https://webpack.js.org/guides/code-splitting/)， 我们可以在[子包](https://developers.weixin.qq.com/miniprogram/dev/framework/subpackages/basic.html)中从多处引入依赖，包括主包，`node_modules`，或者其他子包。 GojiJS 可以将共享的代码**提升**到主包中的一个公共块文件（通常为 `\_goji_commons.js`）里。
+在 GojiJS 中，我们利用 [Webpack](https://webpack.js.org/) 来分析模块依赖并打包代码。通过 [代码分割](https://webpack.js.org/guides/code-splitting/)， 我们可以在[子包](https://developers.weixin.qq.com/miniprogram/dev/framework/subpackages/basic.html)中从多处引入依赖，包括主包，`node_modules`，或者其他子包。 GojiJS 可以将共享的代码**提升**到主包中的一个公共块文件（通常为 `\_goji_commons.js`）里。
 
 这有一个例子，它有5个页面，其中一个在主包中，其他的分布在两个子包（`packageA` 和 `package`）中。
 
 ![子包示例](https://user-images.githubusercontent.com/1812118/138204963-4829b600-ac1a-4273-89ab-cf36d5cd03da.png)
 
-在 GojiJS 中，模块被提升到根公共块中。 这种方式确保了依赖关系符合小程序子包的限制。
+在 GojiJS 中，模块被提升到根公共块中。这种方式确保了依赖关系符合小程序子包的限制。
 
 ### `nohoist.enable`
 
@@ -157,7 +157,7 @@ module.exports = {
 
 - 默认值：在生产模式下为 `true`，其他情况下为 `false`。
 
-在上述例子中，`redux` 和 `date-fns` 不被视为共享代码，因此它们可以移动到子包中，从而减小主包的大小。 这种优化被称为**不提升（nohoist）**。
+在上述例子中，`redux` 和 `date-fns` 不被视为共享代码，因此它们可以移动到子包中，从而减小主包的大小。这种优化被称为**不提升（nohoist）**。
 
 要启用此功能，您可以将 `nohoist.enable` 选项设置为 `true`。
 
@@ -167,9 +167,9 @@ module.exports = {
 
 - 默认值: `1`
 
-有些模块，比如例子中的 `lodash`，只被子包共享。 可以将它们复制到子包中。 虽然这增加了总体包的大小，但有效地减少了主包的大小。
+有些模块，比如例子中的 `lodash`，只被子包共享。可以将它们复制到子包中。虽然这增加了总体包的大小，但有效地减少了主包的大小。
 
-要启用此功能，您可以将 `nohoist.maxPackages` 设置为大于1的数字 N。 被少于或等于 N 的包共享的模块将被复制到 `packageName/_goji_nohoist_[contenthash].js` 中。
+要启用此功能，您可以将 `nohoist.maxPackages` 设置为大于1的数字 N。被少于或等于 N 的包共享的模块将被复制到 `packageName/_goji_nohoist_[contenthash].js` 中。
 
 ![nohoist.maxPackages 示例](https://user-images.githubusercontent.com/1812118/138208851-2c0c7fe3-6e55-4744-b4af-b74fca59228a.png)
 
@@ -177,7 +177,7 @@ module.exports = {
 
 此功能还支持[独立分包](https://developers.weixin.qq.com/miniprogram/dev/framework/subpackages/independent.html)。
 
-> 请注意，由于生成了更多的重复代码，此功能可能会影响用户的加载时间。 只有在主包的大小已经超过或即将超过限制时，才应该使用此功能。
+> 请注意，由于生成了更多的重复代码，此功能可能会影响用户的加载时间。只有在主包的大小已经超过或即将超过限制时，才应该使用此功能。
 
 ### `nohoist.test`
 
@@ -198,7 +198,7 @@ module.exports = {
 
 - 默认值: `'to-rpx'`
 
-GojiJS 有一个内置的 PostCSS 插件叫做 [postcss-transform-unit](https://github.com/airbnb/goji-js/pull/231)，它可用来转换所有文件中的 CSS 单位。 在某些情况下，您可能想要将 px`的用法转换为`rpx\` ，反之亦然。 您可以使用此选项。
+GojiJS 有一个内置的 PostCSS 插件叫做 [postcss-transform-unit](https://github.com/airbnb/goji-js/pull/231)，它可用来转换所有文件中的 CSS 单位。在某些情况下，您可能想要将 px`的用法转换为`rpx\` ，反之亦然。您可以使用此选项。
 
 - `keep`: 不转换任何 CSS 单位。
 

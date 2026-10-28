@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## 目的
 
-你想要编写可维护的单元测试，以增强您对组件正常工作的信心。 有许多为React和类React框架设计的开源测试库。 其中最受欢迎的是 [testing library](https://testing-library.com/) ，它 提供友好和通用的 API 来写入可拓展的测试用例。
+你想要编写可维护的单元测试，以增强您对组件正常工作的信心。有许多为React和类React框架设计的开源测试库。其中最受欢迎的是 [testing library](https://testing-library.com/) ，它 提供友好和通用的 API 来写入可拓展的测试用例。
 
 我们为 [testing library](https://testing-library.com/) 提供了绑定，叫做 [@goji/testing-library](https://www.npmjs.com/package/@goji/testing-library)，它可以与Jest等测试运行器一起使用。
 
@@ -24,7 +24,7 @@ npm install @goji/testing-library --save-dev
 yarn add @goji/testing-library --dev
 ```
 
-阅读 [Jest 文档](https://jestjs.io/) 来编写一个 Jest配置文件。 你可以复制[这里](https://github.com/airbnb/goji-js/tree/master/packages/demo-todomvc) 的三个文件 `jest.config.js`, `jestFileMocks` 和 `jestBabelTransform.js` 到你的项目。
+阅读 [Jest 文档](https://jestjs.io/) 来编写一个 Jest配置文件。你可以复制[这里](https://github.com/airbnb/goji-js/tree/master/packages/demo-todomvc) 的三个文件 `jest.config.js`, `jestFileMocks` 和 `jestBabelTransform.js` 到你的项目。
 
 ## 示例
 
@@ -73,15 +73,15 @@ describe('example input', () => {
 
 ### `render`
 
-`render` 将使用[React 测试渲染器](https://reactjs.org/docs/test-renderer.html)在NodeJS 中运行组件。 像在真实的小程序里一样，它可以挂载组件并运行组件的生命周期，。
+`render` 将使用[React 测试渲染器](https://reactjs.org/docs/test-renderer.html)在NodeJS 中运行组件。像在真实的小程序里一样，它可以挂载组件并运行组件的生命周期，。
 
-它返回一个wrapper，这样你可以通过不同的查询找到并访问特定的子节点。 在示例情况下 `getByTestId` 返回匹配 `testID` 属性的第一个节点。
+它返回一个wrapper，这样你可以通过不同的查询找到并访问特定的子节点。在示例情况下 `getByTestId` 返回匹配 `testID` 属性的第一个节点。
 
 ### `render` 选项
 
 #### 查询
 
-GojiJS 提供了几种类型的查询，所有查询都是由variants和 `By-` 查询组合的。 它们遵循testing library的最佳实践。 你可以在[这里](https://testing-library.com/docs/dom-testing-library/api-queries)找到更多信息。
+GojiJS 提供了几种类型的查询，所有查询都是由variants和 `By-` 查询组合的。它们遵循testing library的最佳实践。你可以在[这里](https://testing-library.com/docs/dom-testing-library/api-queries)找到更多信息。
 
 Variants
 
@@ -152,7 +152,7 @@ fireEvent.input(input, 'hello, world!');
 
 ### `act`
 
-`act` 函数和 [React测试渲染器](https://reactjs.org/docs/test-renderer.html#testrendereract) 中的类似。 通常你应该在 `act` 中包裹组件的异步更新。
+`act` 函数和 [React测试渲染器](https://reactjs.org/docs/test-renderer.html#testrendereract) 中的类似。通常你应该在 `act` 中包裹组件的异步更新。
 
 ```tsx
 let increase: Function;
@@ -174,7 +174,7 @@ expect(wrapper.getByText('Count: 1')).toBeTruthy;
 
 ### `waitFor` 和 `waitForElement`
 
-`waitFor` 会捕获断言错误直到通过，否则会在超时后抛出异常。 它用于组件的异步测试。
+`waitFor` 会捕获断言错误直到通过，否则会在超时后抛出异常。它用于组件的异步测试。
 
 这里是一个示例：
 

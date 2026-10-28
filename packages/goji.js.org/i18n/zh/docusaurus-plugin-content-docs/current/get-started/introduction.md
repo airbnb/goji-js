@@ -12,7 +12,7 @@ Goji可以让React代码运行在多种小程序平台上。
 
 ### 完整支持React
 
-您可以在Goji中使用最新版本的React。 函数组件、类组件、hooks、portal等功能都可以在Goji中正常工作。
+您可以在Goji中使用最新版本的React。函数组件、类组件、hooks、portal等功能都可以在Goji中正常工作。
 
 ### 跨平台能力
 
@@ -48,6 +48,6 @@ const App = () => {
 render(App);
 ```
 
-Goji和React DOM最大的区别是你必须使用`@goji/core`中的内置组件。 你可以在[这里](https://developers.weixin.qq.com/miniprogram/dev/component/)找到所有组件。
+Goji和React DOM最大的区别是你必须使用`@goji/core`中的内置组件。你可以在[这里](https://developers.weixin.qq.com/miniprogram/dev/component/)找到所有组件。
 
-对Goji感到兴奋吗？ 让我们在简单几步中创建一个新的 Goji 项目。
+对Goji感到兴奋吗？让我们在简单几步中创建一个新的 Goji 项目。
