@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
+import MinimizerPlugin from 'minimizer-webpack-plugin';
 import { GojiTarget } from '@goji/core';
 import type { NonUndefined } from 'utility-types';
 import { GojiWebpackPluginOptions, GojiWebpackPlugin } from '@goji/webpack-plugin';
@@ -72,7 +73,8 @@ export const getWebpackConfig = ({
     alipay: 'acss',
     toutiao: 'ttss',
   };
-  const cssFilename = `[name].${CSS_FILE_EXT[target] ?? 'wxss'}`;
+  const cssFileExt = CSS_FILE_EXT[target] ?? 'wxss';
+  const cssFilename = `[name].${cssFileExt}`;
 
   return {
     mode: nodeEnv === 'production' ? 'production' : 'development',
@@ -101,7 +103,6 @@ export const getWebpackConfig = ({
     },
     optimization: {
       minimize: nodeEnv === 'production',
-      // default options from https://github.com/webpack/webpack/blob/81f6c5b61cac5b8b5fdab1316933b0b824b1afcb/lib/config/defaults.js#L1067-L1081
       minimizer: [
         new TerserPlugin({
           terserOptions: {
@@ -117,6 +118,13 @@ export const getWebpackConfig = ({
           extractComments: false,
           parallel: parallel?.minimize,
         }),
+        new MinimizerPlugin({
+          // Webpack only minimizes `.css` files, so we match the extension emitted by this target.
+          // https://github.com/webpack/webpack/blob/48738419ccd8a83d91da1088decece858a8cedb5/lib/config/defaults.js#L2606-L2607
+          test: new RegExp(`^[^?#]*\\.${cssFileExt}(?:[?#].*)?$`, 'i'),
+          minify: require.resolve('./webpackCssMinify'),
+          parallel: parallel?.minimize,
+        }) as unknown as webpack.WebpackPluginInstance,
       ],
       // set `optimization.splitChunks` and `optimization.splitChunks` to `false`
       // to disable built-in plugins and then we can load `GojiChunksWebpackPlugin` manually.
