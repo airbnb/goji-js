@@ -2,7 +2,6 @@ import path from 'path';
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import { GojiTarget } from '@goji/core';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import type { NonUndefined } from 'utility-types';
 import { GojiWebpackPluginOptions, GojiWebpackPlugin } from '@goji/webpack-plugin';
 import nodeLibsBrowser from 'node-libs-browser';
@@ -73,6 +72,7 @@ export const getWebpackConfig = ({
     alipay: 'acss',
     toutiao: 'ttss',
   };
+  const cssFilename = `[name].${CSS_FILE_EXT[target] ?? 'wxss'}`;
 
   return {
     mode: nodeEnv === 'production' ? 'production' : 'development',
@@ -91,8 +91,13 @@ export const getWebpackConfig = ({
       filename: '[name].js',
       assetModuleFilename: 'assets/[name].[hash:6][ext]',
       publicPath: '/',
+      cssFilename,
+      cssChunkFilename: cssFilename,
       globalObject: 'Object',
       clean: true,
+    },
+    experiments: {
+      css: true,
     },
     optimization: {
       minimize: nodeEnv === 'production',
@@ -149,6 +154,7 @@ export const getWebpackConfig = ({
     performance: {
       hints: false,
     },
+    ignoreWarnings: [/Conflicting order between css /],
     module: {
       rules: [
         {
@@ -206,21 +212,22 @@ export const getWebpackConfig = ({
           test: /\.css$/,
           exclude: /\.linaria\.css$/,
           sideEffects: true,
+          type: 'css/module',
+          parser: {
+            namedExports: false,
+            dashedIdents: false,
+            container: false,
+            customIdents: false,
+            function: false,
+            grid: false,
+          },
+          generator: {
+            localIdentName:
+              nodeEnv === 'development'
+                ? '[local]__[name]--[hash:base64url:5]'
+                : '[hash:base64url:5]',
+          },
           use: [
-            MiniCssExtractPlugin.loader,
-            {
-              loader: require.resolve('css-loader'),
-              options: {
-                modules: {
-                  mode: 'local',
-                  localIdentName:
-                    nodeEnv === 'development'
-                      ? '[local]__[name]--[hash:base64:5]'
-                      : '[hash:base64:5]',
-                  localIdentContext: path.resolve(basedir, 'src'),
-                },
-              },
-            },
             {
               loader: require.resolve('@goji/webpack-plugin/dist/cjs/loaders/transform'),
               options: {
@@ -254,11 +261,8 @@ export const getWebpackConfig = ({
         {
           test: /\.linaria\.css$/,
           sideEffects: true,
+          type: 'css',
           use: [
-            MiniCssExtractPlugin.loader,
-            {
-              loader: require.resolve('css-loader'),
-            },
             {
               loader: require.resolve('@goji/webpack-plugin/dist/cjs/loaders/transform'),
               options: {
@@ -296,11 +300,6 @@ export const getWebpackConfig = ({
       ],
     },
     plugins: [
-      new MiniCssExtractPlugin({
-        filename: `[name].${CSS_FILE_EXT[target] ?? 'wxss'}`,
-        chunkFilename: `[name].${CSS_FILE_EXT[target] ?? 'wxss'}`,
-        ignoreOrder: true,
-      }),
       new GojiWebpackPlugin({
         target,
         nohoist,

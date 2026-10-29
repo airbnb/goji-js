@@ -7202,20 +7202,6 @@ css-has-pseudo@^3.0.4:
   dependencies:
     postcss-selector-parser "^6.0.9"
 
-css-loader@^6.5.1:
-  version "6.7.2"
-  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-6.7.2.tgz#26bc22401b5921686a10fbeba75d124228302304"
-  integrity sha512-oqGbbVcBJkm8QwmnNzrFrWTnudnRZC+1eXikLJl0n4ljcfotgRifpg2a1lKy8jTrc4/d9A/ap1GFq1jDKG7J+Q==
-  dependencies:
-    icss-utils "^5.1.0"
-    postcss "^8.4.18"
-    postcss-modules-extract-imports "^3.0.0"
-    postcss-modules-local-by-default "^4.0.0"
-    postcss-modules-scope "^3.0.0"
-    postcss-modules-values "^4.0.0"
-    postcss-value-parser "^4.2.0"
-    semver "^7.3.8"
-
 css-loader@^6.7.1:
   version "6.8.1"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-6.8.1.tgz#0f8f52699f60f5e679eab4ec0fcd68b8e8a50a88"
@@ -11889,13 +11875,6 @@ min-indent@^1.0.0:
   resolved "https://registry.yarnpkg.com/min-indent/-/min-indent-1.0.1.tgz#a63f681673b30571fbe8bc25686ae746eefa9869"
   integrity sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==
 
-mini-css-extract-plugin@^2.4.5:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-2.7.0.tgz#d7d9ba0c5b596d155e36e2b174082fc7f010dd64"
-  integrity sha512-auqtVo8KhTScMsba7MbijqZTfibbXiBNlPAQbsVt7enQfcDYLdgG57eGxMqwVU3mfeWANY4F1wUg+rMF+ycZgw==
-  dependencies:
-    schema-utils "^4.0.0"
-
 mini-css-extract-plugin@^2.6.1:
   version "2.7.6"
   resolved "https://registry.yarnpkg.com/mini-css-extract-plugin/-/mini-css-extract-plugin-2.7.6.tgz#282a3d38863fddcd2e0c220aaed5b90bc156564d"
@@ -13484,15 +13463,6 @@ postcss-modules-extract-imports@^3.0.0:
   resolved "https://registry.yarnpkg.com/postcss-modules-extract-imports/-/postcss-modules-extract-imports-3.0.0.tgz#cda1f047c0ae80c97dbe28c3e76a43b88025741d"
   integrity sha512-bdHleFnP3kZ4NYDhuGlVK+CMrQ/pqUm8bx/oGL93K6gVwiclvX5x0n76fYMKuIGKzlABOy13zsvqjb0f92TEXw==
 
-postcss-modules-local-by-default@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/postcss-modules-local-by-default/-/postcss-modules-local-by-default-4.0.0.tgz#ebbb54fae1598eecfdf691a02b3ff3b390a5a51c"
-  integrity sha512-sT7ihtmGSF9yhm6ggikHdV0hlziDTX7oFoXtuVWeDd3hHObNkcHRo9V3yg7vCAY7cONyxJC/XXCmmiHHcvX7bQ==
-  dependencies:
-    icss-utils "^5.0.0"
-    postcss-selector-parser "^6.0.2"
-    postcss-value-parser "^4.1.0"
-
 postcss-modules-local-by-default@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/postcss-modules-local-by-default/-/postcss-modules-local-by-default-4.0.3.tgz#b08eb4f083050708998ba2c6061b50c2870ca524"
@@ -13791,7 +13761,7 @@ postcss@^7.0.14:
     picocolors "^0.2.1"
     source-map "^0.6.1"
 
-postcss@^8.3.11, postcss@^8.4.14, postcss@^8.4.17, postcss@^8.4.18, postcss@^8.4.21, postcss@^8.5.23:
+postcss@^8.3.11, postcss@^8.4.14, postcss@^8.4.17, postcss@^8.4.21, postcss@^8.5.23:
   version "8.5.23"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.23.tgz#3493550116f478487298301d2c2e8dc5a56e6594"
   integrity sha512-g50586zr4bZmwFiTlflMu8E0bDTb5I5gertgwAKmsdUlTQIhZtunzUlD1WSzwcVWPoAVpsrA6vlfCD7oXvRwgg==

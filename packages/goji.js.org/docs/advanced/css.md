@@ -10,8 +10,8 @@ GojiJS support [CSS Module](https://github.com/css-modules/css-modules) by defau
 use it for these reasons.
 
 - Scoped CSS class names
-- Reduce the main package bundle size by
-  [mini-css-extract-plugin](https://github.com/webpack-contrib/mini-css-extract-plugin)
+- Reduce the main package bundle size by extracting CSS into separate files with
+  [webpack's native CSS support](https://webpack.js.org/guides/native-css/)
 - Multi CSS pre/post processor like [PostCSS](https://github.com/postcss/postcss),
   [Stylus](http://stylus-lang.com/) and etc.
 
@@ -30,7 +30,7 @@ In production mode, all class names are hashed to a random string and default le
 
 In development mode, for better debug experience the class names will contain `path`, `name` and
 `local`. For more details please see
-[css-loader's localIdentName](https://github.com/webpack-contrib/css-loader#localidentname).
+[webpack's CSS Modules guide](https://webpack.js.org/guides/native-css/#css-modules).
 
 ## PostCSS
 
