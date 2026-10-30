@@ -1,9 +1,8 @@
 import { LernaConfig } from '@beemo/driver-lerna';
 
 const config: LernaConfig = {
-  packages: ['packages/*', 'packages/goji.js.org/*'],
+  packages: ['packages/*'],
   npmClient: 'yarn',
-  useWorkspaces: true,
   version: '1.4.0',
 };
 
