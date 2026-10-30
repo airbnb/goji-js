@@ -10,7 +10,7 @@
     "lint": "eslint --color --ext .js,.ts,.jsx,.tsx .",
     "prettier": "prettier --list-different \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
     "prettier:fix": "prettier --write \"**/*.@(js|jsx|ts|tsx|json|md|yml|yaml|css)\"",
-    "create-config": "yarn beemo create-config",
+    "create-config": "beemo create-config",
     "build": "lerna run build",
     "test": "jest"
   },
@@ -26,9 +26,16 @@
   },
   "homepage": "https://github.com/airbnb/goji#readme",
   "devDependencies": {
+    "@beemo/cli": "^2.0.1",
+    "@goji/beemo-dev": "^1.4.0",
+    "eslint": "^8.4.1",
+    "jest": "^27.0.6",
+    "lerna": "^10.1.1",
+    "prettier": "^2.3.2",
     "webpack": "^5.112.2"
   },
+  "packageManager": "yarn@4.18.1",
   "resolutions": {
-    "**/goji-js-org/**/webpack": "^5.89.0 <5.111.1"
+    "webpackbar": "^7.0.0"
   }
 }
