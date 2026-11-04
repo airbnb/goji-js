@@ -1,5 +1,26 @@
 # Change Log
 
+# v.1.5.0 (2026-11-04)
+
+### Features
+
+- **cli:** Compile .mjs file inside node_modules [\#340](https://github.com/airbnb/goji-js/pull/340)
+
+- **cli:** Use webpack native css [\#343](https://github.com/airbnb/goji-js/pull/343)
+
+- **cli:** Use webpack built-in CSS minimizer [\#344](https://github.com/airbnb/goji-js/pull/344)
+
+- **webpack-plugin:** Upgrade webpack@5.112.0 [\#341](https://github.com/airbnb/goji-js/pull/341)
+
+- **webpack-plugin:** Extract print stats webpack plugin
+  [\#342](https://github.com/airbnb/goji-js/pull/342)
+
+### Misc.
+
+- **docs:** Re-download doc i18n content [\#347](https://github.com/airbnb/goji-js/pull/347)
+
+- **repo:** Upgrade NodeJS 24 & lerna@10 [\#348](https://github.com/airbnb/goji-js/pull/348)
+
 # v.1.4.0 (2026-10-19)
 
 ### Bugfixes
