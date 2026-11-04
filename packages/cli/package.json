@@ -1,6 +1,6 @@
 {
   "name": "@goji/cli",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "GojiJS CLI",
   "main": "dist/cjs/index.js",
   "bin": {
@@ -23,12 +23,13 @@
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
     "@babel/preset-typescript": "^7.16.5",
-    "@goji/webpack-plugin": "^1.4.0",
+    "@goji/webpack-plugin": "^1.5.0",
     "babel-loader": "^8.2.1",
     "babel-plugin-macros": "^3.1.0",
     "cssnano": "^5.0.11",
     "find-cache-dir": "^3.3.1",
     "lodash": "^4.18.1",
+    "minimizer-webpack-plugin": "^5.13.1",
     "mkdirp": "^1.0.4",
     "node-libs-browser": "^2.2.1",
     "postcss": "^8.5.23",
@@ -40,7 +41,6 @@
     "postcss-preset-env": "^7.0.2",
     "postcss-reporter": "^7.0.4",
     "postcss-value-parser": "^4.2.0",
-    "minimizer-webpack-plugin": "^5.13.1",
     "resolve": "^1.19.0",
     "terser-webpack-plugin": "^5.3.0",
     "thread-loader": "^3.0.4",
@@ -49,7 +49,7 @@
     "yargs": "^17.1.0"
   },
   "devDependencies": {
-    "@goji/core": "^1.4.0",
+    "@goji/core": "^1.5.0",
     "@types/yargs": "^17.0.2"
   },
   "peerDependencies": {
