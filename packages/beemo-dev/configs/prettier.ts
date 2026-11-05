@@ -1,4 +1,4 @@
-import { PrettierConfig } from '@beemo/driver-prettier';
+import type { PrettierConfig } from '@beemo/driver-prettier';
 
 const config: PrettierConfig = {
   ignore: [

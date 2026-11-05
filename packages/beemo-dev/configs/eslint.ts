@@ -1,4 +1,4 @@
-import { ESLintConfig } from '@beemo/driver-eslint';
+import type { ESLintConfig } from '@beemo/driver-eslint';
 
 const config: ESLintConfig = {
   ignore: [
@@ -20,6 +20,11 @@ const config: ESLintConfig = {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
     },
+    // Without this, `import/named` / `import/no-named-as-default` inspect the
+    // resolved file. Under Yarn PnP packages resolve into `.yarn/__virtual__/…`
+    // rather than `node_modules`, so the default ignore list misses them and
+    // lint analyzes compiled `dist` output — where type-only exports are gone.
+    'import/ignore': ['node_modules', '\\.(css|less|sass|scss)$', '\\.yarn(/|\\\\)'],
   },
   env: {
     browser: false,

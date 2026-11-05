@@ -1,4 +1,4 @@
-import { LernaConfig } from '@beemo/driver-lerna';
+import type { LernaConfig } from '@beemo/driver-lerna';
 
 const config: LernaConfig = {
   packages: ['packages/*'],

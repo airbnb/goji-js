@@ -1,4 +1,4 @@
-import { BabelConfig } from '@beemo/driver-babel';
+import type { BabelConfig } from '@beemo/driver-babel';
 
 const config: BabelConfig & { assumptions: Record<string, boolean> } = {
   assumptions: {

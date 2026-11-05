@@ -1,0 +1,15 @@
+diff --git a/lib/fs/FileSystemInfo.js b/lib/fs/FileSystemInfo.js
+index 3c934343d96f49d1d3718a15aed34c953a37e8a3..eed5d516183fad49f5c72cc640c9bc378bdaf46d 100644
+--- a/lib/fs/FileSystemInfo.js
++++ b/lib/fs/FileSystemInfo.js
+@@ -2188,7 +2188,9 @@ class FileSystemInfo {
+ 						}
+ 						// Check commonjs cache for the module
+ 						/** @type {NodeModule | undefined} */
+-						const module = require.cache[path];
++						// `require.cache` is undefined when webpack runs through an ESM
++						// loader (e.g. Yarn PnP's), so guard the lookup.
++						const module = (require.cache || {})[path];
+ 						if (
+ 							module &&
+ 							Array.isArray(module.children) &&

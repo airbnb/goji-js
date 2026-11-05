@@ -1,0 +1,20 @@
+diff --git a/lib/index.js b/lib/index.js
+index ad0edb96b94838f8d1cb84619422c22776d0f7d4..bfe3bd8953344e6c86f2391fc1b309e0c4658a7d 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -14,7 +14,14 @@ const rtlcss_1 = tslib_1.__importDefault(require("rtlcss"));
+ const theme_translations_1 = require("@docusaurus/theme-translations");
+ const translations_1 = require("./translations");
+ const requireFromDocusaurusCore = (0, module_1.createRequire)(require.resolve('@docusaurus/core/package.json'));
+-const ContextReplacementPlugin = requireFromDocusaurusCore('webpack/lib/ContextReplacementPlugin');
++const ContextReplacementPlugin = (() => {
++  // webpack moved this module to `lib/context/` in 5.112; support both layouts.
++  try {
++    return requireFromDocusaurusCore('webpack/lib/ContextReplacementPlugin');
++  } catch {
++    return requireFromDocusaurusCore('webpack/lib/context/ContextReplacementPlugin');
++  }
++})();
+ // Need to be inlined to prevent dark mode FOUC
+ // Make sure the key is the same as the one in `/theme/hooks/useTheme.js`
+ const ThemeStorageKey = 'theme';

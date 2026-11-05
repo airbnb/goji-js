@@ -1,0 +1,43 @@
+diff --git a/lib/index.js b/lib/index.js
+index 11874c940ceea124229c598af801d0eba6f4ffd0..1ca3c23fdfd332989236fc0153e9c3666891015c 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -130,8 +130,9 @@ function transformHandler(mod, filePath) {
+ 
+ 
+ function registerExtensions() {
+-  require.extensions['.ts'] = transformHandler;
+-  require.extensions['.tsx'] = transformHandler;
++  const extensions = require.extensions || require('module')._extensions;
++  extensions['.ts'] = transformHandler;
++  extensions['.tsx'] = transformHandler;
+ }
+ /**
+  * Unregister `.ts` and `.tsx` file extensions.
+@@ -139,8 +140,9 @@ function registerExtensions() {
+ 
+ 
+ function unregisterExtensions() {
+-  delete require.extensions['.ts'];
+-  delete require.extensions['.tsx'];
++  const extensions = require.extensions || require('module')._extensions;
++  delete extensions['.ts'];
++  delete extensions['.tsx'];
+ }
+ /**
+  * Like `requireModule` but for loading TypeScript files ending in `ts` or `tsx`.
+@@ -166,6 +168,14 @@ function requireTSModule(path, requirer = require) {
+     throw new Error(`Unable to import non-TypeScript file "${filePath}", use \`requireModule\` instead.`);
+   }
+ 
++  // When this module is itself loaded through an ESM loader, the ambient
++  // `require` resolves `.ts` through the ESM pipeline (where `__dirname` and
++  // friends are not defined). Anchoring `createRequire` on the target file
++  // keeps the load on the CommonJS path, which honors `_extensions`.
++  if (!requirer || requirer === require) {
++    requirer = require('module').createRequire(require('path').resolve(filePath));
++  }
++
+   registerExtensions();
+   const result = interopModule(requirer(filePath));
+   unregisterExtensions();

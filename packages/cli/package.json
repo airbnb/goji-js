@@ -28,6 +28,7 @@
     "babel-plugin-macros": "^3.1.0",
     "cssnano": "^5.0.11",
     "find-cache-dir": "^3.3.1",
+    "linaria": "patch:linaria@npm%3A2.3.1#~/.yarn/patches/linaria-npm-2.3.1-54c654744c.patch",
     "lodash": "^4.18.1",
     "minimizer-webpack-plugin": "^5.13.1",
     "mkdirp": "^1.0.4",
@@ -49,10 +50,15 @@
     "yargs": "^17.1.0"
   },
   "devDependencies": {
+    "@babel/runtime": "^7.15.4",
+    "@babel/types": "^7.29.7",
     "@goji/core": "^1.5.0",
+    "@types/jest": "^27.0.3",
+    "@types/node": "^17.0.0",
     "@types/yargs": "^17.0.2",
     "rimraf": "^3.0.2",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "utility-types": "^3.10.0"
   },
   "peerDependencies": {
     "@goji/core": "*"

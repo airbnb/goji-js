@@ -1,0 +1,24 @@
+diff --git a/lib/server/siteMetadata.js b/lib/server/siteMetadata.js
+index 32d61f48c07075d7ac7c71ef239995cb53e78530..68ab2aa4173c0168d4b886aea6fd5cbca0d4216b 100644
+--- a/lib/server/siteMetadata.js
++++ b/lib/server/siteMetadata.js
+@@ -14,14 +14,15 @@ const logger_1 = tslib_1.__importDefault(require("@docusaurus/logger"));
+ const utils_1 = require("@docusaurus/utils");
+ async function getPackageJsonVersion(packageJsonPath) {
+     if (await fs_extra_1.default.pathExists(packageJsonPath)) {
+-        // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-dynamic-require, global-require
+-        return require(packageJsonPath).version;
++        // Read + parse instead of `require()`: under Yarn PnP's ESM loader,
++        // requiring a JSON file here trips a Node.js internal cache assertion.
++        return JSON.parse(await fs_extra_1.default.readFile(packageJsonPath, 'utf8')).version;
+     }
+     return undefined;
+ }
+ async function getPackageJsonName(packageJsonPath) {
+-    // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-dynamic-require, global-require
+-    return require(packageJsonPath).name;
++    // See `getPackageJsonVersion` above for why this is not `require()`.
++    return JSON.parse(await fs_extra_1.default.readFile(packageJsonPath, 'utf8')).name;
+ }
+ async function getPluginVersion(pluginPath, siteDir) {
+     let potentialPluginPackageJsonDirectory = path_1.default.dirname(pluginPath);

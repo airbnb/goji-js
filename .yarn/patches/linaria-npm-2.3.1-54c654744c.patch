@@ -1,0 +1,39 @@
+diff --git a/esm/babel/evaluators/shaker/index.js b/esm/babel/evaluators/shaker/index.js
+index c92054376a47fcd95b6b9c717e57474404c4f343..997ec7e256fa3df649f3b786786587afde953d22 100644
+--- a/esm/babel/evaluators/shaker/index.js
++++ b/esm/babel/evaluators/shaker/index.js
+@@ -3,6 +3,9 @@ import { transformSync } from '@babel/core';
+ import { debug } from '../../utils/logger';
+ import buildOptions from '../buildOptions';
+ import shake from './shaker';
++import { createRequire } from 'module';
++
++const require = createRequire(import.meta.url);
+ 
+ function prepareForShake(filename, options, code) {
+   const transformOptions = buildOptions(filename, options);
+@@ -13,7 +16,8 @@ function prepareForShake(filename, options, code) {
+     include: ['@babel/plugin-transform-template-literals']
+   }]);
+   transformOptions.presets.unshift([require.resolve('../preeval'), options]);
+-  transformOptions.plugins.unshift('transform-react-remove-prop-types');
++  // Resolve from Linaria's own scope (see lib/ counterpart).
++  transformOptions.plugins.unshift(require.resolve('babel-plugin-transform-react-remove-prop-types'));
+   transformOptions.plugins.unshift(['@babel/plugin-transform-runtime', {
+     useESModules: false
+   }]);
+diff --git a/lib/babel/evaluators/shaker/index.js b/lib/babel/evaluators/shaker/index.js
+index b88fc31e7987c7894ce61cb8fc179bdbcba08841..8580df2cb01af15c7510c2ed299adf4eab171b43 100644
+--- a/lib/babel/evaluators/shaker/index.js
++++ b/lib/babel/evaluators/shaker/index.js
+@@ -26,7 +26,9 @@ function prepareForShake(filename, options, code) {
+     include: ['@babel/plugin-transform-template-literals']
+   }]);
+   transformOptions.presets.unshift([require.resolve('../preeval'), options]);
+-  transformOptions.plugins.unshift('transform-react-remove-prop-types');
++  // Resolve from Linaria's own scope. Under Yarn PnP, a bare plugin name is
++  // resolved by `@babel/core`, which doesn't declare this package.
++  transformOptions.plugins.unshift(require.resolve('babel-plugin-transform-react-remove-prop-types'));
+   transformOptions.plugins.unshift(['@babel/plugin-transform-runtime', {
+     useESModules: false
+   }]);
