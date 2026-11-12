@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`wrapped.js process props: attachedInitData 1`] = `
-Array [
+[
   "internalScale: {
   value: this.properties.meta.props.scale
 },",
@@ -9,7 +9,7 @@ Array [
 `;
 
 exports[`wrapped.js process props: data 1`] = `
-Array [
+[
   "internalScale: {
   value: 16
 },",
@@ -17,7 +17,7 @@ Array [
 `;
 
 exports[`wrapped.js process props: properties 1`] = `
-Array [
+[
   "meta: {
   type: Object,
   observer() {
@@ -42,7 +42,7 @@ exports[`wrapped.js snapshot works: input 1`] = `
   },
   data: {
     internalValue: {
-      value: \\"\\"
+      value: ""
     },
     internalFocus: {
       value: false
@@ -188,13 +188,13 @@ exports[`wrapped.js snapshot works: scroll-view 1`] = `
   },
   data: {
     internalScrollTop: {
-      value: \\"\\"
+      value: ""
     },
     internalScrollLeft: {
-      value: \\"\\"
+      value: ""
     },
     internalScrollIntoView: {
-      value: \\"\\"
+      value: ""
     },
   },
   properties: {
@@ -304,7 +304,7 @@ exports[`wrapped.js snapshot works: textarea 1`] = `
   },
   data: {
     internalValue: {
-      value: \\"\\"
+      value: ""
     },
     internalFocus: {
       value: false
@@ -366,7 +366,7 @@ exports[`wrapped.js snapshot works: textarea 2`] = `
   },
   data: {
     internalValue: {
-      value: \\"\\"
+      value: ""
     },
     internalFocus: {
       value: false

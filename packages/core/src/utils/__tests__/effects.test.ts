@@ -53,26 +53,26 @@ describe('useImmediatelyEffect', () => {
     };
     const { result } = renderHook(useTest);
 
-    expect(immediatelyEffectCallback).toBeCalledTimes(1);
-    expect(immediatelyEffectUnsubscribedCallback).toBeCalledTimes(0);
+    expect(immediatelyEffectCallback).toHaveBeenCalledTimes(1);
+    expect(immediatelyEffectUnsubscribedCallback).toHaveBeenCalledTimes(0);
     // update deps
     act(() => {
       result.current.setCount(c => c + 1);
     });
-    expect(immediatelyEffectCallback).toBeCalledTimes(2);
-    expect(immediatelyEffectUnsubscribedCallback).toBeCalledTimes(1);
+    expect(immediatelyEffectCallback).toHaveBeenCalledTimes(2);
+    expect(immediatelyEffectUnsubscribedCallback).toHaveBeenCalledTimes(1);
     // update deps with same value
     act(() => {
       result.current.setCount(c => c);
     });
-    expect(immediatelyEffectCallback).toBeCalledTimes(2); // should not run
-    expect(immediatelyEffectUnsubscribedCallback).toBeCalledTimes(1);
+    expect(immediatelyEffectCallback).toHaveBeenCalledTimes(2); // should not run
+    expect(immediatelyEffectUnsubscribedCallback).toHaveBeenCalledTimes(1);
     // update non-deps
     act(() => {
       result.current.setAnother(c => c + 1);
     });
-    expect(immediatelyEffectCallback).toBeCalledTimes(2); // should not run
-    expect(immediatelyEffectUnsubscribedCallback).toBeCalledTimes(1);
+    expect(immediatelyEffectCallback).toHaveBeenCalledTimes(2); // should not run
+    expect(immediatelyEffectUnsubscribedCallback).toHaveBeenCalledTimes(1);
   });
 
   test('unsubscribe after unmounted', () => {
@@ -88,12 +88,12 @@ describe('useImmediatelyEffect', () => {
     };
     const { unmount } = renderHook(useTest);
 
-    expect(immediatelyEffectCallback).toBeCalledTimes(1);
-    expect(immediatelyEffectUnsubscribedCallback).toBeCalledTimes(0);
+    expect(immediatelyEffectCallback).toHaveBeenCalledTimes(1);
+    expect(immediatelyEffectUnsubscribedCallback).toHaveBeenCalledTimes(0);
 
     unmount();
-    expect(immediatelyEffectCallback).toBeCalledTimes(1);
-    expect(immediatelyEffectUnsubscribedCallback).toBeCalledTimes(1);
+    expect(immediatelyEffectCallback).toHaveBeenCalledTimes(1);
+    expect(immediatelyEffectUnsubscribedCallback).toHaveBeenCalledTimes(1);
   });
 
   test('callback and unsubscribe order', () => {
