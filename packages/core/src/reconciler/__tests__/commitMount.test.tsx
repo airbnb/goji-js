@@ -82,26 +82,26 @@ const renderApp = (): RenderResult => {
 
 test('works with ErrorBoundary', () => {
   // init
-  expect(gojiEvents.registerEventHandler).toBeCalledTimes(0);
-  expect(gojiEvents.unregisterEventHandler).toBeCalledTimes(0);
+  expect(gojiEvents.registerEventHandler).toHaveBeenCalledTimes(0);
+  expect(gojiEvents.unregisterEventHandler).toHaveBeenCalledTimes(0);
 
   // first rendering, ErrorBoundary should show
   const wrapper = renderApp();
   expect(wrapper.getContainer()).toMatchSnapshot('ErrorBoundary fallback');
-  expect(gojiEvents.registerEventHandler).toBeCalledTimes(0); // `<View>test</View>` should not register event handler
-  expect(gojiEvents.unregisterEventHandler).toBeCalledTimes(0);
+  expect(gojiEvents.registerEventHandler).toHaveBeenCalledTimes(0); // `<View>test</View>` should not register event handler
+  expect(gojiEvents.unregisterEventHandler).toHaveBeenCalledTimes(0);
 
   // second rendering, ErrorBoundary should hide after 3s
   jest.advanceTimersByTime(3000);
   expect(wrapper.getContainer()).toMatchSnapshot('test view showing');
-  expect(gojiEvents.registerEventHandler).toBeCalledTimes(1); // `<View>test</View>` should register event handler
-  expect(gojiEvents.unregisterEventHandler).toBeCalledTimes(0);
+  expect(gojiEvents.registerEventHandler).toHaveBeenCalledTimes(1); // `<View>test</View>` should register event handler
+  expect(gojiEvents.unregisterEventHandler).toHaveBeenCalledTimes(0);
 
   // third rendering, all components should be unmounted after 6s
   jest.advanceTimersByTime(6000);
   expect(wrapper.getContainer()).toMatchSnapshot('all components unmount');
-  expect(gojiEvents.registerEventHandler).toBeCalledTimes(1);
-  expect(gojiEvents.unregisterEventHandler).toBeCalledTimes(1); // `<View>test</View>` should unregister event handler
+  expect(gojiEvents.registerEventHandler).toHaveBeenCalledTimes(1);
+  expect(gojiEvents.unregisterEventHandler).toHaveBeenCalledTimes(1); // `<View>test</View>` should unregister event handler
   // id should same
   expect(jest.mocked(gojiEvents.registerEventHandler).mock.calls[0][0]).toBe(
     jest.mocked(gojiEvents.unregisterEventHandler).mock.calls[0][0],

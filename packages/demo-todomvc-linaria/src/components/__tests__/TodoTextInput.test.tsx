@@ -15,8 +15,8 @@ describe('TodoTextInput', () => {
 
     // confirm and then cleanup
     fireEvent.confirm(input);
-    expect(onSave).toBeCalledTimes(1);
-    expect(onSave).toBeCalledWith('hi');
+    expect(onSave).toHaveBeenCalledTimes(1);
+    expect(onSave).toHaveBeenCalledWith('hi');
     expect(input.props.value).toBe('');
   });
 });

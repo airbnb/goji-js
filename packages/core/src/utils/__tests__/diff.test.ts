@@ -15,10 +15,10 @@ describe('verifyDiff', () => {
     const mockContainer = new Container(new TestingAdaptorInstance());
     // init
     verifyDiff(mockContainer, { a: { b: { c: 1 } } }, {});
-    expect(console.error).not.toBeCalled();
+    expect(console.error).not.toHaveBeenCalled();
     // update
     verifyDiff(mockContainer, { a: { b: { c: 2 } } }, { 'a.b.d': 2 });
-    expect(console.error).toBeCalled();
+    expect(console.error).toHaveBeenCalled();
   });
 });
 

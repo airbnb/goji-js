@@ -223,8 +223,8 @@ describe('ElementInstance', () => {
       },
     });
     act(() => {});
-    expect(onLeafTap).toBeCalledTimes(1);
-    expect(onRootTap).toBeCalledTimes(0);
+    expect(onLeafTap).toHaveBeenCalledTimes(1);
+    expect(onRootTap).toHaveBeenCalledTimes(0);
     // trigger event on root
     gojiEvents.triggerEvent({
       type: 'tap',
@@ -241,7 +241,7 @@ describe('ElementInstance', () => {
       },
     });
     act(() => {});
-    expect(onLeafTap).toBeCalledTimes(1);
-    expect(onRootTap).toBeCalledTimes(shouldStopPropagation ? 0 : 1);
+    expect(onLeafTap).toHaveBeenCalledTimes(1);
+    expect(onRootTap).toHaveBeenCalledTimes(shouldStopPropagation ? 0 : 1);
   });
 });

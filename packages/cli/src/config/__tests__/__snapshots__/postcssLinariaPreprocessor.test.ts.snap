@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`postcss-linaria-preprocessor :global() selector 1`] = `
 "
@@ -14,7 +14,7 @@ exports[`postcss-linaria-preprocessor :global() selector 1`] = `
 exports[`postcss-linaria-preprocessor escape breaking control characters 1`] = `
 "
       .a {
-        content: '\\\\feff';
+        content: '\\feff';
       }
     "
 `;

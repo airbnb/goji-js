@@ -36,17 +36,17 @@ describe('universal lifecycles', () => {
     act(() => {
       eventProxy.lifecycleChannel.onLoad.emit(mockOnLoadOptions);
     });
-    expect(useLoadOptionsCallback).not.toBeCalled();
+    expect(useLoadOptionsCallback).not.toHaveBeenCalled();
     useLoadOptionsCallback.mockReset();
 
     // click button to mount the `Comp`
     act(() => showCompCallback());
-    expect(useLoadOptionsCallback).toBeCalledWith({ key: 'haha' });
+    expect(useLoadOptionsCallback).toHaveBeenCalledWith({ key: 'haha' });
     useLoadOptionsCallback.mockReset();
 
     // force re-render should not call loadOptions callback
     act(() => forceRerenderCallback());
-    expect(useLoadOptionsCallback).not.toBeCalled();
+    expect(useLoadOptionsCallback).not.toHaveBeenCalled();
     useLoadOptionsCallback.mockReset();
   });
 
@@ -62,18 +62,18 @@ describe('universal lifecycles', () => {
     const wrapper = render(<Page />);
     wrapper.setManuallyResolvedUpdateCallback(true);
 
-    expect(renderedEffectCallback).toBeCalledTimes(0);
+    expect(renderedEffectCallback).toHaveBeenCalledTimes(0);
 
     renderedEffectCallback.mockClear();
     expect(wrapper.resolveUpdateCallback()).toBe(true);
-    expect(renderedEffectCallback).toBeCalled();
+    expect(renderedEffectCallback).toHaveBeenCalled();
 
     // re-render the component with no UI changed
     wrapper.setManuallyResolvedUpdateCallback(false);
     renderedEffectCallback.mockClear();
     // @ts-expect-error
     forceUpdate();
-    expect(renderedEffectCallback).toBeCalled();
+    expect(renderedEffectCallback).toHaveBeenCalled();
   });
 
   test('useRenderedEffect with multi update', async () => {
@@ -99,19 +99,19 @@ describe('universal lifecycles', () => {
 
     renderedEffectCallback.mockClear();
     expect(wrapper.resolveUpdateCallback()).toBe(true);
-    expect(renderedEffectCallback).toBeCalledWith(0); // first time rendering
+    expect(renderedEffectCallback).toHaveBeenCalledWith(0); // first time rendering
 
     renderedEffectCallback.mockClear();
     expect(wrapper.resolveUpdateCallback()).toBe(true);
-    expect(renderedEffectCallback).toBeCalledWith(1); // re-render
+    expect(renderedEffectCallback).toHaveBeenCalledWith(1); // re-render
 
     renderedEffectCallback.mockClear();
     expect(wrapper.resolveUpdateCallback()).toBe(true);
-    expect(renderedEffectCallback).toBeCalledWith(2); // re-render
+    expect(renderedEffectCallback).toHaveBeenCalledWith(2); // re-render
 
     renderedEffectCallback.mockClear();
     expect(wrapper.resolveUpdateCallback()).toBe(false);
-    expect(renderedEffectCallback).not.toBeCalled(); // done
+    expect(renderedEffectCallback).not.toHaveBeenCalled(); // done
   });
 
   describe('useRenderedEffect with out-of-order updates', () => {
@@ -144,13 +144,13 @@ describe('universal lifecycles', () => {
 
       renderedEffectCallback.mockClear();
       expect(wrapper.resolveUpdateCallback('0')).toBe(true);
-      expect(renderedEffectCallback).toBeCalledTimes(1);
+      expect(renderedEffectCallback).toHaveBeenCalledTimes(1);
       expect(renderedEffectCallback.mock.calls[0][0]).toBe(0);
       expect(wrapper.resolveUpdateCallback('1')).toBe(true);
-      expect(renderedEffectCallback).toBeCalledTimes(2);
+      expect(renderedEffectCallback).toHaveBeenCalledTimes(2);
       expect(renderedEffectCallback.mock.calls[1][0]).toBe(1);
       expect(wrapper.resolveUpdateCallback('2')).toBe(true);
-      expect(renderedEffectCallback).toBeCalledTimes(3);
+      expect(renderedEffectCallback).toHaveBeenCalledTimes(3);
       expect(renderedEffectCallback.mock.calls[2][0]).toBe(2);
     });
 
@@ -160,10 +160,10 @@ describe('universal lifecycles', () => {
 
       renderedEffectCallback.mockClear();
       expect(wrapper.resolveUpdateCallback('1')).toBe(true);
-      expect(renderedEffectCallback).not.toBeCalled();
+      expect(renderedEffectCallback).not.toHaveBeenCalled();
       expect(wrapper.resolveUpdateCallback('0')).toBe(true);
 
-      expect(renderedEffectCallback).toBeCalledTimes(2);
+      expect(renderedEffectCallback).toHaveBeenCalledTimes(2);
       expect(renderedEffectCallback.mock.calls[0][0]).toBe(0);
       expect(renderedEffectCallback.mock.calls[1][0]).toBe(1);
     });
@@ -173,13 +173,13 @@ describe('universal lifecycles', () => {
       update();
       update();
       expect(wrapper.resolveUpdateCallback('1')).toBe(true);
-      expect(renderedEffectCallback).not.toBeCalled();
+      expect(renderedEffectCallback).not.toHaveBeenCalled();
       expect(wrapper.resolveUpdateCallback('0')).toBe(true);
-      expect(renderedEffectCallback).toBeCalledTimes(2);
+      expect(renderedEffectCallback).toHaveBeenCalledTimes(2);
       expect(renderedEffectCallback.mock.calls[0][0]).toBe(0);
       expect(renderedEffectCallback.mock.calls[1][0]).toBe(1);
       expect(wrapper.resolveUpdateCallback('2')).toBe(true);
-      expect(renderedEffectCallback).toBeCalledTimes(3);
+      expect(renderedEffectCallback).toHaveBeenCalledTimes(3);
       expect(renderedEffectCallback.mock.calls[2][0]).toBe(2);
     });
 
@@ -188,14 +188,14 @@ describe('universal lifecycles', () => {
       update();
       update();
       expect(wrapper.resolveUpdateCallback('2')).toBe(true);
-      expect(renderedEffectCallback).not.toBeCalled();
+      expect(renderedEffectCallback).not.toHaveBeenCalled();
       expect(wrapper.resolveUpdateCallback('3')).toBe(true);
-      expect(renderedEffectCallback).not.toBeCalled();
+      expect(renderedEffectCallback).not.toHaveBeenCalled();
       expect(wrapper.resolveUpdateCallback('0')).toBe(true);
-      expect(renderedEffectCallback).toBeCalledTimes(1);
+      expect(renderedEffectCallback).toHaveBeenCalledTimes(1);
       expect(renderedEffectCallback.mock.calls[0][0]).toBe(0);
       expect(wrapper.resolveUpdateCallback('1')).toBe(true);
-      expect(renderedEffectCallback).toBeCalledTimes(4);
+      expect(renderedEffectCallback).toHaveBeenCalledTimes(4);
       expect(renderedEffectCallback.mock.calls[1][0]).toBe(1);
       expect(renderedEffectCallback.mock.calls[2][0]).toBe(2);
       expect(renderedEffectCallback.mock.calls[3][0]).toBe(3);
@@ -244,43 +244,43 @@ describe('universal lifecycles', () => {
       update();
       wrapper.resolveUpdateCallback('2');
       wrapper.resolveUpdateCallback('1');
-      expect(mockSetData).toBeCalledTimes(2);
+      expect(mockSetData).toHaveBeenCalledTimes(2);
       expect(mockSetData.mock.calls[1][0]).toEqual({ 'meta.children[0].children[0].text': '3' });
     });
 
     it('resolve: 1 -> 0 -> 1', () => {
       update();
       wrapper.resolveUpdateCallback('1');
-      expect(mockSetData).toBeCalledTimes(0);
+      expect(mockSetData).toHaveBeenCalledTimes(0);
 
       update();
       wrapper.resolveUpdateCallback('0');
-      expect(mockSetData).toBeCalledTimes(1);
+      expect(mockSetData).toHaveBeenCalledTimes(1);
       expect(mockSetData.mock.calls[0][0]).toEqual({ 'meta.children[0].children[0].text': '2' });
 
       update();
       wrapper.resolveUpdateCallback('1');
-      expect(mockSetData).toBeCalledTimes(2);
+      expect(mockSetData).toHaveBeenCalledTimes(2);
       expect(mockSetData.mock.calls[1][0]).toEqual({ 'meta.children[0].children[0].text': '3' });
     });
 
     it('resolve: 2 -> 0 -> 1 -> 1', () => {
       update();
-      expect(mockSetData).toBeCalledTimes(0);
+      expect(mockSetData).toHaveBeenCalledTimes(0);
 
       update();
-      expect(mockSetData).toBeCalledTimes(0);
+      expect(mockSetData).toHaveBeenCalledTimes(0);
 
       update();
       wrapper.resolveUpdateCallback('2');
       wrapper.resolveUpdateCallback('0');
       wrapper.resolveUpdateCallback('1');
-      expect(mockSetData).toBeCalledTimes(1);
+      expect(mockSetData).toHaveBeenCalledTimes(1);
       expect(mockSetData.mock.calls[0][0]).toEqual({ 'meta.children[0].children[0].text': '3' });
 
       update();
       wrapper.resolveUpdateCallback('1');
-      expect(mockSetData).toBeCalledTimes(2);
+      expect(mockSetData).toHaveBeenCalledTimes(2);
       expect(mockSetData.mock.calls[1][0]).toEqual({ 'meta.children[0].children[0].text': '4' });
     });
   });

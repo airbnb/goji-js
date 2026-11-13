@@ -1,53 +1,53 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`works with ErrorBoundary: ErrorBoundary fallback 1`] = `
-Object {
-  "meta": Object {
-    "children": Array [
-      Object {
+{
+  "meta": {
+    "children": [
+      {
         "gojiId": 4,
         "text": "fallback",
         "type": "GOJI_TYPE_TEXT",
       },
     ],
     "gojiId": 1,
-    "props": Object {},
+    "props": {},
     "type": "GOJI_VIRTUAL_ROOT",
   },
 }
 `;
 
 exports[`works with ErrorBoundary: all components unmount 1`] = `
-Object {
-  "meta": Object {
-    "children": Array [],
+{
+  "meta": {
+    "children": [],
     "gojiId": 1,
-    "props": Object {},
+    "props": {},
     "type": "GOJI_VIRTUAL_ROOT",
   },
 }
 `;
 
 exports[`works with ErrorBoundary: test view showing 1`] = `
-Object {
-  "meta": Object {
-    "children": Array [
-      Object {
-        "children": Array [
-          Object {
+{
+  "meta": {
+    "children": [
+      {
+        "children": [
+          {
             "gojiId": 5,
             "text": "test",
             "type": "GOJI_TYPE_TEXT",
           },
         ],
         "gojiId": 6,
-        "props": Object {},
+        "props": {},
         "simplifiedId": 0,
         "type": "view",
       },
     ],
     "gojiId": 1,
-    "props": Object {},
+    "props": {},
     "type": "GOJI_VIRTUAL_ROOT",
   },
 }
