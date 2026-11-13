@@ -37,8 +37,24 @@ export interface AppSubpackage {
   independent?: boolean;
 }
 
+export interface AppTabBarItem {
+  pagePath: string;
+  text?: string;
+  iconPath?: string;
+  selectedIconPath?: string;
+  [key: string]: any;
+}
+
+export interface AppTabBar {
+  custom?: boolean;
+  list?: Array<AppTabBarItem>;
+  [key: string]: any;
+}
+
 export interface AppConfig {
   pages?: Array<string>;
   subpackages?: Array<AppSubpackage>;
   subPackages?: Array<AppSubpackage>;
+  tabBar?: AppTabBar;
+  usingComponents?: Record<string, string>;
 }

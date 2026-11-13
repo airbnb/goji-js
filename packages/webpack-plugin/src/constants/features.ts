@@ -3,6 +3,10 @@ import { GojiTarget } from '@goji/core';
 export const getFeatures = (target: GojiTarget) => ({
   useSubtree: target === 'wechat' || target === 'qq',
 
+  // Custom tabBar is only supported on WeChat for now. Other platforms require different
+  // implementations and config fields, see https://github.com/airbnb/goji-js/issues
+  customTabBar: target === 'wechat',
+
   useInlineChildrenInComponent:
     // Alipay only support circular dependency self to self so we have to inline the children.wxml
     // Success: A -> A -> A

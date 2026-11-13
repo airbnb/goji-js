@@ -8,7 +8,7 @@ import { getUsedComponents, isWrapped, getSimplifiedComponents } from '../utils/
 import { transformTemplate } from '../utils/render';
 import { getRelativePathToBridge } from '../utils/path';
 import { BRIDGE_OUTPUT_DIR } from '../constants/paths';
-import { pathEntriesMap, appConfigMap, usedComponentsMap } from '../shared';
+import { pathEntriesMap, appConfigMap, usedComponentsMap, customTabBarEntryMap } from '../shared';
 import { GojiBasedWebpackPlugin } from './based';
 import { minimize } from '../utils/minimize';
 import { getSubpackagesInfo, findBelongingSubPackage, MAIN_PACKAGE } from '../utils/config';
@@ -244,7 +244,12 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
         if (!pathEntries) {
           throw new Error('pathEntries not found');
         }
-        for (const entrypoint of pathEntries) {
+        const customTabBarEntry = customTabBarEntryMap.get(compiler);
+        // the custom tabBar is a custom component rather than a page, so it's not in `pathEntries`
+        const entrypoints = customTabBarEntry ? [...pathEntries, customTabBarEntry] : pathEntries;
+
+        for (const entrypoint of entrypoints) {
+          const isComponent = entrypoint === customTabBarEntry;
           const belongingIndependentPackage = findBelongingSubPackage(entrypoint, independentRoots);
           const bridgeBasedir =
             belongingIndependentPackage === MAIN_PACKAGE
@@ -265,6 +270,7 @@ export class GojiBridgeWebpackPlugin extends GojiBasedWebpackPlugin {
                 relativePathToBridge: getRelativePathToBridge(entrypoint, bridgeBasedir),
                 components: this.getUsedComponents(compilation),
                 pluginComponents: getPluginComponents(),
+                isComponent,
               }),
             (newSource, oldSource) =>
               JSON.stringify(deepmerge(JSON.parse(oldSource), JSON.parse(newSource)), null, 2),

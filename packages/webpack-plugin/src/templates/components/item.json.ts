@@ -6,13 +6,19 @@ export const itemJson = ({
   relativePathToBridge,
   components,
   pluginComponents,
+  isComponent = false,
 }: {
   relativePathToBridge: string;
   components: ComponentDesc[];
   pluginComponents: PluginComponentDesc[];
+  /**
+   * Pages are rendered by `Page()` while custom tabBar entries are rendered by `Component()`,
+   * which requires `"component": true` in their JSON file.
+   */
+  isComponent?: boolean;
 }) =>
   nativeComponentJson({
-    isComponent: false,
+    isComponent,
     isLeaf: false,
     relativePathToBridge,
     components,

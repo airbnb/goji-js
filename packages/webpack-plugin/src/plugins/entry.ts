@@ -1,6 +1,14 @@
 import webpack from 'webpack';
 import loaderUtils from 'loader-utils';
-import { pathEntriesMap, appEntryMap, appConfigMap } from '../shared';
+import fs from 'fs';
+import path from 'path';
+import {
+  pathEntriesMap,
+  appEntryMap,
+  appConfigMap,
+  customTabBarEntryMap,
+  definitionsMap,
+} from '../shared';
 import { GojiBasedWebpackPlugin } from './based';
 import {
   loadConfigSourceByChildCompiler,
@@ -8,8 +16,26 @@ import {
   resolveConfigPath,
 } from '../utils/loadConfig';
 import { AppConfig } from '../types';
-import { readPathsFromAppConfig } from '../utils/config';
+import {
+  getCustomTabBarEntry,
+  getRuntimeTabBarList,
+  readPathsFromAppConfig,
+} from '../utils/config';
 import { getChunkName } from '../utils/chunkName';
+
+const isEntrySourceExists = (
+  context: string,
+  entry: string,
+  compiler: webpack.Compiler,
+): boolean => {
+  // `custom-tab-bar/index` might be a folder with `index.js` or a file with any extension
+  if (fs.existsSync(path.join(context, entry))) {
+    return true;
+  }
+  return (compiler.options.resolve?.extensions ?? ['.js']).some(ext =>
+    fs.existsSync(path.join(context, `${entry}${ext}`)),
+  );
+};
 
 /**
  * resolve `app.json` to generate dynamic entries
@@ -48,9 +74,22 @@ export class GojiEntryWebpackPlugin extends GojiBasedWebpackPlugin {
 
     const appEntry = 'app';
     const pathEntries = readPathsFromAppConfig(appConfig);
+    const customTabBarEntry = getCustomTabBarEntry(appConfig, this.options.target);
+    if (customTabBarEntry && !isEntrySourceExists(context, customTabBarEntry, compiler)) {
+      // throw a readable error before the generic "Module not found" thrown by webpack
+      throw new Error(
+        `\`tabBar.custom\` is enabled but \`src/${customTabBarEntry}\` is not found.\n` +
+          `Please create it and call \`render(<TabBar />, { type: 'component' })\`.\n` +
+          'See https://developers.weixin.qq.com/miniprogram/dev/framework/ability/custom-tabbar.html',
+      );
+    }
 
     // add app & pages
-    for (const theEntry of [appEntry, ...pathEntries]) {
+    for (const theEntry of [
+      appEntry,
+      ...pathEntries,
+      ...(customTabBarEntry ? [customTabBarEntry] : []),
+    ]) {
       const request = loaderUtils.urlToRequest(theEntry);
       new webpack.EntryPlugin(
         context,
@@ -64,6 +103,14 @@ export class GojiEntryWebpackPlugin extends GojiBasedWebpackPlugin {
     appConfigMap.set(compiler, appConfig);
     appEntryMap.set(compiler, appEntry);
     pathEntriesMap.set(compiler, pathEntries);
+    customTabBarEntryMap.set(compiler, customTabBarEntry);
+    // `useTabBar` needs `tabBar.list` to find out which page is the current one
+    const definitions = definitionsMap.get(compiler);
+    if (definitions) {
+      definitions['process.env.GOJI_TAB_BAR_LIST'] = JSON.stringify(
+        getRuntimeTabBarList(appConfig),
+      );
+    }
   }
 
   // FIXME: remove the main entry which content is `app.json`

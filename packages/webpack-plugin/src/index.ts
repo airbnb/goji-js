@@ -14,6 +14,7 @@ import { GojiSplitChunksWebpackPlugin } from './plugins/chunks/split';
 import { GojiRuntimeChunksWebpackPlugin } from './plugins/chunks/runtime';
 import { GojiNohoistWebpackPlugin } from './plugins/nohoist';
 import { GojiPrintStatsWebpackPlugin } from './plugins/printStats';
+import { definitionsMap } from './shared';
 
 export class GojiWebpackPlugin implements webpack.WebpackPluginInstance {
   public static normalizeOptions(
@@ -42,12 +43,17 @@ export class GojiWebpackPlugin implements webpack.WebpackPluginInstance {
 
   public apply(compiler: webpack.Compiler) {
     const { options } = this;
-    new webpack.DefinePlugin({
+    // this object is mutated by `GojiEntryWebpackPlugin` before the first compilation because
+    // some values, like `tabBar.list` from `app.json`, are only known after the compiler starts
+    const definitions: Record<string, string> = {
       'process.env.TARGET': JSON.stringify(options.target),
       'process.env.GOJI_TARGET': JSON.stringify(options.target),
       'process.env.GOJI_MAX_DEPTH': JSON.stringify(options.maxDepth),
       'process.env.GOJI_WRAPPED_COMPONENTS': JSON.stringify(getWrappedComponents(options.target)),
-    }).apply(compiler);
+      'process.env.GOJI_TAB_BAR_LIST': JSON.stringify([]),
+    };
+    definitionsMap.set(compiler, definitions);
+    new webpack.DefinePlugin(definitions).apply(compiler);
     new GojiCollectUsedComponentsWebpackPlugin(options).apply(compiler);
     new GojiBridgeWebpackPlugin(options).apply(compiler);
     new GojiEntryWebpackPlugin(options).apply(compiler);

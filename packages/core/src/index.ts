@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import './patchGlobalObject';
-import { createAdaptor, AdaptorType, ExportComponentMeta } from './adaptor';
+import { createAdaptor, AdaptorType, ExportComponentMeta, ComponentMeta } from './adaptor';
 import { GojiTarget } from './constants';
 import { batchedUpdates } from './reconciler';
 
@@ -8,16 +8,18 @@ interface RenderOptions {
   type: AdaptorType;
   disablePageSharing: boolean;
   exportMeta: ExportComponentMeta;
+  componentMeta: ComponentMeta;
 }
 
 const DEFAULT_RENDER_OPTIONS: RenderOptions = {
   type: 'page',
   disablePageSharing: false,
   exportMeta: {},
+  componentMeta: {},
 };
 
 export const render = (element: ReactNode, options: Partial<RenderOptions> = {}) => {
-  const { type, exportMeta, disablePageSharing }: RenderOptions = {
+  const { type, exportMeta, disablePageSharing, componentMeta }: RenderOptions = {
     ...DEFAULT_RENDER_OPTIONS,
     ...options,
   };
@@ -26,6 +28,7 @@ export const render = (element: ReactNode, options: Partial<RenderOptions> = {})
     process.env.GOJI_TARGET as GojiTarget,
     exportMeta,
     disablePageSharing,
+    componentMeta,
   );
   return adaptor.run(element);
 };
@@ -45,6 +48,7 @@ export {
   getTemplateIds as unstable_getTemplateIds,
 } from './constants';
 export { gojiEvents } from './events';
+export { useTabBar, getTabBarList, getSelectedTabIndex, TabBarItem } from './tabBar';
 // eslint-disable-next-line camelcase
 export { batchedUpdates as unstable_batchedUpdates };
 export { PublicInstance as GojiPublicInstance } from './reconciler/publicInstance';

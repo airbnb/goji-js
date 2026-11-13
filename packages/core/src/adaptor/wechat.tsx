@@ -2,7 +2,13 @@ import React, { cloneElement, useState } from 'react';
 import camelCase from 'lodash/camelCase';
 import zipObject from 'lodash/zipObject';
 import { Container } from '../container';
-import { Adaptor, AdaptorInstance, AdaptorType, ExportComponentMeta } from './common';
+import {
+  Adaptor,
+  AdaptorInstance,
+  AdaptorType,
+  ComponentMeta,
+  ExportComponentMeta,
+} from './common';
 import { gojiEvents } from '../events';
 import { useInternalComponentUpdate } from '../lifecycles/native/hooks';
 import {
@@ -41,12 +47,18 @@ export interface WeChatPageConfig extends WeChatPageLifecycle {}
 export interface WeChatComponentConfig {
   options?: {
     addGlobalClass?: boolean;
+    [key: string]: any;
   };
-  methods?: WeChatPageLifecycle;
+  methods?: Record<string, any>;
+  data?: Record<string, any>;
   properties?: Record<string, { type: null; observer?(this: WeChatInstance, newVal: any): void }>;
   lifetimes?: {
     attached?(this: WeChatInstance): void;
     detached?(this: WeChatInstance): void;
+  };
+  pageLifetimes?: {
+    show?(this: WeChatInstance): void;
+    hide?(this: WeChatInstance): void;
   };
 }
 
@@ -96,6 +108,7 @@ export class WeChatAdaptor extends Adaptor {
     private type: AdaptorType,
     private exportMeta: ExportComponentMeta = {},
     private disablePageSharing: boolean,
+    private componentMeta: ComponentMeta = {},
   ) {
     super();
   }
@@ -203,8 +216,43 @@ export class WeChatAdaptor extends Adaptor {
         ...eventHandler,
       });
     } else if (type === 'component') {
+      // component lifecycles like `onLoad` and `onReady` are only available in `lifetimes`
+      // https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/lifetimes.html
       const componentConfig: WeChatComponentConfig = {
-        methods: { ...pageLifecycles, ...eventHandler },
+        options: {
+          // if you'd like to use GojiJS as a native component, you should import the `.css` files in page or app
+          addGlobalClass: true,
+          ...this.componentMeta.options,
+        },
+        lifetimes: {
+          attached(this: WeChatInstance) {
+            const container = new Container(new WechatAdaptorInstance(this));
+            this.__GOJI_CONTAINER = container;
+
+            container.render(element);
+
+            this.__GOJI_CONTAINER.eventProxy.lifecycleChannel.onLoad.emit({});
+          },
+          detached(this: WeChatInstance) {
+            this.__GOJI_CONTAINER!.eventProxy.lifecycleChannel.onUnload.emit();
+
+            if (this.__GOJI_CONTAINER) {
+              this.__GOJI_CONTAINER.render(null);
+            }
+            this.__GOJI_CONTAINER = undefined;
+          },
+        },
+        // a custom component could be rendered in different pages, while lifecycles inside
+        // `lifetimes` only run once, so we have to forward page lifecycles here
+        pageLifetimes: {
+          show(this: WeChatInstance) {
+            this.__GOJI_CONTAINER?.eventProxy.lifecycleChannel.onShow.emit();
+          },
+          hide(this: WeChatInstance) {
+            this.__GOJI_CONTAINER?.eventProxy.lifecycleChannel.onHide.emit();
+          },
+        },
+        methods: { ...eventHandler },
       };
       Component(componentConfig);
     } else if (type === 'exportComponent') {

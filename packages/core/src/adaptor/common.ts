@@ -14,3 +14,11 @@ export interface ExportComponentMeta {
   props?: Array<string>;
   events?: Array<string>;
 }
+
+export interface ComponentMeta {
+  /**
+   * Native component options, see
+   * https://developers.weixin.qq.com/miniprogram/dev/reference/api/Component.html
+   */
+  options?: Record<string, any>;
+}

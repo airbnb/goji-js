@@ -1,6 +1,25 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`WeChatAdaptor works with Page 1`] = `
+exports[`WeChatAdaptor component render inside \`attached\` rather than \`methods\` 1`] = `
+{
+  "meta": {
+    "children": [
+      {
+        "children": [],
+        "gojiId": 4,
+        "props": {},
+        "simplifiedId": 0,
+        "type": "view",
+      },
+    ],
+    "gojiId": 3,
+    "props": {},
+    "type": "GOJI_VIRTUAL_ROOT",
+  },
+}
+`;
+
+exports[`WeChatAdaptor page works with Page 1`] = `
 {
   "meta": {
     "children": [
