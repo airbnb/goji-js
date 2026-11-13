@@ -15,7 +15,6 @@
     "@beemo/cli": "^2.0.1",
     "@beemo/core": "^2.0.1",
     "@beemo/driver-babel": "^2.0.0",
-    "@beemo/driver-eslint": "^2.0.0",
     "@beemo/driver-lerna": "^2.0.0",
     "@beemo/driver-prettier": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
