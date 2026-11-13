@@ -9,7 +9,6 @@ const config: BeemoConfig = {
     prettier: true,
     lerna: true,
     babel: true,
-    jest: true,
   },
 };
 
